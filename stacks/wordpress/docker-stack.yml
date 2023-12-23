@@ -1,0 +1,51 @@
+version: '3'
+
+services:
+  mariadb:
+    container_name: ${COMPOSE_PROJECT_NAME}-mariadb
+    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    restart: unless-stopped
+    volumes:
+      - mariadb:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}   
+
+  wordpress:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${WORDPRESS_IMAGE}:${WORDPRESS_TAG}
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    links:
+    - mariadb:mariadb
+    volumes:
+      - wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
+      LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
+      WORDPRESS_CONFIG_EXTRA: |
+        define('WP_ALLOW_MULTISITE', ${WP_ALLOW_MULTISITE});
+        define('WP_CACHE', ${WP_CACHE});
+        define('WP_REDIS_PREFIX', '${DOMAIN}');
+        define('WP_CACHE_KEY_SALT', '${DOMAIN}');
+        define( 'WP_REDIS_HOST', '${WP_REDIS_HOST}');
+        define( 'WP_REDIS_PORT', '${WP_REDIS_PORT}');
+    logging:
+      options:
+        max-size: ${LOGGING_OPTIONS_MAX_SIZE}
+
+volumes:
+  mariadb:
+  wordpress:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true

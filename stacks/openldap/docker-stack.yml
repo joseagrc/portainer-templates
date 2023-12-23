@@ -1,0 +1,43 @@
+version: '3'
+services:
+  openldap:
+    container_name: ${OPENLDAP_CONTAINER_NAME}
+    hostname: ${LDAP_HOSTNAME}
+    image: ${OPENLDAP_IMAGE}:${OPENLDAP_TAG}
+    restart: always
+    environment:
+      LDAP_ADMIN_USERNAME: ${LDAP_ADMIN_USERNAME}
+      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
+      LDAP_USERS: ${LDAP_USERS}
+      LDAP_PASSWORDS: ${LDAP_PASSWORDS}
+      LDAP_ROOT: ${LDAP_ROOT}
+      LDAP_ADMIN_DN: ${LDAP_ADMIN_DN}
+      VIRTUAL_HOST: ${LDAP_HOSTNAME},www.${LDAP_HOSTNAME}
+      LETSENCRYPT_HOST: ${LDAP_HOSTNAME},www.${LDAP_HOSTNAME}
+    volumes:
+      - config:/etc/ldap
+      - data:/bitnami/openldap
+    ports:
+      - ${LDAP_PORT_NUMBER}:389
+      - ${LDAP_LDAPS_PORT_NUMBER}:636
+
+  phpldapadmin:
+    container_name: ${PHPLDAPADMIN_CONTAINER_NAME}
+    image: ${PHPLDAPADMIN_IMAGE}:${PHPLDAPADMIN_TAG}
+    restart: always
+    depends_on:
+      - openldap
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: ${LDAP_HOSTNAME}
+      PHPLDAPADMIN_HTTPS: false
+      VIRTUAL_HOST: ${PHPLDAPADMIN_SUBDOMAIN}.${PHPLDAPADMIN_DOMAIN},www.${PHPLDAPADMIN_SUBDOMAIN}.${PHPLDAPADMIN_DOMAIN}
+      LETSENCRYPT_HOST: ${PHPLDAPADMIN_SUBDOMAIN}.${PHPLDAPADMIN_DOMAIN},www.${PHPLDAPADMIN_SUBDOMAIN}.${PHPLDAPADMIN_DOMAIN}
+
+volumes:
+  config:
+  data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true

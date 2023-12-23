@@ -1,0 +1,51 @@
+version: '3'
+services:
+  mysql:
+    container_name: ${COMPOSE_PROJECT_NAME}-mysql
+    image: ${MYSQL_IMAGE}:${MYSQL_TAG}
+    restart: always
+    volumes:
+       - phorge_db:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT}:3306
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    command: --innodb-buffer-pool-size=268435456 --local-infile=0 --max-allowed-packet=33554432 --sql-mode=STRICT_ALL_TABLES
+
+  phorge:
+    container_name: ${PHORGE_CONTAINER_NAME}
+    image: ${PHORGE_IMAGE}:${PHORGE_TAG}
+    restart: always
+    volumes:
+      - phorge_web:/var/www/html
+      - phorge_ssh:/etc/ssh
+      - phorge_repo:/var/repo
+    links:
+      - ${MYSQL_CONTAINER_NAME}
+    depends_on:
+      - ${MYSQL_CONTAINER_NAME}
+    environment:
+      VIRTUAL_PORT: 9000
+      UPGRADE_ON_RESTART: true
+      MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-mysql
+      MYSQL_PORT: ${MYSQL_PORT}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASS: ${MYSQL_PASSWORD}
+      PH_BASE_URI: https://${SUBDOMAIN}.${DOMAIN}
+      PH_MYSQL_PASS: ${MYSQL_ROOT_PASSWORD}
+      VIRTUAL_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
+      LETSENCRYPT_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
+
+volumes:
+  phorge_web:
+  phorge_ssh:
+  phorge_repo:
+  phorge_db:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
