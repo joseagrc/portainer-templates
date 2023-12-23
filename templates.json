@@ -1,0 +1,1171 @@
+e{
+  "version": "2",
+  "templates": [
+      {
+      "type": 3,
+      "title": "Gitea",
+      "description": "Gitea setup with a MySQL database",
+      "note": "Deploys a Gitea instance connected to a MySQL database.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://www.gravatar.com/avatar/5603d5a79452bc237ac44f663d39f9aa.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gitea/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "mysql",
+          "label": "MySQL database image",
+          "name": "MYSQL_IMAGE"
+        },
+        {
+          "default": "8",
+          "label": "MySQL Database tag",
+          "name": "MYSQL_TAG"
+        },
+        {
+          "label": "MySQL database username",
+          "name": "MYSQL_USER"
+        },
+        {
+          "label": "MySQL Database password for user",
+          "name": "MYSQL_PASSWORD"
+        },
+        {
+          "label": "Database root password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "label": "MySQL database name",
+          "name": "MYSQL_DATABASE"
+        },
+        {
+          "default": "3306",
+          "label": "MySQL port",
+          "name": "MYSQL_PORT"
+        },
+        {
+          "default": "gitea/gitea",
+          "label": "Gitea image",
+          "name": "GITEA_IMAGE"
+        },
+        {
+          "default": "1.21.1",
+          "label": "Gitea tag",
+          "name": "GITEA_TAG"
+        },
+        {
+          "default": "3000",
+          "label": "Gitea port",
+          "name": "GITEA_PORT"
+        },
+        {
+          "default": "2222",
+          "label": "Gitea ssh port",
+          "name": "GITEA_SSH_PORT"
+        },
+        {
+          "default": "domain.com or gitea.domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "type": 3,
+      "title": "Gitea runner",
+      "description": "Gitea runner setup",
+      "note": "Deploys a Gitea runner.",
+      "categories": ["CI/CD"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gitea-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gitea-runner/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "gitea/act_runner",
+          "label": "Gitea act runner image",
+          "name": "GITEA_ACT_RUNNER_IMAGE"
+        },
+        {
+          "default": "nightly",
+          "label": "Gitea act runner tag",
+          "name": "GITEA_ACT_RUNNER_TAG"
+        },
+        {
+          "label": "Gitea instance url",
+          "name": "GITEA_INSTANCE_URL"
+        },
+        {
+          "label": "Gitea instance registration token",
+          "name": "GITEA_RUNNER_REGISTRATION_TOKEN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "WordPress",
+      "description": "WordPress setup with a Mariadb database",
+      "note": "Deploys a WordPress instance connected to a Mariadb database.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/wordpress-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/wordpress/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "Database image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.2",
+          "label": "Database tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "MYSQL_DATABASE"
+        },
+        {
+          "label": "Database username",
+          "name": "MYSQL_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "MYSQL_PASSWORD"
+        },
+        {
+          "label": "Database root password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "default": "registry.gruposolutema.com/wordpress/wordpress",
+          "label": "Wordpress image",
+          "name": "WORDPRESS_IMAGE"
+        },
+        {
+          "default": "6.4.1-php8.1-apache",
+          "label": "Wordpress tag",
+          "name": "WORDPRESS_TAG"
+        },
+        {
+          "default": "200k",
+          "label": "Max Log File Size",
+          "name": "LOGGING_OPTIONS_MAX_SIZE"
+        },
+        {
+          "default": "wp_",
+          "label": "Table prefix",
+          "name": "WORDPRESS_TABLE_PREFIX"
+        },
+        {
+          "default": "false",
+          "label": "Enable Multisite feature",
+          "name": "WP_ALLOW_MULTISITE"
+        },
+        {
+          "default": "true",
+          "label": "Enable Cache feature",
+          "name": "WP_CACHE"
+        },
+        {
+          "label": "Redis host",
+          "name": "WP_REDIS_HOST"
+        },
+        {
+          "default": "6379",
+          "label": "Redis port",
+          "name": "WP_REDIS_PORT"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "Phorge",
+      "description": "Phorge is a collection of web applications which help software companies build better software.",
+      "note": "Phorge is a community-maintained fork of Phabricator.",
+      "categories": ["continuous-integration"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/phorge-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/phorge/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "mysql",
+          "label": "MySQL image",
+          "name": "MYSQL_IMAGE"
+        },
+        {
+          "default": "8.0.35-debian",
+          "label": "MySQL tag",
+          "name": "MYSQL_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "MYSQL_DATABASE"
+        },
+        {
+          "label": "Database username",
+          "name": "MYSQL_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "MYSQL_PASSWORD"
+        },
+        {
+          "label": "Database root password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "default": "3306",
+          "label": "MySQL port",
+          "name": "MYSQL_PORT"
+        },
+        {
+          "default": "registry.gruposolutema.com/phorge/other/docker-phorge",
+          "label": "Phorge image",
+          "name": "PHORGE_IMAGE"
+        },    
+        {
+          "default": "2023.32",
+          "label": "Phorge tag",
+          "name": "PHORGE_TAG"
+        },
+        {
+          "default": "subdomain",
+          "label": "Subdomain",
+          "name": "SUBDOMAIN"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },	
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "Odoo",
+      "description": "Open-source business apps.",
+      "categories": ["project-management"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/odoo-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/odoo/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "PostgreSQL container name",
+          "name": "POSTGRES_CONTAINER_NAME"
+        },
+        {
+          "default": "postgres",
+          "label": "PostgreSQL image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "15",
+          "label": "PostgreSQL tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "odoo",
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "default": "odoo",
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "postgres",
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Postgres port",
+          "name": "POSTGRES_PORT"
+        },
+        {
+          "label": "Odoo container name",
+          "name": "ODOO_CONTAINER_NAME"
+        },
+        {
+          "default": "odoo",
+          "label": "Odoo image",
+          "name": "ODOO_IMAGE"
+        },
+        {
+          "default": "15.0",
+          "label": "Odoo tag",
+          "name": "ODOO_TAG"
+        },
+        {
+          "label": "Odoo port",
+          "name": "ODOO_PORT"
+        },
+        {
+          "label": "Chat port",
+          "name": "CHAT_PORT"
+        },
+        {
+          "default": "subdomain.domain.com",
+          "label": "SubDomain",
+          "name": "SUBDOMAIN"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/mnt/extra-addons"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "Redis",
+      "description": "Open-source in-memory data structure store",
+      "note": "Deploys a Redis server instance.",
+      "categories": ["database"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/redis-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/redis/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "redis",
+          "label": "Redis image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "7.2.3-alpine",
+          "label": "Redis tag",
+          "name": "REDIS_TAG"
+        },
+        {
+          "default": "6379",
+          "label": "Redis port",
+          "name": "REDIS_PORT"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "Tryton",
+      "description": "Tryton setup with a PostgreSQL database",
+      "note": "Deploys a Tryton instance connected to a PostgreSQL database.",
+      "categories": ["erp"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/tryton-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/tryton/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "PostgreSQL container name",
+          "name": "POSTGRES_CONTAINER_NAME"
+        },
+        {
+          "default": "postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "15.3",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "Database server port",
+          "name": "POSTGRES_PORT"
+        },
+        {
+          "label": "Tryton container name",
+          "name": "TRYTON_CONTAINER_NAME"
+        },
+        {
+          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
+          "label": "Tryton image",
+          "name": "TRYTON_IMAGE"
+        },
+        {
+          "default": "6.8-office",
+          "label": "Tryton tag",
+          "name": "TRYTON_TAG"
+        },
+        {
+          "label": "Email from",
+          "name": "EMAIL_FROM"
+        },
+        {
+          "default": "es_419",
+          "label": "Tryton language",
+          "name": "TRYTOND_LANGUAGE"
+        },
+        {
+          "label": "Tryton Admin E-mail",
+          "name": "TRYTOND_ADMIN_EMAIL"
+        },
+        {
+          "label": "Tryton Admin Password",
+          "name": "TRYTOND_ADMIN_PASSWORD"
+        },
+        {
+          "default": "subdomain.domain.com",
+          "label": "Subdomain",
+          "name": "SUBDOMAIN"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "Tryton Series 7.0",
+      "description": "Tryton 7.0 setup with a PostgreSQL database",
+      "note": "Deploys a Tryton 7.0 instance connected to a PostgreSQL database.",
+      "categories": ["erp"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/tryton-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/tryton70/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "PostgreSQL container name",
+          "name": "POSTGRES_CONTAINER_NAME"
+        },
+        {
+          "default": "postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16.0",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "Database server port",
+          "name": "POSTGRES_PORT"
+        },
+        {
+          "label": "Tryton container name",
+          "name": "TRYTON_CONTAINER_NAME"
+        },
+        {
+          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
+          "label": "Tryton image",
+          "name": "TRYTON_IMAGE"
+        },
+        {
+          "default": "7.0-office",
+          "label": "Tryton tag",
+          "name": "TRYTON_TAG"
+        },
+        {
+          "label": "Email from",
+          "name": "EMAIL_FROM"
+        },
+        {
+          "default": "es_419",
+          "label": "Tryton language",
+          "name": "TRYTOND_LANGUAGE"
+        },
+        {
+          "label": "Tryton Admin E-mail",
+          "name": "TRYTOND_ADMIN_EMAIL"
+        },
+        {
+          "label": "Tryton Admin Password",
+          "name": "TRYTOND_ADMIN_PASSWORD"
+        },
+        {
+          "default": "subdomain.domain.com",
+          "label": "Subdomain",
+          "name": "SUBDOMAIN"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "GNU Health",
+      "description": "GNU Health setup with a PostgreSQL database",
+      "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
+      "categories": ["health"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gnuhealth-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gnuhealth/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "15.3",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "Database server port",
+          "name": "POSTGRES_PORT"
+        },
+        {
+          "default": "mailhog/mailhog",
+          "label": "Mailhog image",
+          "name": "MAILHOG_IMAGE"
+        },
+        {
+          "default": "v1.0.1",
+          "label": "Mailhog tag",
+          "name": "MAILHOG_TAG"
+        },
+        {
+          "default": "1025",
+          "label": "Mailhog smtp port",
+          "name": "MAILHOG_SMTP_PORT"
+        },
+        {
+          "default": "8025",
+          "label": "Mailhog http port",
+          "name": "MAILHOG_HTTP_PORT"
+        },
+        {
+          "default": "registry.gruposolutema.com/gnuhealth/republica-dominicana/docker-gnuhealth",
+          "label": "GNU Health image",
+          "name": "GNUHEALTH_IMAGE"
+        },
+        {
+          "default": "4.2.3",
+          "label": "GNU Health tag",
+          "name": "GNUHEALTH_TAG"
+        },
+        {
+          "label": "Email from",
+          "name": "EMAIL_FROM"
+        },
+        {
+          "default": "es_419",
+          "label": "GNU Health language",
+          "name": "GNUHEALTH_LANGUAGE"
+        },
+        {
+          "label": "GNU Health admin e-mail",
+          "name": "GNUHEALTH_ADMIN_EMAIL"
+        },
+        {
+          "label": "GNU Health admin password",
+          "name": "GNUHEALTH_ADMIN_PASSWORD"
+        },
+        {
+          "label": "Subdomain",
+          "name": "SUBDOMAIN"
+        },
+        {
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "cAdvisor (Container Advisor)",
+      "description": "cAdvisor (Container Advisor) provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers.",
+      "note": "Analyzes resource usage and performance characteristics of running containers..",
+      "categories": ["Tools"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/cadvisor-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/cadvisor/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "cAdvisor container name",
+          "name": "CADVISOR_CONTAINER_NAME"
+        },
+        {
+          "default": "gcr.io/cadvisor/cadvisor",
+          "label": "cAdvisor image",
+          "name": "CADVISOR_IMAGE"
+        },
+        {
+          "default": "v0.47.2",
+          "label": "cAdvisor tag",
+          "name": "CADVISOR_TAG"
+        },
+        {
+          "default": "subdomain.domain.com",
+          "label": "Subdomain",
+          "name": "SUBDOMAIN"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "GitLab CE",
+      "description": "GitLab, is an Open-source end-to-end software development platform",
+      "note": "Deploys a GitLab instance.",
+      "categories": ["Code Server"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gitlab-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gitlab-ce/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "Hostname",
+          "name": "GITLAB_HOSTNAME"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Time Zone",
+          "name": "TZ"
+        },
+        {
+          "default": "gitlab/gitlab-ce",
+          "label": "GitLab Image",
+          "name": "GITLAB_CE_IMAGE"
+        },
+        {
+          "default": "15.11.2-ce.0",
+          "label": "GitLab Tag",
+          "name": "GITLAB_CE_TAG"
+        },
+        {
+          "default": "gitlab.example.com",
+          "label": "GitLab Host",
+          "name": "GITLAB_HOST"
+        },
+        {
+          "default": "registry.example.com",
+          "label": "GitLab Registry Host",
+          "name": "GITLAB_REGISTRY"
+        },
+        {
+          "default": "pages.example.com",
+          "label": "GitLab Pages",
+          "name": "GITLAB_PAGES"
+        },
+        {
+          "label": "GitLab Incoming Email Address",
+          "name": "GITLAB_CE_INCOMING_EMAIL_ADDRESS"
+        },
+        {
+          "label": "GitLab Incoming Email",
+          "name": "GITLAB_CE_INCOMING_EMAIL_EMAIL"
+        },
+        {
+          "label": "GitLab Incoming Password",
+          "name": "GITLAB_CE_INCOMING_EMAIL_PASSWORD"
+        },
+        {
+          "label": "GitLab Incoming Mail Host",
+          "name": "GITLAB_CE_INCOMING_EMAIL_HOST"
+        },
+        {
+          "label": "GitLab Incoming Mail Host Port",
+          "name": "GITLAB_CE_INCOMING_EMAIL_PORT"
+        },
+        {
+          "default": "true",
+          "label": "GitLab Incoming Mail Host SSL",
+          "name": "GITLAB_CE_INCOMING_EMAIL_SSL"
+        },
+        {
+          "default": "true",
+          "label": "GitLab Incoming Mail Host Start TLS",
+          "name": "GITLAB_CE_INCOMING_EMAIL_START_TLS"
+        },
+        {
+          "default": "2222",
+          "label": "GitLab SSH Port",
+          "name": "GITLAB_CE_SSH_PORT"
+        },
+        {
+          "default": "5000",
+          "label": "GitLab Registry Port",
+          "name": "GITLAB_CE_REGISTRY_PORT"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "GitLab CE Runner",
+      "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
+      "note": "Deploys a GitLab Runner instance.",
+      "categories": ["Code Server"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gitlab-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gitlab-ce-runner/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "Docker-in-Docker (dind) Name",
+          "name": "DIND_NAME"
+        },
+        {
+          "default": "24.0.2-dind-alpine3.18",
+          "label": "Docker Tag",
+          "name": "DOCKER_TAG"
+        },
+        {
+          "label": "GitLab CE Runner Name",
+          "name": "GITLAB_CE_RUNNER_NAME"
+        },
+        {
+          "default": "gitlab/gitlab-runner",
+          "label": "GitLab CE Runner Image",
+          "name": "GITLAB_CE_RUNNER_IMAGE"
+        },
+        {
+          "default": "v15.11.0",
+          "label": "GitLab CE Runner Tag",
+          "name": "GITLAB_CE_RUNNER_TAG"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Time Zone",
+          "name": "TZ"
+        },
+        {
+          "label": "Registration Token",
+          "name": "REGISTRATION_TOKEN"
+        },
+        {
+          "label": "CI Server URL",
+          "name": "CI_SERVER_URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "OpenLDAP",
+      "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
+      "note": "Deploys an OpenLDAP Server.",
+      "categories": ["Directory Access Protocol"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/openldap-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/openldap/docker-stack.yml"
+      },
+      "env": [
+        {
+          "label": "OpenLDAP container name",
+          "name": "OPENLDAP_CONTAINER_NAME"
+        },
+        {
+          "default": "ldap.example.org",
+          "label": "LDAP hostname",
+          "name": "LDAP_HOSTNAME"
+        },
+        {
+          "default": "registry.gruposolutema.com/openldap/docker-openldap",
+          "label": "OpenLDAP Image",
+          "name": "OPENLDAP_IMAGE"
+        },
+        {
+          "default": "2.6.6",
+          "label": "OpenLDAP Tag",
+          "name": "OPENLDAP_TAG"
+        },
+        {
+          "default": "admin",
+          "label": "LDAP username",
+          "name": "LDAP_ADMIN_USERNAME"
+        },
+        {
+          "default": "adminpassword",
+          "label": "LDAP admin password",
+          "name": "LDAP_ADMIN_PASSWORD"
+        },
+        {
+          "default": "customers",
+          "label": "LDAP users",
+          "name": "LDAP_USERS"
+        },
+        {
+          "default": "customerspasswords",
+          "label": "LDAP passwords",
+          "name": "LDAP_PASSWORDS"
+        },
+        {
+          "default": "dc=example,dc=org",
+          "label": "LDAP root",
+          "name": "LDAP_ROOT"
+        },
+        {
+          "default": "cn=admin,dc=example,dc=org",
+          "label": "LDAP admin dn",
+          "name": "LDAP_ADMIN_DN"
+        },
+        {
+          "default": "389",
+          "label": "LDAP port",
+          "name": "LDAP_PORT_NUMBER"
+        },
+        {
+          "default": "636",
+          "label": "LDAP ldaps port",
+          "name": "LDAP_LDAPS_PORT_NUMBER"
+        },
+        {
+          "default": "yes",
+          "label": "LDAP add schemas",
+          "name": "LDAP_ADD_SCHEMAS"
+        },
+        {
+          "default": "cosine, inetorgperson, nis",
+          "label": "LDAP extra schemas",
+          "name": "LDAP_EXTRA_SCHEMAS"
+        },
+        {
+          "label": "phpLDAPadmin container name",
+          "name": "PHPLDAPADMIN_CONTAINER_NAME"
+        },
+        {
+          "default": "osixia/phpldapadmin",
+          "label": "phpLDAPadmin Image",
+          "name": "PHPLDAPADMIN_IMAGE"
+        },
+        {
+          "default": "0.9.0",
+          "label": "phpLDAPadmin Tag",
+          "name": "PHPLDAPADMIN_TAG"
+        },
+        {
+          "label": "PHPLDAPADMIN subdomain",
+          "name": "PHPLDAPADMIN_SUBDOMAIN"
+        },
+        {
+          "label": "PHPLDAPADMIN domain",
+          "name": "PHPLDAPADMIN_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
+      "title": "Weblate",
+      "description": "Weblate is a Web based localization tool with tight version control integration",
+      "note": "Deploys an Weblate instance.",
+      "categories": ["Computer-assisted translation"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/weblate-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/weblate/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "postgres",
+          "label": "PostgreSQL Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16-alpine",
+          "label": "PostgreSQL Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "5432",
+          "label": "PostgreSQL port number",
+          "name": "POSTGRES_PORT_NUMBER"
+        },
+        {
+          "label": "PostgreSQL user",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "PostgreSQL password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "PostgreSQL database",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "weblate/weblate",
+          "label": "Weblate Image",
+          "name": "WEBLATE_IMAGE"
+        },
+        {
+          "default": "bleeding-2023-12-01-423bbe55b499737b95656cfeaecbc7c640613470",
+          "label": "Weblate Tag",
+          "name": "WEBLATE_TAG"
+        },
+        {
+          "default": "0",
+          "label": "Weblate debug",
+          "name": "WEBLATE_DEBUG"
+        },
+        {
+          "default": "INFO",
+          "label": "Weblate loglevel",
+          "name": "WEBLATE_LOGLEVEL"
+        },
+        {
+          "default": "Weblate",
+          "label": "Weblate site title",
+          "name": "WEBLATE_SITE_TITLE"
+        },
+        {
+          "default": "Weblate Admin",
+          "label": "Weblate admin name",
+          "name": "WEBLATE_ADMIN_NAME"
+        },
+        {
+          "default": "weblate@example.com",
+          "label": "Weblate admin email",
+          "name": "WEBLATE_ADMIN_EMAIL"
+        },
+        {
+          "label": "Weblate admin password",
+          "name": "WEBLATE_ADMIN_PASSWORD"
+        },
+        {
+          "default": "weblate@example.com",
+          "label": "Weblate server email",
+          "name": "WEBLATE_SERVER_EMAIL"
+        },
+        {
+          "default": "weblate@example.com",
+          "label": "Weblate default from email",
+          "name": "WEBLATE_DEFAULT_FROM_EMAIL"
+        },
+        {
+          "default": "*",
+          "label": "Weblate allowed hosts",
+          "name": "WEBLATE_ALLOWED_HOSTS"
+        },
+        {
+          "default": "1",
+          "label": "Weblate registration open",
+          "name": "WEBLATE_REGISTRATION_OPEN"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Weblate time zone",
+          "name": "WEBLATE_TIME_ZONE"
+        },
+        {
+          "default": "1",
+          "label": "Weblate offload indexing",
+          "name": "WEBLATE_OFFLOAD_INDEXING"
+        },
+        {
+          "default": "1",
+          "label": "Weblate enable https",
+          "name": "WEBLATE_ENABLE_HTTPS"
+        },
+        {
+          "default": "HTTP_X_FORWARDED_FOR",
+          "label": "Weblate ip proxy header",
+          "name": "WEBLATE_IP_PROXY_HEADER"
+        },
+        {
+          "default": "1",
+          "label": "Weblate require login",
+          "name": "WEBLATE_REQUIRE_LOGIN"
+        },
+        {
+          "label": "Redis host",
+          "name": "REDIS_HOST"
+        },
+        {
+          "label": "Redis port",
+          "name": "REDIS_PORT"
+        },
+        {
+          "label": "Weblate email host",
+          "name": "WEBLATE_EMAIL_HOST"
+        },
+        {
+          "label": "Weblate email host user",
+          "name": "WEBLATE_EMAIL_HOST_USER"
+        },
+        {
+          "label": "Weblate email host password",
+          "name": "WEBLATE_EMAIL_HOST_PASSWORD"
+        },
+        {
+          "label": "Weblate gitlab username",
+          "name": "WEBLATE_GITLAB_USERNAME"
+        },
+        {
+          "label": "Weblate gitlab host",
+          "name": "WEBLATE_GITLAB_HOST"
+        },
+        {
+          "label": "Weblate gitlab token",
+          "name": "WEBLATE_GITLAB_TOKEN"
+        },
+        {
+          "default": "200M",
+          "label": "Client max body size",
+          "name": "CLIENT_MAX_BODY_SIZE"
+        },
+        {
+          "label": "Weblate subdomain",
+          "name": "WEBLATE_SUBDOMAIN"
+        },
+        {
+          "label": "Weblate domain",
+          "name": "WEBLATE_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    }
+  ]
+}
