@@ -122,7 +122,7 @@
       "note": "Deploys a WordPress instance connected to a Mariadb database.",
       "categories": ["CMS"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/wordpress-logo.png",
+      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-wordpress-logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/wordpress/docker-stack.yml"
@@ -212,7 +212,7 @@
       "note": "Phorge is a community-maintained fork of Phabricator.",
       "categories": ["continuous-integration"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/phorge-logo.png",
+      "logo": "https://phorge.it/img/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/phorge/docker-stack.yml"
@@ -282,7 +282,7 @@
       "description": "Open-source business apps.",
       "categories": ["project-management"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/odoo-logo.png",
+      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-odoo-logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/odoo/docker-stack.yml"
@@ -375,7 +375,7 @@
       "note": "Deploys a Redis server instance.",
       "categories": ["database"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/redis-logo.png",
+      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-redis-logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/redis/docker-stack.yml"
@@ -410,7 +410,7 @@
       "note": "Deploys a Tryton instance connected to a PostgreSQL database.",
       "categories": ["erp"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/tryton-logo.png",
+      "logo": "https://www.gravatar.com/avatar/69af7868a3355ef93f184e362a89a2c4.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton/docker-stack.yml"
@@ -501,7 +501,7 @@
       "note": "Deploys a Tryton 7.0 instance connected to a PostgreSQL database.",
       "categories": ["erp"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/tryton-logo.png",
+      "logo": "https://www.gravatar.com/avatar/69af7868a3355ef93f184e362a89a2c4.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton70/docker-stack.yml"
@@ -592,7 +592,7 @@
       "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
       "categories": ["health"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gnuhealth-logo.png",
+      "logo": "https://files.mastodon.social/accounts/avatars/108/222/419/986/466/608/original/468031f81410a19d.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gnuhealth/docker-stack.yml"
@@ -693,7 +693,7 @@
       "note": "Analyzes resource usage and performance characteristics of running containers..",
       "categories": ["Tools"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/cadvisor-logo.png",
+      "logo": "https://www.gravatar.com/avatar/24ba30616d2a20673f54c2aee36d159e.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/cadvisor/docker-stack.yml"
@@ -737,7 +737,7 @@
       "note": "Deploys a GitLab instance.",
       "categories": ["Code Server"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gitlab-logo.png",
+      "logo": "https://www.gravatar.com/avatar/6edd0acaf80f784fab3dd2c31d604e74.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce/docker-stack.yml"
@@ -831,7 +831,7 @@
       "note": "Deploys a GitLab Runner instance.",
       "categories": ["Code Server"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/gitlab-logo.png",
+      "logo": "https://www.gravatar.com/avatar/6edd0acaf80f784fab3dd2c31d604e74.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce-runner/docker-stack.yml"
@@ -887,7 +887,7 @@
       "note": "Deploys an OpenLDAP Server.",
       "categories": ["Directory Access Protocol"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/openldap-logo.png",
+      "logo": "https://somebooks.es/wp-content/uploads/2022/02/OpenLDAP.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/openldap/docker-stack.yml"
@@ -998,7 +998,7 @@
       "note": "Deploys an Weblate instance.",
       "categories": ["Computer-assisted translation"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/master/logos/weblate-logo.png",
+      "logo": "https://www.gravatar.com/avatar/e5f0d5efe7cd63ab2219d2bdd875cb0f.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/weblate/docker-stack.yml"
