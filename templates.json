@@ -838,10 +838,6 @@
       },
       "env": [
         {
-          "label": "Docker-in-Docker (dind) Name",
-          "name": "DIND_NAME"
-        },
-        {
           "default": "24.0.2-dind-alpine3.18",
           "label": "Docker Tag",
           "name": "DOCKER_TAG"
