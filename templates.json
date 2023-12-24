@@ -843,10 +843,6 @@
           "name": "DOCKER_TAG"
         },
         {
-          "label": "GitLab CE Runner Name",
-          "name": "GITLAB_CE_RUNNER_NAME"
-        },
-        {
           "default": "gitlab/gitlab-runner",
           "label": "GitLab CE Runner Image",
           "name": "GITLAB_CE_RUNNER_IMAGE"
