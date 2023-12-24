@@ -2,7 +2,7 @@ version: '3'
 
 services:
   dind:
-    container_name: ${GITLAB_CE_DIND_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-dind
     image: docker:${DOCKER_TAG}
     restart: always
     privileged: true
@@ -14,7 +14,7 @@ services:
       - dind:/var/lib/docker
 
   gitlab-ce-runner:
-    container_name: ${GITLAB_CE_RUNNER_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-app
     image: gitlab/gitlab-runner:${GITLAB_CE_RUNNER_TAG}
     restart: always
     volumes:
@@ -26,7 +26,7 @@ services:
       DOCKER_HOST: tcp://dind:2375
 
   gitlab-ce-runner-register:
-    container_name: ${GITLAB_CE_RUNNER_NAME}-register
+    container_name: ${COMPOSE_PROJECT_NAME}-register
     restart: 'no'
     image: gitlab/gitlab-runner:${GITLAB_CE_RUNNER_TAG}
     depends_on:
@@ -46,7 +46,7 @@ services:
       - --docker-privileged
     volumes:
       - config:/etc/gitlab-runner/
-
+      
 volumes:
   dind:
   config:
