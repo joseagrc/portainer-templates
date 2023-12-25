@@ -853,6 +853,10 @@
           "name": "GITLAB_CE_RUNNER_TAG"
         },
         {
+          "label": "Runner name",
+          "name": "RUNNER_NAME"
+        },
+        {
           "default": "America/Santo_Domingo",
           "label": "Time Zone",
           "name": "TZ"
