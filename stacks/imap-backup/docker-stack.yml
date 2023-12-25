@@ -1,0 +1,19 @@
+version: '3'
+services:
+  app:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${IMAP_IMAGE}:${IMAP_TAG}
+    restart: always
+    volumes:
+      - data:/data
+    tty: true
+    stdin_open: true
+    command: imap-backup single backup --dns $DNS --email $EMAIL --password $PASSWORD --server $IMAP_SERVER --path /data/$EMAIL
+
+volumes:
+  data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
