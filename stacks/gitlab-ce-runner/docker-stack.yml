@@ -2,6 +2,7 @@ version: '3'
 
 services:
   dind:
+    container_name: ${COMPOSE_PROJECT_NAME}-dind
     image: docker:${DOCKER_TAG}
     restart: always
     privileged: true
@@ -19,9 +20,10 @@ services:
     volumes:
       - config:/etc/gitlab-runner/
       - cache:/cache
-      ###- /var/run/docker.sock:/var/run/docker.sock
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DOCKER_HOST=tcp://dind:2375
+      TZ: ${TZ}
+      DOCKER_HOST: tcp://dind:2375
       
   gitlab-ce-runner-register:
     container_name: ${COMPOSE_PROJECT_NAME}-register
@@ -41,10 +43,10 @@ services:
       - --executor=docker
       - --docker-image=docker:${DOCKER_TAG}
       - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
-      - --run-untagged="true"
-      - --description ${COMPOSE_PROJECT_NAME}
-      - --tag-list "privileged"
-      - --access-level="not_protected"
+      #- --run-untagged="true"
+      #- --description ${COMPOSE_PROJECT_NAME}
+      #- --tag-list "privileged"
+      #- --access-level="not_protected"
     volumes:
       - config:/etc/gitlab-runner/
       - dind:/var/lib/docker
