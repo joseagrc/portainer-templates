@@ -21,7 +21,7 @@ services:
       - cache:/cache
       ###- /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - DOCKER_HOST: tcp://dind:2375
+      - DOCKER_HOST=tcp://dind:2375
       
   gitlab-ce-runner-register:
     container_name: ${COMPOSE_PROJECT_NAME}-register
