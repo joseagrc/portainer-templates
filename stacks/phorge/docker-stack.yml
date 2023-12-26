@@ -27,6 +27,7 @@ services:
     depends_on:
       - mysql
     environment:
+      VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
       MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-mysql
       MYSQL_PORT: ${MYSQL_PORT}
