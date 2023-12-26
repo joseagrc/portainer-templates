@@ -24,9 +24,9 @@ services:
       - phorge_ssh:/etc/ssh
       - phorge_repo:/var/repo
     links:
-      - ${COMPOSE_PROJECT_NAME}-mysql
+      - mysql
     depends_on:
-      - ${COMPOSE_PROJECT_NAME}-mysql:mysql
+      - mysql:mysql
     environment:
       VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
