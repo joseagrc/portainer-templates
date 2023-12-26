@@ -229,14 +229,6 @@
           "name": "MYSQL_TAG"
         },
         {
-          "label": "Database username",
-          "name": "MYSQL_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "MYSQL_PASSWORD"
-        },
-        {
           "label": "Database root password",
           "name": "MYSQL_ROOT_PASSWORD"
         },
