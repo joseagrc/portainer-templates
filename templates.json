@@ -250,7 +250,7 @@
           "name": "MYSQL_PORT"
         },
         {
-          "default": "registry.gruposolutema.com/phorge/other/docker-phorge",
+          "default": "registry.gruposolutema.com/phorge/docker-phorge",
           "label": "Phorge image",
           "name": "PHORGE_IMAGE"
         },    
