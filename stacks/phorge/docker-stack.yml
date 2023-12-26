@@ -9,7 +9,6 @@ services:
     ports:
       - ${MYSQL_PORT}:3306
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -28,9 +27,8 @@ services:
     depends_on:
       - mysql
     environment:
-      #VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
-      MYSQL_HOST: mysql
+      MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-mysql
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASS: ${MYSQL_PASSWORD}
@@ -38,7 +36,7 @@ services:
       PHABRICATOR_DOMAIN: https://${URL_DOMAIN}
       PHABRICATOR_URL: https://${URL_DOMAIN}
       #PH_BASE_URI: https://${URL_DOMAIN}
-      MYSQL_ENV_MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
       LETSENCRYPT_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
 
