@@ -16,7 +16,7 @@ services:
     command: --innodb-buffer-pool-size=268435456 --local-infile=0 --max-allowed-packet=33554432 --sql-mode=STRICT_ALL_TABLES
 
   phorge:
-    container_name: ${PHORGE_CONTAINER_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${PHORGE_IMAGE}:${PHORGE_TAG}
     restart: always
     volumes:
@@ -24,9 +24,9 @@ services:
       - phorge_ssh:/etc/ssh
       - phorge_repo:/var/repo
     links:
-      - ${MYSQL_CONTAINER_NAME}
+      - ${COMPOSE_PROJECT_NAME}-mysql
     depends_on:
-      - ${MYSQL_CONTAINER_NAME}
+      - ${COMPOSE_PROJECT_NAME}-mysql:mysql
     environment:
       VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
@@ -34,10 +34,10 @@ services:
       MYSQL_PORT: ${MYSQL_PORT}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASS: ${MYSQL_PASSWORD}
-      PH_BASE_URI: https://${SUBDOMAIN}.${DOMAIN}
+      PH_BASE_URI: https://${URL_DOMAIN}
       PH_MYSQL_PASS: ${MYSQL_ROOT_PASSWORD}
-      VIRTUAL_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
-      LETSENCRYPT_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
+      VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
+      LETSENCRYPT_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
 
 volumes:
   phorge_web:

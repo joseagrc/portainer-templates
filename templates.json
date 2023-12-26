@@ -260,14 +260,9 @@
           "name": "PHORGE_TAG"
         },
         {
-          "default": "subdomain",
-          "label": "Subdomain",
-          "name": "SUBDOMAIN"
-        },
-        {
-          "default": "domain.com",
-          "label": "Domain",
-          "name": "DOMAIN"
+          "default": "example.com",
+          "label": "URL Domain",
+          "name": "URL_DOMAIN"
         },	
         {
           "default": "proxy",
