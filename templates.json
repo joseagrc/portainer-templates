@@ -229,10 +229,6 @@
           "name": "MYSQL_TAG"
         },
         {
-          "label": "Database name",
-          "name": "MYSQL_DATABASE"
-        },
-        {
           "label": "Database username",
           "name": "MYSQL_USER"
         },
