@@ -25,7 +25,7 @@ services:
     depends_on:
       - ${COMPOSE_PROJECT_NAME}-mysql
     links:
-      - ${COMPOSE_PROJECT_NAME}-mysql
+      - ${COMPOSE_PROJECT_NAME}-mysql:mysql
     environment:
       VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
