@@ -260,6 +260,10 @@
           "name": "PHORGE_TAG"
         },
         {
+          "label": "Phorge title",
+          "name": "PHABRICATOR_TITLE"
+        },
+        {
           "default": "example.com",
           "label": "URL Domain",
           "name": "URL_DOMAIN"
