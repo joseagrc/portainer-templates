@@ -1162,51 +1162,6 @@
           "name": "NETWORK"
         }
       ]
-    },
-    {
-      "type": 3,
-      "title": "IMAP Backup",
-      "description": "Backup and Migrate IMAP Email Accounts ",
-      "note": "Deploys an imap backup instance.",
-      "categories": ["Email"],
-      "platform": "linux",
-      "logo": "#",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/imap-backup/docker-stack.yml"
-      },
-      "env": [
-        {
-          "label": "Image",
-          "name": "IMAP_IMAGE"
-        },
-        {
-          "label": "Tag",
-          "name": "IMAP_TAG"
-        },
-        {
-          "label": "E-mail Address",
-          "name": "EMAIL"
-        },
-        {
-          "label": "Password",
-          "name": "PASSWORD"
-        },
-        {
-          "label": "IMAP Server",
-          "name": "IMAP_SERVER"
-        },
-        {
-          "default": "/data/$EMAIL"
-          "label": "Path",
-          "name": "PATH"
-        },
-        {
-          "default": "8.8.8.8"
-          "label": "DNS",
-          "name": "DNS"
-        }
-      ]
     }
   ]
 }
