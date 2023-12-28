@@ -1,18 +1,15 @@
 version: '3'
 services:
-  mysql:
-    container_name: ${COMPOSE_PROJECT_NAME}-mysql
-    image: ${MYSQL_IMAGE}:${MYSQL_TAG}
+  mariadb:
+    container_name: ${COMPOSE_PROJECT_NAME}-mariadb
+    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
     restart: always
     volumes:
        - phorge_db:/var/lib/mysql
     ports:
-      - ${MYSQL_PORT}:3306
+      - ${MARIADB_PORT}:3306
     environment:
-      #MYSQL_USER: ${MYSQL_USER}
-      #MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    command: --innodb-buffer-pool-size=268435456 --local-infile=0 --max-allowed-packet=33554432 --sql-mode=STRICT_ALL_TABLES
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
 
   phorge:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -23,19 +20,17 @@ services:
       - phorge_ssh:/etc/ssh
       - phorge_repo:/var/repo
     depends_on:
-      - mysql
+      - mariadb
     links:
-      - mysql
-    ports:
-      - "10000:10000"
+      - mariadb
     environment:
-      VIRTUAL_PORT: 10000
+      VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
       #MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-mysql
-      #MYSQL_PORT: ${MYSQL_PORT}
+      MARIADB_PORT: ${MARIADB_PORT}
       #MYSQL_USER: ${MYSQL_USER}
       #MYSQL_PASS: ${MYSQL_PASSWORD}
-      #MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       PHABRICATOR_TITLE: ${PHABRICATOR_TITLE}
       #PHABRICATOR_DOMAIN: https://${URL_DOMAIN}
       PHABRICATOR_URL: https://${URL_DOMAIN}

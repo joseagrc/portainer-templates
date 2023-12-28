@@ -219,23 +219,23 @@
       },
       "env": [
         {
-          "default": "mysql",
-          "label": "MySQL image",
-          "name": "MYSQL_IMAGE"
+          "default": "registry.gruposolutema.com/phorge/docker-phorge-mariadb",
+          "label": "MariaDB image",
+          "name": "MARIADB_IMAGE"
         },
         {
-          "default": "8.0.35-debian",
-          "label": "MySQL tag",
-          "name": "MYSQL_TAG"
+          "default": "11.2.2",
+          "label": "MariaDB tag",
+          "name": "MARIADB_TAG"
         },
         {
           "label": "Database root password",
-          "name": "MYSQL_ROOT_PASSWORD"
+          "name": "MARIADB_ROOT_PASSWORD"
         },
         {
           "default": "3306",
-          "label": "MySQL port",
-          "name": "MYSQL_PORT"
+          "label": "MariaDB port",
+          "name": "MARIADB_PORT"
         },
         {
           "default": "registry.gruposolutema.com/phorge/docker-phorge",
