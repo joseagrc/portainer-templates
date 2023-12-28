@@ -24,7 +24,7 @@ services:
     links:
       - mariadb
     environment:
-      VIRTUAL_PORT: 9000
+      #VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
       #MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-mysql
       MARIADB_PORT: ${MARIADB_PORT}
