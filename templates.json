@@ -255,7 +255,30 @@
           "default": "example.com",
           "label": "URL Domain",
           "name": "URL_DOMAIN"
-        },	
+        },
+        {
+          "default": "mail.example.com",
+          "label": "SMTP host",
+          "name": "SMTP_HOST"
+        },
+        {
+          "default": "465",
+          "label": "SMTP port",
+          "name": "SMTP_PORT"
+        },
+        {
+          "label": "SMTP user",
+          "name": "SMTP_USER"
+        },
+        {
+          "label": "SMTP password",
+          "name": "SMTP_PASSWORD"
+        },
+        {
+          "default": "tls",
+          "label": "SMTP protocol",
+          "name": "SMTP_PROTOCOL"
+        },
         {
           "default": "proxy",
           "label": "Network name",
