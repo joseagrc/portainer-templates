@@ -40,6 +40,7 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: ${DOMAIN}
       NEXTCLOUD_UPDATE: 1
       MYSQL_HOST: mariadb
+      MYSQL_PORT: ${MARIADB_PORT}
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
