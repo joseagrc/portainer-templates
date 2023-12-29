@@ -20,7 +20,7 @@ services:
       - mariadb
     links:
     - mariadb:mariadb
-    image: ${NEXTCLOUD_IMAGE}:${NEXTCLOUD_TAG}
+    image: nextcloud:${NEXTCLOUD_TAG}
     hostname: ${DOMAIN}
     restart: always
     volumes:
@@ -37,8 +37,8 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: ${DOMAIN}
       NEXTCLOUD_UPDATE: 1
       MYSQL_HOST: mariadb
-      MYSQL_DATABASE: ${PROJECT_NAME}_nextcloud
-      MYSQL_USER: ${PROJECT_NAME}_nextcloud
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PHP_UPLOAD_LIMIT: ${PHP_UPLOAD_LIMIT}
       VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}

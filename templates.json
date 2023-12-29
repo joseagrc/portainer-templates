@@ -1200,11 +1200,6 @@
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
-          "default": "nextcloud",
-          "label": "Nextcloud image",
-          "name": "NEXTCLOUD_IMAGE"
-        },
-        {
           "default": "28.0.1",
           "label": "Nextcloud tag",
           "name": "NEXTCLOUD_TAG"
