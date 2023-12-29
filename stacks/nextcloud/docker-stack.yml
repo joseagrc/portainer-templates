@@ -41,8 +41,8 @@ services:
       MYSQL_USER: nextcloud
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       PHP_UPLOAD_LIMIT: ${PHP_UPLOAD_LIMIT}
-      VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
-      LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
+      VIRTUAL_HOST: ${DOMAIN}
+      LETSENCRYPT_HOST: ${DOMAIN}
 
 volumes:
   mariadb:
