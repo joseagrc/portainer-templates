@@ -24,7 +24,6 @@ services:
     links:
       - mariadb
     environment:
-      #VIRTUAL_PORT: 9000
       UPGRADE_ON_RESTART: true
       MYSQL_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
       MARIADB_PORT: ${MARIADB_PORT}
@@ -33,16 +32,14 @@ services:
       SMTP_USER: ${SMTP_USER}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
       SMTP_PROTOCOL: ${SMTP_PROTOCOL}
-      #MYSQL_USER: ${MYSQL_USER}
-      #MYSQL_PASS: ${MYSQL_PASSWORD}
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       PHABRICATOR_TITLE: ${PHABRICATOR_TITLE}
-      #PHABRICATOR_DOMAIN: https://${URL_DOMAIN}
+      PHABRICATOR_DOMAIN: https://${URL_DOMAIN}
       PHABRICATOR_URL: https://${URL_DOMAIN}
-      #PH_BASE_URI: https://${URL_DOMAIN}
-      #PHABRICATOR_ALT_FILE_DOMAIN: https://${URL_DOMAIN}
-      VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
-      LETSENCRYPT_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
+      PH_BASE_URI: https://${URL_DOMAIN}
+      PHABRICATOR_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN}
+      VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN},cdn.${URL_DOMAIN},www.cdn.${URL_DOMAIN}
+      LETSENCRYPT_HOST: ${URL_DOMAIN},www.${URL_DOMAIN},cdn.${URL_DOMAIN},www.cdn.${URL_DOMAIN}
 
 volumes:
   phorge_web:
