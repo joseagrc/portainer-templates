@@ -6,9 +6,12 @@ services:
     image: mariadb:${MARIADB_TAG}
     restart: always
     command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    #ports:
+    #  - '${MARIADB_PORT}:3306'
     volumes:
       - mariadb:/var/lib/mysql
     environment:
+      MYSQL_TCP_PORT: ${MARIADB_PORT}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: nextcloud
       MYSQL_USER: nextcloud

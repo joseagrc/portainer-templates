@@ -1192,6 +1192,11 @@
           "name": "MARIADB_TAG"
         },
         {
+          "default": "3306",
+          "label": "MariaDB port",
+          "name": "MARIADB_PORT"
+        },
+        {
           "label": "MariaDB password",
           "name": "MYSQL_PASSWORD"
         },
