@@ -1187,11 +1187,6 @@
       },
       "env": [
         {
-          "default": "mariadb",
-          "label": "MariaDB image",
-          "name": "MARIADB_IMAGE_IMAGE"
-        },
-        {
           "default": "11.2.2",
           "label": "MariaDB tag",
           "name": "MARIADB_TAG"
