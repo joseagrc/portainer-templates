@@ -205,6 +205,56 @@
         }
       ]
     },
+
+
+
+
+
+    {
+      "type": 3,
+      "title": "Snipe-IT",
+      "description": "Snipe-IT is a free, open source IT asset management system written in PHP",
+      "note": "Deploys a Snipe-IT instance connected to a Mariadb database.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://www.gravatar.com/avatar/068b3d8ec6017a272dd31a1ffc9a7222.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/snipeit/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "11.2",
+          "label": "Database tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "label": "Database root password",
+          "name": "MARIADB_ROOT_PASSWORD"
+        },
+        {
+          "default": "v6.2.3",
+          "label": "Snipe-IT tag",
+          "name": "SNIPEIT_TAG"
+        },
+        {
+          "default": "domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+
+
+
+
+
+
     {
       "type": 3,
       "title": "Phorge",
