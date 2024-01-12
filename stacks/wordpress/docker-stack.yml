@@ -20,7 +20,7 @@ services:
     PMA_ARBITRARY: 1 # To allow fill db credentials
     restart: always
     depends_on:
-      – mariadb
+      - mariadb
     environment:
       VIRTUAL_HOST: phpmyadmin.${DOMAIN},www.phpmyadmin.${DOMAIN}
       LETSENCRYPT_HOST: phpmyadmin.${DOMAIN},www.phpmyadmin.${DOMAIN}
