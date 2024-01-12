@@ -16,7 +16,6 @@ services:
   phpmyadmin:
     container_name: ${COMPOSE_PROJECT_NAME}-phpmyadmin
     image: phpmyadmin/phpmyadmin
-    environment:
     PMA_PORT: 3306
     PMA_ARBITRARY: 1 # To allow fill db credentials
     restart: always
