@@ -11,7 +11,20 @@ services:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}   
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+
+  phpmyadmin:
+    container_name: ${COMPOSE_PROJECT_NAME}-phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+    PMA_PORT: 3306
+    PMA_ARBITRARY: 1 # To allow fill db credentials
+    restart: always
+    depends_on:
+    – mariadb
+    environment:
+      VIRTUAL_HOST: phpmyadmin.${DOMAIN},www.phpmyadmin.${DOMAIN}
+      LETSENCRYPT_HOST: phpmyadmin.${DOMAIN},www.phpmyadmin.${DOMAIN}
 
   wordpress:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -40,6 +53,27 @@ services:
     logging:
       options:
         max-size: ${LOGGING_OPTIONS_MAX_SIZE}
+
+  wpcli:
+    container_name: ${COMPOSE_PROJECT_NAME}-wpcli
+    image: wordpress:cli
+    depends_on:
+      - mariadb
+      - wordpress
+    links:
+      mariadb:mariadb
+    entrypoint: wp
+    command: "--info"
+      WORDPRESS_DB_HOST: ${COMPOSE_PROJECT_NAME}-mariadb:3306
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_TABLE_PREFIX: wp_
+      WORDPRESS_CONFIG_EXTRA: |
+        define('FS_METHOD', 'direct');
+    volumes_from:
+      - wordpress
 
 volumes:
   mariadb:
