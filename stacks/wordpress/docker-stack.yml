@@ -60,7 +60,7 @@ services:
       - mariadb
       - wordpress
     links:
-      mariadb:mariadb
+      - mariadb:mariadb
     entrypoint: wp
     command: "--info"
     environment:
