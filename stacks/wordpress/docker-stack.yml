@@ -15,7 +15,7 @@ services:
 
   phpmyadmin:
     container_name: ${COMPOSE_PROJECT_NAME}-phpmyadmin
-    image: phpmyadmin/phpmyadmin
+    image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
     restart: always
     depends_on:
       - mariadb
@@ -53,28 +53,6 @@ services:
     logging:
       options:
         max-size: ${LOGGING_OPTIONS_MAX_SIZE}
-
-  wpcli:
-    container_name: ${COMPOSE_PROJECT_NAME}-wpcli
-    image: wordpress:cli
-    depends_on:
-      - mariadb
-      - wordpress
-    links:
-      - mariadb:mariadb
-    entrypoint: wp
-    command: "--info"
-    environment:
-      WORDPRESS_DB_HOST: ${COMPOSE_PROJECT_NAME}-mariadb:3306
-      WORDPRESS_DB_USER: ${MYSQL_USER}
-      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
-      WORDPRESS_DEBUG: 1
-      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
-      WORDPRESS_CONFIG_EXTRA: |
-        define('FS_METHOD', 'direct');
-    volumes_from:
-      - wordpress
 
 volumes:
   mariadb:

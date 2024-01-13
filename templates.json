@@ -155,12 +155,22 @@
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
+          "default": "phpmyadmin/phpmyadmin",
+          "label": "Phpmyadmin image",
+          "name": "PHPMYADMIN_IMAGE"
+        },
+        {
+          "default": "5.2.1-apache",
+          "label": "Phpmyadmin tag",
+          "name": "PHPMYADMIN_TAG"
+        },
+        {
           "default": "registry.gruposolutema.com/wordpress/wordpress",
           "label": "Wordpress image",
           "name": "WORDPRESS_IMAGE"
         },
         {
-          "default": "6.4.1-php8.1-apache",
+          "default": "6.4.2-php8.2-apache",
           "label": "Wordpress tag",
           "name": "WORDPRESS_TAG"
         },
