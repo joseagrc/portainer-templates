@@ -1053,7 +1053,7 @@
           "name": "WEBLATE_IMAGE"
         },
         {
-          "default": "bleeding-2024-01-14-1cdf7dbe30f1eaf31b7742bb6663c9de122615f2",
+          "default": "5.3.1.1",
           "label": "Weblate Tag",
           "name": "WEBLATE_TAG"
         },
