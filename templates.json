@@ -1169,10 +1169,7 @@
           "name": "CLIENT_MAX_BODY_SIZE"
         },
         {
-          "label": "Weblate subdomain",
-          "name": "WEBLATE_SUBDOMAIN"
-        },
-        {
+          "default": "translate.example.org",
           "label": "Weblate domain",
           "name": "WEBLATE_DOMAIN"
         },
