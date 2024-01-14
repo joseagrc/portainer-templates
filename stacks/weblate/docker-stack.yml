@@ -15,7 +15,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
 
   webplate:
-    container_name: ${WEBLATE_CONTAINER_NAME}-app
+    container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${WEBLATE_IMAGE}:${WEBLATE_TAG}
     restart: always
     depends_on:
