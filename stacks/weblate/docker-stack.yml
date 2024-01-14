@@ -13,11 +13,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: ${COMPOSE_PROJECT_NAME}-postgres
-      POSTGRES_PORT: ${POSTGRES_PORT_NUMBER}
 
   webplate:
-    container_name: ${WEBLATE_CONTAINER_NAME}
+    container_name: ${WEBLATE_CONTAINER_NAME}-app
     image: ${WEBLATE_IMAGE}:${WEBLATE_TAG}
     restart: always
     depends_on:
@@ -27,7 +25,7 @@ services:
       - /tmp
     read_only: true
     environment:
-      POSTGRES_HOST: ${COMPOSE_PROJECT_NAME}-weblate
+      POSTGRES_HOST: ${COMPOSE_PROJECT_NAME}-postgres
       POSTGRES_PORT: ${POSTGRES_PORT_NUMBER}
       POSTGRES_DATABASE: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
