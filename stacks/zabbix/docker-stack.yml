@@ -17,7 +17,7 @@ services:
       - mysqld
       - --character-set-server=utf8
       - --collation-server=utf8_bin
-      - --default-authentication-plugin=mysql_native_password
+      - --default-authentication-plugin=caching_sha2_password
 #    ports:
 #      - "${MYSQL_PORT}:3306" 
 
