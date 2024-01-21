@@ -134,7 +134,7 @@
           "name": "MYSQL_IMAGE"
         },
         {
-          "default": "8.0.36",
+          "default": "8.0",
           "label": "MySQL tag",
           "name": "MYSQL_TAG"
         },
