@@ -80,7 +80,7 @@ services:
       - mysql-server
       - zabbix-server-mysql
 
-  zabbix-web-nginx-mysql:
+  zabbix-java-gateway:
     container_name: ${COMPOSE_PROJECT_NAME}-gateway
     image: ${ZABBIX_GATEWAY_IMAGE}:${ZABBIX_GATEWAY_TAG}
     restart: always
