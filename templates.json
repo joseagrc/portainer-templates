@@ -115,6 +115,62 @@
         }
       ]
     },
+
+
+
+
+
+
+
+
+      {
+      "type": 3,
+      "title": "Zabbix Server",
+      "description": "Zabbix Server setup",
+      "note": "Deploys a Zabbix Server.",
+      "categories": ["Monitor Tool"],
+      "platform": "linux",
+      "logo": "https://www.gravatar.com/avatar/80546ec7b550e478c2333bef451ae888.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/zabbix/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "gitea/act_runner",
+          "label": "Gitea act runner image",
+          "name": "GITEA_ACT_RUNNER_IMAGE"
+        },
+        {
+          "default": "nightly",
+          "label": "Gitea act runner tag",
+          "name": "GITEA_ACT_RUNNER_TAG"
+        },
+        {
+          "label": "Gitea instance url",
+          "name": "GITEA_INSTANCE_URL"
+        },
+        {
+          "label": "Gitea instance registration token",
+          "name": "GITEA_RUNNER_REGISTRATION_TOKEN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+
+
+
+
+
+
+
+
+
+
     {
       "type": 3,
       "title": "WordPress",
