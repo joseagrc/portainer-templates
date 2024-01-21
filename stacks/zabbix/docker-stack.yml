@@ -66,7 +66,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - nginx:/etc/ssl/nginx:ro
-      - nginx-modules/:/usr/share/zabbix/modules/:ro
+      - nginx-modules:/usr/share/zabbix/modules/:ro
     environment:
       ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-app
       DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-mysql
