@@ -196,8 +196,11 @@
           "label": "Zabbix gateway tag",
           "name": "ZABBIX_GATEWAY_TAG"
         },
-
-
+        {
+          "default": "zabbix.example.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
         {
           "default": "proxy",
           "label": "Network name",
