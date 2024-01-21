@@ -1,104 +1,64 @@
 version: '3'
 
 services:
-  mysql-server:
-    container_name: ${COMPOSE_PROJECT_NAME}-mysql
-    image: ${MYSQL_IMAGE}:${MYSQL_TAG}
+  postgresql-server:
+    container_name: ${COMPOSE_PROJECT_NAME}-postgresql
+    image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     restart: always
     volumes:
-      - zabbix-mysql:/var/lib/mysql:rw
+      - postgresql-data:/var/lib/postgresql/data
     environment:
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      ZBX_JAVAGATEWAY: zabbix-java-gateway
-    command:
-      - mysqld
-      - --character-set-server=utf8
-      - --collation-server=utf8_bin
-      - --default-authentication-plugin=caching_sha2_password
-#    ports:
-#      - "${MYSQL_PORT}:3306" 
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
 
-  zabbix-server-mysql:
-    container_name: ${COMPOSE_PROJECT_NAME}-app
-    image: ${ZABBIX_IMAGE}:${ZABBIX_TAG}
+  zabbix-server:
+    container_name: ${COMPOSE_PROJECT_NAME}-server
+    image: ${ZABBIX_SERVER_IMAGE}:${ZABBIX_SERVER_TAG}
     restart: always
     depends_on:
-      - mysql-server
-    links:
-      - mysql-server:mysql-server
+      - postgresql-server
+    # links:
+    #   - mysql-server:mysql-server
+    environment:
+      DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-postgresql
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "10051:10051"
-#      - "${ZABBIX_PORT}:10051"
-#      - "${GITEA_SSH_PORT}:22"
-#    expose:
-#      - "${GITEA_PORT}:3000"
-#      - "${GITEA_SSH_PORT}:22"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro 
-      - alertscripts:/usr/lib/zabbix/alertscripts:ro
-      - externalscripts:/usr/lib/zabbix/externalscripts:ro
-      - export:/var/lib/zabbix/export:rw
-      - modules:/var/lib/zabbix/modules:ro
-      - enc:/var/lib/zabbix/enc:ro
-      - ssh_keys:/var/lib/zabbix/ssh_keys:ro
-      - mibs:/var/lib/zabbix/mibs:ro
-      - snmptraps:/var/lib/zabbix/snmptraps:rw 
-    environment:
-      DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-mysql
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      ZBX_JAVAGATEWAY: zabbix-java-gateway
-      #VIRTUAL_PORT: 10051
-      #VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
-      #LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
+      - zabbix-server-data:/var/lib/zabbix
+      - zabbix-snmptraps-data:/var/lib/zabbix/snmptraps
+      - zabbix-export-data:/var/lib/zabbix/export
 
-  zabbix-web-nginx-mysql:
+  zabbix-web-nginx-pgsql:
     container_name: ${COMPOSE_PROJECT_NAME}-nginx
     image: ${ZABBIX_WEB_IMAGE}:${ZABBIX_WEB_TAG}
     restart: always
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
-      - nginx:/etc/ssl/nginx:ro
-      - nginx-modules:/usr/share/zabbix/modules/:ro
+    depends_on:
+      - postgresql-server
+      - zabbix-server
     environment:
-      ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-app
-      DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-mysql
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-postgresql
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+      ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-server
+      PHP_TZ: ${PHP_TZ}
       VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
       LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
-    depends_on:
-      - mysql-server
-      - zabbix-server-mysql
-
-  zabbix-java-gateway:
-    container_name: ${COMPOSE_PROJECT_NAME}-gateway
-    image: ${ZABBIX_GATEWAY_IMAGE}:${ZABBIX_GATEWAY_TAG}
-    restart: always
-    ports:
-      - 10052:10052
+    # ports:
+    #   - "${ZABBIX_FRONTEND_PORT}:8080"
+    volumes:
+      - zabbix-web-data:/usr/share/zabbix
 
 volumes:
-  zabbix-mysql:
-  alertscripts:
-  externalscripts:
-  export:
-  modules:
-  enc:
-  ssh_keys:
-  mibs:
-  snmptraps:
-  nginx:
-  nginx-modules:
+  postgresql-data:
+  zabbix-server-data:
+  zabbix-snmptraps-data:
+  zabbix-export-data:
+  zabbix-web-data:
 
 networks:
   default:

@@ -129,64 +129,54 @@
       },
       "env": [
         {
-          "default": "mysql",
-          "label": "MySQL image",
-          "name": "MYSQL_IMAGE"
+          "default": "postgres",
+          "label": "Postgres image",
+          "name": "POSTGRES_IMAGE"
         },
         {
-          "default": "8.0",
-          "label": "MySQL tag",
-          "name": "MYSQL_TAG"
+          "default": "latest",
+          "label": "Postgres tag",
+          "name": "POSTGRES_TAG"
         },
         {
           "default": "zabbix",
-          "label": "MySQL user",
-          "name": "MYSQL_USER"
+          "label": "Postgres user",
+          "name": "POSTGRES_USER"
         },
         {
           "default": "PasswOrd",
-          "label": "MySQL password",
-          "name": "MYSQL_PASSWORD"
+          "label": "Postgres password",
+          "name": "POSTGRES_PASSWORD"
         },
         {
           "default": "zabbixdb",
-          "label": "MySQL database",
-          "name": "MYSQL_DATABASE"
+          "label": "Postgres database",
+          "name": "POSTGRES_DB"
         },
         {
-          "default": "StrongPassword",
-          "label": "MySQL root password",
-          "name": "MYSQL_ROOT_PASSWORD"
+          "default": "zabbix/zabbix-server-pgsql",
+          "label": "Zabbix server image",
+          "name": "ZABBIX_SERVER_IMAGE"
         },
         {
-          "default": "zabbix/zabbix-server-mysql",
-          "label": "Zabbix image",
-          "name": "ZABBIX_IMAGE"
+          "default": "latest",
+          "label": "Zabbix server tag",
+          "name": "ZABBIX_SERVER_TAG"
         },
         {
-          "default": "alpine-6.4-latest",
-          "label": "Zabbix tag",
-          "name": "ZABBIX_TAG"
-        },
-        {
-          "default": "zabbix/zabbix-web-nginx-mysql",
+          "default": "zabbix/zabbix-web-nginx-pgsql",
           "label": "Zabbix web image",
           "name": "ZABBIX_WEB_IMAGE"
         },
         {
-          "default": "alpine-6.4-latest",
+          "default": "latest",
           "label": "Zabbix web tag",
           "name": "ZABBIX_WEB_TAG"
         },
         {
-          "default": "zabbix/zabbix-java-gateway",
-          "label": "Zabbix gateway image",
-          "name": "ZABBIX_GATEWAY_IMAGE"
-        },
-        {
-          "default": "alpine-6.4-latest",
-          "label": "Zabbix gateway tag",
-          "name": "ZABBIX_GATEWAY_TAG"
+          "default": "America/Santo_Domingo",
+          "label": "PHP timezone",
+          "name": "PHP_TZ"
         },
         {
           "default": "zabbix.example.com",
