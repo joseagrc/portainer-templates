@@ -137,23 +137,67 @@
       },
       "env": [
         {
-          "default": "gitea/act_runner",
-          "label": "Gitea act runner image",
-          "name": "GITEA_ACT_RUNNER_IMAGE"
+          "default": "mysql",
+          "label": "MySQL image",
+          "name": "MYSQL_IMAGE"
         },
         {
-          "default": "nightly",
-          "label": "Gitea act runner tag",
-          "name": "GITEA_ACT_RUNNER_TAG"
+          "default": "8.3.0",
+          "label": "MySQL tag",
+          "name": "MYSQL_TAG"
         },
         {
-          "label": "Gitea instance url",
-          "name": "GITEA_INSTANCE_URL"
+          "default": "zabbix",
+          "label": "MySQL user",
+          "name": "MYSQL_USER"
         },
         {
-          "label": "Gitea instance registration token",
-          "name": "GITEA_RUNNER_REGISTRATION_TOKEN"
+          "default": "PasswOrd",
+          "label": "MySQL password",
+          "name": "MYSQL_PASSWORD"
         },
+        {
+          "default": "zabbixdb",
+          "label": "MySQL database",
+          "name": "MYSQL_DATABASE"
+        },
+        {
+          "default": "StrongPassword",
+          "label": "MySQL root password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "default": "zabbix/zabbix-server-mysql",
+          "label": "Zabbix image",
+          "name": "ZABBIX_IMAGE"
+        },
+        {
+          "default": "alpine-6.4-latest",
+          "label": "Zabbix tag",
+          "name": "ZABBIX_TAG"
+        },
+        {
+          "default": "zabbix/zabbix-web-nginx-mysql",
+          "label": "Zabbix web image",
+          "name": "ZABBIX_WEB_IMAGE"
+        },
+        {
+          "default": "alpine-6.4-latest",
+          "label": "Zabbix web tag",
+          "name": "ZABBIX_WEB_TAG"
+        },
+        {
+          "default": "zabbix/zabbix-java-gateway",
+          "label": "Zabbix gateway image",
+          "name": "ZABBIX_GATEWAY_IMAGE"
+        },
+        {
+          "default": "alpine-6.4-latest",
+          "label": "Zabbix gateway tag",
+          "name": "ZABBIX_GATEWAY_TAG"
+        },
+
+
         {
           "default": "proxy",
           "label": "Network name",
