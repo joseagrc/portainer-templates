@@ -113,16 +113,8 @@
           "label": "Network name",
           "name": "NETWORK"
         }
-      ]
-    },
-
-
-
-
-
-
-
-
+       ]
+      },
       {
       "type": 3,
       "title": "Zabbix Server",
@@ -208,16 +200,6 @@
         }
       ]
     },
-
-
-
-
-
-
-
-
-
-
     {
       "type": 3,
       "title": "WordPress",
