@@ -46,6 +46,7 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-server
       PHP_TZ: ${PHP_TZ}
+      VIRTUAL_PORT: 10051
       VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
       LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
     # ports:
