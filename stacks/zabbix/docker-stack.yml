@@ -49,10 +49,8 @@ services:
     image: ${ZABBIX_WEB_IMAGE}:${ZABBIX_WEB_TAG}
     restart: always
     depends_on:
-      - postgresql-server:
-          condition: service_healthy
-      - zabbix-server:
-          condition: service_healthy
+      - postgresql-server
+      - zabbix-server
     ports:
       - "8090:8080"
     environment:
