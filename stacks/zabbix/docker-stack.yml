@@ -64,8 +64,8 @@ services:
     depends_on:
       - zabbix-server
     environment:
-      - ZBX_HOSTNAME: ${COMPOSE_PROJECT_NAME}-server
-      - ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-server #the IP/Dns of Zabbix server
+      ZBX_HOSTNAME: ${COMPOSE_PROJECT_NAME}-server
+      ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-server #the IP/Dns of Zabbix server
     volumes:
       - zabbix-agent:/etc/zabbix/
 
