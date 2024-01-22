@@ -11,15 +11,20 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "${ZABBIX_DB_NAME}", "-U", "${ZABBIX_DB_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
 
   zabbix-server:
     container_name: ${COMPOSE_PROJECT_NAME}-server
     image: ${ZABBIX_SERVER_IMAGE}:${ZABBIX_SERVER_TAG}
     restart: always
     depends_on:
-      - postgresql-server
-    links:
-      - postgresql-server:postgresql-server
+      - postgresql-server:
+          condition: service_healthy
     environment:
       DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-postgresql
       POSTGRES_USER: ${POSTGRES_USER}
@@ -28,6 +33,12 @@ services:
       ZBX_TIMEOUT: 10
     ports:
       - "10051:10051"
+    healthcheck:
+      test: grep -qr "zabbix_server" /proc/*/status || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
     # volumes:
     #   - zabbix-server-data:/var/lib/zabbix
     #   - zabbix-snmptraps-data:/var/lib/zabbix/snmptraps
@@ -38,8 +49,10 @@ services:
     image: ${ZABBIX_WEB_IMAGE}:${ZABBIX_WEB_TAG}
     restart: always
     depends_on:
-      - postgresql-server
-      - zabbix-server
+      - postgresql-server:
+          condition: service_healthy
+      - zabbix-server:
+          condition: service_healthy
     ports:
       - "8090:8080"
     environment:
@@ -53,6 +66,12 @@ services:
       VIRTUAL_PORT: 8080
       VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
       LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 90s
     # volumes:
     #   - zabbix-web-data:/usr/share/zabbix
 
@@ -62,6 +81,7 @@ services:
     restart: always
     privileged: true   #access mode for allowing resource access
     depends_on:
+      - postgresql-server
       - zabbix-server
     environment:
       ZBX_HOSTNAME: ${COMPOSE_PROJECT_NAME}-server
