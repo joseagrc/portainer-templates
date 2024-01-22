@@ -23,8 +23,7 @@ services:
     image: ${ZABBIX_SERVER_IMAGE}:${ZABBIX_SERVER_TAG}
     restart: always
     depends_on:
-      - postgresql-server:
-          condition: service_healthy
+      - postgresql-server
     environment:
       DB_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-postgresql
       POSTGRES_USER: ${POSTGRES_USER}
