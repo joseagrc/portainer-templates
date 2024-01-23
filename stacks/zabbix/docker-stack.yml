@@ -82,10 +82,8 @@ services:
       - postgresql-server
       - zabbix-server
     environment:
-      ZBX_HOSTNAME: server1.gruposolutema.com
+      ZBX_HOSTNAME: ${COMPOSE_PROJECT_NAME}-server
       ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-server #the IP/Dns of Zabbix server
-      # ZBX_SERVER_PORT: 10051
-      # ZBX_TIMEOUT: 10
     volumes:
       - zabbix-agent2:/etc/zabbix/
       - /var/run/docker.sock:/var/run/docker.sock
