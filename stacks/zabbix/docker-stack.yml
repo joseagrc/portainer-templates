@@ -72,6 +72,22 @@ services:
     # volumes:
     #   - zabbix-web-data:/usr/share/zabbix
 
+  zabbix-agent:   # Zabbix agent service that tracks usage and send to zabbix server
+    container_name: ${COMPOSE_PROJECT_NAME}-agent
+    image: zabbix/zabbix-agent:latest
+    restart: always
+    privileged: true   #access mode for allowing resource access
+    command: -H unix:///var/run/docker.sock
+    depends_on:
+      - postgresql-server
+      - zabbix-server
+    environment:
+      ZBX_HOSTNAME: ${COMPOSE_PROJECT_NAME}-server
+      ZBX_SERVER_HOST: ${COMPOSE_PROJECT_NAME}-server #the IP/Dns of Zabbix server
+    volumes:
+      - zabbix-agent:/etc/zabbix/
+      - /var/run/docker.sock:/var/run/docker.sock
+
   zabbix-agent2:   # Zabbix agent service that tracks usage and send to zabbix server
     container_name: ${COMPOSE_PROJECT_NAME}-agent2
     image: zabbix/zabbix-agent2:latest
