@@ -999,6 +999,11 @@
           "name": "LDAP_TAG"
         },
         {
+          "default": "openldap.example.org",
+          "label": "LDAP Hostname",
+          "name": "LDAP_HOSTNAME"
+        },
+        {
           "default": "389",
           "label": "LDAP ldap port",
           "name": "LDAP_PORT_NUMBER"
