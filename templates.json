@@ -985,27 +985,37 @@
       },
       "env": [
         {
-          "label": "OpenLDAP container name",
-          "name": "OPENLDAP_CONTAINER_NAME"
+          "label": "LDAP container name",
+          "name": "LDAP_CONTAINER_NAME"
         },
         {
-          "default": "ldap.example.org",
+          "default": "openldap.example.org",
           "label": "LDAP hostname",
           "name": "LDAP_HOSTNAME"
+        },       
+        {
+          "default": "bitnami/openldap",
+          "label": "LDAP Image",
+          "name": "LDAP_IMAGE"
         },
         {
-          "default": "registry.gruposolutema.com/openldap/docker-openldap",
-          "label": "OpenLDAP Image",
-          "name": "OPENLDAP_IMAGE"
+          "default": "2.6.7",
+          "label": "LDAP Tag",
+          "name": "LDAP_TAG"
         },
         {
-          "default": "2.6.6",
-          "label": "OpenLDAP Tag",
-          "name": "OPENLDAP_TAG"
+          "default": "389",
+          "label": "LDAP ldap port",
+          "name": "LDAP_PORT_NUMBER"
+        },
+        {
+          "default": "dc=example,dc=org",
+          "label": "LDAP root",
+          "name": "LDAP_ROOT"
         },
         {
           "default": "admin",
-          "label": "LDAP username",
+          "label": "LDAP admin username",
           "name": "LDAP_ADMIN_USERNAME"
         },
         {
@@ -1014,34 +1024,39 @@
           "name": "LDAP_ADMIN_PASSWORD"
         },
         {
-          "default": "customers",
+          "default": "yes",
+          "label": "LDAP config admin enabled",
+          "name": "LDAP_CONFIG_ADMIN_ENABLED"
+        },
+        {
+          "default": "configadmin",
+          "label": "LDAP config admin username",
+          "name": "LDAP_CONFIG_ADMIN_USERNAME"
+        },
+        {
+          "default": "configpassword",
+          "label": "LDAP config admin password",
+          "name": "LDAP_CONFIG_ADMIN_PASSWORD"
+        },
+        {
+          "default": "user01,user02",
           "label": "LDAP users",
           "name": "LDAP_USERS"
         },
         {
-          "default": "customerspasswords",
+          "default": "passworduser01,passworduser02",
           "label": "LDAP passwords",
           "name": "LDAP_PASSWORDS"
         },
         {
-          "default": "dc=example,dc=org",
-          "label": "LDAP root",
-          "name": "LDAP_ROOT"
+          "default": "users",
+          "label": "LDAP user dc",
+          "name": "LDAP_USER_DC"
         },
         {
-          "default": "cn=admin,dc=example,dc=org",
-          "label": "LDAP admin dn",
-          "name": "LDAP_ADMIN_DN"
-        },
-        {
-          "default": "389",
-          "label": "LDAP port",
-          "name": "LDAP_PORT_NUMBER"
-        },
-        {
-          "default": "636",
-          "label": "LDAP ldaps port",
-          "name": "LDAP_LDAPS_PORT_NUMBER"
+          "default": "readers",
+          "label": "LDAP group",
+          "name": "LDAP_GROUP"
         },
         {
           "default": "yes",
@@ -1052,6 +1067,136 @@
           "default": "cosine, inetorgperson, nis",
           "label": "LDAP extra schemas",
           "name": "LDAP_EXTRA_SCHEMAS"
+        },
+        {
+          "default": "no",
+          "label": "LDAP skip default tree",
+          "name": "LDAP_SKIP_DEFAULT_TREE"
+        },
+        {
+          "default": "/ldifs",
+          "label": "LDAP custom ldif dir",
+          "name": "LDAP_CUSTOM_LDIF_DIR"
+        },
+        {
+          "default": "/schema/custom.ldif",
+          "label": "LDAP custom schema file",
+          "name": "LDAP_CUSTOM_SCHEMA_FILE"
+        },
+        {
+          "default": "/schemas",
+          "label": "LDAP custom schema dir",
+          "name": "LDAP_CUSTOM_SCHEMA_DIR"
+        },
+        {
+          "default": "1024",
+          "label": "LDAP ulimit nofiles",
+          "name": "LDAP_ULIMIT_NOFILES"
+        },
+        {
+          "default": "yes",
+          "label": "LDAP allow anon binding",
+          "name": "LDAP_ALLOW_ANON_BINDING"
+        },
+        {
+          "default": "256",
+          "label": "LDAP log level",
+          "name": "LDAP_LOGLEVEL"
+        },
+        {
+          "default": "{SSHA}",
+          "label": "LDAP password hash",
+          "name": "LDAP_PASSWORD_HASH"
+        },
+        {
+          "default": "no",
+          "label": "LDAP configure ppolicy",
+          "name": "LDAP_CONFIGURE_PPOLICY"
+        },
+        {
+          "default": "no",
+          "label": "LDAP ppolocy use lockout",
+          "name": "LDAP_PPOLICY_USE_LOCKOUT"
+        },
+        {
+          "default": "no",
+          "label": "LDAP ppolocy hasg cleartext",
+          "name": "LDAP_PPOLICY_HASH_CLEARTEXT"
+        },
+        {
+          "default": "no",
+          "label": "LDAP enable accesslog",
+          "name": "LDAP_ENABLE_ACCESSLOG"
+        },
+        {
+          "default": "admin",
+          "label": "LDAP accesslog admin username",
+          "name": "LDAP_ACCESSLOG_ADMIN_USERNAME"
+        },
+        {
+          "default": "accesspassword",
+          "label": "LDAP accesslog admin password",
+          "name": "LDAP_ACCESSLOG_ADMIN_PASSWORD"
+        },
+        {
+          "default": "cn=accesslog",
+          "label": "LDAP accesslog db",
+          "name": "LDAP_ACCESSLOG_DB"
+        },
+        {
+          "default": "writes",
+          "label": "LDAP accesslog logops",
+          "name": "LDAP_ACCESSLOG_LOGOPS"
+        },
+        {
+          "default": "True",
+          "label": "LDAP accesslog logsucess",
+          "name": "LDAP_ACCESSLOG_LOGSUCCESS"
+        },
+        {
+          "default": "07+00:00 01+00:00",
+          "label": "LDAP accesslog logpurge",
+          "name": "LDAP_ACCESSLOG_LOGPURGE"
+        },
+        {
+          "default": "(objectClass=*)",
+          "label": "LDAP accesslog logold",
+          "name": "LDAP_ACCESSLOG_LOGOLD"
+        },
+        {
+          "default": "objectClass",
+          "label": "LDAP accesslog logoldattr",
+          "name": "LDAP_ACCESSLOG_LOGOLDATTR"
+        },
+        {
+          "default": "no",
+          "label": "LDAP enable syncprov",
+          "name": "LDAP_ENABLE_SYNCPROV"
+        },
+        {
+          "default": "100 10",
+          "label": "LDAP enable syncprov checkppoint",
+          "name": "LDAP_SYNCPROV_CHECKPPOINT"
+        },
+        {
+          "default": "100",
+          "label": "LDAP enable syncprov sessionlog",
+          "name": "LDAP_SYNCPROV_SESSIONLOG"
+        },
+        {
+          "default": "no",
+          "label": "LDAP enable tls",
+          "name": "LDAP_ENABLE_TLS"
+        },
+        {
+          "default": "no",
+          "label": "LDAP require tls",
+          "name": "LDAP_REQUIRE_TLS"
+        },
+        {
+          "default": "636",
+          "label": "LDAP ldaps port",
+          "name": "LDAP_LDAPS_PORT_NUMBER"
         },
         {
           "label": "phpLDAPadmin container name",

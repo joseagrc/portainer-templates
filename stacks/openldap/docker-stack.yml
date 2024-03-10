@@ -1,9 +1,9 @@
 version: '3'
 services:
   openldap:
-    container_name: ${OPENLDAP_CONTAINER_NAME}
-    hostname: ${LDAP_HOSTNAME}
-    image: ${OPENLDAP_IMAGE}:${OPENLDAP_TAG}
+    container_name: ${LDAP_CONTAINER_NAME}
+    image: ${LDAP_IMAGE}:${LDAP_TAG}
+    HOSTNAME: ${LDAP_HOSTNAME}
     restart: always
     environment:
       LDAP_ADMIN_USERNAME: ${LDAP_ADMIN_USERNAME}
@@ -11,12 +11,11 @@ services:
       LDAP_USERS: ${LDAP_USERS}
       LDAP_PASSWORDS: ${LDAP_PASSWORDS}
       LDAP_ROOT: ${LDAP_ROOT}
-      LDAP_ADMIN_DN: ${LDAP_ADMIN_DN}
+      LDAP_ADMIN_DN: cn=${LDAP_ADMIN_USERNAME},${LDAP_ROOT}
       VIRTUAL_HOST: ${LDAP_HOSTNAME},www.${LDAP_HOSTNAME}
       LETSENCRYPT_HOST: ${LDAP_HOSTNAME},www.${LDAP_HOSTNAME}
     volumes:
-      - config:/etc/ldap
-      - data:/bitnami/openldap
+      - openldap_data:/bitnami/openldap
     ports:
       - ${LDAP_PORT_NUMBER}:389
       - ${LDAP_LDAPS_PORT_NUMBER}:636
@@ -34,8 +33,7 @@ services:
       LETSENCRYPT_HOST: ${PHPLDAPADMIN_SUBDOMAIN}.${PHPLDAPADMIN_DOMAIN},www.${PHPLDAPADMIN_SUBDOMAIN}.${PHPLDAPADMIN_DOMAIN}
 
 volumes:
-  config:
-  data:
+  openldap_data:
 
 networks:
   default:
