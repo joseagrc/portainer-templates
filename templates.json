@@ -987,12 +987,7 @@
         {
           "label": "LDAP container name",
           "name": "LDAP_CONTAINER_NAME"
-        },
-        {
-          "default": "openldap.example.org",
-          "label": "LDAP hostname",
-          "name": "LDAP_HOSTNAME"
-        },       
+        },     
         {
           "default": "bitnami/openldap",
           "label": "LDAP Image",
@@ -1213,12 +1208,9 @@
           "name": "PHPLDAPADMIN_TAG"
         },
         {
-          "label": "PHPLDAPADMIN subdomain",
-          "name": "PHPLDAPADMIN_SUBDOMAIN"
-        },
-        {
-          "label": "PHPLDAPADMIN domain",
-          "name": "PHPLDAPADMIN_DOMAIN"
+          "default": "phpldapadmin.example.org",
+          "label": "PHPLDAPADMIN URL",
+          "name": "PHPLDAPADMIN_URL"
         },
         {
           "default": "proxy",
