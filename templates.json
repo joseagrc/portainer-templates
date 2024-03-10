@@ -230,7 +230,7 @@
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
-          "default": "phpmyadmin/phpmyadmin",
+          "default": "phpmyadmin",
           "label": "Phpmyadmin image",
           "name": "PHPMYADMIN_IMAGE"
         },
