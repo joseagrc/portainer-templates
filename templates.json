@@ -1109,7 +1109,7 @@
           "name": "LDAP_ULIMIT_NOFILES"
         },
         {
-          "default": "yes",
+          "default": "no",
           "label": "LDAP allow anon binding",
           "name": "LDAP_ALLOW_ANON_BINDING"
         },
