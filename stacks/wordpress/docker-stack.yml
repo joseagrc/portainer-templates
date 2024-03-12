@@ -23,8 +23,8 @@ services:
       PMA_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
       PMA_PORT: 3306
       PMA_ARBITRARY: 1 # To allow fill db credentials
-      VIRTUAL_HOST: phpmyadmin.${DOMAIN},www.phpmyadmin.${DOMAIN}
-      LETSENCRYPT_HOST: phpmyadmin.${DOMAIN},www.phpmyadmin.${DOMAIN}
+      VIRTUAL_HOST: ${PHPMYADMIN_DOMAIN}
+      LETSENCRYPT_HOST: ${PHPMYADMIN_DOMAIN}
 
   wordpress:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -41,13 +41,13 @@ services:
       WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
       WORDPRESS_DB_USER: ${MYSQL_USER}
       WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
-      VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
-      LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
+      VIRTUAL_HOST: ${WORDPRESS_DOMAIN}
+      LETSENCRYPT_HOST: ${WORDPRESS_DOMAIN}
       WORDPRESS_CONFIG_EXTRA: |
         define('WP_ALLOW_MULTISITE', ${WP_ALLOW_MULTISITE});
         define('WP_CACHE', ${WP_CACHE});
-        define('WP_REDIS_PREFIX', '${DOMAIN}');
-        define('WP_CACHE_KEY_SALT', '${DOMAIN}');
+        define('WP_REDIS_PREFIX', '${WP_REDIS_PREFIX}');
+        define('WP_CACHE_KEY_SALT', '${WP_CACHE_KEY_SALT}');
         define( 'WP_REDIS_HOST', '${WP_REDIS_HOST}');
         define( 'WP_REDIS_PORT', '${WP_REDIS_PORT}');
     logging:

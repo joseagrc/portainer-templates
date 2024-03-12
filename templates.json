@@ -280,8 +280,23 @@
         },
         {
           "default": "domain.com",
-          "label": "Domain",
-          "name": "DOMAIN"
+          "label": "WP Redis  prefix",
+          "name": "WP_REDIS_PREFIX"
+        },
+        {
+          "default": "domain.com",
+          "label": "WP Cache Key salt",
+          "name": "WP_CACHE_KEY_SALT"
+        },
+        {
+          "default": "phpmyadmin.domain.com,www.phpmyadmin.domain.com",
+          "label": "phpMyAdmin Domain",
+          "name": "PHPMYADMIN_DOMAIN"
+        },
+        {
+          "default": "domain.com,www.domain.com",
+          "label": "Wordpress Domain",
+          "name": "WORDPRESS_DOMAIN"
         },
         {
           "default": "proxy",
