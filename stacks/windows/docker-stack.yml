@@ -5,8 +5,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-${WINDOWS_VERSION}
     image: dockurr/windows
     restart: on-failure
-    # devices:
-    #   - /dev/kvm
+    devices:
+      - /dev/kvm
     cap_add:
       - NET_ADMIN
     ports:
@@ -22,9 +22,6 @@ services:
       RAM_SIZE: ${RAM_SIZE}
       DISK_SIZE: ${DISK_SIZE}
       VERSION: ${WINDOWS_VERSION}
-      # VIRTUAL_PORT: 8006
-      # VIRTUAL_HOST: ${DOMAIN}
-      # LETSENCRYPT_HOST: ${DOMAIN}
 
 networks:
   default:
