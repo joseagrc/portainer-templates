@@ -190,6 +190,56 @@
         }
       ]
     },
+      {
+      "type": 3,
+      "title": "Microsoft Windows",
+      "description": "Windows in a Docker container.",
+      "note": "Deploys a windows in a docker container.",
+      "categories": ["OS"],
+      "platform": "windows",
+      "logo": "https://raw.githubusercontent.com/dockur/windows/master/.github/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/windows/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "N",
+          "label": "Manual",
+          "name": "MANUAL"
+        },
+        {
+          "default": "2",
+          "label": "CPU cores",
+          "name": "CPU_CORES"
+        },
+        {
+          "default": "4G",
+          "label": "Ram size",
+          "name": "RAM_SIZE"
+        },
+        {
+          "default": "64G",
+          "label": "Disk size",
+          "name": "DISK_SIZE"
+        },
+        {
+          "default": "win11",
+          "label": "Windows version",
+          "name": "WINDOWS_VERSION"
+        },
+        {
+          "default": "windows.example.org",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
     {
       "type": 3,
       "title": "WordPress",
