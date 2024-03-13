@@ -228,11 +228,11 @@
           "label": "Windows version",
           "name": "WINDOWS_VERSION"
         },
-        {
-          "default": "windows.example.org",
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
+        // {
+        //   "default": "windows.example.org",
+        //   "label": "Domain",
+        //   "name": "DOMAIN"
+        // },
         {
           "default": "proxy",
           "label": "Network name",

@@ -22,9 +22,9 @@ services:
       RAM_SIZE: ${RAM_SIZE}
       DISK_SIZE: ${DISK_SIZE}
       VERSION: ${WINDOWS_VERSION}
-      VIRTUAL_PORT: 8006
-      VIRTUAL_HOST: ${DOMAIN}
-      LETSENCRYPT_HOST: ${DOMAIN}
+      # VIRTUAL_PORT: 8006
+      # VIRTUAL_HOST: ${DOMAIN}
+      # LETSENCRYPT_HOST: ${DOMAIN}
 
 networks:
   default:
