@@ -5,8 +5,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-${WINDOWS_VERSION}
     image: dockurr/windows
     restart: on-failure
-    devices:
-      - /dev/kvm
+    # devices:
+    #   - /dev/kvm
     cap_add:
       - NET_ADMIN
     ports:
