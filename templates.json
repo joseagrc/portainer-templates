@@ -96,58 +96,67 @@
       },
       "env": [
         {
-          "default": "mysql",
-          "label": "MySQL database image",
-          "name": "MYSQL_IMAGE"
+          "default": "postgres",
+          "label": "PostgreSQL database image",
+          "name": "POSTGRESQL_IMAGE"
         },
         {
-          "default": "8",
-          "label": "MySQL Database tag",
-          "name": "MYSQL_TAG"
+          "default": "16.2",
+          "label": "PostgreSQL Database tag",
+          "name": "POSTGRESQL_TAG"
         },
         {
-          "label": "MySQL database username",
-          "name": "MYSQL_USER"
+          "default": "keycloak_db_user",
+          "label": "PostgreSQL database username",
+          "name": "POSTGRESQL_USER"
         },
         {
-          "label": "MySQL Database password for user",
-          "name": "MYSQL_PASSWORD"
+          "default": "Passw0rd!",
+          "label": "PostgreSQL Database password for user",
+          "name": "POSTGRESQL_PASSWORD"
         },
         {
-          "label": "Database root password",
-          "name": "MYSQL_ROOT_PASSWORD"
+          "default": "keycloak_db",
+          "label": "PostgreSQL database name",
+          "name": "POSTGRESQL_DATABASE"
         },
         {
-          "label": "MySQL database name",
-          "name": "MYSQL_DATABASE"
+          "default": "keycloak/keycloak",
+          "label": "Keycloak image",
+          "name": "KEYCLOAK_IMAGE"
         },
         {
-          "default": "3306",
-          "label": "MySQL port",
-          "name": "MYSQL_PORT"
+          "default": "24.0.1-0",
+          "label": "Keycloak tag",
+          "name": "KEYCLOAK_TAG"
         },
         {
-          "default": "gitea/gitea",
-          "label": "Gitea image",
-          "name": "GITEA_IMAGE"
+          "default": "ssl=false",
+          "label": "JDBC Params",
+          "name": "JDBC_PARAMS"
         },
         {
-          "default": "1.21.1",
-          "label": "Gitea tag",
-          "name": "GITEA_TAG"
+          "default": "8080",
+          "label": "Virtual port",
+          "name": "VIRTUAL_PORT"
         },
         {
-          "default": "3000",
-          "label": "Gitea port",
-          "name": "GITEA_PORT"
+          "default": "admin",
+          "label": "Keycloak user",
+          "name": "KEYCLOAK_USER"
         },
         {
-          "default": "2222",
-          "label": "Gitea ssh port",
-          "name": "GITEA_SSH_PORT"
+          "default": "Passw0rd!",
+          "label": "Keycloak password",
+          "name": "KEYCLOAK_PASSWORD"
         },
         {
-          "default": "domain.com or gitea.domain.com",
+          "default": "true",
+          "label": "Proxy address forwarding",
+          "name": "PROXY_ADDRESS_FORWARDING"
+        },
+        {
+          "default": "example.org or keycload.example.org",
           "label": "Domain",
           "name": "DOMAIN"
         },
@@ -158,12 +167,6 @@
         }
       ]
       },
-
-
-
-
-
-
       {
       "type": 3,
       "title": "Gitea runner",

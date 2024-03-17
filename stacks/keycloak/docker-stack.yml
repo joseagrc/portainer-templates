@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  postgres:
+    container_name: ${COMPOSE_PROJECT_NAME}-postgres
+    image: ${POSTGRESQL_IMAGE}:${POSTGRESQL_TAG}
+    restart: always
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+
+  keycloak:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
+    restart: always
+    environment:
+      DB_DATABASE: ${POSTGRESQL_DATABASE}
+      DB_USER: ${POSTGRESQL_USER}
+      DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+      JDBC_PARAMS: ${JDBC_PARAMS}
+      KEYCLOAK_HOSTNAME: ${DOMAIN}
+      KEYCLOAK_HTTP_PORT: ${VIRTUAL_PORT}
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      VIRTUAL_HOST: ${DOMAIN}
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+      PROXY_ADDRESS_FORWARDING: ${PROXY_ADDRESS_FORWARDING}
+      LETSENCRYPT_HOST: ${DOMAIN}
+    depends_on:
+      - postgres
+
+volumes:
+  data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
