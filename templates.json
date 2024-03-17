@@ -94,7 +94,7 @@
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/keycloak/docker-stack.yml"
       },
-      "env": [
+      "env": [ 
         {
           "default": "postgres",
           "label": "PostgreSQL database image",
@@ -116,6 +116,11 @@
           "name": "POSTGRESQL_PASSWORD"
         },
         {
+          "default": "postgres",
+          "label": "Keycloak database",
+          "name": "KC_DB"
+        },   
+        {
           "default": "keycloak_db",
           "label": "PostgreSQL database name",
           "name": "POSTGRESQL_DATABASE"
@@ -131,29 +136,24 @@
           "name": "KEYCLOAK_TAG"
         },
         {
-          "default": "ssl=false",
-          "label": "JDBC Params",
-          "name": "JDBC_PARAMS"
-        },
-        {
           "default": "8080",
           "label": "Virtual port",
           "name": "VIRTUAL_PORT"
         },
         {
           "default": "admin",
-          "label": "Keycloak user",
-          "name": "KEYCLOAK_USER"
+          "label": "Keycloak admin",
+          "name": "KEYCLOAK_ADMIN"
         },
         {
           "default": "Passw0rd!",
-          "label": "Keycloak password",
-          "name": "KEYCLOAK_PASSWORD"
+          "label": "Keycloak admin password",
+          "name": "KEYCLOAK_ADMIN_PASSWORD"
         },
         {
-          "default": "true",
-          "label": "Proxy address forwarding",
-          "name": "PROXY_ADDRESS_FORWARDING"
+          "default": "forwarded",
+          "label": "Proxy headers",
+          "name": "KC_PROXY_HEADERS"
         },
         {
           "default": "example.org or keycload.example.org",
