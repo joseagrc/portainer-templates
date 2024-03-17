@@ -101,7 +101,7 @@
           "name": "POSTGRESQL_IMAGE"
         },
         {
-          "default": "16.2",
+          "default": "15",
           "label": "PostgreSQL Database tag",
           "name": "POSTGRESQL_TAG"
         },
@@ -121,7 +121,7 @@
           "name": "POSTGRESQL_DATABASE"
         },
         {
-          "default": "keycloak/keycloak",
+          "default": "quay.io/keycloak/keycloak",
           "label": "Keycloak image",
           "name": "KEYCLOAK_IMAGE"
         },
