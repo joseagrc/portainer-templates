@@ -5,6 +5,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRESQL_IMAGE}:${POSTGRESQL_TAG}
     restart: always
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "keycloak"]
     volumes:
       - data:/var/lib/postgresql/data
     environment:
@@ -15,14 +17,14 @@ services:
   keycloak:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
-    restart: always
+    restart: unless-stopped
+    command: ["start-dev"]
     environment:
-      KC_DB_DRIVER: 
-      DB_DATABASE: ${POSTGRESQL_DATABASE}
+      KC_DB: postgres
       KC_DB_USERNAME: ${POSTGRESQL_USER}
       KC_DB_PASSWORD: ${POSTGRESQL_PASSWORD}
-      JDBC_PARAMS: ${JDBC_PARAMS}
-      KC_HOSTNAME: ${DOMAIN}
+      KC_DB_URL: "jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
+      KC_REALM_NAME: ${KC_REALM_NAME}
       KC_HTTP_PORT: ${VIRTUAL_PORT}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
