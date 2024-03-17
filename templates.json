@@ -77,6 +77,93 @@
         }
       ]
       },
+
+
+
+
+
+      {
+      "type": 3,
+      "title": "Keycloak",
+      "description": "Keycloak setup with a PostgreSQL database",
+      "note": "Deploys a Keycloak instance connected to a PostgreSQL database.",
+      "categories": ["Authenticate"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/keycloak/keycloak-misc/main/logo/logo.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/keycloak/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "mysql",
+          "label": "MySQL database image",
+          "name": "MYSQL_IMAGE"
+        },
+        {
+          "default": "8",
+          "label": "MySQL Database tag",
+          "name": "MYSQL_TAG"
+        },
+        {
+          "label": "MySQL database username",
+          "name": "MYSQL_USER"
+        },
+        {
+          "label": "MySQL Database password for user",
+          "name": "MYSQL_PASSWORD"
+        },
+        {
+          "label": "Database root password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "label": "MySQL database name",
+          "name": "MYSQL_DATABASE"
+        },
+        {
+          "default": "3306",
+          "label": "MySQL port",
+          "name": "MYSQL_PORT"
+        },
+        {
+          "default": "gitea/gitea",
+          "label": "Gitea image",
+          "name": "GITEA_IMAGE"
+        },
+        {
+          "default": "1.21.1",
+          "label": "Gitea tag",
+          "name": "GITEA_TAG"
+        },
+        {
+          "default": "3000",
+          "label": "Gitea port",
+          "name": "GITEA_PORT"
+        },
+        {
+          "default": "2222",
+          "label": "Gitea ssh port",
+          "name": "GITEA_SSH_PORT"
+        },
+        {
+          "default": "domain.com or gitea.domain.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+
+
+
+
+
+
       {
       "type": 3,
       "title": "Gitea runner",
