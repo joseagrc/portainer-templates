@@ -6,7 +6,7 @@ services:
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "keycloak"]
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
     volumes:
       - data:/var/lib/postgresql/data
     environment:
