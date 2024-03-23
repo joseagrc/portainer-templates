@@ -136,6 +136,11 @@
           "name": "KEYCLOAK_COMMAND"
         },
         {
+          "default": "keycloak",
+          "label": "Keycloak realm name",
+          "name": "KC_REALM_NAME"
+        },
+        {
           "default": "8080",
           "label": "Virtual port",
           "name": "VIRTUAL_PORT"
