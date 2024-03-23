@@ -18,7 +18,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
     restart: unless-stopped
-    command: [${KEYCLOAK_COMMAND}]
+    command: ${KEYCLOAK_COMMAND}
     environment:
       KC_DB: ${POSTGRES_DB}
       KC_DB_USERNAME: ${POSTGRES_USER}
