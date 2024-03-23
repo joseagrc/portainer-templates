@@ -93,32 +93,27 @@
         {
           "default": "postgres",
           "label": "PostgreSQL database image",
-          "name": "POSTGRESQL_IMAGE"
+          "name": "POSTGRES_IMAGE"
         },
         {
           "default": "15",
           "label": "PostgreSQL Database tag",
-          "name": "POSTGRESQL_TAG"
+          "name": "POSTGRES_TAG"
         },
         {
           "default": "keycloak_db_user",
           "label": "PostgreSQL database username",
-          "name": "POSTGRESQL_USER"
+          "name": "POSTGRES_USER"
         },
         {
           "default": "Passw0rd!",
           "label": "PostgreSQL Database password for user",
-          "name": "POSTGRESQL_PASSWORD"
+          "name": "POSTGRES_PASSWORD"
         },
-        {
-          "default": "postgres",
-          "label": "Keycloak database",
-          "name": "KC_DB"
-        },   
         {
           "default": "keycloak_db",
           "label": "PostgreSQL database name",
-          "name": "POSTGRESQL_DATABASE"
+          "name": "POSTGRES_DB"
         },
         {
           "default": "quay.io/keycloak/keycloak",
@@ -131,7 +126,7 @@
           "name": "KEYCLOAK_TAG"
         },
         {
-          "default": "start-dev",
+          "default": ["start", "--import-realm"],
           "label": "Keycloak command",
           "name": "KEYCLOAK_COMMAND"
         },

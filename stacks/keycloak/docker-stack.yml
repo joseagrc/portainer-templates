@@ -3,7 +3,7 @@ version: '3'
 services:
   postgres:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
-    image: ${POSTGRESQL_IMAGE}:${POSTGRESQL_TAG}
+    image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "keycloak"]
@@ -18,17 +18,16 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
     restart: unless-stopped
-    command: ["start", "--import-realm"]
+    command: ${KEYCLOAK_COMMAND}
     environment:
-      KC_DB: postgres
-      KC_DB_USERNAME: ${POSTGRESQL_USER}
-      KC_DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+      KC_DB: ${POSTGRES_DB}
+      KC_DB_USERNAME: ${POSTGRES_USER}
+      KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_URL: "jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
       KC_REALM_NAME: ${KC_REALM_NAME}
       KC_HTTP_PORT: ${KC_HTTP_PORT}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      KC_PROXY_HEADERS: ${KC_PROXY_HEADERS}
       VIRTUAL_PORT: ${KC_HTTP_PORT}
       VIRTUAL_HOST: ${DOMAIN}
       LETSENCRYPT_HOST: ${DOMAIN}
