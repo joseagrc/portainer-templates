@@ -4,7 +4,7 @@ services:
   postgres:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRESQL_IMAGE}:${POSTGRESQL_TAG}
-    restart: always
+    restart: unless-stopped
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "keycloak"]
     volumes:
