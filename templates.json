@@ -146,6 +146,11 @@
           "name": "KEYCLOAK_ADMIN_PASSWORD"
         },
         {
+          "default": "forwarded",
+          "label": "Proxy headers",
+          "name": "KC_PROXY_HEADERS"
+        },
+        {
           "default": "keycload.example.org",
           "label": "Domain",
           "name": "DOMAIN"
