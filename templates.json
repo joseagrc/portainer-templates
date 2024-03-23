@@ -142,8 +142,8 @@
         },
         {
           "default": "8080",
-          "label": "Virtual port",
-          "name": "VIRTUAL_PORT"
+          "label": "kc http port",
+          "name": "KC_HTTP_PORT"
         },
         {
           "default": "admin",
