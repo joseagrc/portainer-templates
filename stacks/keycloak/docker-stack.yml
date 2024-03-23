@@ -18,7 +18,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
     restart: unless-stopped
-    command: ["start", "--import-realm"]
+    command: ["start", "--import-realm", "--optimized"]
     environment:
       KC_DB: postgres
       KC_DB_USERNAME: ${POSTGRES_USER}
