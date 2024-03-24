@@ -1029,6 +1029,11 @@
           "name": "LDAP_DOMAIN"
         },
         {
+          "default": "dc=openldap,dc=example,dc=org",
+          "label": "LDAP Base DN",
+          "name": "LDAP_BASE_DN"
+        },
+        {
           "default": "389",
           "label": "LDAP Port",
           "name": "LDAP_PORT"
