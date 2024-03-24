@@ -126,7 +126,7 @@
           "name": "KEYCLOAK_TAG"
         },
         {
-          "default": "start --import-realm --optimized",
+          "default": "start-dev --import-realm --optimized",
           "label": "Keycloak cmmand",
           "name": "KEYCLOAK_COMMAND"
         },
@@ -137,7 +137,7 @@
         },
         {
           "default": "8080",
-          "label": "kc http port",
+          "label": "kC http port",
           "name": "KC_HTTP_PORT"
         },
         {
