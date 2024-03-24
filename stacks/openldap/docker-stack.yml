@@ -25,7 +25,7 @@ services:
     depends_on:
       - openldap
     environment:
-      PHPLDAPADMIN_LDAP_HOSTS: openldap
+      PHPLDAPADMIN_LDAP_HOSTS: ${LDAP_HOSTNAME}
       PHPLDAPADMIN_HTTPS: false
       VIRTUAL_HOST: ${PHPLDAPADMIN_URL}
       LETSENCRYPT_HOST: ${PHPLDAPADMIN_URL}
