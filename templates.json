@@ -101,7 +101,7 @@
           "name": "POSTGRES_TAG"
         },
         {
-          "default": "keycloak_db_user",
+          "default": "keycloak",
           "label": "PostgreSQL database username",
           "name": "POSTGRES_USER"
         },
@@ -111,7 +111,7 @@
           "name": "POSTGRES_PASSWORD"
         },
         {
-          "default": "keycloak_db",
+          "default": "keycloak",
           "label": "PostgreSQL database name",
           "name": "POSTGRES_DB"
         },
