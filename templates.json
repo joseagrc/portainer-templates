@@ -151,7 +151,7 @@
           "name": "KC_PROXY_HEADERS"
         },
         {
-          "default": "keycload.example.org",
+          "default": "keycloak.example.org",
           "label": "Domain",
           "name": "DOMAIN"
         },
