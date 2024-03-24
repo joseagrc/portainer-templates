@@ -27,6 +27,8 @@ services:
     environment:
       PHPLDAPADMIN_LDAP_HOSTS: |
         - ${LDAP_HOSTNAME}:
+            - server:
+                - ldap://${LDAP_HOSTNAME}
       PHPLDAPADMIN_HTTPS: false
       VIRTUAL_HOST: ${PHPLDAPADMIN_URL}
       LETSENCRYPT_HOST: ${PHPLDAPADMIN_URL}
