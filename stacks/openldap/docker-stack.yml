@@ -28,7 +28,7 @@ services:
       PHPLDAPADMIN_LDAP_HOSTS: |
         - ${LDAP_HOSTNAME}:
             - server:
-                - tls: true
+                - ldap://${LDAP_HOSTNAME}
             - login:
                 - bind_id: ${BIND_ID}
       PHPLDAPADMIN_HTTPS: false
