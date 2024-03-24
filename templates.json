@@ -126,6 +126,11 @@
           "name": "KEYCLOAK_TAG"
         },
         {
+          "default": "start --import-realm --optimized",
+          "label": "Keycloak cmmand",
+          "name": "KEYCLOAK_COMMAND"
+        },
+        {
           "default": "keycloak",
           "label": "Keycloak realm name",
           "name": "KC_REALM_NAME"
