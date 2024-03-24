@@ -24,6 +24,7 @@ services:
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_URL: "jdbc:postgresql://postgres:5432/${POSTGRES_DB}"
+      KC_HOSTNAME: ${DOMAIN}
       KC_REALM_NAME: ${KC_REALM_NAME}
       KC_HTTP_PORT: ${KC_HTTP_PORT}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
