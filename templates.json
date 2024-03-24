@@ -1068,6 +1068,11 @@
           "name": "PHPLDAPADMIN_TAG"
         },
         {
+          "default": "cn=admin,dc=openldap,dc=example,dc=org",
+          "label": "Bind Id",
+          "name": "BIND_ID"
+        },
+        {
           "default": "phpldapadmin.example.org",
           "label": "PHPLDAPADMIN URL",
           "name": "PHPLDAPADMIN_URL"
