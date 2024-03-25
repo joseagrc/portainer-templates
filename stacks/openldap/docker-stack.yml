@@ -17,6 +17,9 @@ services:
     ports:
       - ${LDAP_PORT}:389
       - ${LDAPS_PORT}:636
+    volumes:
+      - config:/etc/ldap/slapd.d
+      - database:/var/lib/ldap
 
   phpldapadmin:
     container_name: ${PHPLDAPADMIN_CONTAINER_NAME}
@@ -31,7 +34,8 @@ services:
       LETSENCRYPT_HOST: ${PHPLDAPADMIN_URL}
 
 volumes:
-  data:
+  config:
+  database:
 
 networks:
   default:
