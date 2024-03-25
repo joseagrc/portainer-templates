@@ -1010,7 +1010,7 @@
           "name": "LDAP_TAG"
         },
         {
-          "default": "openldap.example.org",
+          "default": "openldap",
           "label": "LDAP Hostname",
           "name": "LDAP_HOSTNAME"
         },
