@@ -1035,9 +1035,24 @@
           "name": "LDAP_BINDDN"
         },
         {
-          "default": "true",
+          "default": "false",
           "label": "LDAP Force STARTTLS",
           "name": "LDAP_FORCE_STARTTLS"
+        },
+        {
+          "default": "/etc/ldap/ssl/fullchain.crt",
+          "label": "LDAP CA Cert",
+          "name": "LDAP_CA_CERT"
+        },
+        {
+          "default": "/etc/ldap/ssl/ldap.key",
+          "label": "LDAP SSL Key",
+          "name": "LDAP_SSL_KEY"
+        },
+        {
+          "default": "/etc/ldap/ssl/ldap.crt",
+          "label": "LDAP SSL Cert",
+          "name": "LDAP_SSL_CERT"
         },
         {
           "default": "GoodNewsEveryone",
