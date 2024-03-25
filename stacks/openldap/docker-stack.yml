@@ -6,7 +6,6 @@ services:
     restart: always
     hostname: ${LDAP_HOSTNAME}
     environment:
-      HOSTNAME: ${LDAP_HOSTNAME}
       LDAP_ORGANISATION: ${LDAP_ORGANISATION}
       LDAP_DOMAIN: ${LDAP_DOMAIN}
       LDAP_BASEDN: ${LDAP_BASEDN}
