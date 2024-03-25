@@ -1,7 +1,7 @@
 version: '3'
 services:
   openldap:
-    container_name: ${LDAP_CONTAINER_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-openldap
     image: ${LDAP_IMAGE}:${LDAP_TAG}
     restart: always
     hostname: ${LDAP_HOSTNAME}
@@ -9,9 +9,8 @@ services:
       HOSTNAME: ${LDAP_HOSTNAME}
       LDAP_ORGANISATION: ${LDAP_ORGANISATION}
       LDAP_DOMAIN: ${LDAP_DOMAIN}
-      LDAP_BASE_DN: ${LDAP_BASE_DN}
-      LDAP_ADMIN_PASSWORD: ${LDAP_ADMIN_PASSWORD}
-      LDAP_CONFIG_PASSWORD: ${LDAP_CONFIG_PASSWORD}
+      LDAP_BINDDN: ${LDAP_BINDDN}
+      LDAP_SECRET: ${LDAP_SECRET}
       VIRTUAL_HOST: ${LDAP_HOSTNAME}
       LETSENCRYPT_HOST: ${LDAP_HOSTNAME}
     ports:
@@ -19,10 +18,12 @@ services:
       - ${LDAPS_PORT}:636
     volumes:
       - config:/etc/ldap/slapd.d
+      - ssl:/etc/ldap/ssl
       - database:/var/lib/ldap
+      - tmp:/run/slapd
 
   phpldapadmin:
-    container_name: ${PHPLDAPADMIN_CONTAINER_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}-phpldapadmin
     image: ${PHPLDAPADMIN_IMAGE}:${PHPLDAPADMIN_TAG}
     restart: always
     depends_on:
@@ -35,7 +36,9 @@ services:
 
 volumes:
   config:
+  ssl:
   database:
+  tmp:
 
 networks:
   default:

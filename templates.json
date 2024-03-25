@@ -1004,12 +1004,12 @@
           "name": "LDAP_CONTAINER_NAME"
         },     
         {
-          "default": "osixia/openldap",
+          "default": "registry.gruposolutema.com/openldap/docker-openldap",
           "label": "LDAP Image",
           "name": "LDAP_IMAGE"
         },
         {
-          "default": "1.5.0",
+          "default": "latest",
           "label": "LDAP Tag",
           "name": "LDAP_TAG"
         },
@@ -1019,7 +1019,7 @@
           "name": "LDAP_HOSTNAME"
         },
         {
-          "default": "My Company",
+          "default": "My Company, SRL",
           "label": "LDAP Organisation",
           "name": "LDAP_ORGANISATION"
         },
@@ -1029,9 +1029,14 @@
           "name": "LDAP_DOMAIN"
         },
         {
-          "default": "dc=openldap,dc=example,dc=org",
-          "label": "LDAP Base DN",
-          "name": "LDAP_BASE_DN"
+          "default": "cn=admin,dc=openldap,dc=example,dc=org",
+          "label": "LDAP Bind DN",
+          "name": "LDAP_BINDDN"
+        },
+        {
+          "default": "GoodNewsEveryone",
+          "label": "LDAP Secret",
+          "name": "LDAP_SECRET"
         },
         {
           "default": "389",
@@ -1042,16 +1047,6 @@
           "default": "636",
           "label": "LDAPS Port",
           "name": "LDAPS_PORT"
-        },
-        {
-          "default": "AdminPassword",
-          "label": "LDAP Admin Password",
-          "name": "LDAP_ADMIN_PASSWORD"
-        },
-        {
-          "default": "ConfigPassword",
-          "label": "LDAP Config Password",
-          "name": "LDAP_CONFIG_PASSWORD"
         },
         {
           "label": "phpLDAPadmin Container Name",
