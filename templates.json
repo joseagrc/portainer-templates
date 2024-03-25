@@ -998,11 +998,7 @@
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/openldap/docker-stack.yml"
       },
-      "env": [
-        {
-          "label": "LDAP container name",
-          "name": "LDAP_CONTAINER_NAME"
-        },     
+      "env": [   
         {
           "default": "registry.gruposolutema.com/openldap/docker-openldap",
           "label": "LDAP Image",
@@ -1047,10 +1043,6 @@
           "default": "636",
           "label": "LDAPS Port",
           "name": "LDAPS_PORT"
-        },
-        {
-          "label": "phpLDAPadmin Container Name",
-          "name": "PHPLDAPADMIN_CONTAINER_NAME"
         },
         {
           "default": "osixia/phpldapadmin",
