@@ -1025,9 +1025,19 @@
           "name": "LDAP_DOMAIN"
         },
         {
+          "default": "dc=example,dc=org",
+          "label": "LDAP Base DN",
+          "name": "LDAP_BASEDN"
+        },
+        {
           "default": "cn=admin,dc=openldap,dc=example,dc=org",
           "label": "LDAP Bind DN",
           "name": "LDAP_BINDDN"
+        },
+        {
+          "default": "true",
+          "label": "LDAP Force STARTTLS",
+          "name": "LDAP_FORCE_STARTTLS"
         },
         {
           "default": "GoodNewsEveryone",
