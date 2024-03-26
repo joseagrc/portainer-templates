@@ -343,7 +343,7 @@
           "name": "PHORGE_IMAGE"
         },    
         {
-          "default": "2023.32",
+          "default": "2023.49",
           "label": "Phorge tag",
           "name": "PHORGE_TAG"
         },
