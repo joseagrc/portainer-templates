@@ -28,7 +28,7 @@ services:
       DB_HOST: mariadb
       DB_PORT: ${MYSQL_PORT}
       DB_USER: ${MYSQL_USER}
-      DB_PASS: ${MYSQL_PASS}
+      DB_PASS: ${MYSQL_PASSWORD}
       BASE_URI: https://${URL_DOMAIN}
       PHABRICATOR_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN}
       VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN},cdn.${URL_DOMAIN},www.cdn.${URL_DOMAIN}
