@@ -24,6 +24,8 @@ services:
       - mariadb
     links:
       - mariadb
+    ports:
+      - 80:80
     environment:
       DB_HOST: mariadb
       DB_PORT: ${MYSQL_PORT}
