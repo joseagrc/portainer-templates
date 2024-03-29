@@ -440,6 +440,11 @@
           "name": "PHORGE_TAG"
         },
         {
+          "default": "81",
+          "label": "Web Port",
+          "name": "WEB_PORT"
+        },
+        {
           "default": "example.com",
           "label": "URL Domain",
           "name": "URL_DOMAIN"
