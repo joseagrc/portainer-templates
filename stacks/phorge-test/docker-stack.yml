@@ -7,9 +7,11 @@ services:
     volumes:
        - phorge_db:/var/lib/mysql
     ports:
-      - ${MARIADB_PORT}:3306
+      - ${MYSQL_PORT}:3306
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
 
   phorge:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -23,11 +25,10 @@ services:
     links:
       - mariadb
     environment:
-      UPGRADE_ON_RESTART: true
       DB_HOST: mariadb
-      DB_PORT: ${MARIADB_PORT}
-      DB_USER: ${MARIADB_USER}
-      DB_PASS: ${MARIADB_PASS}
+      DB_PORT: ${MYSQL_PORT}
+      DB_USER: ${MYSQL_USER}
+      DB_PASS: ${MYSQL_PASS}
       BASE_URI: https://${URL_DOMAIN}
       PHABRICATOR_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN}
       VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN},cdn.${URL_DOMAIN},www.cdn.${URL_DOMAIN}

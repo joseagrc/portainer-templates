@@ -386,16 +386,6 @@
         }
       ]
     },
-
-
-
-
-
-
-
-
-
-
     {
       "type": 3,
       "title": "Phorge Test",
@@ -421,17 +411,22 @@
         },
         {
           "label": "3306",
-          "name": "MARIADB_PORT"
+          "name": "MYSQL_PORT"
         },
         {
           "default": "root",
-          "label": "MariaDB user",
-          "name": "MARIADB_USER"
+          "label": "MySQL user",
+          "name": "MYSQL_USER"
         },
         {
           "default": "root",
-          "label": "MariaDB pass",
-          "name": "MARIADB_PASS"
+          "label": "MySQL pass",
+          "name": "MYSQL_PASS"
+        },
+        {
+          "default": "root",
+          "label": "MySQL root pass",
+          "name": "MYSQL_ROOT_PASSWORD"
         },
         {
           "default": "registry.gruposolutema.com/phorge/docker-phorge",
@@ -439,41 +434,14 @@
           "name": "PHORGE_IMAGE"
         },
         {
-          "default": "2023.49",
+          "default": "2023.49-test",
           "label": "Phorge tag",
           "name": "PHORGE_TAG"
-        },
-        {
-          "label": "Phorge title",
-          "name": "PHABRICATOR_TITLE"
         },
         {
           "default": "example.com",
           "label": "URL Domain",
           "name": "URL_DOMAIN"
-        },
-        {
-          "default": "mail.example.com",
-          "label": "SMTP host",
-          "name": "SMTP_HOST"
-        },
-        {
-          "default": "465",
-          "label": "SMTP port",
-          "name": "SMTP_PORT"
-        },
-        {
-          "label": "SMTP user",
-          "name": "SMTP_USER"
-        },
-        {
-          "label": "SMTP password",
-          "name": "SMTP_PASSWORD"
-        },
-        {
-          "default": "tls",
-          "label": "SMTP protocol",
-          "name": "SMTP_PROTOCOL"
         },
         {
           "default": "proxy",
@@ -482,21 +450,6 @@
         }
       ]
     },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     {
       "type": 3,
       "title": "Odoo",
