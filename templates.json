@@ -421,7 +421,7 @@
         },
         {
           "default": "root",
-          "label": "MySQL pass",
+          "label": "MySQL password",
           "name": "MYSQL_PASSWORD"
         },
         {
