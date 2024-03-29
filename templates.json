@@ -410,7 +410,8 @@
           "name": "MARIADB_TAG"
         },
         {
-          "label": "3306",
+          "default": "3306",
+          "label": "MySQL Port",
           "name": "MYSQL_PORT"
         },
         {
