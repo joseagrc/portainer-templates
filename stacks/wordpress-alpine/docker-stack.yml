@@ -47,6 +47,8 @@ services:
       VIRTUAL_HOST: ${WORDPRESS_DOMAIN}
       LETSENCRYPT_HOST: ${WORDPRESS_DOMAIN}
       WORDPRESS_CONFIG_EXTRA: |
+        define('WP_HOME', 'https://www.${WORDPRESS_DOMAIN}');
+        define('WP_SITEURL', 'https://www.${WORDPRESS_DOMAIN}');
         define('WP_ALLOW_MULTISITE', ${WP_ALLOW_MULTISITE});
         define('WP_CACHE', ${WP_CACHE});
         define('WP_REDIS_PREFIX', '${WP_REDIS_PREFIX}');
