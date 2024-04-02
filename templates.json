@@ -360,7 +360,7 @@
           "name": "WORDPRESS_IMAGE"
         },
         {
-          "default": "6.4.3-php8.3-alpine",
+          "default": "6.4.3-php8.3-fpm-alpine",
           "label": "Wordpress tag",
           "name": "WORDPRESS_TAG"
         },
