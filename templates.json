@@ -307,6 +307,121 @@
     },
     {
       "type": 3,
+      "title": "WordPress + Alpine",
+      "description": "WordPress setup with Alpine OS + a Mariadb database",
+      "note": "Deploys a WordPress instance connected to a Mariadb database.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-wordpress-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/wordpress/docker-stack.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "Database image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.2",
+          "label": "Database tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "MYSQL_DATABASE"
+        },
+        {
+          "label": "Database username",
+          "name": "MYSQL_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "MYSQL_PASSWORD"
+        },
+        {
+          "label": "Database root password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "default": "phpmyadmin",
+          "label": "Phpmyadmin image",
+          "name": "PHPMYADMIN_IMAGE"
+        },
+        {
+          "default": "5.2.1-apache",
+          "label": "Phpmyadmin tag",
+          "name": "PHPMYADMIN_TAG"
+        },
+        {
+          "default": "registry.gruposolutema.com/wordpress/wordpress",
+          "label": "Wordpress image",
+          "name": "WORDPRESS_IMAGE"
+        },
+        {
+          "default": "6.4.3-php8.3-alpine",
+          "label": "Wordpress tag",
+          "name": "WORDPRESS_TAG"
+        },
+        {
+          "default": "200k",
+          "label": "Max Log File Size",
+          "name": "LOGGING_OPTIONS_MAX_SIZE"
+        },
+        {
+          "default": "wp_",
+          "label": "Table prefix",
+          "name": "WORDPRESS_TABLE_PREFIX"
+        },
+        {
+          "default": "false",
+          "label": "Enable Multisite feature",
+          "name": "WP_ALLOW_MULTISITE"
+        },
+        {
+          "default": "true",
+          "label": "Enable Cache feature",
+          "name": "WP_CACHE"
+        },
+        {
+          "label": "Redis host",
+          "name": "WP_REDIS_HOST"
+        },
+        {
+          "default": "6379",
+          "label": "Redis port",
+          "name": "WP_REDIS_PORT"
+        },
+        {
+          "default": "domain.com",
+          "label": "WP Redis  prefix",
+          "name": "WP_REDIS_PREFIX"
+        },
+        {
+          "default": "domain.com",
+          "label": "WP Cache Key salt",
+          "name": "WP_CACHE_KEY_SALT"
+        },
+        {
+          "default": "phpmyadmin.domain.com,www.phpmyadmin.domain.com",
+          "label": "phpMyAdmin Domain",
+          "name": "PHPMYADMIN_DOMAIN"
+        },
+        {
+          "default": "domain.com,www.domain.com",
+          "label": "Wordpress Domain",
+          "name": "WORDPRESS_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "type": 3,
       "title": "Phorge",
       "description": "Phorge is a collection of web applications which help software companies build better software.",
       "note": "Phorge is a community-maintained fork of Phabricator.",
