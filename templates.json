@@ -1469,62 +1469,23 @@
       },
       "env": [
         {
-          "default": "registry.gruposolutema.com/docker-base-images/docker-postgres",
-          "label": "Database image",
-          "name": "POSTGRES_IMAGE"
+          "default": "vaultwarden/server",
+          "label": "Vaultwarden Image",
+          "name": "VAULTWARDEN_IMAGE"
         },
         {
-          "default": "16",
-          "label": "Database tag",
-          "name": "POSTGRES_TAG"
+          "default": "1.34.3",
+          "label": "Vaultwarden Tag",
+          "name": "VAULTWARDEN_TAG"
         },
         {
-          "label": "Database name",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "label": "Database username",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
-          "label": "Tryton image",
-          "name": "TRYTON_IMAGE"
-        },
-        {
-          "default": "7.0-office",
-          "label": "Tryton tag",
-          "name": "TRYTON_TAG"
-        },
-        {
-          "label": "Email from",
-          "name": "EMAIL_FROM"
-        },
-        {
-          "default": "es_419",
-          "label": "Tryton language",
-          "name": "TRYTOND_LANGUAGE"
-        },
-        {
-          "label": "Tryton Admin E-mail",
-          "name": "TRYTOND_ADMIN_EMAIL"
-        },
-        {
-          "label": "Tryton Admin Password",
-          "name": "TRYTOND_ADMIN_PASSWORD"
-        },
-        {
-          "default": "tryton.example.com",
-          "label": "URL domain",
-          "name": "URL_DOMAIN"
+          "default": "vw.domain.tld",
+          "label": "Domain",
+          "name": "DOMAIN"
         },
         {
           "default": "proxy",
-          "label": "Network name",
+          "label": "Network",
           "name": "NETWORK"
         }
       ]
