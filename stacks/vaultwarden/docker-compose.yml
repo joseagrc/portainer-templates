@@ -5,7 +5,7 @@ services:
     hostname: ${COMPOSE_PROJECT_NAME}-app
     restart: unless-stopped
     volumes:
-      - vw-data/:/data/
+      - vw-data:/data/
     environment:
       DOMAIN: https://${DOMAIN}
     labels:

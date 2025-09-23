@@ -1462,7 +1462,7 @@
       "note": "Deploys a Vaultwarden instance.",
       "categories": ["Password Manager"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/traefik/stacks/vaultwarden/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/vaultwarden/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/vaultwarden/docker-compose.yml"
