@@ -1464,7 +1464,7 @@
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/traefik/stacks/vaultwarden/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates/tree/traefik",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/vaultwarden/docker-compose.yml"
       },
       "env": [
