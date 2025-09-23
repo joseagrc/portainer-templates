@@ -1,0 +1,32 @@
+services:
+  vaultwarden:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${VAULTWARDEN_IMAGE}:${VAULTWARDEN_TAG}
+    hostname: ${COMPOSE_PROJECT_NAME}-app
+    restart: unless-stopped
+    volumes:
+      - vw-data/:/data/
+    environment:
+      DOMAIN: https://${DOMAIN}
+    labels:
+      - "traefik.enable=true"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${DOMAIN}`) || Host(`www.${DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${DOMAIN}`) || Host(`www.${DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend Vaultwarden
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
+
+volumes:
+  vw-data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true

@@ -1,0 +1,20 @@
+version: "3"
+services:
+  runner:
+    image: ${GITEA_ACT_RUNNER_IMAGE}:${GITEA_ACT_RUNNER_TAG}
+    restart: always
+    command: act_runner generate-config > /data/config.yaml
+    environment:
+      GITEA_INSTANCE_URL: "${GITEA_INSTANCE_URL}"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "${GITEA_RUNNER_REGISTRATION_TOKEN}"
+    volumes:
+      - data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
+volumes:
+  data:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true

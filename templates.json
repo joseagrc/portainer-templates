@@ -1,17 +1,122 @@
 {
-  "version": "2",
+  "version": "3",
   "templates": [
       {
+      "id": 1,
+      "type": 3,
+      "title": "Android",
+      "description": "Android",
+      "note": "Deploys a android instance.",
+      "categories": ["OS"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/android/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/android/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "budtmo/docker-android",
+          "label": "Android Image",
+          "name": "ANDROID_IMAGE"
+        },
+        {
+          "default": "emulator_11.0",
+          "label": "Android Tag",
+          "name": "ANDROID_TAG"
+        },
+        {
+          "default": "Samsung Galaxy S10",
+          "label": "Emulator Device",
+          "name": "EMULATOR_DEVICE"
+        },
+        {
+          "default": "android.example.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 2,
+      "type": 3,
+      "title": "Drone",
+      "description": "Drone",
+      "note": "Deploys a drone server instance.",
+      "categories": ["CI/CD"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/drone/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/drone/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "drone/drone",
+          "label": "Drone Image",
+          "name": "DRONE_IMAGE"
+        },
+        {
+          "default": "2.24",
+          "label": "Drone Tag",
+          "name": "DRONE_TAG"
+        },
+        {
+          "default": "gitea.example.com",
+          "label": "Drone Gitea Server",
+          "name": "DRONE_GITEA_SERVER"
+        },
+        {
+          "label": "Drone Gitea Client ID",
+          "name": "DRONE_GITEA_CLIENT_ID"
+        },
+        {
+          "label": "Drone Gitea Client Secret",
+          "name": "DRONE_GITEA_CLIENT_SECRET"
+        },
+        {
+          "label": "Drone RPC Secret",
+          "name": "DRONE_RPC_SECRET"
+        },
+        {
+          "default": "drone.example.com",
+          "label": "Drone Server Host",
+          "name": "DRONE_SERVER_HOST"
+        },
+        {
+          "default": "https",
+          "label": "Drone Server Proto",
+          "name": "DRONE_SERVER_PROTO"
+        },
+        {
+          "default": "drone.example.com",
+          "label": "Domain",
+          "name": "DRONE_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 3,
       "type": 3,
       "title": "Gitea",
       "description": "Gitea setup with a MySQL database",
       "note": "Deploys a Gitea instance connected to a MySQL database.",
       "categories": ["CMS"],
       "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/5603d5a79452bc237ac44f663d39f9aa.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitea/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gitea/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gitea/docker-compose.yml"
       },
       "env": [
         {
@@ -25,6 +130,7 @@
           "name": "MYSQL_TAG"
         },
         {
+          "default": "gitea_example",
           "label": "MySQL database username",
           "name": "MYSQL_USER"
         },
@@ -37,13 +143,9 @@
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
+          "default": "gitea_example",
           "label": "MySQL database name",
           "name": "MYSQL_DATABASE"
-        },
-        {
-          "default": "3306",
-          "label": "MySQL port",
-          "name": "MYSQL_PORT"
         },
         {
           "default": "gitea/gitea",
@@ -51,22 +153,17 @@
           "name": "GITEA_IMAGE"
         },
         {
-          "default": "1.21.1",
+          "default": "1.22.0",
           "label": "Gitea tag",
           "name": "GITEA_TAG"
         },
         {
-          "default": "3000",
-          "label": "Gitea port",
-          "name": "GITEA_PORT"
-        },
-        {
           "default": "2222",
-          "label": "Gitea ssh port",
+          "label": "Gitea SSH Port",
           "name": "GITEA_SSH_PORT"
         },
         {
-          "default": "domain.com or gitea.domain.com",
+          "default": "code.example.com",
           "label": "Domain",
           "name": "DOMAIN"
         },
@@ -78,16 +175,17 @@
       ]
       },
       {
+      "id": 4,
       "type": 3,
-      "title": "Gitea runner",
+      "title": "Gitea act runner",
       "description": "Gitea runner setup",
-      "note": "Deploys a Gitea runner.",
+      "note": "Deploys a Gitea act runner.",
       "categories": ["CI/CD"],
       "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/5603d5a79452bc237ac44f663d39f9aa.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitea-act-runner/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gitea-runner/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gitea-act-runner/docker-compose.yml"
       },
       "env": [
         {
@@ -96,7 +194,7 @@
           "name": "GITEA_ACT_RUNNER_IMAGE"
         },
         {
-          "default": "nightly",
+          "default": "0.2.10",
           "label": "Gitea act runner tag",
           "name": "GITEA_ACT_RUNNER_TAG"
         },
@@ -114,858 +212,19 @@
           "name": "NETWORK"
         }
        ]
-      },
-      {
-      "type": 3,
-      "title": "Zabbix Server",
-      "description": "Zabbix Server setup",
-      "note": "Deploys a Zabbix Server.",
-      "categories": ["Monitor Tool"],
-      "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/80546ec7b550e478c2333bef451ae888.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/zabbix/docker-stack.yml"
-      },
-      "env": [
-        {
-          "default": "postgres",
-          "label": "Postgres image",
-          "name": "POSTGRES_IMAGE"
-        },
-        {
-          "default": "latest",
-          "label": "Postgres tag",
-          "name": "POSTGRES_TAG"
-        },
-        {
-          "default": "zabbix",
-          "label": "Postgres user",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "default": "PasswOrd",
-          "label": "Postgres password",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "default": "zabbixdb",
-          "label": "Postgres database",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "default": "zabbix/zabbix-server-pgsql",
-          "label": "Zabbix server image",
-          "name": "ZABBIX_SERVER_IMAGE"
-        },
-        {
-          "default": "latest",
-          "label": "Zabbix server tag",
-          "name": "ZABBIX_SERVER_TAG"
-        },
-        {
-          "default": "zabbix/zabbix-web-nginx-pgsql",
-          "label": "Zabbix web image",
-          "name": "ZABBIX_WEB_IMAGE"
-        },
-        {
-          "default": "latest",
-          "label": "Zabbix web tag",
-          "name": "ZABBIX_WEB_TAG"
-        },
-        {
-          "default": "America/Santo_Domingo",
-          "label": "PHP timezone",
-          "name": "PHP_TZ"
-        },
-        {
-          "default": "zabbix.example.com",
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
     },
     {
-      "type": 3,
-      "title": "WordPress",
-      "description": "WordPress setup with a Mariadb database",
-      "note": "Deploys a WordPress instance connected to a Mariadb database.",
-      "categories": ["CMS"],
-      "platform": "linux",
-      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-wordpress-logo.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/wordpress/docker-stack.yml"
-      },
-      "env": [
-        {
-          "default": "mariadb",
-          "label": "Database image",
-          "name": "MARIADB_IMAGE"
-        },
-        {
-          "default": "11.2",
-          "label": "Database tag",
-          "name": "MARIADB_TAG"
-        },
-        {
-          "label": "Database name",
-          "name": "MYSQL_DATABASE"
-        },
-        {
-          "label": "Database username",
-          "name": "MYSQL_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "MYSQL_PASSWORD"
-        },
-        {
-          "label": "Database root password",
-          "name": "MYSQL_ROOT_PASSWORD"
-        },
-        {
-          "default": "phpmyadmin",
-          "label": "Phpmyadmin image",
-          "name": "PHPMYADMIN_IMAGE"
-        },
-        {
-          "default": "5.2.1-apache",
-          "label": "Phpmyadmin tag",
-          "name": "PHPMYADMIN_TAG"
-        },
-        {
-          "default": "registry.gruposolutema.com/wordpress/wordpress",
-          "label": "Wordpress image",
-          "name": "WORDPRESS_IMAGE"
-        },
-        {
-          "default": "6.4.2-php8.2-apache",
-          "label": "Wordpress tag",
-          "name": "WORDPRESS_TAG"
-        },
-        {
-          "default": "200k",
-          "label": "Max Log File Size",
-          "name": "LOGGING_OPTIONS_MAX_SIZE"
-        },
-        {
-          "default": "wp_",
-          "label": "Table prefix",
-          "name": "WORDPRESS_TABLE_PREFIX"
-        },
-        {
-          "default": "false",
-          "label": "Enable Multisite feature",
-          "name": "WP_ALLOW_MULTISITE"
-        },
-        {
-          "default": "true",
-          "label": "Enable Cache feature",
-          "name": "WP_CACHE"
-        },
-        {
-          "label": "Redis host",
-          "name": "WP_REDIS_HOST"
-        },
-        {
-          "default": "6379",
-          "label": "Redis port",
-          "name": "WP_REDIS_PORT"
-        },
-        {
-          "default": "domain.com",
-          "label": "WP Redis  prefix",
-          "name": "WP_REDIS_PREFIX"
-        },
-        {
-          "default": "domain.com",
-          "label": "WP Cache Key salt",
-          "name": "WP_CACHE_KEY_SALT"
-        },
-        {
-          "default": "phpmyadmin.domain.com,www.phpmyadmin.domain.com",
-          "label": "phpMyAdmin Domain",
-          "name": "PHPMYADMIN_DOMAIN"
-        },
-        {
-          "default": "domain.com,www.domain.com",
-          "label": "Wordpress Domain",
-          "name": "WORDPRESS_DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "WordPress + Alpine",
-      "description": "WordPress setup with Alpine OS + a Mariadb database",
-      "note": "Deploys a WordPress instance connected to a Mariadb database.",
-      "categories": ["CMS"],
-      "platform": "linux",
-      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-wordpress-logo.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/wordpress/docker-stack.yml"
-      },
-      "env": [
-        {
-          "default": "mariadb",
-          "label": "Database image",
-          "name": "MARIADB_IMAGE"
-        },
-        {
-          "default": "11.2",
-          "label": "Database tag",
-          "name": "MARIADB_TAG"
-        },
-        {
-          "label": "Database name",
-          "name": "MYSQL_DATABASE"
-        },
-        {
-          "label": "Database username",
-          "name": "MYSQL_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "MYSQL_PASSWORD"
-        },
-        {
-          "label": "Database root password",
-          "name": "MYSQL_ROOT_PASSWORD"
-        },
-        {
-          "default": "phpmyadmin",
-          "label": "Phpmyadmin image",
-          "name": "PHPMYADMIN_IMAGE"
-        },
-        {
-          "default": "5.2.1-apache",
-          "label": "Phpmyadmin tag",
-          "name": "PHPMYADMIN_TAG"
-        },
-        {
-          "default": "registry.gruposolutema.com/wordpress/wordpress",
-          "label": "Wordpress image",
-          "name": "WORDPRESS_IMAGE"
-        },
-        {
-          "default": "6.4.3-php8.3-fpm-alpine",
-          "label": "Wordpress tag",
-          "name": "WORDPRESS_TAG"
-        },
-        {
-          "default": "200k",
-          "label": "Max Log File Size",
-          "name": "LOGGING_OPTIONS_MAX_SIZE"
-        },
-        {
-          "default": "wp_",
-          "label": "Table prefix",
-          "name": "WORDPRESS_TABLE_PREFIX"
-        },
-        {
-          "default": "false",
-          "label": "Enable Multisite feature",
-          "name": "WP_ALLOW_MULTISITE"
-        },
-        {
-          "default": "true",
-          "label": "Enable Cache feature",
-          "name": "WP_CACHE"
-        },
-        {
-          "label": "Redis host",
-          "name": "WP_REDIS_HOST"
-        },
-        {
-          "default": "6379",
-          "label": "Redis port",
-          "name": "WP_REDIS_PORT"
-        },
-        {
-          "default": "domain.com",
-          "label": "WP Redis  prefix",
-          "name": "WP_REDIS_PREFIX"
-        },
-        {
-          "default": "domain.com",
-          "label": "WP Cache Key salt",
-          "name": "WP_CACHE_KEY_SALT"
-        },
-        {
-          "default": "phpmyadmin.domain.com,www.phpmyadmin.domain.com",
-          "label": "phpMyAdmin Domain",
-          "name": "PHPMYADMIN_DOMAIN"
-        },
-        {
-          "default": "domain.com,www.domain.com",
-          "label": "Wordpress Domain",
-          "name": "WORDPRESS_DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "Phorge",
-      "description": "Phorge is a collection of web applications which help software companies build better software.",
-      "note": "Phorge is a community-maintained fork of Phabricator.",
-      "categories": ["continuous-integration"],
-      "platform": "linux",
-      "logo": "https://phorge.it/img/logo.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/phorge/docker-stack.yml"
-      },
-      "env": [
-        {
-          "default": "registry.gruposolutema.com/phorge/docker-phorge-mariadb",
-          "label": "MariaDB image",
-          "name": "MARIADB_IMAGE"
-        },
-        {
-          "default": "11.2.2",
-          "label": "MariaDB tag",
-          "name": "MARIADB_TAG"
-        },
-        {
-          "label": "Database root password",
-          "name": "MARIADB_ROOT_PASSWORD"
-        },
-        {
-          "default": "3306",
-          "label": "MariaDB port",
-          "name": "MARIADB_PORT"
-        },
-        {
-          "default": "registry.gruposolutema.com/phorge/docker-phorge",
-          "label": "Phorge image",
-          "name": "PHORGE_IMAGE"
-        },    
-        {
-          "default": "2023.49",
-          "label": "Phorge tag",
-          "name": "PHORGE_TAG"
-        },
-        {
-          "label": "Phorge title",
-          "name": "PHABRICATOR_TITLE"
-        },
-        {
-          "default": "example.com",
-          "label": "URL Domain",
-          "name": "URL_DOMAIN"
-        },
-        {
-          "default": "mail.example.com",
-          "label": "SMTP host",
-          "name": "SMTP_HOST"
-        },
-        {
-          "default": "465",
-          "label": "SMTP port",
-          "name": "SMTP_PORT"
-        },
-        {
-          "label": "SMTP user",
-          "name": "SMTP_USER"
-        },
-        {
-          "label": "SMTP password",
-          "name": "SMTP_PASSWORD"
-        },
-        {
-          "default": "tls",
-          "label": "SMTP protocol",
-          "name": "SMTP_PROTOCOL"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "Odoo",
-      "description": "Open-source business apps.",
-      "categories": ["project-management"],
-      "platform": "linux",
-      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-odoo-logo.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/odoo/docker-stack.yml"
-      },
-      "env": [
-        {
-          "label": "PostgreSQL container name",
-          "name": "POSTGRES_CONTAINER_NAME"
-        },
-        {
-          "default": "postgres",
-          "label": "PostgreSQL image",
-          "name": "POSTGRES_IMAGE"
-        },
-        {
-          "default": "15",
-          "label": "PostgreSQL tag",
-          "name": "POSTGRES_TAG"
-        },
-        {
-          "default": "odoo",
-          "label": "Database username",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "default": "odoo",
-          "label": "Database password for user",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "default": "postgres",
-          "label": "Database name",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "label": "Postgres port",
-          "name": "POSTGRES_PORT"
-        },
-        {
-          "label": "Odoo container name",
-          "name": "ODOO_CONTAINER_NAME"
-        },
-        {
-          "default": "odoo",
-          "label": "Odoo image",
-          "name": "ODOO_IMAGE"
-        },
-        {
-          "default": "15.0",
-          "label": "Odoo tag",
-          "name": "ODOO_TAG"
-        },
-        {
-          "label": "Odoo port",
-          "name": "ODOO_PORT"
-        },
-        {
-          "label": "Chat port",
-          "name": "CHAT_PORT"
-        },
-        {
-          "default": "subdomain.domain.com",
-          "label": "SubDomain",
-          "name": "SUBDOMAIN"
-        },
-        {
-          "default": "domain.com",
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ],
-      "volumes": [
-        {
-          "container": "/var/lib/postgresql/data"
-        },
-        {
-          "container": "/mnt/extra-addons"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "Redis",
-      "description": "Open-source in-memory data structure store",
-      "note": "Deploys a Redis server instance.",
-      "categories": ["database"],
-      "platform": "linux",
-      "logo": "https://d1q6f0aelx0por.cloudfront.net/product-logos/library-redis-logo.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/redis/docker-stack.yml"
-      },
-      "env": [
-        {
-          "default": "redis",
-          "label": "Redis image",
-          "name": "REDIS_IMAGE"
-        },
-        {
-          "default": "7.2.3-alpine",
-          "label": "Redis tag",
-          "name": "REDIS_TAG"
-        },
-        {
-          "default": "6379",
-          "label": "Redis port",
-          "name": "REDIS_PORT"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "Tryton",
-      "description": "Tryton setup with a PostgreSQL database",
-      "note": "Deploys a Tryton instance connected to a PostgreSQL database.",
-      "categories": ["erp"],
-      "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/69af7868a3355ef93f184e362a89a2c4.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/tryton/docker-stack.yml"
-      },
-      "env": [
-        {
-          "label": "PostgreSQL container name",
-          "name": "POSTGRES_CONTAINER_NAME"
-        },
-        {
-          "default": "postgres",
-          "label": "Database image",
-          "name": "POSTGRES_IMAGE"
-        },
-        {
-          "default": "15.3",
-          "label": "Database tag",
-          "name": "POSTGRES_TAG"
-        },
-        {
-          "label": "Database name",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "label": "Database username",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "label": "Database server port",
-          "name": "POSTGRES_PORT"
-        },
-        {
-          "label": "Tryton container name",
-          "name": "TRYTON_CONTAINER_NAME"
-        },
-        {
-          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
-          "label": "Tryton image",
-          "name": "TRYTON_IMAGE"
-        },
-        {
-          "default": "6.8-office",
-          "label": "Tryton tag",
-          "name": "TRYTON_TAG"
-        },
-        {
-          "label": "Email from",
-          "name": "EMAIL_FROM"
-        },
-        {
-          "default": "es_419",
-          "label": "Tryton language",
-          "name": "TRYTOND_LANGUAGE"
-        },
-        {
-          "label": "Tryton Admin E-mail",
-          "name": "TRYTOND_ADMIN_EMAIL"
-        },
-        {
-          "label": "Tryton Admin Password",
-          "name": "TRYTOND_ADMIN_PASSWORD"
-        },
-        {
-          "default": "subdomain.domain.com",
-          "label": "Subdomain",
-          "name": "SUBDOMAIN"
-        },
-        {
-          "default": "domain.com",
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "Tryton Series 7.0",
-      "description": "Tryton 7.0 setup with a PostgreSQL database",
-      "note": "Deploys a Tryton 7.0 instance connected to a PostgreSQL database.",
-      "categories": ["erp"],
-      "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/69af7868a3355ef93f184e362a89a2c4.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/tryton70/docker-stack.yml"
-      },
-      "env": [
-        {
-          "label": "PostgreSQL container name",
-          "name": "POSTGRES_CONTAINER_NAME"
-        },
-        {
-          "default": "postgres",
-          "label": "Database image",
-          "name": "POSTGRES_IMAGE"
-        },
-        {
-          "default": "16.0",
-          "label": "Database tag",
-          "name": "POSTGRES_TAG"
-        },
-        {
-          "label": "Database name",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "label": "Database username",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "label": "Database server port",
-          "name": "POSTGRES_PORT"
-        },
-        {
-          "label": "Tryton container name",
-          "name": "TRYTON_CONTAINER_NAME"
-        },
-        {
-          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
-          "label": "Tryton image",
-          "name": "TRYTON_IMAGE"
-        },
-        {
-          "default": "7.0-office",
-          "label": "Tryton tag",
-          "name": "TRYTON_TAG"
-        },
-        {
-          "label": "Email from",
-          "name": "EMAIL_FROM"
-        },
-        {
-          "default": "es_419",
-          "label": "Tryton language",
-          "name": "TRYTOND_LANGUAGE"
-        },
-        {
-          "label": "Tryton Admin E-mail",
-          "name": "TRYTOND_ADMIN_EMAIL"
-        },
-        {
-          "label": "Tryton Admin Password",
-          "name": "TRYTOND_ADMIN_PASSWORD"
-        },
-        {
-          "default": "subdomain.domain.com",
-          "label": "Subdomain",
-          "name": "SUBDOMAIN"
-        },
-        {
-          "default": "domain.com",
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "GNU Health",
-      "description": "GNU Health setup with a PostgreSQL database",
-      "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
-      "categories": ["health"],
-      "platform": "linux",
-      "logo": "https://files.mastodon.social/accounts/avatars/108/222/419/986/466/608/original/468031f81410a19d.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gnuhealth/docker-stack.yml"
-      },
-      "env": [
-        {
-          "default": "postgres",
-          "label": "Database image",
-          "name": "POSTGRES_IMAGE"
-        },
-        {
-          "default": "15.3",
-          "label": "Database tag",
-          "name": "POSTGRES_TAG"
-        },
-        {
-          "label": "Database name",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "label": "Database username",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "label": "Database password for user",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "label": "Database server port",
-          "name": "POSTGRES_PORT"
-        },
-        {
-          "default": "mailhog/mailhog",
-          "label": "Mailhog image",
-          "name": "MAILHOG_IMAGE"
-        },
-        {
-          "default": "v1.0.1",
-          "label": "Mailhog tag",
-          "name": "MAILHOG_TAG"
-        },
-        {
-          "default": "1025",
-          "label": "Mailhog smtp port",
-          "name": "MAILHOG_SMTP_PORT"
-        },
-        {
-          "default": "8025",
-          "label": "Mailhog http port",
-          "name": "MAILHOG_HTTP_PORT"
-        },
-        {
-          "default": "registry.gruposolutema.com/gnuhealth/republica-dominicana/docker-gnuhealth",
-          "label": "GNU Health image",
-          "name": "GNUHEALTH_IMAGE"
-        },
-        {
-          "default": "4.2.3",
-          "label": "GNU Health tag",
-          "name": "GNUHEALTH_TAG"
-        },
-        {
-          "label": "Email from",
-          "name": "EMAIL_FROM"
-        },
-        {
-          "default": "es_419",
-          "label": "GNU Health language",
-          "name": "GNUHEALTH_LANGUAGE"
-        },
-        {
-          "label": "GNU Health admin e-mail",
-          "name": "GNUHEALTH_ADMIN_EMAIL"
-        },
-        {
-          "label": "GNU Health admin password",
-          "name": "GNUHEALTH_ADMIN_PASSWORD"
-        },
-        {
-          "label": "Subdomain",
-          "name": "SUBDOMAIN"
-        },
-        {
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
-      "type": 3,
-      "title": "cAdvisor (Container Advisor)",
-      "description": "cAdvisor (Container Advisor) provides container users an understanding of the resource usage and performance characteristics of their running containers. It is a running daemon that collects, aggregates, processes, and exports information about running containers.",
-      "note": "Analyzes resource usage and performance characteristics of running containers..",
-      "categories": ["Tools"],
-      "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/24ba30616d2a20673f54c2aee36d159e.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/cadvisor/docker-stack.yml"
-      },
-      "env": [
-        {
-          "label": "cAdvisor container name",
-          "name": "CADVISOR_CONTAINER_NAME"
-        },
-        {
-          "default": "gcr.io/cadvisor/cadvisor",
-          "label": "cAdvisor image",
-          "name": "CADVISOR_IMAGE"
-        },
-        {
-          "default": "v0.47.2",
-          "label": "cAdvisor tag",
-          "name": "CADVISOR_TAG"
-        },
-        {
-          "default": "subdomain.domain.com",
-          "label": "Subdomain",
-          "name": "SUBDOMAIN"
-        },
-        {
-          "default": "domain.com",
-          "label": "Domain",
-          "name": "DOMAIN"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ]
-    },
-    {
+      "id": 5,
       "type": 3,
       "title": "GitLab CE",
       "description": "GitLab, is an Open-source end-to-end software development platform",
       "note": "Deploys a GitLab instance.",
       "categories": ["Code Server"],
       "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/6edd0acaf80f784fab3dd2c31d604e74.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitlab-ce/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gitlab-ce/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gitlab-ce/docker-compose.yml"
       },
       "env": [
         {
@@ -983,7 +242,7 @@
           "name": "GITLAB_CE_IMAGE"
         },
         {
-          "default": "16.7.0-ce.0",
+          "default": "17.3.1-ce.0",
           "label": "GitLab Tag",
           "name": "GITLAB_CE_TAG"
         },
@@ -1050,49 +309,33 @@
       ]
     },
     {
+      "id": 6,
       "type": 3,
       "title": "GitLab CE Runner",
       "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
       "note": "Deploys a GitLab Runner instance.",
       "categories": ["Code Server"],
       "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/6edd0acaf80f784fab3dd2c31d604e74.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gitlab-ce-runner/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gitlab-ce-runner/docker-compose.yml"
       },
       "env": [
-        {
-          "default": "24.0.7-dind-alpine3.19",
-          "label": "Docker Tag",
-          "name": "DOCKER_TAG"
-        },
         {
           "default": "gitlab/gitlab-runner",
           "label": "GitLab CE Runner Image",
           "name": "GITLAB_CE_RUNNER_IMAGE"
         },
         {
-          "default": "v16.7.0",
+          "default": "v17.1.0",
           "label": "GitLab CE Runner Tag",
           "name": "GITLAB_CE_RUNNER_TAG"
-        },
-        {
-          "label": "Runner name",
-          "name": "RUNNER_NAME"
         },
         {
           "default": "America/Santo_Domingo",
           "label": "Time Zone",
           "name": "TZ"
-        },
-        {
-          "label": "Registration Token",
-          "name": "REGISTRATION_TOKEN"
-        },
-        {
-          "label": "CI Server URL",
-          "name": "CI_SERVER_URL"
         },
         {
           "default": "proxy",
@@ -1102,20 +345,446 @@
       ]
     },
     {
+      "id": 7,
+      "type": 3,
+      "title": "GitLab CE Runner Register",
+      "description": "Gitlab Runner register is an application that works with GitLab CI/CD to register the runner.",
+      "note": "Deploys a GitLab Runner instance to register a runner.",
+      "categories": ["Code Server"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gitlab-ce-runner-register/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "v17.1.0",
+          "label": "GitLab CE Runner Tag",
+          "name": "GITLAB_CE_RUNNER_TAG"
+        },
+        {
+          "default": "http://gitlab.example.com/",
+          "label": "Gitlab URL",
+          "name": "GITLAB_URL"
+        },
+        {
+          "label": "Runner Token",
+          "name": "RUNNER_TOKEN"
+        },     
+        {
+          "default": "docker",
+          "label": "Executor",
+          "name": "EXECUTOR"
+        },
+        {
+          "default": "alpine:latest",
+          "label": "Docker Image",
+          "name": "DOCKER_IMAGE"
+        },
+        {
+          "default": "docker-runner",
+          "label": "Description",
+          "name": "DESCRIPTION"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": 3,
+      "title": "GNU Health",
+      "description": "GNU Health is a free/libre health and hospital information system.",
+      "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
+      "categories": ["health"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gnuhealth/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gnuhealth/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "code.gruposolutema.com/solutema/postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16.4",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "label": "Database name",
+          "name": "DB_NAME"
+        },
+        {
+          "label": "Database username",
+          "name": "DB_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "DB_PASS"
+        },
+        {
+          "label": "Database user root",
+          "name": "SUPERUSER_PASS"
+        },
+        {
+          "default": "code.gruposolutema.com/solutema/gnuhealth",
+          "label": "GNU Health image",
+          "name": "GNUHEALTH_IMAGE"
+        },
+        {
+          "default": "4.4",
+          "label": "GNU Health tag",
+          "name": "GNUHEALTH_TAG"
+        },
+        {
+          "default": "es_419",
+          "label": "GNU Health language",
+          "name": "GNUHEALTH_LANGUAGE"
+        },
+        {
+          "default": "jose.arturo.garcia@gmail.com",
+          "label": "Admin E-Mail",
+          "name": "EMAIL"
+        },
+        {
+          "default": "admin",
+          "label": "Admin Password",
+          "name": "PASSWORD"
+        },
+        {
+          "default": "mailhog/mailhog",
+          "label": "Mailhog image",
+          "name": "MAILHOG_IMAGE"
+        },
+        {
+          "default": "v1.0.1",
+          "label": "Mailhog tag",
+          "name": "MAILHOG_TAG"
+        },
+        {
+          "default": "1025",
+          "label": "Mailhog smtp port",
+          "name": "MAILHOG_SMTP_PORT"
+        },
+        {
+          "default": "8025",
+          "label": "Mailhog http port",
+          "name": "MAILHOG_HTTP_PORT"
+        },  
+        {
+          "default": "demo.domain.org.do",
+          "label": "URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 9,
+      "type": 3,
+      "title": "Grav",
+      "description": "Modern, Crazy Fast, Ridiculously Easy and Amazingly Powerful Flat-File CMS powered by PHP, Markdown, Twig, and Symfony.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/grav/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/grav/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "registry.gruposolutema.com/grav/docker-grav",
+          "label": "Grav Image",
+          "name": "GRAV_IMAGE"
+        },
+        {
+          "default": "1.7.46",
+          "label": "Grav Tag",
+          "name": "GRAV_TAG"
+        },
+        {
+          "label": "Admin User",
+          "name": "ADMIN_USER"
+        },
+        {
+          "label": "Admin Password",
+          "name": "ADMIN_PASSWORD"
+        },
+        {
+          "label": "Admin E-mail",
+          "name": "ADMIN_EMAIL"
+        },
+        {
+          "default": "en",
+          "label": "Admin Language",
+          "name": "ADMIN_LANG"
+        },
+        {
+          "label": "Admin Full Name",
+          "name": "ADMIN_FULLNAME"
+        },
+        {
+          "label": "Admin Title",
+          "name": "ADMIN_TITLE"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Time Zone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "example.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        }
+     ],
+      "volumes": [
+        {
+          "container": "/var/www/html"
+        }
+        ]
+      },
+      {
+      "id": 10,
+      "type": 3,
+      "title": "Gravitee",
+      "description": "Gravitee helps organizations manage and secure their entire API lifecycle with solutions for API design, management, security, productization, real-time observability, and more.",
+      "categories": ["project-management"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gravitee/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/gravitee/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "7.0.11",
+          "label": "Mongo Tag",
+          "name": "MONGO_TAG"
+        },
+        {
+          "default": "root",
+          "label": "Root Username",
+          "name": "MONGO_INITDB_ROOT_USERNAME"
+        },
+        {
+          "default": "password",
+          "label": "Root Password",
+          "name": "MONGO_INITDB_ROOT_PASSWORD"
+        },
+        {
+          "default": "8.13.4",
+          "label": "Elasticsearch Tag",
+          "name": "ELASTICSEARCH_TAG"
+        },
+        {
+          "default": "single-node",
+          "label": "Discovery Type",
+          "name": "DISCOVERY_TYPE"
+        },
+        {
+          "default": "1g",
+          "label": "Memory Limit",
+          "name": "MEMORY_LIMIT"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+     ],
+      "volumes": [
+        {
+          "container": "/data/db"
+        },
+        {
+          "container": "/var/log/mongodb"
+        },
+        {
+          "container": "/usr/share/elasticsearch/data"
+        }
+        ]
+      },
+      {
+      "id": 11,
+      "type": 3,
+      "title": "Nextcloud",
+      "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
+      "note": "Deploys an nextcloud instance.",
+      "categories": ["Cloud", "Productivity", "Tools", "Web"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/nextcloud/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/nextcloud/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "code.gruposolutema.com/solutema/mariadb",
+          "label": "MariaDB Image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.2.5-alpine-latest",
+          "label": "MariaDB Tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "default": "nextcloud_database",
+          "label": "Database Name",
+          "name": "DB_NAME"
+        },
+        {
+          "default": "nextcloud_user",
+          "label": "MariaDB User",
+          "name": "DB_USER"
+        },
+        {
+          "default": "nextcloud",
+          "label": "MariaDB Password",
+          "name": "DB_PASS"
+        },
+        {
+          "default": "rootnextcloud",
+          "label": "Root Password",
+          "name": "ROOT_PASS"
+        },
+        {
+          "default": "code.gruposolutema.com/solutema/nextcloud",
+          "label": "Nextcloud Image",
+          "name": "NEXTCLOUD_IMAGE"
+        },
+        {
+          "default": "29.0.4",
+          "label": "Nextcloud Tag",
+          "name": "NEXTCLOUD_TAG"
+        },
+        {
+          "default": "cloud.example.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "label": "Admin User",
+          "name": "ADMIN_USER"
+        },
+        {
+          "label": "Admin Password",
+          "name": "ADMIN_PASS"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "type": 3,
+      "title": "Odoo",
+      "description": "Open-source business apps.",
+      "categories": ["project-management"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/odoo/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/odoo/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "postgres",
+          "label": "PostgreSQL image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16.2-alpine3.19",
+          "label": "PostgreSQL tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "odoo",
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "default": "odoo",
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "postgres",
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "odoo",
+          "label": "Odoo image",
+          "name": "ODOO_IMAGE"
+        },
+        {
+          "default": "16.0",
+          "label": "Odoo tag",
+          "name": "ODOO_TAG"
+        },
+          {
+          "default": "odoo.example.com",
+          "label": "URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/mnt/extra-addons"
+        }
+      ]
+    },
+    {
+      "id": 13,
       "type": 3,
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
       "note": "Deploys an OpenLDAP Server.",
       "categories": ["Directory Access Protocol"],
       "platform": "linux",
-      "logo": "https://somebooks.es/wp-content/uploads/2022/02/OpenLDAP.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/openldap/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/openldap/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/openldap/docker-compose.yml"
       },
       "env": [   
         {
-          "default": "registry.gruposolutema.com/openldap/docker-openldap",
+          "default": "code.gruposolutema.com/solutema/openldap",
           "label": "LDAP Image",
           "name": "LDAP_IMAGE"
         },
@@ -1125,54 +794,19 @@
           "name": "LDAP_TAG"
         },
         {
-          "default": "openldap",
-          "label": "LDAP Hostname",
-          "name": "LDAP_HOSTNAME"
+          "default": "openldap.example.com",
+          "label": "Hostname",
+          "name": "OPENLDAP_HOSTNAME"
         },
         {
-          "default": "My Company, SRL",
-          "label": "LDAP Organisation",
-          "name": "LDAP_ORGANISATION"
+          "default": "Example Organization",
+          "label": "Organization",
+          "name": "ORGANIZATION"
         },
         {
-          "default": "example.org",
-          "label": "LDAP Domain",
-          "name": "LDAP_DOMAIN"
-        },
-        {
-          "default": "dc=example,dc=org",
-          "label": "LDAP Base DN",
-          "name": "LDAP_BASEDN"
-        },
-        {
-          "default": "cn=admin,dc=openldap,dc=example,dc=org",
-          "label": "LDAP Bind DN",
-          "name": "LDAP_BINDDN"
-        },
-        {
-          "default": "false",
-          "label": "LDAP Force STARTTLS",
-          "name": "LDAP_FORCE_STARTTLS"
-        },
-        {
-          "default": "/etc/ldap/ssl/fullchain.crt",
-          "label": "LDAP CA Cert",
-          "name": "LDAP_CA_CERT"
-        },
-        {
-          "default": "/etc/ldap/ssl/ldap.key",
-          "label": "LDAP SSL Key",
-          "name": "LDAP_SSL_KEY"
-        },
-        {
-          "default": "/etc/ldap/ssl/ldap.crt",
-          "label": "LDAP SSL Cert",
-          "name": "LDAP_SSL_CERT"
-        },
-        {
-          "default": "GoodNewsEveryone",
-          "label": "LDAP Secret",
-          "name": "LDAP_SECRET"
+          "default": "nis",
+          "label": "Schema Type",
+          "name": "SCHEMA_TYPE"
         },
         {
           "default": "389",
@@ -1185,6 +819,36 @@
           "name": "LDAPS_PORT"
         },
         {
+          "default": "example.com",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "dc=example,dc=com",
+          "label": "Base DN",
+          "name": "BASE_DN"
+        },
+        {
+          "default": "admin",
+          "label": "Admin Password",
+          "name": "ADMIN_PASS"
+        },
+        {
+          "default": "config",
+          "label": "Config Password",
+          "name": "CONFIG_PASS"
+        },
+        {
+          "default": "reader",
+          "label": "Readonly User User",
+          "name": "READONLY_USER_USER"
+        },
+        {
+          "default": "reader",
+          "label": "Readonly User Pass",
+          "name": "READONLY_USER_PASS"
+        },
+        {
           "default": "osixia/phpldapadmin",
           "label": "phpLDAPadmin Image",
           "name": "PHPLDAPADMIN_IMAGE"
@@ -1195,14 +859,443 @@
           "name": "PHPLDAPADMIN_TAG"
         },
         {
-          "default": "cn=admin,dc=openldap,dc=example,dc=org",
-          "label": "Bind Id",
-          "name": "BIND_ID"
+          "default": "phpldapadmin.example.com",
+          "label": "PHPLDAPAdmin hostname",
+          "name": "PHPLDAPADMIN_HOSTNAME"
+        },        
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 14,
+      "type": 3,
+      "title": "Phorge",
+      "description": "Phorge is a collection of web applications which help software companies build better software.",
+      "note": "Phorge is a community-maintained fork of Phabricator.",
+      "categories": ["continuous-integration"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/phorge/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/phorge/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "registry.gruposolutema.com/docker-base-images/docker-mariadb",
+          "label": "MariaDB image",
+          "name": "MARIADB_IMAGE"
         },
         {
-          "default": "phpldapadmin.example.org",
-          "label": "PHPLDAPADMIN URL",
-          "name": "PHPLDAPADMIN_URL"
+          "default": "11.5",
+          "label": "MariaDB tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "label": "Database root password",
+          "name": "ROOT_PASS"
+        },
+        {
+          "default": "registry.gruposolutema.com/phorge/docker-phorge",
+          "label": "Phorge image",
+          "name": "PHORGE_IMAGE"
+        },    
+        {
+          "default": "2023.49",
+          "label": "Phorge tag",
+          "name": "PHORGE_TAG"
+        },
+        {
+          "label": "Phorge title",
+          "name": "PHABRICATOR_TITLE"
+        },
+        {
+          "default": "mail.example.com",
+          "label": "SMTP host",
+          "name": "SMTP_HOST"
+        },
+        {
+          "default": "465",
+          "label": "SMTP port",
+          "name": "SMTP_PORT"
+        },
+        {
+          "label": "SMTP user",
+          "name": "SMTP_USER"
+        },
+        {
+          "label": "SMTP password",
+          "name": "SMTP_PASSWORD"
+        },
+        {
+          "default": "ssl",
+          "label": "SMTP protocol",
+          "name": "SMTP_PROTOCOL"
+        },
+        {
+          "default": "devops.example.com",
+          "label": "URL domain",
+          "name": "URL_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 15,
+      "type": 3,
+      "title": "Pi-hole",
+      "description": "Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network.",
+      "note": "Pi-hole is a DNS sinkhole that protects your devices from unwanted content without installing any client-side software.",
+      "categories": ["Network-wide Ad Blocking"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/pi-hole/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/pi-hole/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "pihole/pihole",
+          "label": "Pi-hole Image",
+          "name": "PIHOLE_IMAGE"
+        },
+        {
+          "default": "2024.07.0",
+          "label": "Pi-hole Tag",
+          "name": "PIHOLE_TAG"
+        },
+        {
+          "default": "pihole",
+          "label": "Pi-hole Hostname",
+          "name": "PIHOLE_HOSTNAME"
+        },
+        {
+          "default": "192.168.1.100",
+          "label": "Local Ipv4",
+          "name": "FTLCONF_LOCAL_IPV4"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TZ"
+        },
+        {
+          "default": "admin",
+          "label": "Web password",
+          "name": "WEBPASSWORD"
+        },    
+        {
+          "default": "pihole.example.com",
+          "label": "Pi-hole URL",
+          "name": "PIHOLE_URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 16,
+      "type": 3,
+      "title": "Redis",
+      "description": "Open-source in-memory data structure store",
+      "note": "Deploys a Redis server instance as an application cache or quick-response database.",
+      "categories": ["database"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/redis/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/redis/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "code.gruposolutema.com/solutema/redis",
+          "label": "Redis image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "7.4.0",
+          "label": "Redis tag",
+          "name": "REDIS_TAG"
+        },
+        {
+          "default": "6379",
+          "label": "Redis Port",
+          "name": "REDIS_PORT"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "true",
+          "label": "Enable Logfiles",
+          "name": "ENABLE_LOGS"
+        },
+        {
+          "default": "notice",
+          "label": "Log level",
+          "name": "LOG_LEVEL"
+        },
+        {
+          "label": "Redis Password",
+          "name": "REDIS_PASS"
+        },
+        {
+          "default": "redis/redisinsight",
+          "label": "Insight Image",
+          "name": "INSIGHT_IMAGE"
+        },
+        {
+          "default": "2.54.0",
+          "label": "Insight Tag",
+          "name": "INSIGHT_TAG"
+        },
+        {
+          "default": "5540",
+          "label": "Insight port",
+          "name": "INSIGHT_PORT"
+        },
+        {
+          "default": "info",
+          "label": "RI log level",
+          "name": "RI_LOG_LEVEL"
+        },
+        {
+          "default": "true",
+          "label": "RI files logger",
+          "name": "RI_FILES_LOGGER"
+        },
+        {
+          "default": "true",
+          "label": "RI stdout logger",
+          "name": "RI_STDOUT_LOGGER"
+        },
+        {
+          "default": "insight.example.com",
+          "label": "Insight domain",
+          "name": "INSIGHT_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 17,
+      "type": 3,
+      "title": "Speedtest Tracker",
+      "description": "A Docker image to check your internet speed using Ookla's Speedtest service. Build using Laravel and the Speedtest CLI.",
+      "note": "Deploys an image to check your internet speed using Ookla's Speedtest service.",
+      "categories": ["Tools"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/speedtest-tracker/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/speedtest-tracker/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "MariaDB Image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.5.2",
+          "label": "MariaDB Tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "default": "speedtest_tracker",
+          "label": "MariaDB Database",
+          "name": "MARIADB_DATABASE"
+        },
+        {
+          "default": "speedy",
+          "label": "MariaDB User",
+          "name": "MARIADB_USER"
+        },
+        {
+          "default": "password",
+          "label": "MariaDB Password",
+          "name": "MARIADB_PASSWORD"
+        },
+        {
+          "default": "linuxserver/speedtest-tracker",
+          "label": "Speedtest Tracker Image",
+          "name": "SPEED_TEST_TRACKER_IMAGE"
+        },
+        {
+          "default": "0.21.2",
+          "label": "Speedtest Tracker Tag",
+          "name": "SPEED_TEST_TRACKER_TAG"
+        },
+        {
+          "default": "1000",
+          "label": "PUID",
+          "name": "PUID"
+        },
+        {
+          "default": "1000",
+          "label": "PGID",
+          "name": "PGID"
+        },
+        {
+          "default": "Speed Test Tracker",
+          "label": "App Name",
+          "name": "APP_NAME"
+        },
+        {
+          "default": "",
+          "label": "App Key",
+          "name": "APP_KEY"
+        },
+        {
+          "default": "0",
+          "label": "Prune Results Older Than",
+          "name": "PRUNE_RESULTS_OLDER_THAN"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "App Timezone",
+          "name": "APP_TIMEZONE"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Display Timezone",
+          "name": "DISPLAY_TIMEZONE"
+        },
+        {
+          "default": "0 * * * *",
+          "label": "Speedtest Schedule",
+          "name": "SPEEDTEST_SCHEDULE"
+        },
+        {
+          "default": "1779,46139,2113,62147,54312,37695,38784,57315,17702,50031,31181,63937,55674",
+          "label": "Speedtest Servers",
+          "name": "SPEEDTEST_SERVERS"
+        },
+        {
+          "default": "m/d/Y h:i:s A",
+          "label": "Chart Datetime Format",
+          "name": "CHART_DATETIME_FORMAT"
+        },
+        {
+          "default": "m/d/Y h:i:s A",
+          "label": "Datetime Format",
+          "name": "DATETIME_FORMAT"
+        },
+        {
+          "default": "",
+          "label": "Telegram Bot Token",
+          "name": "TELEGRAM_BOT_TOKEN"
+        },
+        {
+          "default": "speedtracker.example.com",
+          "label": "URL Domain",
+          "name": "URL_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/mysql"
+        },
+        {
+          "container": "/config"
+        }
+      ]
+      },
+      {
+      "id": 18,
+      "type": 3,
+      "title": "Tryton Series 6.0",
+      "description": "Tryton 6.0 setup with a PostgreSQL database",
+      "note": "Deploys a Tryton 6.0 instance connected to a PostgreSQL database.",
+      "categories": ["erp"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton60/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/tryton60/docker-compose.yml"
+      },
+      "env": [
+        {
+          "label": "PostgreSQL container name",
+          "name": "POSTGRES_CONTAINER_NAME"
+        },
+        {
+          "default": "postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "15.3",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "Database server port",
+          "name": "POSTGRES_PORT"
+        },
+        {
+          "label": "Tryton container name",
+          "name": "TRYTON_CONTAINER_NAME"
+        },
+        {
+          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
+          "label": "Tryton image",
+          "name": "TRYTON_IMAGE"
+        },
+        {
+          "default": "6.8-office",
+          "label": "Tryton tag",
+          "name": "TRYTON_TAG"
+        },
+        {
+          "label": "Email from",
+          "name": "EMAIL_FROM"
+        },
+        {
+          "default": "es_419",
+          "label": "Tryton language",
+          "name": "TRYTOND_LANGUAGE"
+        },
+        {
+          "label": "Tryton Admin E-mail",
+          "name": "TRYTOND_ADMIN_EMAIL"
+        },
+        {
+          "label": "Tryton Admin Password",
+          "name": "TRYTOND_ADMIN_PASSWORD"
         },
         {
           "default": "proxy",
@@ -1212,32 +1305,214 @@
       ]
     },
     {
+      "id": 19,
+      "type": 3,
+      "title": "Tryton Series 7.0",
+      "description": "Tryton 7.0 setup with a PostgreSQL database",
+      "note": "Deploys a Tryton 7.0 instance connected to a PostgreSQL database.",
+      "categories": ["erp"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton70/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/tryton70/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "registry.gruposolutema.com/docker-base-images/docker-postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
+          "label": "Tryton image",
+          "name": "TRYTON_IMAGE"
+        },
+        {
+          "default": "7.0-office",
+          "label": "Tryton tag",
+          "name": "TRYTON_TAG"
+        },
+        {
+          "label": "Email from",
+          "name": "EMAIL_FROM"
+        },
+        {
+          "default": "es_419",
+          "label": "Tryton language",
+          "name": "TRYTOND_LANGUAGE"
+        },
+        {
+          "label": "Tryton Admin E-mail",
+          "name": "TRYTOND_ADMIN_EMAIL"
+        },
+        {
+          "label": "Tryton Admin Password",
+          "name": "TRYTOND_ADMIN_PASSWORD"
+        },
+        {
+          "default": "tryton.example.com",
+          "label": "URL domain",
+          "name": "URL_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "type": 3,
+      "title": "Tryton Series 7.2",
+      "description": "Tryton 7.2 setup with a PostgreSQL database",
+      "note": "Deploys a Tryton 7.2 instance connected to a PostgreSQL database.",
+      "categories": ["erp"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton72/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/tryton72/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "registry.gruposolutema.com/docker-base-images/docker-postgres",
+          "label": "Database image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16",
+          "label": "Database tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "registry.gruposolutema.com/tryton/tryton-republica-dominicana/tryton-docker",
+          "label": "Tryton image",
+          "name": "TRYTON_IMAGE"
+        },
+        {
+          "default": "7.0-office",
+          "label": "Tryton tag",
+          "name": "TRYTON_TAG"
+        },
+        {
+          "label": "Email from",
+          "name": "EMAIL_FROM"
+        },
+        {
+          "default": "es_419",
+          "label": "Tryton language",
+          "name": "TRYTOND_LANGUAGE"
+        },
+        {
+          "label": "Tryton Admin E-mail",
+          "name": "TRYTOND_ADMIN_EMAIL"
+        },
+        {
+          "label": "Tryton Admin Password",
+          "name": "TRYTOND_ADMIN_PASSWORD"
+        },
+        {
+          "default": "tryton.example.com",
+          "label": "URL domain",
+          "name": "URL_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "type": 3,
+      "title": "Vaultwarden",
+      "description": "Vaultwarden setup",
+      "note": "Deploys a Vaultwarden instance.",
+      "categories": ["Password Manager"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/traefik/stacks/vaultwarden/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates/tree/traefik",
+        "stackfile": "stacks/vaultwarden/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "vaultwarden/server",
+          "label": "Vaultwarden Image",
+          "name": "VAULTWARDEN_IMAGE"
+        },
+        {
+          "default": "1.34.3",
+          "label": "Vaultwarden Tag",
+          "name": "VAULTWARDEN_TAG"
+        },
+        {
+          "default": "vw.domain.tld",
+          "label": "Domain",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 22,
       "type": 3,
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
       "note": "Deploys an Weblate instance.",
       "categories": ["Computer-assisted translation"],
       "platform": "linux",
-      "logo": "https://www.gravatar.com/avatar/e5f0d5efe7cd63ab2219d2bdd875cb0f.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/weblate/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/weblate/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/weblate/docker-compose.yml"
       },
       "env": [
         {
-          "default": "postgres",
+          "default": "registry.gruposolutema.com/docker-base-images/docker-postgres",
           "label": "PostgreSQL Image",
           "name": "POSTGRES_IMAGE"
         },
         {
-          "default": "16-alpine",
+          "default": "16",
           "label": "PostgreSQL Tag",
           "name": "POSTGRES_TAG"
-        },
-        {
-          "default": "5432",
-          "label": "PostgreSQL port number",
-          "name": "POSTGRES_PORT_NUMBER"
         },
         {
           "label": "PostgreSQL user",
@@ -1248,16 +1523,30 @@
           "name": "POSTGRES_PASSWORD"
         },
         {
+          "default": "root",
+          "label": "PostgreSQL root USER",
+          "name": "SUPERUSER_USER"
+        },      
+        {
+          "label": "PostgreSQL root password",
+          "name": "SUPERUSER_PASS"
+        },
+        {
           "label": "PostgreSQL database",
           "name": "POSTGRES_DB"
         },
+        {
+          "default": "unaccent",
+          "label": "Database Extension",
+          "name": "DB_EXTENSION"
+        },   
         {
           "default": "weblate/weblate",
           "label": "Weblate Image",
           "name": "WEBLATE_IMAGE"
         },
         {
-          "default": "5.3.1.1",
+          "default": "5.4.3.2",
           "label": "Weblate Tag",
           "name": "WEBLATE_TAG"
         },
@@ -1275,6 +1564,11 @@
           "default": "Weblate",
           "label": "Weblate site title",
           "name": "WEBLATE_SITE_TITLE"
+        },
+        {
+          "default": "translate.example.com",
+          "label": "Weblate site domain",
+          "name": "WEBLATE_SITE_DOMAIN"
         },
         {
           "default": "Weblate Admin",
@@ -1344,6 +1638,10 @@
           "name": "REDIS_PORT"
         },
         {
+          "label": "Redis password",
+          "name": "REDIS_PASSWORD"
+        },        
+        {
           "label": "Weblate email host",
           "name": "WEBLATE_EMAIL_HOST"
         },
@@ -1368,14 +1666,9 @@
           "name": "WEBLATE_GITLAB_TOKEN"
         },
         {
-          "default": "200M",
+          "default": "2000M",
           "label": "Client max body size",
           "name": "CLIENT_MAX_BODY_SIZE"
-        },
-        {
-          "default": "translate.example.org",
-          "label": "Weblate domain",
-          "name": "WEBLATE_DOMAIN"
         },
         {
           "default": "proxy",
@@ -1385,85 +1678,540 @@
       ]
     },
     {
+      "id": 23,
       "type": 3,
-      "title": "Nextcloud",
-      "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
-      "note": "Deploys an nextcloud instance.",
-      "categories": ["Cloud", "Productivity", "Tools", "Web"],
+      "title": "Windows",
+      "description": "Windows inside a Docker container.",
+      "note": "Deploys an windows os instance.",
+      "categories": ["KVM"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/xneo1/portainer_templates/master/Images/nextcloud-icon.png",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/windows/logo/logo.png",
       "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/nextcloud/docker-stack.yml"
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/windows/docker-compose.yml"
       },
       "env": [
         {
-          "default": "11.2.2",
-          "label": "MariaDB tag",
+          "default": "dockurr/windows",
+          "label": "Windows Image",
+          "name": "WINDOWS_IMAGE"
+        },
+        {
+          "default": "3.12",
+          "label": "Windows Tag",
+          "name": "WINDOWS_TAG"
+        },
+        {
+          "default": "8006",
+          "label": "NoVNC Port",
+          "name": "NOVNC_PORT"
+        },
+        {
+          "default": "3389",
+          "label": "RDP Port",
+          "name": "RDP_PORT"
+        },
+        {
+          "default": "3389",
+          "label": "MS Terminal Port",
+          "name": "MS_TERMINAL_PORT"
+        },
+        {
+          "default": "N",
+          "label": "Manual Installation",
+          "name": "MANUAL_INSTALLATION"
+        },
+        {
+          "default": "4",
+          "label": "CPU Cores",
+          "name": "CPU_CORES"
+        },
+        {
+          "default": "4G",
+          "label": "RAM Size",
+          "name": "RAM_SIZE"
+        },
+        {
+          "default": "64G",
+          "label": "Disk Size",
+          "name": "DISK_SIZE"
+        },
+        {
+          "default": "win11",
+          "label": "Version",
+          "name": "VERSION"
+        },
+        {
+          "default": "bill",
+          "label": "Username",
+          "name": "USERNAME"
+        },
+        {
+          "default": "gates",
+          "label": "Password",
+          "name": "PASSWORD"
+        },
+        {
+          "default": "English",
+          "label": "Language",
+          "name": "LANGUAGE"
+        },
+        {
+          "default": "en-US",
+          "label": "Region",
+          "name": "REGION"
+        },
+        {
+          "default": "en-US",
+          "label": "Keyboard",
+          "name": "KEYBOARD"
+        },
+        {
+          "default": "windows11.example.com",
+          "label": "URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 24,
+      "type": 3,
+      "title": "WireGuard",
+      "description": "WireGuard is a communication protocol and free and open-source software that implements encrypted virtual private networks, and was designed with the goals of ease of use, high speed performance, and low attack surface.",
+      "note": "Deploys a iireguard instance.",
+      "categories": ["Network"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/wireguard/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/wireguard/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "ghcr.io/wg-easy/wg-easy",
+          "label": "WireGuard Image",
+          "name": "WIREGUARD_IMAGE"
+        },
+        {
+          "default": "13",
+          "label": "WireGuard Tag",
+          "name": "WIREGUARD_TAG"
+        },
+        {
+          "default": "51820",
+          "label": "WireGuard Config Port",
+          "name": "WG_CONFIG_PORT"
+        },
+        {
+          "default": "51821",
+          "label": "WireGuard UI Port",
+          "name": "WIREGUARD_UI_PORT"
+        },
+        {
+          "default": "en",
+          "label": "Language",
+          "name": "LANG"
+        },
+        {
+          "default": "vpn.example.com",
+          "label": "WireGuard URL",
+          "name": "WIREGUARD_URL"
+        },
+        {
+          "label": "Password",
+          "name": "PASSWORD"
+        },
+        {
+          "default": "10.8.0.x",
+          "label": "Address Range",
+          "name": "WG_DEFAULT_ADDRESS"
+        },
+        {
+          "default": "1.1.1.1",
+          "label": "DNS server(s)",
+          "name": "WG_DEFAULT_DNS"
+        },
+        {
+          "default": "1500",
+          "label": "MTU",
+          "name": "WG_MTU"
+        },
+        {
+          "default": "25",
+          "label": "Persistent Keepalive",
+          "name": "WG_PERSISTENT_KEEPALIVE"
+        },
+        {
+          "default": "true",
+          "label": "UI Traffic Stats",
+          "name": "UI_TRAFFIC_STATS"
+        },
+        {
+          "default": "3",
+          "label": "UI Chart Type",
+          "name": "UI_CHART_TYPE"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/etc/wireguard"
+        }
+      ]
+    },
+    {
+      "id": 25,
+      "type": 3,
+      "title": "WireHole",
+      "description": "WireHole is a combination of WireGuard, Pi-hole, and Unbound in a docker-compose project with the intent of enabling users to quickly and easily create a personally managed full or split-tunnel WireGuard VPN with ad blocking capabilities thanks to Pi-hole, and DNS caching, additional privacy options, and upstream providers via Unbound.",
+      "note": "Deploys a WireHole instance.",
+      "categories": ["Network"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/wirehole/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/wirehole/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "1.20.0",
+          "label": "Unbound Tag",
+          "name": "UNBOUND_TAG"
+        },
+        {
+          "default": "10.2.0.0/24",
+          "label": "Private Network Subnet",
+          "name": "PRIVATE_NETWORK_SUBNET"
+        },
+        {
+          "default": "10.2.0.100",
+          "label": "Unbound IP",
+          "name": "UNBOUND_IP"
+        },
+        {
+          "default": "2024.05.0",
+          "label": "Pi-hole Tag",
+          "name": "PIHOLE_TAG"
+        },
+        {
+          "default": "10.2.0.200",
+          "label": "Pi-hole IP",
+          "name": "PIHOLE_IP"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Time Zone",
+          "name": "TIMEZONE"
+        },  
+        {
+          "default": "",
+          "label": "Web Password",
+          "name": "WEBPASSWORD"
+        }, 
+        {
+          "default": "pihole.example.com",
+          "label": "URL Domain",
+          "name": "PIHOLE_URL"
+        },
+        {
+          "default": "latest",
+          "label": "WireGuard Tag",
+          "name": "WIREGUARD_TAG"
+        },
+        {
+          "default": "1000",
+          "label": "PUID",
+          "name": "PUID"
+        },
+        {
+          "default": "1000",
+          "label": "PGID",
+          "name": "PGID"
+        },
+        {
+          "default": "wireguard.example.com",
+          "label": "WireGuard URL",
+          "name": "WIREGUARD_URL"
+        },
+        {
+          "default": "latest",
+          "label": "WireGuard UI Tag",
+          "name": "WIREGUARD_UI_TAG"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "private_network",
+          "label": "Private Network name",
+          "name": "PRIVATE_NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/opt/unbound/etc/unbound/"
+        },
+        {
+          "container": "/etc/pihole/"
+        },
+        {
+          "container": "/etc/dnsmasq.d/"
+        },
+        {
+          "container": "/config"
+        },
+        {
+          "container": "/app/db"
+        }
+      ]
+    },
+    {
+      "id": 26,
+      "type": 3,
+      "title": "WordPress",
+      "description": "WordPress setup with a Mariadb database",
+      "note": "Deploys a WordPress instance connected to a Mariadb database.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/wordpress/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/wordpress/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "code.gruposolutema.com/solutema/mariadb",
+          "label": "Database image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.2.5",
+          "label": "Database tag",
           "name": "MARIADB_TAG"
         },
         {
-          "default": "3306",
-          "label": "MariaDB port",
-          "name": "MARIADB_PORT"
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
         },
         {
-          "label": "MariaDB password",
-          "name": "MYSQL_PASSWORD"
+          "label": "MariaDB Root Password",
+          "name": "ROOT_PASS"
         },
         {
-          "label": "MariaDB root password",
-          "name": "MYSQL_ROOT_PASSWORD"
+          "default": "wordpress_database",
+          "label": "MariaDB Database Name",
+          "name": "DB_NAME"
         },
         {
-          "default": "28.0.1",
-          "label": "Nextcloud tag",
-          "name": "NEXTCLOUD_TAG"
+          "default": "wordpress_user",
+          "label": "MariaDB Database Username",
+          "name": "DB_USER"
         },
         {
-          "default": "nxt_",
-          "label": "Nextcloud table prefix",
-          "name": "NEXTCLOUD_TABLE_PREFIX"
+          "default": "password",
+          "label": "MariaDB Database Password",
+          "name": "DB_PASS"
         },
         {
-          "label": "Nextcloud admin user",
-          "name": "NEXTCLOUD_ADMIN_USER"
+          "default": "wp_",
+          "label": "MariaDB Database prefix",
+          "name": "DB_PREFIX"
+        }, 
+        {
+          "default": "phpmyadmin",
+          "label": "Phpmyadmin image",
+          "name": "PHPMYADMIN_IMAGE"
         },
         {
-          "label": "Nextcloud admin password",
-          "name": "NEXTCLOUD_ADMIN_PASSWORD"
+          "default": "5.2.1-apache",
+          "label": "Phpmyadmin tag",
+          "name": "PHPMYADMIN_TAG"
         },
         {
-          "default": "/var/www/html",
-          "label": "Nextcloud dir",
-          "name": "NEXTCLOUD_DIR"
+          "default": "phpmyadmin.example.com",
+          "label": "Phpmyadmin domain",
+          "name": "PHPMYADMIN_DOMAIN"
         },
         {
-          "default": "/var/www/html/data",
-          "label": "Nextcloud data dir",
-          "name": "NEXTCLOUD_DATA_DIR"
+          "default": "true",
+          "label": "Enable HTTPS reverse proxy",
+          "name": "ENABLE_HTTPS_REVERSE_PROXY"
+        },                
+        {
+          "default": "code.gruposolutema.com/solutema/wordpress",
+          "label": "Wordpress image",
+          "name": "WORDPRESS_IMAGE"
         },
         {
-          "default": "/var/www/html/custom_apps",
-          "label": "Nextcloud custom apps",
-          "name": "NEXTCLOUD_CUSTOM_APPS"
+          "default": "alpine3.20-nginx-php8.3",
+          "label": "Wordpress tag",
+          "name": "WORDPRESS_TAG"
         },
         {
-          "default": "/var/www/html/config",
-          "label": "Nextcloud config",
-          "name": "NEXTCLOUD_CONFIG"
+          "default": "jose.arturo.garcia@gmail.com",
+          "label": "Admin email",
+          "name": "ADMIN_EMAIL"
         },
         {
-          "default": "/var/www/html/themes/custom_theme",
-          "label": "Nextcloud custom theme",
-          "name": "NEXTCLOUD_CUSTOM_THEME"
+          "default": "admin",
+          "label": "Admin user",
+          "name": "ADMIN_USER"
         },
+        {
+          "default": "password",
+          "label": "Admin password",
+          "name": "ADMIN_PASS"
+        },
+        {
+          "default": "false",
+          "label": "Debug mode",
+          "name": "DEBUG_MODE"
+        },
+        {
+          "default": "example.com",
+          "label": "Site url",
+          "name": "SITE_URL"
+        },     
+        {
+          "default": "Docker Wordpress",
+          "label": "Site title",
+          "name": "SITE_TITLE"
+        },
+        {
+          "default": "es_ES",
+          "label": "Site locale",
+          "name": "SITE_LOCALE"
+        },
+        {
+          "default": "true",
+          "label": "Wp Cache",
+          "name": "WP_CACHE"
+        },
+        {
+          "default": "redis-gruposolutema-server",
+          "label": "Wp redis host",
+          "name": "WP_REDIS_HOST"
+        },
+        {
+          "default": "6379",
+          "label": "Wp redis port",
+          "name": "WP_REDIS_PORT"
+        },
+        {
+          "default": "arturo0510",
+          "label": "Wp Redis Password",
+          "name": "WP_REDIS_PASSWORD"
+        },
+        {
+          "default": "false",
+          "label": "Rotate keys",
+          "name": "ROTATE_KEYS"
+        }, 
+        {
+          "default": "128M",
+          "label": "PHP Memory Limit",
+          "name": "PHP_MEMORY_LIMIT"
+        }, 
         {
           "default": "10G",
-          "label": "PHP upload limit",
-          "name": "PHP_UPLOAD_LIMIT"
+          "label": "Nginx Upload Max Size",
+          "name": "NGINX_UPLOAD_MAX_SIZE"
+        }, 
+        {
+          "default": "300",
+          "label": "PHP tIMEOUT",
+          "name": "PHP_TIMEOUT"
+        }, 
+        {
+          "default": "all",
+          "label": "Update mode",
+          "name": "UPDATE_MODE"
         },
         {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 27,
+      "type": 3,
+      "title": "Zabbix Server",
+      "description": "Zabbix Server setup with postgres database.",
+      "note": "Deploys a Zabbix Server to monitor IT infrastructure such as networks, servers, virtual machines, and cloud services.",
+      "categories": ["Monitor Tool"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/zabbix/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/solutema/portainer-templates",
+        "stackfile": "stacks/zabbix/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "code.gruposolutema.com/solutema/postgres",
+          "label": "Postgres image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16.4",
+          "label": "Postgres tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "zabbix",
+          "label": "Postgres user",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "default": "PasswOrd",
+          "label": "Postgres password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "RootPassword",
+          "label": "Superuser Pass",
+          "name": "SUPERUSER_PASS"
+        },
+        {
+          "default": "zabbix",
+          "label": "Postgres database",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "code.gruposolutema.com/solutema/zabbix",
+          "label": "Zabbix server image",
+          "name": "ZABBIX_IMAGE"
+        },
+        {
+          "default": "7.0.2",
+          "label": "Zabbix server tag",
+          "name": "ZABBIX_TAG"
+        },
+        {
+          "default": "zabbix-server",
+          "label": "Zabbix server",
+          "name": "ZABBIX_SERVER"
+        },
+        {
+          "default": "zabbix.example.com",
           "label": "Domain",
           "name": "DOMAIN"
         },
