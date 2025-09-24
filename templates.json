@@ -1479,11 +1479,6 @@
           "name": "VAULTWARDEN_TAG"
         },
         {
-          "default": "sqlite3:///data/db.sqlite3",
-          "label": "Database URL",
-          "name": "DATABASE_URL"
-        },
-        {
           "label": "Admin_Token",
           "name": "ADMIN_TOKEN"
         },
@@ -1569,8 +1564,8 @@
         },
         {
           "default": "true",
-          "label": "SMTP SSL",
-          "name": "SMTP_SSL"
+          "label": "SMTP Security",
+          "name": "SMTP_SECURITY"
         },
         {
           "default": "proxy",

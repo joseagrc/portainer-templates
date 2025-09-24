@@ -7,7 +7,6 @@ services:
     volumes:
       - vw-data:/data/
     environment:
-      DATABASE_URL: ${DATABASE_URL}
       ADMIN_TOKEN: ${ADMIN_TOKEN}
       DOMAIN: https://${DOMAIN}
       SIGNUPS_ALLOWED: ${SIGNUPS_ALLOWED}
@@ -26,7 +25,7 @@ services:
       SMTP_FROM: ${SMTP_FROM}
       SMTP_USERNAME: ${SMTP_USERNAME}
       SMTP_PASSWORD: ${SMTP_PASSWORD}
-      SMTP_SSL: ${SMTP_SSL}
+      SMTP_SECURITY: ${SMTP_SECURITY}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
