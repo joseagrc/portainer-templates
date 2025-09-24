@@ -1563,7 +1563,7 @@
           "name": "SMTP_PASSWORD"
         },
         {
-          "default": "true",
+          "default": "starttls",
           "label": "SMTP Security",
           "name": "SMTP_SECURITY"
         },
