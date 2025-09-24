@@ -1479,9 +1479,98 @@
           "name": "VAULTWARDEN_TAG"
         },
         {
+          "default": "sqlite3:///data/db.sqlite3",
+          "label": "Database URL",
+          "name": "DATABASE_URL"
+        },
+        {
+          "label": "Admin_Token",
+          "name": "ADMIN_TOKEN"
+        },
+        {
           "default": "vw.domain.tld",
           "label": "Domain",
           "name": "DOMAIN"
+        },
+        {
+          "default": "true",
+          "label": "Signups Allowed",
+          "name": "SIGNUPS_ALLOWED"
+        },
+        {
+          "default": "true",
+          "label": "Signups Verify",
+          "name": "SIGNUPS_VERIFY"
+        },
+        {
+          "default": "true",
+          "label": "Invitations Allowed",
+          "name": "INVITATIONS_ALLOWED"
+        },
+        {
+          "default": "/data/access.log",
+          "label": "Log File",
+          "name": "LOG_FILE"
+        },
+        {
+          "default": "prod",
+          "label": "Rocket Env",
+          "name": "ROCKET_ENV"
+        },
+        {
+          "default": "10",
+          "label": "Rocket Workers",
+          "name": "ROCKET_WORKERS"
+        },
+        {
+          "default": "error",
+          "label": "Log Level",
+          "name": "LOG_LEVEL"
+        },
+        {
+          "default": "true",
+          "label": "Extended Logging",
+          "name": "EXTENDED_LOGGING"
+        },
+        {
+          "default": "true",
+          "label": "Push Enabled",
+          "name": "PUSH_ENABLED"
+        },
+        {
+          "label": "Push Installation ID",
+          "name": "PUSH_INSTALLATION_ID"
+        },
+        {
+          "label": "Push Installation Key",
+          "name": "PUSH_INSTALLATION_KEY"
+        },
+        {
+          "default": "smtp.example.com",
+          "label": "SMTP Host",
+          "name": "SMTP_HOST"
+        },
+        {
+          "default": "465",
+          "label": "SMTP Port",
+          "name": "SMTP_PORT"
+        },
+        {
+          "label": "SMTP From",
+          "name": "SMTP_FROM"
+        },
+        {
+          "label": "SMTP Username",
+          "name": "SMTP_USERNAME"
+        },
+        {
+          "label": "SMTP Password",
+          "name": "SMTP_PASSWORD"
+        },
+        {
+          "default": "true",
+          "label": "SMTP SSL",
+          "name": "SMTP_SSL"
         },
         {
           "default": "proxy",
