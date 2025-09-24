@@ -1479,8 +1479,8 @@
           "name": "VAULTWARDEN_TAG"
         },
         {
-          "label": "Admin_Token",
-          "name": "ADMIN_TOKEN"
+          "label": "Admin Token",
+          "name": "VAULTWARDEN_ADMIN_TOKEN"
         },
         {
           "default": "vw.domain.tld",
@@ -1563,7 +1563,7 @@
           "name": "SMTP_PASSWORD"
         },
         {
-          "default": "starttls",
+          "default": "force_tls",
           "label": "SMTP Security",
           "name": "SMTP_SECURITY"
         },
