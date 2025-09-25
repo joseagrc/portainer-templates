@@ -1195,6 +1195,45 @@
           "name": "TELEGRAM_BOT_TOKEN"
         },
         {
+          "default": "smtp",
+          "label": "Mail Mailer",
+          "name": "MAIL_MAILER"
+        },
+        {
+          "default": "smtp.domain.tld",
+          "label": "Mail Host",
+          "name": "MAIL_HOST"
+        },
+        {
+          "default": "465",
+          "label": "Mail Port",
+          "name": "MAIL_PORT"
+        },
+        {
+          "default": "username@domain.tld",
+          "label": "Mail Username",
+          "name": "MAIL_USERNAME"
+        },
+        {
+          "label": "Mail Password",
+          "name": "MAIL_PASSWORD"
+        },
+        {
+          "default": "username@domain.tld",
+          "label": "Mail From Address",
+          "name": "MAIL_FROM_ADDRESS"
+        },
+        {
+          "default": "Example, Inc",
+          "label": "Mail From Name",
+          "name": "MAIL_FROM_NAME"
+        },
+        {
+          "default": "smtps",
+          "label": "Mail Scheme",
+          "name": "MAIL_SCHEME"
+        },
+        {
           "default": "speedtracker.example.com",
           "label": "URL Domain",
           "name": "URL_DOMAIN"
