@@ -1570,6 +1570,11 @@
           "name": "SMTP_PASSWORD"
         },
         {
+          "default": "Login",
+          "label": "SMTP Auth Mechanism",
+          "name": "SMTP_AUTH_MECHANISM"
+        },
+        {
           "default": "force_tls",
           "label": "SMTP Security",
           "name": "SMTP_SECURITY"
