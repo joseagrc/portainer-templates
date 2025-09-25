@@ -1170,7 +1170,7 @@
           "name": "DISPLAY_TIMEZONE"
         },
         {
-          "default": "0 * * * *",
+          "default": "*/10 * * * *",
           "label": "Speedtest Schedule",
           "name": "SPEEDTEST_SCHEDULE"
         },
