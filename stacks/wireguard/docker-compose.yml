@@ -4,7 +4,7 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${WIREGUARD_IMAGE}:${WIREGUARD_TAG}
     ports:
-      - ${WG_CONFIG_PORT}:51820/udp
+      - ${INIT_PORT}:51820/udp
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -15,20 +15,15 @@ services:
     volumes:
       - etc_wireguard:/etc/wireguard
     environment:
-      LANG: ${LANG}
-      WG_HOST: ${URL_DOMAIN}
-      PASSWORD: ${PASSWORD}
-      WG_PORT: ${WG_CONFIG_PORT}
-      PORT: ${WIREGUARD_UI_PORT}
-      WG_DEFAULT_ADDRESS: ${WG_DEFAULT_ADDRESS}
-      WG_DEFAULT_DNS: ${WG_DEFAULT_DNS}
-      WG_MTU: ${WG_MTU}
-      WG_PERSISTENT_KEEPALIVE: ${WG_PERSISTENT_KEEPALIVE}
-      UI_TRAFFIC_STATS: ${UI_TRAFFIC_STATS}
-      UI_CHART_TYPE: ${UI_CHART_TYPE}
-      # VIRTUAL_PORT: ${WIREGUARD_UI_PORT}
-      # VIRTUAL_HOST: ${WIREGUARD_URL}
-      # LETSENCRYPT_HOST: ${WIREGUARD_URL}
+      INIT_ENABLED: ${INIT_ENABLED}
+      INIT_HOST: ${INIT_HOST}
+      INIT_PORT: ${INIT_PORT}      
+      INIT_USERNAME: ${INIT_USERNAME}
+      INIT_PASSWORD: ${INIT_PASSWORD}
+      INIT_DNS: ${INIT_DNS}
+      INIT_IPV4_CIDR: ${INIT_IPV4_CIDR}
+      INIT_IPV6_CIDR: ${INIT_IPV6_CIDR}
+      PORT: ${PORT}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
@@ -42,26 +37,8 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      # Servicio backend Vaultwarden
+      # Servicio backend WireGuard
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=51821"
-    # labels:
-    #   # traefik
-    #   - "traefik.enable=true"
-    #   - "traefik.http.services.WireGuardService.loadbalancer.server.port=51821"
-    #   # http to https
-    #   - "traefik.http.routers.WireGuardRoute.service=WireGuardService"
-    #   # ⚠️ Required:
-    #   # Change this to your host's public address
-    #   - "traefik.http.routers.WireGuardRoute.rule=Host(`vpn.myhomelab.com`)"
-    #   - "traefik.http.routers.WireGuardRoute.entrypoints=web"
-    #   - "traefik.http.routers.WireGuardRoute.middlewares=HttpToHttpsRedirectMiddleware"
-    #   # https
-    #   - "traefik.http.routers.WireGuardRouteSSL.service=WireGuardService"
-    #   # ⚠️ Required:
-    #   # Change this to your host's public address
-    #   - "traefik.http.routers.WireGuardRouteSSL.rule=Host(`vpn.myhomelab.com`)"
-    #   - "traefik.http.routers.WireGuardRouteSSL.entrypoints=websecure"
-    #   - "traefik.http.routers.WireGuardRouteSSL.tls.certresolver=MainCertResolver"
 
 volumes:
   etc_wireguard:
