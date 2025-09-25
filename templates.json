@@ -1108,31 +1108,6 @@
       },
       "env": [
         {
-          "default": "mariadb",
-          "label": "MariaDB Image",
-          "name": "MARIADB_IMAGE"
-        },
-        {
-          "default": "11",
-          "label": "MariaDB Tag",
-          "name": "MARIADB_TAG"
-        },
-        {
-          "default": "speedtest_tracker",
-          "label": "MariaDB Database",
-          "name": "MARIADB_DATABASE"
-        },
-        {
-          "default": "speedy",
-          "label": "MariaDB User",
-          "name": "MARIADB_USER"
-        },
-        {
-          "default": "password",
-          "label": "MariaDB Password",
-          "name": "MARIADB_PASSWORD"
-        },
-        {
           "default": "linuxserver/speedtest-tracker",
           "label": "Speedtest Tracker Image",
           "name": "SPEED_TEST_TRACKER_IMAGE"
