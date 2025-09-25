@@ -1133,9 +1133,26 @@
           "name": "APP_NAME"
         },
         {
-          "default": "",
           "label": "App Key",
           "name": "APP_KEY"
+        },
+        {
+          "label": "Admin Name",
+          "name": "ADMIN_NAME"
+        },
+        {
+          "default": "email@example.com",
+          "label": "Admin Email",
+          "name": "ADMIN_EMAIL"
+        },
+        {
+          "label": "Admin Password",
+          "name": "ADMIN_PASSWORD"
+        },
+        {
+          "default": "true",
+          "label": "Chart Begin at Zero",
+          "name": "CHART_BEGIN_AT_ZERO"
         },
         {
           "default": "0",
