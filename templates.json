@@ -1101,9 +1101,9 @@
       "note": "Deploys an image to check your internet speed using Ookla's Speedtest service.",
       "categories": ["Tools"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/speedtest-tracker/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/speedtest-tracker/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/speedtest-tracker/docker-compose.yml"
       },
       "env": [
