@@ -19,6 +19,8 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    volumes:
+      - speedtest-tracker-config:/config
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
@@ -39,10 +41,21 @@ services:
       APP_TIMEZONE: ${APP_TIMEZONE}
       DISPLAY_TIMEZONE: ${DISPLAY_TIMEZONE}
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
-      VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
-      LETSENCRYPT_HOST: ${URL_DOMAIN},www.${URL_DOMAIN}
-    volumes:
-      - speedtest-tracker-config:/config
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL_DOMAIN}`) || Host(`www.${URL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL_DOMAIN}`) || Host(`www.${URL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend Vaultwarden
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
 
       
 volumes:

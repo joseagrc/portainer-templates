@@ -1113,7 +1113,7 @@
           "name": "MARIADB_IMAGE"
         },
         {
-          "default": "11.5.2",
+          "default": "11.8.3",
           "label": "MariaDB Tag",
           "name": "MARIADB_TAG"
         },
@@ -1138,7 +1138,7 @@
           "name": "SPEED_TEST_TRACKER_IMAGE"
         },
         {
-          "default": "0.21.2",
+          "default": "1.6.8",
           "label": "Speedtest Tracker Tag",
           "name": "SPEED_TEST_TRACKER_TAG"
         },
