@@ -1913,9 +1913,9 @@
       "note": "Deploys a iireguard instance.",
       "categories": ["Network"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/wireguard/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/wireguard/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/wireguard/docker-compose.yml"
       },
       "env": [
@@ -1925,7 +1925,7 @@
           "name": "WIREGUARD_IMAGE"
         },
         {
-          "default": "13",
+          "default": "15.1.0",
           "label": "WireGuard Tag",
           "name": "WIREGUARD_TAG"
         },
@@ -1946,8 +1946,8 @@
         },
         {
           "default": "vpn.example.com",
-          "label": "WireGuard URL",
-          "name": "WIREGUARD_URL"
+          "label": "URL Domain",
+          "name": "URL_DOMAIN"
         },
         {
           "label": "Password",
