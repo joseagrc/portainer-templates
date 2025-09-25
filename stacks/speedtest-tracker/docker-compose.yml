@@ -20,14 +20,14 @@ services:
     depends_on:
       - db
     volumes:
-      - speedtest-tracker-config:/config
+      - speedtest-config:/config
     environment:
       PUID: ${PUID}
       PGID: ${PGID}
       APP_NAME: ${APP_NAME}
       APP_KEY: ${APP_KEY}
       APP_URL: https://${URL_DOMAIN}
-      DB_CONNECTION: mysql
+      DB_CONNECTION: mariadb
       DB_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
       DB_PORT: 3306
       DB_DATABASE: ${MARIADB_DATABASE}
@@ -40,7 +40,6 @@ services:
       SPEEDTEST_SERVERS: ${SPEEDTEST_SERVERS}
       APP_TIMEZONE: ${APP_TIMEZONE}
       DISPLAY_TIMEZONE: ${DISPLAY_TIMEZONE}
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
@@ -56,11 +55,16 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
       # Servicio backend Vaultwarden
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
+    healthcheck:
+        test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+        interval: 5s
+        retries: 3
+        timeout: 5s
 
       
 volumes:
   speedtest-db:
-  speedtest-tracker-config:
+  speedtest-config:
 
 networks:
   default:
