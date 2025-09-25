@@ -1551,10 +1551,17 @@
           "name": "SMTP_PORT"
         },
         {
+          "default": "Example, Inc",
+          "label": "SMTP From Name",
+          "name": "SMTP_FROM_NAME"
+        },
+        {
+          "default": "email@example.com",
           "label": "SMTP From",
           "name": "SMTP_FROM"
         },
         {
+          "default": "email@example.com",
           "label": "SMTP Username",
           "name": "SMTP_USERNAME"
         },
