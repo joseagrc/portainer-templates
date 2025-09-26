@@ -955,9 +955,9 @@
       "note": "Pi-hole is a DNS sinkhole that protects your devices from unwanted content without installing any client-side software.",
       "categories": ["Network-wide Ad Blocking"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/pi-hole/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/pi-hole/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/pi-hole/docker-compose.yml"
       },
       "env": [
@@ -967,14 +967,9 @@
           "name": "PIHOLE_IMAGE"
         },
         {
-          "default": "2024.07.0",
+          "default": "2025.08.0",
           "label": "Pi-hole Tag",
           "name": "PIHOLE_TAG"
-        },
-        {
-          "default": "pihole",
-          "label": "Pi-hole Hostname",
-          "name": "PIHOLE_HOSTNAME"
         },
         {
           "default": "192.168.1.100",
@@ -2004,114 +1999,6 @@
     {
       "id": 25,
       "type": 3,
-      "title": "WireHole",
-      "description": "WireHole is a combination of WireGuard, Pi-hole, and Unbound in a docker-compose project with the intent of enabling users to quickly and easily create a personally managed full or split-tunnel WireGuard VPN with ad blocking capabilities thanks to Pi-hole, and DNS caching, additional privacy options, and upstream providers via Unbound.",
-      "note": "Deploys a WireHole instance.",
-      "categories": ["Network"],
-      "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/wirehole/logo/logo.png",
-      "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
-        "stackfile": "stacks/wirehole/docker-compose.yml"
-      },
-      "env": [
-        {
-          "default": "1.20.0",
-          "label": "Unbound Tag",
-          "name": "UNBOUND_TAG"
-        },
-        {
-          "default": "10.2.0.0/24",
-          "label": "Private Network Subnet",
-          "name": "PRIVATE_NETWORK_SUBNET"
-        },
-        {
-          "default": "10.2.0.100",
-          "label": "Unbound IP",
-          "name": "UNBOUND_IP"
-        },
-        {
-          "default": "2024.05.0",
-          "label": "Pi-hole Tag",
-          "name": "PIHOLE_TAG"
-        },
-        {
-          "default": "10.2.0.200",
-          "label": "Pi-hole IP",
-          "name": "PIHOLE_IP"
-        },
-        {
-          "default": "America/Santo_Domingo",
-          "label": "Time Zone",
-          "name": "TIMEZONE"
-        },  
-        {
-          "default": "",
-          "label": "Web Password",
-          "name": "WEBPASSWORD"
-        }, 
-        {
-          "default": "pihole.example.com",
-          "label": "URL Domain",
-          "name": "PIHOLE_URL"
-        },
-        {
-          "default": "latest",
-          "label": "WireGuard Tag",
-          "name": "WIREGUARD_TAG"
-        },
-        {
-          "default": "1000",
-          "label": "PUID",
-          "name": "PUID"
-        },
-        {
-          "default": "1000",
-          "label": "PGID",
-          "name": "PGID"
-        },
-        {
-          "default": "wireguard.example.com",
-          "label": "WireGuard URL",
-          "name": "WIREGUARD_URL"
-        },
-        {
-          "default": "latest",
-          "label": "WireGuard UI Tag",
-          "name": "WIREGUARD_UI_TAG"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        },
-        {
-          "default": "private_network",
-          "label": "Private Network name",
-          "name": "PRIVATE_NETWORK"
-        }
-      ],
-      "volumes": [
-        {
-          "container": "/opt/unbound/etc/unbound/"
-        },
-        {
-          "container": "/etc/pihole/"
-        },
-        {
-          "container": "/etc/dnsmasq.d/"
-        },
-        {
-          "container": "/config"
-        },
-        {
-          "container": "/app/db"
-        }
-      ]
-    },
-    {
-      "id": 26,
-      "type": 3,
       "title": "WordPress",
       "description": "WordPress setup with a Mariadb database",
       "note": "Deploys a WordPress instance connected to a Mariadb database.",
@@ -2280,7 +2167,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 26,
       "type": 3,
       "title": "Zabbix Server",
       "description": "Zabbix Server setup with postgres database.",
