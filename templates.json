@@ -1011,9 +1011,9 @@
       "note": "Deploys a Redis server instance as an application cache or quick-response database.",
       "categories": ["database"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/redis/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/redis/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/redis/docker-compose.yml"
       },
       "env": [
@@ -1101,7 +1101,7 @@
       "note": "Deploys an image to check your internet speed using Ookla's Speedtest service.",
       "categories": ["Tools"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/speedtest-tracker/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/speedtest-tracker/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/speedtest-tracker/docker-compose.yml"
