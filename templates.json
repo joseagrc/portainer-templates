@@ -972,20 +972,25 @@
           "name": "PIHOLE_TAG"
         },
         {
-          "default": "192.168.1.100",
-          "label": "Local Ipv4",
-          "name": "FTLCONF_LOCAL_IPV4"
-        },
-        {
           "default": "America/Santo_Domingo",
           "label": "Timezone",
           "name": "TZ"
         },
         {
-          "default": "admin",
-          "label": "Web password",
-          "name": "WEBPASSWORD"
-        },    
+          "default": "",
+          "label": "Webserver API Password",
+          "name": "FTLCONF_WEBSERVER_API_PASSWORD"
+        },
+        {
+          "default": "all",
+          "label": "DNS Listening Mode",
+          "name": "FTLCONF_DNS_LISTENINGMODE"
+        },
+        {
+          "default": "80",
+          "label": "Webserver Port",
+          "name": "FTLCONF_WEBSERVER_PORT"
+        },
         {
           "default": "pihole.example.com",
           "label": "Pi-hole URL",
