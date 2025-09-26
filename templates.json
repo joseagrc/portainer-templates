@@ -955,7 +955,7 @@
       "note": "Pi-hole is a DNS sinkhole that protects your devices from unwanted content without installing any client-side software.",
       "categories": ["Network-wide Ad Blocking"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/pi-hole/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates//blob/main/stacks/pi-hole/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/pi-hole/docker-compose.yml"
