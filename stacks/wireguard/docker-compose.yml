@@ -15,15 +15,20 @@ services:
     volumes:
       - etc_wireguard:/etc/wireguard
     environment:
+      # Optional Configuration
+      HOST: ${HOST}
+      PORT: ${PORT}
+      DISABLE_IPV6: ${DISABLE_IPV6}
+      # Unattended Setup
       INIT_ENABLED: ${INIT_ENABLED}
-      INIT_HOST: ${INIT_HOST}
-      INIT_PORT: ${INIT_PORT}      
       INIT_USERNAME: ${INIT_USERNAME}
       INIT_PASSWORD: ${INIT_PASSWORD}
+      INIT_HOST: ${INIT_HOST}
+      INIT_PORT: ${INIT_PORT}      
       INIT_DNS: ${INIT_DNS}
-      INIT_IPV4_CIDR: ${INIT_IPV4_CIDR}
-      INIT_IPV6_CIDR: ${INIT_IPV6_CIDR}
-      PORT: ${PORT}
+      TZ: ${TZ}
+      SERVERURL: ${INIT_HOST}
+      INTERNAL_SUBNET: ${INTERNAL_SUBNET}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"

@@ -1930,19 +1930,24 @@
           "name": "WIREGUARD_TAG"
         },
         {
+          "default": "0.0.0.0",
+          "label": "Host",
+          "name": "HOST"
+        },
+        {
+          "default": "51821",
+          "label": "WireGuard UI Port",
+          "name": "PORT"
+        },
+        {
+          "default": "true",
+          "label": "Disable  IPv6",
+          "name": "DISABLE_IPV6 "
+        },
+        {
           "default": "true",
           "label": "Init Enable",
           "name": "INIT_ENABLED"
-        },
-        {
-          "default": "vpn.example.com",
-          "label": "INIT Host",
-          "name": "INIT_HOST"
-        },
-        {
-          "default": "51820",
-          "label": "WireGuard Init Port",
-          "name": "INIT_PORT"
         },
         {
           "default": "admin",
@@ -1953,31 +1958,36 @@
           "default": "Se!ureP%ssw",
           "label": "Init Password",
           "name": "INIT_PASSWORD"
-        },     
+        },  
+        {
+          "default": "vpn.example.com",
+          "label": "INIT Host",
+          "name": "INIT_HOST"
+        },
+        {
+          "default": "51820",
+          "label": "WireGuard Init Port",
+          "name": "INIT_PORT"
+        },   
         {
           "default": "1.1.1.1",
           "label": "Init DNS server(s)",
           "name": "INIT_DNS"
         },
         {
-          "default": "10.8.0.0/24",
-          "label": "Init  IPv4 CIDR",
-          "name": "INIT_IPV4_CIDR"
+          "default": "America/Santo_Domingo",
+          "label": "TimeZone",
+          "name": "TZ"
         },
         {
-          "default": "true",
-          "label": "Disable  IPv6",
-          "name": "DISABLE_IPV6 "
+          "default": "vpn.example.com",
+          "label": "Server URL",
+          "name": "SERVERURL"
         },
         {
-          "default": "2001:0DB8::/32",
-          "label": "Init  IPv6 CIDR",
-          "name": "INIT_IPV6_CIDR"
-        },
-        {
-          "default": "51821",
-          "label": "WireGuard UI Port",
-          "name": "PORT"
+          "default": "10.13.13.0",
+          "label": "Internal DNS",
+          "name": "INTERNAL_SUBNET"
         },
         {
           "default": "proxy",
