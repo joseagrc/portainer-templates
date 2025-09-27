@@ -113,38 +113,38 @@
       "note": "Deploys a Gitea instance connected to a MySQL database.",
       "categories": ["CMS"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitea/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitea/docker-compose.yml"
       },
       "env": [
         {
           "default": "mysql",
-          "label": "MySQL database image",
+          "label": "MySQL Image",
           "name": "MYSQL_IMAGE"
         },
         {
           "default": "8",
-          "label": "MySQL Database tag",
+          "label": "MySQL Tag",
           "name": "MYSQL_TAG"
         },
         {
           "default": "gitea_example",
-          "label": "MySQL database username",
+          "label": "MySQL Database Username",
           "name": "MYSQL_USER"
         },
         {
-          "label": "MySQL Database password for user",
+          "label": "MySQL Database Password for Username",
           "name": "MYSQL_PASSWORD"
         },
         {
-          "label": "Database root password",
+          "label": "Database Root Password",
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
           "default": "gitea_example",
-          "label": "MySQL database name",
+          "label": "MySQL Database Name",
           "name": "MYSQL_DATABASE"
         },
         {
@@ -153,8 +153,8 @@
           "name": "GITEA_IMAGE"
         },
         {
-          "default": "1.22.0",
-          "label": "Gitea tag",
+          "default": "1.24.6-rootless",
+          "label": "Gitea Tag",
           "name": "GITEA_TAG"
         },
         {
@@ -626,9 +626,77 @@
           "container": "/usr/share/elasticsearch/data"
         }
         ]
-      },
-      {
+    },
+    {
       "id": 11,
+      "type": 3,
+      "title": "HAProxy",
+      "description": "HAProxy is a free, open source high availability solution, providing load balancing and proxying for TCP and HTTP-based applications by spreading requests across multiple servers.",
+      "categories": ["proxy"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/haproxy/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/haproxy/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "haproxy",
+          "label": "HAProxy Image",
+          "name": "HAPROXY_IMAGE"
+        },
+        {
+          "default": "3.2.5-alpine",
+          "label": "HAProxy Tag",
+          "name": "HAPROXY_TAG"
+        },
+        {
+          "default": "odoo",
+          "label": "Database username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "default": "odoo",
+          "label": "Database password for user",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "postgres",
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "odoo",
+          "label": "Odoo image",
+          "name": "ODOO_IMAGE"
+        },
+        {
+          "default": "16.0",
+          "label": "Odoo tag",
+          "name": "ODOO_TAG"
+        },
+          {
+          "default": "odoo.example.com",
+          "label": "URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/mnt/extra-addons"
+        }
+      ]
+    },
+    {
+      "id": 12,
       "type": 3,
       "title": "Nextcloud",
       "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
@@ -702,7 +770,7 @@
       ]
     },
     {
-      "id": 12,
+      "id": 13,
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
@@ -770,7 +838,7 @@
       ]
     },
     {
-      "id": 13,
+      "id": 14,
       "type": 3,
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
@@ -871,7 +939,7 @@
       ]
       },
       {
-      "id": 14,
+      "id": 15,
       "type": 3,
       "title": "Phorge",
       "description": "Phorge is a collection of web applications which help software companies build better software.",
@@ -948,7 +1016,7 @@
       ]
       },
       {
-      "id": 15,
+      "id": 16,
       "type": 3,
       "title": "Pi-hole",
       "description": "Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network.",
@@ -1004,7 +1072,7 @@
       ]
       },
       {
-      "id": 16,
+      "id": 17,
       "type": 3,
       "title": "Redis",
       "description": "Open-source in-memory data structure store",
@@ -1018,13 +1086,13 @@
       },
       "env": [
         {
-          "default": "code.gruposolutema.com/solutema/redis",
-          "label": "Redis image",
+          "default": "redis",
+          "label": "Redis Image",
           "name": "REDIS_IMAGE"
         },
         {
-          "default": "7.4.0",
-          "label": "Redis tag",
+          "default": "8.2.1",
+          "label": "Redis Tag",
           "name": "REDIS_TAG"
         },
         {
@@ -1094,7 +1162,7 @@
       ]
       },
       {
-      "id": 17,
+      "id": 18,
       "type": 3,
       "title": "Speedtest Tracker",
       "description": "A Docker image to check your internet speed using Ookla's Speedtest service. Build using Laravel and the Speedtest CLI.",
@@ -1254,7 +1322,7 @@
       ]
       },
       {
-      "id": 18,
+      "id": 19,
       "type": 3,
       "title": "Tryton Series 6.0",
       "description": "Tryton 6.0 setup with a PostgreSQL database",
@@ -1336,7 +1404,7 @@
       ]
     },
     {
-      "id": 19,
+      "id": 20,
       "type": 3,
       "title": "Tryton Series 7.0",
       "description": "Tryton 7.0 setup with a PostgreSQL database",
@@ -1411,7 +1479,7 @@
       ]
     },
     {
-      "id": 20,
+      "id": 21,
       "type": 3,
       "title": "Tryton Series 7.2",
       "description": "Tryton 7.2 setup with a PostgreSQL database",
@@ -1486,7 +1554,7 @@
       ]
     },
     {
-      "id": 21,
+      "id": 22,
       "type": 3,
       "title": "Vaultwarden",
       "description": "Vaultwarden setup",
@@ -1618,7 +1686,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 23,
       "type": 3,
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
@@ -1805,7 +1873,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 24,
       "type": 3,
       "title": "Windows",
       "description": "Windows inside a Docker container.",
@@ -1906,7 +1974,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 25,
       "type": 3,
       "title": "WireGuard",
       "description": "WireGuard is a communication protocol and free and open-source software that implements encrypted virtual private networks, and was designed with the goals of ease of use, high speed performance, and low attack surface.",
@@ -2002,7 +2070,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 26,
       "type": 3,
       "title": "WordPress",
       "description": "WordPress setup with a Mariadb database",
@@ -2172,7 +2240,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 27,
       "type": 3,
       "title": "Zabbix Server",
       "description": "Zabbix Server setup with postgres database.",
