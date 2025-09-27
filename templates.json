@@ -158,14 +158,14 @@
           "name": "GITEA_TAG"
         },
         {
-          "default": "2222",
+          "default": "22",
           "label": "Gitea SSH Port",
           "name": "GITEA_SSH_PORT"
         },
         {
-          "default": "code.example.com",
-          "label": "Domain",
-          "name": "DOMAIN"
+          "default": "gitea.example.com",
+          "label": "Gitea URL",
+          "name": "GITEA_URL"
         },
         {
           "default": "proxy",
