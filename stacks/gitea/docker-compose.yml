@@ -63,7 +63,7 @@ services:
       GITEA__mailer__ENABLED: ${GITEA__MAILER__ENABLED}
       GITEA__mailer__FROM: ${GITEA__MAILER__FROM:?GITEA__mailer__FROM not set}
       GITEA__mailer__PROTOCOL: ${GITEA__MAILER__PROTOCOL}
-      GITEA__mailer__HOST: ${GITEA__MAILER__HOST:?GITEA__mailer__HOST not set}
+      GITEA__mailer__SMTP_ADDR: ${GITEA__MAILER__SMTP_ADDR:?GITEA__mailer__SMTP_ADDR not set}
       GITEA__mailer__USER: ${GITEA__MAILER__USER:-apikey}
       GITEA__mailer__PASSWD: ${GITEA__MAILER__PASSWD:?GITEA__mailer__PASSWD not set}"""
     labels:

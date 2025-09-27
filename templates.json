@@ -264,8 +264,8 @@
         },
         {
           "default": "smtp.example.com",
-          "label": "Mailer Host",
-          "name": "GITEA__MAILER__HOST"
+          "label": "Mailer SMTP Address",
+          "name": "GITEA__MAILER__SMTP_ADDR"
         },
         {
           "default": "email@example.com",
