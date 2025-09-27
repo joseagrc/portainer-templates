@@ -109,9 +109,9 @@
       "id": 3,
       "type": 3,
       "title": "Gitea",
-      "description": "Gitea setup with a MySQL database",
-      "note": "Deploys a Gitea instance connected to a MySQL database.",
-      "categories": ["CMS"],
+      "description": "Gitea setup with a database MySQL.",
+      "note": "Deploys a Gitea instance connected to a database MySQL.",
+      "categories": ["Development", "Source control", "Git"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea/logo/logo.png",
       "repository": {
@@ -121,31 +121,36 @@
       "env": [
         {
           "default": "mysql",
-          "label": "MySQL Image",
-          "name": "MYSQL_IMAGE"
+          "label": "Database Type",
+          "name": "GITEA__DATABASE__DB_TYPE"
+        },
+        {
+          "default": "mysql",
+          "label": "Database Image",
+          "name": "DATABASE_IMAGE"
         },
         {
           "default": "8",
-          "label": "MySQL Tag",
-          "name": "MYSQL_TAG"
+          "label": "Database Tag",
+          "name": "DATABASE_TAG"
         },
         {
           "default": "gitea_example",
-          "label": "MySQL Database Username",
-          "name": "MYSQL_USER"
+          "label": "Database Username",
+          "name": "DATABASE_USERNAME"
         },
         {
-          "label": "MySQL Database Password for Username",
-          "name": "MYSQL_PASSWORD"
+          "label": "Database Password for User",
+          "name": "DATABASE_PASSWORD"
         },
         {
           "label": "Database Root Password",
-          "name": "MYSQL_ROOT_PASSWORD"
+          "name": "DATABASE_ROOT_PASSWORD"
         },
         {
           "default": "gitea_example",
-          "label": "MySQL Database Name",
-          "name": "MYSQL_DATABASE"
+          "label": "Database Name",
+          "name": "DATABASE_NAME"
         },
         {
           "default": "gitea/gitea",
@@ -158,14 +163,119 @@
           "name": "GITEA_TAG"
         },
         {
-          "default": "22",
-          "label": "Gitea SSH Port",
-          "name": "GITEA_SSH_PORT"
+          "default": "Git · Example, Inc.",
+          "label": "Site Title",
+          "name": "APP_NAME"
+        },
+        {
+          "default": "prod",
+          "label": "Run Mode",
+          "name": "RUN_MODE"
+        },
+        {
+          "default": "git",
+          "label": "Run User",
+          "name": "RUN_USER"
         },
         {
           "default": "gitea.example.com",
           "label": "Gitea URL",
           "name": "GITEA_URL"
+        },
+        {
+          "default": "22",
+          "label": "Gitea SSH Port",
+          "name": "GITEA_SSH_PORT"
+        },
+        {
+          "default": "false",
+          "label": "Disable Registration",
+          "name": "DISABLE_REGISTRATION"
+        },
+        {
+          "default": "true",
+          "label": "Require Sign In View",
+          "name": "REQUIRE_SIGNIN_VIEW"
+        },
+        {
+          "default": "true",
+          "label": "Register Email Confirm",
+          "name": "REGISTER_EMAIL_CONFIRM"
+        },
+        {
+          "default": "true",
+          "label": "Enable Notify Email",
+          "name": "ENABLE_NOTIFY_MAIL"
+        },
+        {
+          "default": "false",
+          "label": "Allow Only External Registration",
+          "name": "ALLOW_ONLY_EXTERNAL_REGISTRATION"
+        },
+        {
+          "default": "true",
+          "label": "Enable Captcha",
+          "name": "ENABLE_CAPTCHA"
+        },
+        {
+          "default": "false",
+          "label": "Default Keep Email Private",
+          "name": "DEFAULT_KEEP_EMAIL_PRIVATE"
+        },
+        {
+          "default": "false",
+          "label": "Default allow Create Organization",
+          "name": "DEFAULT_ALLOW_CREATE_ORGANIZATION"
+        },
+        {
+          "default": "true",
+          "label": "Default Enable Timetracking",
+          "name": "DEFAULT_ENABLE_TIMETRACKING"
+        },
+        {
+          "default": "noreply@example.com",
+          "label": "No Reply Address",
+          "name": "NO_REPLY_ADDRESS"
+        },
+        {
+          "default": "true",
+          "label": "Enable Cron Update Checker",
+          "name": "CRON_UPDATE_CHECKER"
+        },
+        {
+          "default": "@every 168h",
+          "label": "Cron Update Checker Schedule",
+          "name": "CRON_UPDATE_CHECKER_SCHEDULE"
+        },
+        {
+          "default": "true",
+          "label": "Mailer Enable",
+          "name": "GITEA__MAILER__ENABLED"
+        },
+        {
+          "default": "John Doe",
+          "label": "Mailer From",
+          "name": "GITEA__MAILER__FROM"
+        },
+        {
+          "default": "smtps",
+          "label": "Mailer Protocol",
+          "name": "GITEA__MAILER__PROTOCOL"
+        },
+        {
+          "default": "smtp.example.com",
+          "label": "Mailer Host",
+          "name": "GITEA__MAILER__HOST"
+        },
+        {
+          "default": "email@example.com",
+          "label": "Mailer Host User",
+          "name": "GITEA__MAILER__USER"
+        },
+        {
+          "default": "",
+          "label": "Mailer Host Password",
+          "name": "GITEA__MAILER__PASSWD"
         },
         {
           "default": "proxy",
