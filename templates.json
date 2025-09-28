@@ -292,9 +292,9 @@
       "note": "Deploys a Gitea act runner.",
       "categories": ["CI/CD"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitea-act-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea-act-runner/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitea-act-runner/docker-compose.yml"
       },
       "env": [
@@ -304,7 +304,7 @@
           "name": "GITEA_ACT_RUNNER_IMAGE"
         },
         {
-          "default": "0.2.10",
+          "default": "0.2.13-dind-rootless",
           "label": "Gitea act runner tag",
           "name": "GITEA_ACT_RUNNER_TAG"
         },
