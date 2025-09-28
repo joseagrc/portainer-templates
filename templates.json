@@ -333,7 +333,7 @@
       "title": "GitLab CE",
       "description": "GitLab, is an Open-source end-to-end software development platform",
       "note": "Deploys a GitLab instance.",
-      "categories": ["Code Server"],
+      "categories": ["Development", "Source control", "Git"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce/logo/logo.png",
       "repository": {
@@ -428,11 +428,11 @@
       "title": "GitLab CE Runner",
       "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
       "note": "Deploys a GitLab Runner instance.",
-      "categories": ["Code Server"],
+      "categories": ["CI/CD"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce-runner/docker-compose.yml"
       },
       "env": [
@@ -442,7 +442,7 @@
           "name": "GITLAB_CE_RUNNER_IMAGE"
         },
         {
-          "default": "v17.1.0",
+          "default": "v18.4.0",
           "label": "GitLab CE Runner Tag",
           "name": "GITLAB_CE_RUNNER_TAG"
         },
