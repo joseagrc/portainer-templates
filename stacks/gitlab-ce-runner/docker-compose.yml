@@ -4,28 +4,17 @@ services:
   gitlab-runner:
     container_name: ${COMPOSE_PROJECT_NAME}
     image: gitlab/gitlab-runner:${GITLAB_CE_RUNNER_TAG}
-    restart: "no"
-    command:
-      - register
-      - --non-interactive
-      - --url=${GITLAB_URL}
-      - --registration-token=${RUNNER_TOKEN}
-      - --name=${DESCRIPTION}
-      - --executor=${EXECUTOR}
-      - --docker-image=${DOCKER_IMAGE}
-      - --run-untagged=true
-      - --locked=false
-      - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
+    restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - config:/etc/gitlab-runner/
-      - cache:/cache
+      - gitlab-runner-config:/etc/gitlab-runner/
+      - gitlab-runner-cache:/cache
     environment:
       TZ: ${TZ}
       
 volumes:
-  config:
-  cache:
+  gitlab-runner-config:
+  gitlab-runner-cache:
 
 networks:
   default:
