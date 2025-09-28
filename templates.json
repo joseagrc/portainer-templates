@@ -685,7 +685,7 @@
       "type": 3,
       "title": "Gravitee",
       "description": "Gravitee helps organizations manage and secure their entire API lifecycle with solutions for API design, management, security, productization, real-time observability, and more.",
-      "categories": ["project-management"],
+      "categories": ["API Management"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gravitee/logo/logo.png",
       "repository": {
