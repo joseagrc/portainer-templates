@@ -953,7 +953,7 @@
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
-      "categories": ["project-management"],
+      "categories": ["ERP (Enterprise Resource Planning)"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/odoo/logo/logo.png",
       "repository": {
@@ -1506,7 +1506,7 @@
       "title": "Tryton Series 6.0",
       "description": "Tryton 6.0 setup with a PostgreSQL database",
       "note": "Deploys a Tryton 6.0 instance connected to a PostgreSQL database.",
-      "categories": ["erp"],
+      "categories": ["ERP (Enterprise Resource Planning)"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton60/logo/logo.png",
       "repository": {
@@ -1588,7 +1588,7 @@
       "title": "Tryton Series 7.0",
       "description": "Tryton 7.0 setup with a PostgreSQL database",
       "note": "Deploys a Tryton 7.0 instance connected to a PostgreSQL database.",
-      "categories": ["erp"],
+      "categories": ["ERP (Enterprise Resource Planning)"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton70/logo/logo.png",
       "repository": {
@@ -1663,7 +1663,7 @@
       "title": "Tryton Series 7.2",
       "description": "Tryton 7.2 setup with a PostgreSQL database",
       "note": "Deploys a Tryton 7.2 instance connected to a PostgreSQL database.",
-      "categories": ["erp"],
+      "categories": ["ERP (Enterprise Resource Planning)"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton72/logo/logo.png",
       "repository": {
