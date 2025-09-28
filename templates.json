@@ -817,7 +817,7 @@
       "note": "Deploys a Leantime instance connected to a MySQL database.",
       "categories": ["Project Management"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/wordpress/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/leantime/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/leantime/docker-compose.yml"
@@ -865,7 +865,7 @@
         {
           "default": "leantime.example.com",
           "label": "Leantime URL",
-          "name": "LEANTIME__URL"
+          "name": "LEANTIME_URL"
         },
         {
           "default": "proxy",
