@@ -335,9 +335,9 @@
       "note": "Deploys a GitLab instance.",
       "categories": ["Code Server"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitlab-ce/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce/docker-compose.yml"
       },
       "env": [
@@ -356,7 +356,7 @@
           "name": "GITLAB_CE_IMAGE"
         },
         {
-          "default": "17.3.1-ce.0",
+          "default": "18.4.1-ce.0",
           "label": "GitLab Tag",
           "name": "GITLAB_CE_TAG"
         },
@@ -406,7 +406,7 @@
           "name": "GITLAB_CE_INCOMING_EMAIL_START_TLS"
         },
         {
-          "default": "2222",
+          "default": "2223",
           "label": "GitLab SSH Port",
           "name": "GITLAB_CE_SSH_PORT"
         },
