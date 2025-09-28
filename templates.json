@@ -376,34 +376,34 @@
           "name": "GITLAB_PAGES"
         },
         {
-          "label": "GitLab Incoming Email Address",
-          "name": "GITLAB_CE_INCOMING_EMAIL_ADDRESS"
-        },
-        {
-          "label": "GitLab Incoming Email",
-          "name": "GITLAB_CE_INCOMING_EMAIL_EMAIL"
-        },
-        {
-          "label": "GitLab Incoming Password",
-          "name": "GITLAB_CE_INCOMING_EMAIL_PASSWORD"
-        },
-        {
-          "label": "GitLab Incoming Mail Host",
-          "name": "GITLAB_CE_INCOMING_EMAIL_HOST"
-        },
-        {
-          "label": "GitLab Incoming Mail Host Port",
-          "name": "GITLAB_CE_INCOMING_EMAIL_PORT"
-        },
-        {
           "default": "true",
-          "label": "GitLab Incoming Mail Host SSL",
-          "name": "GITLAB_CE_INCOMING_EMAIL_SSL"
+          "label": "GitLab SMTP Enable",
+          "name": "GITLAB_SMTP_ENABLE"
         },
         {
-          "default": "true",
-          "label": "GitLab Incoming Mail Host Start TLS",
-          "name": "GITLAB_CE_INCOMING_EMAIL_START_TLS"
+          "default": "smtp.example.com",
+          "label": "GitLab SMTP Host",
+          "name": "GITLAB_SMTP_HOST"
+        },
+        {
+          "default": "465",
+          "label": "GitLab SMTP Port",
+          "name": "GITLAB_SMTP_PORT"
+        },
+        {
+          "default": "email@example.com",
+          "label": "GitLab SMTP User_name",
+          "name": "GITLAB_SMTP_USER_NAME"
+        },
+        {
+          "default": "",
+          "label": "GitLab SMTP Password",
+          "name": "GITLAB_SMTP_PASSWORD"
+        },
+        {
+          "default": "example.com",
+          "label": "GitLab Domain",
+          "name": "GITLAB_DOMAIN"
         },
         {
           "default": "2223",
