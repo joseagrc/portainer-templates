@@ -321,10 +321,6 @@
           "name": "RUNNER_NAME"
         },
         {
-          "label": "Runner Labels",
-          "name": "RUNNER_LABELS"
-        },
-        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"

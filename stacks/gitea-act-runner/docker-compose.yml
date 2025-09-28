@@ -4,12 +4,11 @@ services:
     image: ${GITEA_ACT_RUNNER_IMAGE}:${GITEA_ACT_RUNNER_TAG}
     restart: always
     command: act_runner generate-config > /data/config.yaml
+    privileged: true
     environment:
-      CONFIG_FILE: /data/config.yaml
       GITEA_INSTANCE_URL: "${GITEA_INSTANCE_URL}"
       GITEA_RUNNER_REGISTRATION_TOKEN: "${GITEA_RUNNER_REGISTRATION_TOKEN}"
       GITEA_RUNNER_NAME: ${RUNNER_NAME}
-      GITEA_RUNNER_LABELS: ${RUNNER_LABELS}
     volumes:
       - data:/data
       - /var/run/docker.sock:/var/run/docker.sock
