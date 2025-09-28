@@ -812,6 +812,71 @@
     {
       "id": 12,
       "type": 3,
+      "title": "Leantime",
+      "description": "Leantime setup with a MySQL database",
+      "note": "Deploys a Leantime instance connected to a MySQL database.",
+      "categories": ["Project Management"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/wordpress/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/leantime/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "Database Image",
+          "name": "MYSQL_IMAGE"
+        },
+        {
+          "default": "12.0.2",
+          "label": "Database Tag",
+          "name": "MYSQL_TAG"
+        },
+        {
+          "label": "MariaDB Root Password",
+          "name": "ROOT_PASS"
+        },
+        {
+          "default": "leantime_database",
+          "label": "MariaDB Database Name",
+          "name": "DB_NAME"
+        },
+        {
+          "default": "leantime_user",
+          "label": "MariaDB Database Username",
+          "name": "DB_USER"
+        },
+        {
+          "default": "password",
+          "label": "MariaDB Database Password",
+          "name": "DB_PASS"
+        },
+        {
+          "default": "leantime/leantime",
+          "label": "Leantime Image",
+          "name": "LEANTIME_IMAGE"
+        },
+        {
+          "default": "3.5.12",
+          "label": "Leantime Tag",
+          "name": "LEANTIME_TAG"
+        },
+        {
+          "default": "leantime.example.com",
+          "label": "Leantime URL",
+          "name": "LEANTIME__URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "type": 3,
       "title": "Nextcloud",
       "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
       "note": "Deploys an nextcloud instance.",
@@ -884,7 +949,7 @@
       ]
     },
     {
-      "id": 13,
+      "id": 14,
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
@@ -952,7 +1017,7 @@
       ]
     },
     {
-      "id": 14,
+      "id": 15,
       "type": 3,
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
@@ -1053,7 +1118,7 @@
       ]
       },
       {
-      "id": 15,
+      "id": 16,
       "type": 3,
       "title": "Phorge",
       "description": "Phorge is a collection of web applications which help software companies build better software.",
@@ -1130,7 +1195,7 @@
       ]
       },
       {
-      "id": 16,
+      "id": 17,
       "type": 3,
       "title": "Pi-hole",
       "description": "Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network.",
@@ -1186,7 +1251,7 @@
       ]
       },
       {
-      "id": 17,
+      "id": 18,
       "type": 3,
       "title": "Redis",
       "description": "Open-source in-memory data structure store",
@@ -1276,7 +1341,7 @@
       ]
       },
       {
-      "id": 18,
+      "id": 19,
       "type": 3,
       "title": "Speedtest Tracker",
       "description": "A Docker image to check your internet speed using Ookla's Speedtest service. Build using Laravel and the Speedtest CLI.",
@@ -1436,7 +1501,7 @@
       ]
       },
       {
-      "id": 19,
+      "id": 20,
       "type": 3,
       "title": "Tryton Series 6.0",
       "description": "Tryton 6.0 setup with a PostgreSQL database",
@@ -1518,7 +1583,7 @@
       ]
     },
     {
-      "id": 20,
+      "id": 21,
       "type": 3,
       "title": "Tryton Series 7.0",
       "description": "Tryton 7.0 setup with a PostgreSQL database",
@@ -1593,7 +1658,7 @@
       ]
     },
     {
-      "id": 21,
+      "id": 22,
       "type": 3,
       "title": "Tryton Series 7.2",
       "description": "Tryton 7.2 setup with a PostgreSQL database",
@@ -1668,7 +1733,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 23,
       "type": 3,
       "title": "Vaultwarden",
       "description": "Vaultwarden setup",
@@ -1800,7 +1865,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 24,
       "type": 3,
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
@@ -1987,7 +2052,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 25,
       "type": 3,
       "title": "Windows",
       "description": "Windows inside a Docker container.",
@@ -2088,7 +2153,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 26,
       "type": 3,
       "title": "WireGuard",
       "description": "WireGuard is a communication protocol and free and open-source software that implements encrypted virtual private networks, and was designed with the goals of ease of use, high speed performance, and low attack surface.",
@@ -2184,7 +2249,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 27,
       "type": 3,
       "title": "WordPress",
       "description": "WordPress setup with a Mariadb database",
@@ -2354,7 +2419,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 28,
       "type": 3,
       "title": "Zabbix Server",
       "description": "Zabbix Server setup with postgres database.",
