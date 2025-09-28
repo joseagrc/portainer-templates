@@ -253,7 +253,7 @@
           "name": "GITEA__MAILER__ENABLED"
         },
         {
-          "default": "John Doe",
+          "default": "email@domain.com",
           "label": "Mailer From",
           "name": "GITEA__MAILER__FROM"
         },
