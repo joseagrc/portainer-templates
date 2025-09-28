@@ -478,7 +478,7 @@
           "name": "GITLAB_CE_RUNNER_TAG"
         },
         {
-          "default": "http://gitlab.example.com/",
+          "default": "https://gitlab.example.com/",
           "label": "Gitlab URL",
           "name": "GITLAB_URL"
         },
