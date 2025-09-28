@@ -4,7 +4,18 @@ services:
   gitlab-runner:
     container_name: ${COMPOSE_PROJECT_NAME}
     image: gitlab/gitlab-runner:${GITLAB_CE_RUNNER_TAG}
-    restart: always
+    restart: "no"
+    command:
+      - register
+      - --non-interactive
+      - --url=${GITLAB_URL}
+      - --registration-token=${RUNNER_TOKEN}
+      - --name=${DESCRIPTION}
+      - --executor=${EXECUTOR}
+      - --docker-image=${DOCKER_IMAGE}
+      - --run-untagged=true
+      - --locked=false
+      - --docker-volumes=/var/run/docker.sock:/var/run/docker.sock
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - config:/etc/gitlab-runner/

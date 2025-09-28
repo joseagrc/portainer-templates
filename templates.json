@@ -452,6 +452,30 @@
           "name": "TZ"
         },
         {
+          "default": "https://gitlab.example.com/",
+          "label": "Gitlab URL",
+          "name": "GITLAB_URL"
+        },
+        {
+          "label": "Runner Token",
+          "name": "RUNNER_TOKEN"
+        },     
+        {
+          "default": "docker",
+          "label": "Executor",
+          "name": "EXECUTOR"
+        },
+        {
+          "default": "alpine:latest",
+          "label": "Docker Image",
+          "name": "DOCKER_IMAGE"
+        },
+        {
+          "default": "docker-runner",
+          "label": "Description",
+          "name": "DESCRIPTION"
+        },
+        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
