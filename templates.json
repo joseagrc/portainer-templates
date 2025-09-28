@@ -464,16 +464,16 @@
       "title": "GitLab CE Runner Register",
       "description": "Gitlab Runner register is an application that works with GitLab CI/CD to register the runner.",
       "note": "Deploys a GitLab Runner instance to register a runner.",
-      "categories": ["Code Server"],
+      "categories": ["CI/CD"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce-runner-register/docker-compose.yml"
       },
       "env": [
         {
-          "default": "v17.1.0",
+          "default": "v18.4.0",
           "label": "GitLab CE Runner Tag",
           "name": "GITLAB_CE_RUNNER_TAG"
         },
