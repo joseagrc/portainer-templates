@@ -514,7 +514,7 @@
       "title": "GNU Health",
       "description": "GNU Health is a free/libre health and hospital information system.",
       "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
-      "categories": ["health"],
+      "categories": ["HIS (Hospital Information System)"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gnuhealth/logo/logo.png",
       "repository": {
