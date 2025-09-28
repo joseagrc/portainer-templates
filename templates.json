@@ -880,7 +880,7 @@
       "title": "Nextcloud",
       "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
       "note": "Deploys an nextcloud instance.",
-      "categories": ["Cloud", "Productivity", "Tools", "Web"],
+      "categories": ["cloud Storage", "Online Collaboration"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/nextcloud/logo/logo.png",
       "repository": {
