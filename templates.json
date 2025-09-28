@@ -826,12 +826,12 @@
         {
           "default": "mariadb",
           "label": "Database Image",
-          "name": "MYSQL_IMAGE"
+          "name": "MARIADB_IMAGE"
         },
         {
           "default": "12.0.2",
           "label": "Database Tag",
-          "name": "MYSQL_TAG"
+          "name": "MARIADB_TAG"
         },
         {
           "label": "MariaDB Root Password",
