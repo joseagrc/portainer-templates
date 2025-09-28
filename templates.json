@@ -317,6 +317,14 @@
           "name": "GITEA_RUNNER_REGISTRATION_TOKEN"
         },
         {
+          "label": "Runner Name",
+          "name": "RUNNER_NAME"
+        },
+        {
+          "label": "Runner Labels",
+          "name": "RUNNER_LABELS"
+        },
+        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
