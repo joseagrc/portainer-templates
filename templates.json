@@ -1022,7 +1022,7 @@
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
       "note": "Deploys an OpenLDAP Server.",
-      "categories": ["Directory Access Protocol"],
+      "categories": ["Directory Services"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/openldap/logo/logo.png",
       "repository": {
