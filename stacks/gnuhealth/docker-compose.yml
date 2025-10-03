@@ -2,6 +2,7 @@ services:
   postgres:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
+    restart: always
     environment:
       TIMEZONE: ${TIMEZONE}
       DB_NAME: ${DB_NAME}
@@ -10,18 +11,25 @@ services:
       SUPERUSER_PASS: ${SUPERUSER_PASS}
     volumes:
       - db:/var/lib/postgresql/data
-    restart: always
-      
+    labels:
+      # Habilita Traefik para TCP (no HTTP)
+      - "traefik.enable=true"
+      # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.rule=HostSNI(`postgres.${GH_URL}`) || HostSNI(`www.postgres.${GH_URL}`)"
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.entrypoints=postgres"  # Entrypoint TCP definido en Traefik
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.tls=true"  # Opcional: TLS para seguridad
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.tls.certresolver=letsencrypt"
+      # Backend (puerto de MySQL)
+      - "traefik.tcp.services.${COMPOSE_PROJECT_NAME}-postgres.loadbalancer.server.port=5432"
+
   gnuhealth:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${GNUHEALTH_IMAGE}:${GNUHEALTH_TAG}
+    restart: always
     environment:
       TZ: ${TIMEZONE}
-      VIRTUAL_PORT: 8000
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASS} 
-      VIRTUAL_HOST: ${URL},www.${URL}
-      LETSENCRYPT_HOST: ${URL},www.${URL}
     volumes:
       - data:/var/lib/trytond/db
     command:
@@ -34,7 +42,21 @@ services:
         if command -v uwsgi &>/dev/null; then uwsgi --ini /etc/uwsgi.conf; else gunicorn --config=/etc/gunicorn.conf.py; fi
     depends_on:
       - postgres
-    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${GH_URL}`) || Host(`www.${GH_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${GH_URL}`) || Host(`www.${GH_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend Gitea
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
 
   gnuhealth-cron:
     container_name: ${COMPOSE_PROJECT_NAME}-cron
