@@ -2111,7 +2111,7 @@
           "name": "DISK_SIZE"
         },
         {
-          "default": "win11",
+          "default": "11",
           "label": "Version",
           "name": "VERSION"
         },
