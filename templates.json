@@ -516,9 +516,9 @@
       "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
       "categories": ["HIS (Hospital Information System)"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gnuhealth/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gnuhealth/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gnuhealth/docker-compose.yml"
       },
       "env": [
@@ -600,8 +600,8 @@
         },  
         {
           "default": "demo.domain.org.do",
-          "label": "URL",
-          "name": "URL"
+          "label": "GH URL",
+          "name": "GH_URL"
         },
         {
           "default": "proxy",
