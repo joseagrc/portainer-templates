@@ -203,6 +203,16 @@
           "name": "ENABLE_AUTO_UPDATE"
         },
         {
+          "default": "True",
+          "label": "Enable APP Proxy",
+          "name": "APP_PROXY"
+        },
+        {
+          "default": "True",
+          "label": "Enable SSL Proxy",
+          "name": "ENABLE_SSL_PROXY"
+        },
+        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"

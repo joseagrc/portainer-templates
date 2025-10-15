@@ -44,12 +44,14 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       APPLICATION_NAME: ${APPLICATION_NAME}
-      SITE_URL: ${SITE_URL}
+      SITE_URL: https://${SITE_URL}
       ADMIN_EMAIL: ${ADMIN_EMAIL}
       ADMIN_PASS: ${ADMIN_PASS}
       ADMIN_FIRST_NAME: ${ADMIN_FIRST_NAME}
       ADMIN_LAST_NAME: ${ADMIN_LAST_NAME}
       ENABLE_AUTO_UPDATE: ${ENABLE_AUTO_UPDATE}
+      APP_PROXY: ${APP_PROXY}
+      ENABLE_SSL_PROXY: ${ENABLE_SSL_PROXY}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
