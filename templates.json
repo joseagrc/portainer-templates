@@ -108,6 +108,110 @@
       {
       "id": 3,
       "type": 3,
+      "title": "Freescout",
+      "description": "Freescout setup with a database MySQL.",
+      "note": "Deploys a Freescout instance connected to a database MySQL.",
+      "categories": ["Help Desk"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/freescout/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/freescout/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "Database Image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.4",
+          "label": "Database Tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "label": "Database Root Password",
+          "name": "ROOT_PASS"
+        },
+        {
+          "default": "freescout_db",
+          "label": "Database Name",
+          "name": "DB_NAME"
+        },
+        {
+          "default": "freescout_user",
+          "label": "Database Username",
+          "name": "DB_USER"
+        },
+        {
+          "default": "freescout_pass",
+          "label": "Database Password for User",
+          "name": "DB_PASS"
+        },
+        {
+          "default": "freescout",
+          "label": "Freescout Image",
+          "name": "FREESCOUT_IMAGE"
+        },
+        {
+          "default": "1.8.193",
+          "label": "Freescout Tag",
+          "name": "FREESCOUT_TAG"
+        },
+        {
+          "default": "3306",
+          "label": "Database Port",
+          "name": "DB_PORT"
+        },
+        {
+          "default": "Freescout",
+          "label": "Application Name",
+          "name": "APPLICATION_NAME"
+        },
+        {
+          "default": "freescout.example.com",
+          "label": "SITE_URL",
+          "name": "SITE_URL"
+        },
+        {
+          "default": "email@example.com",
+          "label": "Admin Email",
+          "name": "ADMIN_EMAIL"
+        },
+        {
+          "label": "Admin Pass",
+          "name": "ADMIN_PASS"
+        },
+        {
+          "default": "First Name",
+          "label": "Admin First Name",
+          "name": "ADMIN_FIRST_NAME"
+        },
+        {
+          "default": "Last Name",
+          "label": "Admin Last Name",
+          "name": "ADMIN_LAST_NAME"
+        },
+        {
+          "default": "True",
+          "label": "Enable Auto Update",
+          "name": "ENABLE_AUTO_UPDATE"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      },
+      {
+      "id": 4,
+      "type": 3,
       "title": "Gitea",
       "description": "Gitea setup with a database MySQL.",
       "note": "Deploys a Gitea instance connected to a database MySQL.",
@@ -285,7 +389,7 @@
       ]
       },
       {
-      "id": 4,
+      "id": 5,
       "type": 3,
       "title": "Gitea act runner",
       "description": "Gitea runner setup",
@@ -328,7 +432,7 @@
        ]
     },
     {
-      "id": 5,
+      "id": 6,
       "type": 3,
       "title": "GitLab CE",
       "description": "GitLab, is an Open-source end-to-end software development platform",
@@ -423,7 +527,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": 7,
       "type": 3,
       "title": "GitLab CE Runner",
       "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
@@ -459,7 +563,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": 8,
       "type": 3,
       "title": "GitLab CE Runner Register",
       "description": "Gitlab Runner register is an application that works with GitLab CI/CD to register the runner.",
@@ -509,7 +613,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": 9,
       "type": 3,
       "title": "GNU Health",
       "description": "GNU Health is a free/libre health and hospital information system.",
@@ -611,7 +715,7 @@
       ]
       },
       {
-      "id": 9,
+      "id": 10,
       "type": 3,
       "title": "Grav",
       "description": "Modern, Crazy Fast, Ridiculously Easy and Amazingly Powerful Flat-File CMS powered by PHP, Markdown, Twig, and Symfony.",
@@ -681,7 +785,7 @@
         ]
       },
       {
-      "id": 10,
+      "id": 11,
       "type": 3,
       "title": "Gravitee",
       "description": "Gravitee helps organizations manage and secure their entire API lifecycle with solutions for API design, management, security, productization, real-time observability, and more.",
@@ -742,7 +846,7 @@
         ]
     },
     {
-      "id": 11,
+      "id": 12,
       "type": 3,
       "title": "HAProxy",
       "description": "HAProxy is a free, open source high availability solution, providing load balancing and proxying for TCP and HTTP-based applications by spreading requests across multiple servers.",
@@ -810,7 +914,7 @@
       ]
     },
     {
-      "id": 12,
+      "id": 13,
       "type": 3,
       "title": "Leantime",
       "description": "Leantime setup with a MySQL database",
@@ -875,7 +979,7 @@
       ]
     },
     {
-      "id": 13,
+      "id": 14,
       "type": 3,
       "title": "Nextcloud",
       "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
@@ -949,7 +1053,7 @@
       ]
     },
     {
-      "id": 14,
+      "id": 15,
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
@@ -1017,7 +1121,7 @@
       ]
     },
     {
-      "id": 15,
+      "id": 16,
       "type": 3,
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
@@ -1118,7 +1222,7 @@
       ]
       },
       {
-      "id": 16,
+      "id": 17,
       "type": 3,
       "title": "Phorge",
       "description": "Phorge is a collection of web applications which help software companies build better software.",
@@ -1195,7 +1299,7 @@
       ]
       },
       {
-      "id": 17,
+      "id": 18,
       "type": 3,
       "title": "Pi-hole",
       "description": "Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network.",
@@ -1251,7 +1355,7 @@
       ]
       },
       {
-      "id": 18,
+      "id": 19,
       "type": 3,
       "title": "Redis",
       "description": "Open-source in-memory data structure store",
@@ -1341,7 +1445,7 @@
       ]
       },
       {
-      "id": 19,
+      "id": 20,
       "type": 3,
       "title": "Speedtest Tracker",
       "description": "A Docker image to check your internet speed using Ookla's Speedtest service. Build using Laravel and the Speedtest CLI.",
@@ -1501,7 +1605,7 @@
       ]
       },
       {
-      "id": 20,
+      "id": 21,
       "type": 3,
       "title": "Tryton Series 6.0",
       "description": "Tryton 6.0 setup with a PostgreSQL database",
@@ -1583,7 +1687,7 @@
       ]
     },
     {
-      "id": 21,
+      "id": 22,
       "type": 3,
       "title": "Tryton Series 7.0",
       "description": "Tryton 7.0 setup with a PostgreSQL database",
@@ -1658,7 +1762,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 23,
       "type": 3,
       "title": "Tryton Series 7.2",
       "description": "Tryton 7.2 setup with a PostgreSQL database",
@@ -1733,7 +1837,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 24,
       "type": 3,
       "title": "Vaultwarden",
       "description": "Vaultwarden setup",
@@ -1865,7 +1969,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 25,
       "type": 3,
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
@@ -2052,7 +2156,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 26,
       "type": 3,
       "title": "Windows",
       "description": "Windows inside a Docker container.",
@@ -2153,7 +2257,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 27,
       "type": 3,
       "title": "WireGuard",
       "description": "WireGuard is a communication protocol and free and open-source software that implements encrypted virtual private networks, and was designed with the goals of ease of use, high speed performance, and low attack surface.",
@@ -2249,7 +2353,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 28,
       "type": 3,
       "title": "WordPress",
       "description": "WordPress setup with a Mariadb database",
@@ -2419,7 +2523,7 @@
       ]
     },
     {
-      "id": 28,
+      "id": 29,
       "type": 3,
       "title": "Zabbix Server",
       "description": "Zabbix Server setup with postgres database.",
