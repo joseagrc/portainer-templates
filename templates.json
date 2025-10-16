@@ -120,7 +120,7 @@
       },
       "env": [
         {
-          "default": "mariadb",
+          "default": "gitea.joseagrc.com/joseagrc/mariadb",
           "label": "Database Image",
           "name": "MARIADB_IMAGE"
         },
@@ -154,7 +154,7 @@
           "name": "DB_PASS"
         },
         {
-          "default": "freescout",
+          "default": "gitea.joseagrc.com/joseagrc/freescout",
           "label": "Freescout Image",
           "name": "FREESCOUT_IMAGE"
         },
