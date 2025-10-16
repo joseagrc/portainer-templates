@@ -35,6 +35,7 @@ services:
     volumes:
       - freescout-data:/data
       - freescout-logs:/www/logs
+      - freescout-modules:/assets/modules
     environment:
       CONTAINER_NAME: ${COMPOSE_PROJECT_NAME}-app
       TIMEZONE: ${TIMEZONE}
@@ -72,6 +73,7 @@ volumes:
   freescout-db:
   freescout-data:
   freescout-logs:
+  freescout-modules:
 
 networks:
   default:
