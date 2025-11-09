@@ -1,12 +1,12 @@
 version: '3'
 
 services:
-  nextcloud:
-    container_name: ${COMPOSE_PROJECT_NAME}-app
+  nextcloud-aio-mastercontainer:
+    container_name: nextcloud-aio-mastercontainer
     image: ${NEXTCLOUD_IMAGE}:${NEXTCLOUD_TAG}
     hostname: ${NEXTCLOUD_URL}
     init: true 
-    restart: always
+    restart: unless-stopped
     volumes:
       - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
       - /var/run/docker.sock:/var/run/docker.sock:ro
