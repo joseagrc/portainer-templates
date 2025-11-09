@@ -996,19 +996,19 @@
       "note": "Deploys an nextcloud instance.",
       "categories": ["cloud Storage", "Online Collaboration"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/nextcloud/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/nextcloud/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/nextcloud/docker-compose.yml"
       },
       "env": [
         {
-          "default": "code.gruposolutema.com/solutema/mariadb",
+          "default": "mariadb",
           "label": "MariaDB Image",
           "name": "MARIADB_IMAGE"
         },
         {
-          "default": "11.2.5-alpine-latest",
+          "default": "12.0.2",
           "label": "MariaDB Tag",
           "name": "MARIADB_TAG"
         },
@@ -1033,19 +1033,19 @@
           "name": "ROOT_PASS"
         },
         {
-          "default": "code.gruposolutema.com/solutema/nextcloud",
+          "default": "nextcloud",
           "label": "Nextcloud Image",
           "name": "NEXTCLOUD_IMAGE"
         },
         {
-          "default": "29.0.4",
+          "default": "32.0.1",
           "label": "Nextcloud Tag",
           "name": "NEXTCLOUD_TAG"
         },
         {
-          "default": "cloud.example.com",
-          "label": "Domain",
-          "name": "DOMAIN"
+          "default": "nextcloud.example.com",
+          "label": "Nextcloud URL",
+          "name": "NEXTCLOUD_URL"
         },
         {
           "label": "Admin User",
