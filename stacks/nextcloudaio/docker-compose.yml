@@ -4,7 +4,7 @@ services:
   nextcloud:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${NEXTCLOUD_IMAGE}:${NEXTCLOUD_TAG}
-    hostname: ${NEXTCLOUD_URL}
+    hostname: ${DOMAIN}
     restart: always
     volumes:
       - data:/data/userdata

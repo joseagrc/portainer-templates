@@ -1003,36 +1003,6 @@
       },
       "env": [
         {
-          "default": "mariadb",
-          "label": "MariaDB Image",
-          "name": "MARIADB_IMAGE"
-        },
-        {
-          "default": "12.0.2",
-          "label": "MariaDB Tag",
-          "name": "MARIADB_TAG"
-        },
-        {
-          "default": "nextcloud_database",
-          "label": "Database Name",
-          "name": "DB_NAME"
-        },
-        {
-          "default": "nextcloud_user",
-          "label": "MariaDB User",
-          "name": "DB_USER"
-        },
-        {
-          "default": "nextcloud",
-          "label": "MariaDB Password",
-          "name": "DB_PASS"
-        },
-        {
-          "default": "rootnextcloud",
-          "label": "Root Password",
-          "name": "ROOT_PASS"
-        },
-        {
           "default": "nextcloud",
           "label": "Nextcloud Image",
           "name": "NEXTCLOUD_IMAGE"
@@ -1048,12 +1018,40 @@
           "name": "NEXTCLOUD_URL"
         },
         {
-          "label": "Admin User",
-          "name": "ADMIN_USER"
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "type": 3,
+      "title": "Nextcloud AIO",
+      "description": "Nextcloud AIO is a suite of client-server software for creating and using file hosting services.",
+      "note": "Deploys an nextcloud instance.",
+      "categories": ["cloud Storage", "Online Collaboration"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/nextcloudaio/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/nextcloudaio/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "nextcloud/all-in-one",
+          "label": "Nextcloud Image",
+          "name": "NEXTCLOUD_IMAGE"
         },
         {
-          "label": "Admin Password",
-          "name": "ADMIN_PASS"
+          "default": "20250325_084656",
+          "label": "Nextcloud Tag",
+          "name": "NEXTCLOUD_TAG"
+        },
+        {
+          "default": "nextcloudaio.example.com",
+          "label": "Nextcloud URL",
+          "name": "NEXTCLOUD_URL"
         },
         {
           "default": "proxy",
@@ -1063,7 +1061,7 @@
       ]
     },
     {
-      "id": 15,
+      "id": 16,
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
@@ -1131,7 +1129,7 @@
       ]
     },
     {
-      "id": 16,
+      "id": 17,
       "type": 3,
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
@@ -1232,7 +1230,7 @@
       ]
       },
       {
-      "id": 17,
+      "id": 18,
       "type": 3,
       "title": "Phorge",
       "description": "Phorge is a collection of web applications which help software companies build better software.",
@@ -1309,7 +1307,7 @@
       ]
       },
       {
-      "id": 18,
+      "id": 19,
       "type": 3,
       "title": "Pi-hole",
       "description": "Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network.",
@@ -1365,7 +1363,7 @@
       ]
       },
       {
-      "id": 19,
+      "id": 20,
       "type": 3,
       "title": "Redis",
       "description": "Open-source in-memory data structure store",
@@ -1455,7 +1453,7 @@
       ]
       },
       {
-      "id": 20,
+      "id": 21,
       "type": 3,
       "title": "Speedtest Tracker",
       "description": "A Docker image to check your internet speed using Ookla's Speedtest service. Build using Laravel and the Speedtest CLI.",
@@ -1615,7 +1613,7 @@
       ]
       },
       {
-      "id": 21,
+      "id": 22,
       "type": 3,
       "title": "Tryton Series 6.0",
       "description": "Tryton 6.0 setup with a PostgreSQL database",
@@ -1697,7 +1695,7 @@
       ]
     },
     {
-      "id": 22,
+      "id": 23,
       "type": 3,
       "title": "Tryton Series 7.0",
       "description": "Tryton 7.0 setup with a PostgreSQL database",
@@ -1772,7 +1770,7 @@
       ]
     },
     {
-      "id": 23,
+      "id": 24,
       "type": 3,
       "title": "Tryton Series 7.2",
       "description": "Tryton 7.2 setup with a PostgreSQL database",
@@ -1847,7 +1845,7 @@
       ]
     },
     {
-      "id": 24,
+      "id": 25,
       "type": 3,
       "title": "Vaultwarden",
       "description": "Vaultwarden setup",
@@ -1979,7 +1977,7 @@
       ]
     },
     {
-      "id": 25,
+      "id": 26,
       "type": 3,
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
@@ -2166,7 +2164,7 @@
       ]
     },
     {
-      "id": 26,
+      "id": 27,
       "type": 3,
       "title": "Windows",
       "description": "Windows inside a Docker container.",
@@ -2267,7 +2265,7 @@
       ]
     },
     {
-      "id": 27,
+      "id": 28,
       "type": 3,
       "title": "WireGuard",
       "description": "WireGuard is a communication protocol and free and open-source software that implements encrypted virtual private networks, and was designed with the goals of ease of use, high speed performance, and low attack surface.",
@@ -2363,7 +2361,7 @@
       ]
     },
     {
-      "id": 28,
+      "id": 29,
       "type": 3,
       "title": "WordPress",
       "description": "WordPress setup with a Mariadb database",
@@ -2533,7 +2531,7 @@
       ]
     },
     {
-      "id": 29,
+      "id": 30,
       "type": 3,
       "title": "Zabbix Server",
       "description": "Zabbix Server setup with postgres database.",
