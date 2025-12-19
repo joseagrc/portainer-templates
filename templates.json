@@ -2651,6 +2651,11 @@
           "name": "DISK_SIZE"
         },
         {
+          "default": "/var/lib/docker/macos",
+          "label": "Host Volume Path",
+          "name": "HOST_VOLUME_PATH"
+        },
+        {
           "default": "macos.sonoma.example.com",
           "label": "macOS URL",
           "name": "MACOS_URL"
