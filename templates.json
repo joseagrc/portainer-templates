@@ -2605,6 +2605,62 @@
           "name": "NETWORK"
         }
       ]
+    },
+    {
+      "id": 31,
+      "type": 3,
+      "title": "macOS",
+      "description": "MacOS inside a Docker container.",
+      "note": "Deploys a MacOS inside a Docker container.",
+      "categories": ["Monitor Tool"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/macos/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/macos/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "dockurr/macos",
+          "label": "macOS Image",
+          "name": "MACOS_IMAGE"
+        },
+        {
+          "default": "2.29",
+          "label": "macOS Tag",
+          "name": "MACOS_TAG"
+        },
+        {
+          "default": "14",
+          "label": "macOS Version",
+          "name": "VERSION"
+        },
+        {
+          "default": "4",
+          "label": "CPU Cores",
+          "name": "CPU_CORES"
+        },
+        {
+          "default": "8G",
+          "label": "RAM Size",
+          "name": "RAM_SIZE"
+        },
+        {
+          "default": "256G",
+          "label": "Disk Size",
+          "name": "DISK_SIZE"
+        },
+        {
+          "default": "macos.sonoma.example.com",
+          "label": "macOS URL",
+          "name": "MACOS_URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        }
+      ]
     }
   ]
 }

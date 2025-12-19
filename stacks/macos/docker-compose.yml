@@ -1,37 +1,46 @@
-version: '3'
-
 services:
-  windows:
+  macos:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    image: ${WINDOWS_IMAGE}:${WINDOWS_TAG}
-    restart: unless-stopped
+    image: ${MACOS_IMAGE}:${MACOS_TAG}
+    restart: always
     devices:
       - /dev/kvm
+      - /dev/net/tun
     cap_add:
       - NET_ADMIN
     ports:
       - 8006:8006
-      - 3389:3389/tcp
-      - 3389:3389/udp
+      - 5900:5900/tcp
+      - 5900:5900/udp
     stop_grace_period: 2m
-    environment:
-      MANUAL: N
-      CPU_CORES: 4
-      RAM_SIZE: 8G
-      DISK_SIZE: 256G
-      VERSION: win11
-      USERNAME: bill
-      PASSWORD: gates
-      LANGUAGE: French
-      REGION: en-US
-      KEYBOARD: en-US
-      VIRTUAL_HOST: ${SITE_URL},www.${SITE_URL}
-      LETSENCRYPT_HOST: ${SITE_URL},www.${SITE_URL}
     volumes:
-      - win_data:/storage
-
-volumes:
-  win_data:
+      - ./macos:/storage
+    environment:
+      VERSION: ${VERSION}
+      CPU_CORES: ${CPU_CORES}
+      RAM_SIZE: ${RAM_SIZE}
+      DISK_SIZE: ${DISK_SIZE}
+    labels:
+      # Habilita Traefik para TCP (no HTTP)
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-app.rule=HostSNI(`macos.${MACOS_URL}`) || HostSNI(`www.macos.${MACOS_URL}`)"  # Ej: macos-sonoma.example.com
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=web"  # Entrypoint TCP definido en Traefik
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"  # Opcional: TLS para seguridad
+      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-app.tls.certresolver=letsencrypt"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${MACOS_URL}`) || Host(`www.${MACOS_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${MACOS_URL}`) || Host(`www.${MACOS_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend KVM
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
 
 networks:
   default:
