@@ -2666,76 +2666,76 @@
           "name": "NETWORK"
         }
       ]
-    },
-    {
-      "id": 32,
-      "type": 3,
-      "title": "DGII RNC API",
-      "description": "Open-source business API.",
-      "categories": ["API (Application Programming Interface)"],
-      "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/rnc-api/logo/logo.png",
-      "repository": {
-        "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/rnc-api/docker-compose.yml"
-      },
-      "env": [
-        {
-          "default": "postgres",
-          "label": "PostgreSQL image",
-          "name": "POSTGRES_IMAGE"
-        },
-        {
-          "default": "16.2-alpine3.19",
-          "label": "PostgreSQL tag",
-          "name": "POSTGRES_TAG"
-        },
-        {
-          "default": "rnc_user",
-          "label": "Database Username",
-          "name": "POSTGRES_USER"
-        },
-        {
-          "default": "rnc_pass",
-          "label": "Database Password for user",
-          "name": "POSTGRES_PASSWORD"
-        },
-        {
-          "default": "rnc_db",
-          "label": "Database Name",
-          "name": "POSTGRES_DB"
-        },
-        {
-          "default": "5432",
-          "label": "Postgres Port",
-          "name": "POSTGRES_PORT"
-        },
-        {
-          "default": "gitea.joseagrc.com/joseagrc/rnc-api",
-          "label": "RNC API image",
-          "name": "RNC_API__IMAGE"
-        },
-        {
-          "default": "latest",
-          "label": "RNC API Tag",
-          "name": "RNC_API__TAG"
-        },
-          {
-          "default": "rnc.example.com",
-          "label": "URL",
-          "name": "URL"
-        },
-        {
-          "default": "proxy",
-          "label": "Network name",
-          "name": "NETWORK"
-        }
-      ],
-      "volumes": [
-        {
-          "container": "/var/lib/postgresql/data"
-        }
-      ]
     }
+    // {
+    //   "id": 32,
+    //   "type": 3,
+    //   "title": "DGII RNC API",
+    //   "description": "Open-source business API.",
+    //   "categories": ["API (Application Programming Interface)"],
+    //   "platform": "linux",
+    //   "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/rnc-api/logo/logo.png",
+    //   "repository": {
+    //     "url": "https://github.com/joseagrc/portainer-templates",
+    //     "stackfile": "stacks/rnc-api/docker-compose.yml"
+    //   },
+    //   "env": [
+    //     {
+    //       "default": "postgres",
+    //       "label": "PostgreSQL image",
+    //       "name": "POSTGRES_IMAGE"
+    //     },
+    //     {
+    //       "default": "16.2-alpine3.19",
+    //       "label": "PostgreSQL tag",
+    //       "name": "POSTGRES_TAG"
+    //     },
+    //     {
+    //       "default": "rnc_user",
+    //       "label": "Database Username",
+    //       "name": "POSTGRES_USER"
+    //     },
+    //     {
+    //       "default": "rnc_pass",
+    //       "label": "Database Password for user",
+    //       "name": "POSTGRES_PASSWORD"
+    //     },
+    //     {
+    //       "default": "rnc_db",
+    //       "label": "Database Name",
+    //       "name": "POSTGRES_DB"
+    //     },
+    //     {
+    //       "default": "5432",
+    //       "label": "Postgres Port",
+    //       "name": "POSTGRES_PORT"
+    //     },
+    //     {
+    //       "default": "gitea.joseagrc.com/joseagrc/rnc-api",
+    //       "label": "RNC API image",
+    //       "name": "RNC_API__IMAGE"
+    //     },
+    //     {
+    //       "default": "latest",
+    //       "label": "RNC API Tag",
+    //       "name": "RNC_API__TAG"
+    //     },
+    //       {
+    //       "default": "rnc.example.com",
+    //       "label": "URL",
+    //       "name": "URL"
+    //     },
+    //     {
+    //       "default": "proxy",
+    //       "label": "Network name",
+    //       "name": "NETWORK"
+    //     }
+    //   ],
+    //   "volumes": [
+    //     {
+    //       "container": "/var/lib/postgresql/data"
+    //     }
+    //   ]
+    // }
   ]
 }
