@@ -27,7 +27,7 @@ services:
     links:
       - postgres:postgres
     environment:
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${COMPOSE_PROJECT_NAME}-postgres:5432/${POSTGRES_DB}
       TIMEZONE: ${TIMEZONE}
       DGII_RNC_ZIP_URL: ${DGII_RNC_ZIP_URL}
     labels:
