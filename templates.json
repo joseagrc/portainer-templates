@@ -2713,12 +2713,12 @@
         {
           "default": "gitea.joseagrc.com/joseagrc/rnc-api",
           "label": "RNC API image",
-          "name": "RNC_API__IMAGE"
+          "name": "RNC_API_IMAGE"
         },
         {
           "default": "latest",
           "label": "RNC API Tag",
-          "name": "RNC_API__TAG"
+          "name": "RNC_API_TAG"
         },
           {
           "default": "rnc.example.com",
