@@ -2720,7 +2720,12 @@
           "label": "RNC API Tag",
           "name": "RNC_API_TAG"
         },
-          {
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
           "default": "rnc.example.com",
           "label": "URL",
           "name": "URL"
