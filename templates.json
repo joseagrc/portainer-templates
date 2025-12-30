@@ -2726,6 +2726,11 @@
           "name": "TIMEZONE"
         },
         {
+          "default": "https://dgii.gov.do/app/WebApps/Consultas/RNC/RNC_CONTRIBUYENTES.zip",
+          "label": "DGII RNC ZIP URL",
+          "name": "DGII_RNC_ZIP_URL"
+        },
+        {
           "default": "rnc.example.com",
           "label": "URL",
           "name": "URL"
