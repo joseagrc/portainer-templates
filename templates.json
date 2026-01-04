@@ -2746,6 +2746,75 @@
           "container": "/var/lib/postgresql/data"
         }
       ]
-    }
+    },
+      {
+      "id": 4,
+      "type": 3,
+      "title": "Keycloak",
+      "description": "Keycloak setup with a database PostgreSQL.",
+      "note": "Deploys a Keycloak instance connected to a database PostgreSQL.",
+      "categories": ["Autentication Server"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/keycloak/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/keycloak/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "postgres",
+          "label": "Database Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16",
+          "label": "Database Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "keycloak_example",
+          "label": "Database Username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database Password for User",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "keycloak_example",
+          "label": "Database Name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "gitea.joseagrc.com/joseagrc/keycloak",
+          "label": "Keycloak Image",
+          "name": "KEYCLOAK_IMAGE"
+        },
+        {
+          "default": "26.4.7-0",
+          "label": "Keycloak Tag",
+          "name": "KEYCLOAK_TAG"
+        },
+        {
+          "label": "Keycloak Admin User",
+          "name": "KEYCLOAK_ADMIN"
+        },
+        {
+          "label": "Keycloak Admin Password",
+          "name": "KEYCLOAK_ADMIN_PASSWORD"
+        },
+        {
+          "default": "auth.example.com",
+          "label": "Keycloak URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+      }
+// pegar aqui siguiente
   ]
 }
