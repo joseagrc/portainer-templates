@@ -2748,7 +2748,7 @@
       ]
     },
       {
-      "id": 4,
+      "id": 33,
       "type": 3,
       "title": "Keycloak",
       "description": "Keycloak setup with a database PostgreSQL.",
