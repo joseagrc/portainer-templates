@@ -2747,7 +2747,7 @@
         }
       ]
     },
-      {
+    {
       "id": 33,
       "type": 3,
       "title": "Keycloak",
@@ -2814,7 +2814,6 @@
           "name": "NETWORK"
         }
       ]
-      }
-// pegar aqui siguiente
+    }
   ]
 }
