@@ -9,30 +9,22 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-#    healthcheck:
-#      test: [ "CMD", "pg_isready", "-q", "-d", "${POSTGRES_DB}", "-U", "${POSTGRES_USER}" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 3
-#      start_period: 60s
     restart: unless-stopped
 
   keycloak:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    hostname: ${COMPOSE_PROJECT_NAME}-app
     image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
     environment:
       KC_DB: postgres
-      KC_DB_URL_HOST: ${COMPOSE_PROJECT_NAME}-postgres
+      KC_DB_URL_HOST: postgres
       KC_DB_URL_PORT: 5432
       KC_DB_USERNAME: ${POSTGRES_USER}
       KC_DB_PASSWORD: ${POSTGRES_PASSWORD}
       KC_DB_URL_DATABASE: ${POSTGRES_DB}
-      KC_HOSTNAME: ${URL}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_HTTP_ENABLED: "true"
-      KC_PROXY_HEADERS: "xforwarded"
+      KC_PROXY_HEADERS: xforwarded
     depends_on:
       - postgres
     restart: unless-stopped
@@ -51,7 +43,6 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
       # Servicio backend Keycloak
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8080"
-
 
 volumes:
   keycloak-postgres:
