@@ -27,6 +27,8 @@ services:
       KC_PROXY_HEADERS: xforwarded
     depends_on:
       - postgres
+    links:
+      - postgres:postgres
     restart: unless-stopped
     labels:
       - "traefik.enable=true"
