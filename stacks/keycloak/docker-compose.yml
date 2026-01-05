@@ -10,6 +10,12 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -q -d ${POSTGRES_DB} -U ${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   keycloak:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -26,7 +32,8 @@ services:
       KC_HTTP_ENABLED: "true"
       KC_PROXY_HEADERS: xforwarded
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     links:
       - postgres:postgres
     restart: unless-stopped
