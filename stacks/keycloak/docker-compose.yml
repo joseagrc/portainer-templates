@@ -15,6 +15,11 @@ services:
   keycloak:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${KEYCLOAK_IMAGE}:${KEYCLOAK_TAG}
+    command: >
+      sh -c "
+      /opt/keycloak/bin/kc.sh build --db=postgres &&
+      /opt/keycloak/bin/kc.sh start
+      "
     environment:
       KC_DB: postgres
       KC_DB_URL_HOST: postgres
