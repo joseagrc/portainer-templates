@@ -4,7 +4,7 @@ services:
     hostname: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     volumes:
-      - keycloak-postgres:/var/lib/postgresql/data
+      - keycloak-postgres:/var/lib/postgresql
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
