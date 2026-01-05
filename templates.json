@@ -2762,12 +2762,12 @@
       },
       "env": [
         {
-          "default": "postgres",
+          "default": "gitea.joseagrc.com/joseagrc/postgres",
           "label": "Database Image",
           "name": "POSTGRES_IMAGE"
         },
         {
-          "default": "16",
+          "default": "18",
           "label": "Database Tag",
           "name": "POSTGRES_TAG"
         },
