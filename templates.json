@@ -599,7 +599,7 @@
         {
           "label": "Runner Token",
           "name": "RUNNER_TOKEN"
-        },     
+        },
         {
           "default": "docker",
           "label": "Executor",
@@ -711,7 +711,7 @@
           "default": "8025",
           "label": "Mailhog http port",
           "name": "MAILHOG_HTTP_PORT"
-        },  
+        },
         {
           "default": "demo.domain.org.do",
           "label": "GH URL",
@@ -1141,7 +1141,7 @@
         "url": "https://github.com/solutema/portainer-templates",
         "stackfile": "stacks/openldap/docker-compose.yml"
       },
-      "env": [   
+      "env": [
         {
           "default": "code.gruposolutema.com/solutema/openldap",
           "label": "LDAP Image",
@@ -1221,7 +1221,7 @@
           "default": "phpldapadmin.example.com",
           "label": "PHPLDAPAdmin hostname",
           "name": "PHPLDAPADMIN_HOSTNAME"
-        },        
+        },
         {
           "default": "proxy",
           "label": "Network name",
@@ -1261,7 +1261,7 @@
           "default": "registry.gruposolutema.com/phorge/docker-phorge",
           "label": "Phorge image",
           "name": "PHORGE_IMAGE"
-        },    
+        },
         {
           "default": "2023.49",
           "label": "Phorge tag",
@@ -2012,7 +2012,7 @@
           "default": "root",
           "label": "PostgreSQL root USER",
           "name": "SUPERUSER_USER"
-        },      
+        },
         {
           "label": "PostgreSQL root password",
           "name": "SUPERUSER_PASS"
@@ -2025,7 +2025,7 @@
           "default": "unaccent",
           "label": "Database Extension",
           "name": "DB_EXTENSION"
-        },   
+        },
         {
           "default": "weblate/weblate",
           "label": "Weblate Image",
@@ -2126,7 +2126,7 @@
         {
           "label": "Redis password",
           "name": "REDIS_PASSWORD"
-        },        
+        },
         {
           "label": "Weblate email host",
           "name": "WEBLATE_EMAIL_HOST"
@@ -2317,7 +2317,7 @@
           "default": "Se!ureP%ssw",
           "label": "Init Password",
           "name": "INIT_PASSWORD"
-        },  
+        },
         {
           "default": "vpn.example.com",
           "label": "INIT Host",
@@ -2327,7 +2327,7 @@
           "default": "51820",
           "label": "WireGuard Init Port",
           "name": "INIT_PORT"
-        },   
+        },
         {
           "default": "1.1.1.1",
           "label": "Init DNS server(s)",
@@ -2412,7 +2412,7 @@
           "default": "wp_",
           "label": "MariaDB Database prefix",
           "name": "DB_PREFIX"
-        }, 
+        },
         {
           "default": "phpmyadmin",
           "label": "Phpmyadmin image",
@@ -2432,7 +2432,7 @@
           "default": "true",
           "label": "Enable HTTPS reverse proxy",
           "name": "ENABLE_HTTPS_REVERSE_PROXY"
-        },                
+        },
         {
           "default": "code.gruposolutema.com/solutema/wordpress",
           "label": "Wordpress image",
@@ -2467,7 +2467,7 @@
           "default": "example.com",
           "label": "Site url",
           "name": "SITE_URL"
-        },     
+        },
         {
           "default": "Docker Wordpress",
           "label": "Site title",
@@ -2502,22 +2502,22 @@
           "default": "false",
           "label": "Rotate keys",
           "name": "ROTATE_KEYS"
-        }, 
+        },
         {
           "default": "128M",
           "label": "PHP Memory Limit",
           "name": "PHP_MEMORY_LIMIT"
-        }, 
+        },
         {
           "default": "10G",
           "label": "Nginx Upload Max Size",
           "name": "NGINX_UPLOAD_MAX_SIZE"
-        }, 
+        },
         {
           "default": "300",
           "label": "PHP tIMEOUT",
           "name": "PHP_TIMEOUT"
-        }, 
+        },
         {
           "default": "all",
           "label": "Update mode",
@@ -2762,7 +2762,7 @@
       },
       "env": [
         {
-          "default": "gitea.joseagrc.com/joseagrc/postgres",
+          "default": "postgres",
           "label": "Database Image",
           "name": "POSTGRES_IMAGE"
         },
@@ -2781,19 +2781,10 @@
           "name": "POSTGRES_PASSWORD"
         },
         {
-          "label": "Database Password for Root User",
-          "name": "POSTGRES_ROOT_PASSWORD"
-        },  
-        {
           "default": "keycloak_example",
           "label": "Database Name",
           "name": "POSTGRES_DB"
         },
-        {
-          "default": "5432",
-          "label": "listen Port",
-          "name": "LISTEN_PORT"
-        },    
         {
           "default": "gitea.joseagrc.com/joseagrc/keycloak",
           "label": "Keycloak Image",
