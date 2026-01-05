@@ -11,6 +11,7 @@ services:
       DB_PASS: ${POSTGRES_PASSWORD}
       DB_NAME: ${POSTGRES_DB}
       SUPERUSER_PASS: ${POSTGRES_ROOT_PASSWORD}
+      LISTEN_PORT: ${LISTEN_PORT}
     restart: always
 #    healthcheck:
 #      test: [ "CMD-SHELL", "pg_isready -q -d ${POSTGRES_DB} -U ${POSTGRES_USER}" ]
