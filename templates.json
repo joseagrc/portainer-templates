@@ -2790,6 +2790,11 @@
           "name": "POSTGRES_DB"
         },
         {
+          "default": "5432",
+          "label": "listen Port",
+          "name": "LISTEN_PORT"
+        },    
+        {
           "default": "gitea.joseagrc.com/joseagrc/keycloak",
           "label": "Keycloak Image",
           "name": "KEYCLOAK_IMAGE"
