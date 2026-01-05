@@ -6,9 +6,11 @@ services:
     volumes:
       - keycloak-postgres:/var/lib/postgresql
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASS: ${POSTGRES_PASSWORD}
+      DB_NAME: ${POSTGRES_DB}
+      SUPERUSER_PASS: ${POSTGRES_ROOT_PASSWORD}
+      
     restart: unless-stopped
 #    healthcheck:
 #      test: [ "CMD-SHELL", "pg_isready -q -d ${POSTGRES_DB} -U ${POSTGRES_USER}" ]
