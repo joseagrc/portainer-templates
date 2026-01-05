@@ -7,18 +7,10 @@ services:
       - keycloak-postgres:/var/lib/postgresql/data
     environment:
       CONTAINER_NAME: postgres
-      DB_USER: ${POSTGRES_USER}
-      DB_PASS: ${POSTGRES_PASSWORD}
-      DB_NAME: ${POSTGRES_DB}
-      SUPERUSER_PASS: ${POSTGRES_ROOT_PASSWORD}
-      LISTEN_PORT: ${LISTEN_PORT}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     restart: always
-#    healthcheck:
-#      test: [ "CMD-SHELL", "pg_isready -q -d ${POSTGRES_DB} -U ${POSTGRES_USER}" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 10
-#      start_period: 30s
 
   keycloak:
     container_name: ${COMPOSE_PROJECT_NAME}-app
