@@ -1065,57 +1065,63 @@
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
-      "categories": ["ERP (Enterprise Resource Planning)"],
+      "categories": ["Project-Management"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/odoo/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/odoo/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/odoo/docker-compose.yml"
       },
       "env": [
         {
           "default": "postgres",
-          "label": "PostgreSQL image",
+          "label": "PostgreSQL Image",
           "name": "POSTGRES_IMAGE"
         },
         {
-          "default": "16.2-alpine3.19",
-          "label": "PostgreSQL tag",
+          "default": "16.9",
+          "label": "PostgreSQL Tag",
           "name": "POSTGRES_TAG"
         },
         {
           "default": "odoo",
-          "label": "Database username",
+          "label": "Database User",
           "name": "POSTGRES_USER"
         },
         {
           "default": "odoo",
-          "label": "Database password for user",
+          "label": "Database Password for User",
           "name": "POSTGRES_PASSWORD"
         },
         {
           "default": "postgres",
-          "label": "Database name",
+          "label": "Database Name",
           "name": "POSTGRES_DB"
         },
         {
-          "default": "odoo",
-          "label": "Odoo image",
+          "default": "gitea.joseagrc.com/joseagrc/odoo",
+          "label": "Odoo Image",
           "name": "ODOO_IMAGE"
         },
+    
         {
           "default": "16.0",
-          "label": "Odoo tag",
+          "label": "Odoo Tag",
           "name": "ODOO_TAG"
         },
-          {
+        {
+          "default": "512m",
+          "label": "SHM Size",
+          "name": "SHM_SIZE"
+        },
+        {
           "default": "odoo.example.com",
-          "label": "URL",
-          "name": "URL"
+          "label": "ODOO_URL",
+          "name": "ODOO_URL"
         },
         {
           "default": "proxy",
-          "label": "Network name",
+          "label": "Network Name",
           "name": "NETWORK"
         }
       ],
@@ -1125,6 +1131,9 @@
         },
         {
           "container": "/mnt/extra-addons"
+        },
+        {
+          "container": "/mnt/backups"
         }
       ]
     },
