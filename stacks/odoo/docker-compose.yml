@@ -55,8 +55,10 @@ services:
 
 
 volumes:
-  postgres-db:
+  odoo-db:
+  odoo-data:
   extra-addons:
+  backups:
 
 networks:
   default:
