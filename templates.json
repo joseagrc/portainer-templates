@@ -2879,8 +2879,8 @@
           "name": "AWS_API_GATEWAY_URL"
         },
         {
-          "default": "auth.example.com",
-          "label": "Keycloak URL",
+          "default": "frontend.example.com",
+          "label": "URL",
           "name": "URL"
         },
         {
