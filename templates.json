@@ -2823,6 +2823,72 @@
           "name": "NETWORK"
         }
       ]
+    },
+    {
+      "id": 34,
+      "type": 3,
+      "title": "e-CF MSeller",
+      "description": "e-CF MSeller setup.",
+      "note": "Deploys a e-CF MSeller instance.",
+      "categories": ["Front-End"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/ecf-mseller/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/ecf-mseller/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "gitea.joseagrc.com/joseagrc/ecf-cloud",
+          "label": "e-CF Cloud Image",
+          "name": "ECF_CLOUD_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "e-CF Cloud Tag",
+          "name": "ECF_CLOUD_TAG"
+        },
+        {
+          "default": "keycloak_example",
+          "label": "Business Name",
+          "name": "NEXT_PUBLIC_BUSINESS_NAME"
+        },
+        {
+          "default": "eyJhbGciOiJIUzUxMiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ",
+          "label": "Next Auth Secret",
+          "name": "NEXTAUTH_SECRET"
+        },
+        {
+          "default": "https://auth.example.com/realms/ecf-saas",
+          "label": "Keycloak Issuer",
+          "name": "KEYCLOAK_ISSUER"
+        },
+        {
+          "default": "ecf-frontend",
+          "label": "Keycloak Client ID",
+          "name": "KEYCLOAK_CLIENT_ID"
+        },
+        {
+          "default": "3TzkcRbFnhtOAUplPLkp7SOmB5cYfc9L",
+          "label": "Keycloak Client Secret",
+          "name": "KEYCLOAK_CLIENT_SECRET"
+        },
+        {
+          "default": "https://backend.example.com",
+          "label": "API Gateway URL",
+          "name": "AWS_API_GATEWAY_URL"
+        },
+        {
+          "default": "auth.example.com",
+          "label": "Keycloak URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
     }
   ]
 }

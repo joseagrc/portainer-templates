@@ -1,0 +1,34 @@
+services:
+  mseller:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${ECF_CLOUD_IMAGE}:${ECF_CLOUD_TAG}
+    restart: unless-stopped
+    hostname: ${URL}
+    environment:
+      NEXT_PUBLIC_BUSINESS_NAME: ${NEXT_PUBLIC_BUSINESS_NAME}
+      NEXT_PUBLIC_APP_URL: ${URL}
+      NEXTAUTH_URL: ${URL}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      KEYCLOAK_ISSUER: ${KEYCLOAK_ISSUER}
+      KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
+      KEYCLOAK_CLIENT_SECRET: ${KEYCLOAK_CLIENT_SECRET}
+      AWS_API_GATEWAY_URL: ${AWS_API_GATEWAY_URL}
+    labels:
+      - "traefik.enable=true"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL}`) || Host(`www.${URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend RNC API
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000"
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
