@@ -456,10 +456,6 @@
       },
       "env": [
         {
-          "label": "Hostname",
-          "name": "GITLAB_HOSTNAME"
-        },
-        {
           "default": "America/Santo_Domingo",
           "label": "Time Zone",
           "name": "TZ"

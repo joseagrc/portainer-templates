@@ -3,7 +3,7 @@ version: '3'
 services:
   gitlab-ce:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    hostname: ${GITLAB_HOSTNAME}
+    hostname: ${GITLAB_HOST}
     image: ${GITLAB_CE_IMAGE}:${GITLAB_CE_TAG}
     restart: always
     environment:
