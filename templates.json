@@ -2377,19 +2377,19 @@
       "note": "Deploys a WordPress instance connected to a Mariadb database.",
       "categories": ["CMS"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/wordpress/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/wordpress/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/wordpress/docker-compose.yml"
       },
       "env": [
         {
-          "default": "code.gruposolutema.com/solutema/mariadb",
+          "default": "gitea.joseagrc.com/joseagrc/mariadb",
           "label": "Database image",
           "name": "MARIADB_IMAGE"
         },
         {
-          "default": "11.2.5",
+          "default": "11.8",
           "label": "Database tag",
           "name": "MARIADB_TAG"
         },
@@ -2443,12 +2443,12 @@
           "name": "ENABLE_HTTPS_REVERSE_PROXY"
         },
         {
-          "default": "code.gruposolutema.com/solutema/wordpress",
+          "default": "gitea.joseagrc.com/joseagrc/wordpress",
           "label": "Wordpress image",
           "name": "WORDPRESS_IMAGE"
         },
         {
-          "default": "alpine3.20-nginx-php8.3",
+          "default": "latest",
           "label": "Wordpress tag",
           "name": "WORDPRESS_TAG"
         },
@@ -2493,7 +2493,7 @@
           "name": "WP_CACHE"
         },
         {
-          "default": "redis-gruposolutema-server",
+          "default": "redis-joseagrc-server",
           "label": "Wp redis host",
           "name": "WP_REDIS_HOST"
         },
