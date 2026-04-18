@@ -2,13 +2,18 @@ services:
   postgres:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
-    volumes:
-      - dgii_rnc_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped    
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    restart: unless-stopped
+    volumes:
+      - dgii_rnc_postgres_data:/var/lib/postgresql/data      
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10    
     labels:
       # Habilita Traefik para TCP (no HTTP)
       - "traefik.enable=true"
