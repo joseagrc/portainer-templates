@@ -3086,9 +3086,9 @@
     {
       "id": 38,
       "type": 3,
-      "title": "GitLab CE Runner Register",
-      "description": "Gitlab Runner register is an application that works with GitLab CI/CD to register the runner.",
-      "note": "Deploys a GitLab Runner instance to register a runner.",
+      "title": "Heptapod CE Runner Register",
+      "description": "Heptapod Runner register is an application that works with Heptapod CI/CD to register the runner.",
+      "note": "Deploys a Heptapod Runner instance to register a runner.",
       "categories": ["CI/CD"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
