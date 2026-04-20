@@ -2981,7 +2981,7 @@
           "name": "HEPTAPOD_CE_IMAGE"
         },
         {
-          "default": "18-10-latest",
+          "default": "18-8-latest",
           "label": "Heptapod Tag",
           "name": "HEPTAPOD_CE_TAG"
         },
