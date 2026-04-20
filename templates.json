@@ -2993,7 +2993,7 @@
         {
           "default": "registry.example.com",
           "label": "Heptapod Registry Host",
-          "name": "GITLAB_REGISTRY"
+          "name": "HEPTAPOD_REGISTRY"
         },
         {
           "default": "pages.example.com",
