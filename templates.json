@@ -2955,7 +2955,184 @@
           "container": "/var/lib/postgresql/data"
         }
       ]
-    }
+    },
+    {
+      "id": 36,
+      "type": 3,
+      "title": "Heptapod",
+      "description": "Heptapod, is an Open-source end-to-end software development platform",
+      "note": "Deploys a Heptapod instance.",
+      "categories": ["Development", "Source control", "Git"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce/logo/logo.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/heptapod-ce/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Time Zone",
+          "name": "TZ"
+        },
+        {
+          "default": "heptapod/heptapod",
+          "label": "Heptapod Image",
+          "name": "HEPTAPOD_CE_IMAGE"
+        },
+        {
+          "default": "18-10-latest",
+          "label": "Heptapod Tag",
+          "name": "HEPTAPOD_CE_TAG"
+        },
+        {
+          "default": "heptapod.example.com",
+          "label": "Heptapod Host",
+          "name": "HEPTAPOD_HOST"
+        },
+        {
+          "default": "registry.example.com",
+          "label": "Heptapod Registry Host",
+          "name": "GITLAB_REGISTRY"
+        },
+        {
+          "default": "pages.example.com",
+          "label": "Heptapod Pages",
+          "name": "HEPTAPOD_PAGES"
+        },
+        {
+          "default": "true",
+          "label": "Heptapod SMTP Enable",
+          "name": "HEPTAPOD_SMTP_ENABLE"
+        },
+        {
+          "default": "smtp.example.com",
+          "label": "Heptapod SMTP Host",
+          "name": "HEPTAPOD_SMTP_HOST"
+        },
+        {
+          "default": "465",
+          "label": "Heptapod SMTP Port",
+          "name": "HEPTAPOD_SMTP_PORT"
+        },
+        {
+          "default": "email@example.com",
+          "label": "Heptapod SMTP User_name",
+          "name": "HEPTAPOD_SMTP_USER_NAME"
+        },
+        {
+          "default": "",
+          "label": "Heptapod SMTP Password",
+          "name": "HEPTAPOD_SMTP_PASSWORD"
+        },
+        {
+          "default": "example.com",
+          "label": "Heptapod Domain",
+          "name": "HEPTAPOD_DOMAIN"
+        },
+        {
+          "default": "2223",
+          "label": "Heptapod SSH Port",
+          "name": "HEPTAPOD_CE_SSH_PORT"
+        },
+        {
+          "default": "5000",
+          "label": "Heptapod Registry Port",
+          "name": "HEPTAPOD_CE_REGISTRY_PORT"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 37,
+      "type": 3,
+      "title": "GitLab CE Runner",
+      "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
+      "note": "Deploys a GitLab Runner instance.",
+      "categories": ["CI/CD"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gitlab-ce-runner/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "gitlab/gitlab-runner",
+          "label": "GitLab CE Runner Image",
+          "name": "GITLAB_CE_RUNNER_IMAGE"
+        },
+        {
+          "default": "v18.4.0",
+          "label": "GitLab CE Runner Tag",
+          "name": "GITLAB_CE_RUNNER_TAG"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Time Zone",
+          "name": "TZ"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    },
+    {
+      "id": 38,
+      "type": 3,
+      "title": "GitLab CE Runner Register",
+      "description": "Gitlab Runner register is an application that works with GitLab CI/CD to register the runner.",
+      "note": "Deploys a GitLab Runner instance to register a runner.",
+      "categories": ["CI/CD"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gitlab-ce-runner-register/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "v18.4.0",
+          "label": "GitLab CE Runner Tag",
+          "name": "GITLAB_CE_RUNNER_TAG"
+        },
+        {
+          "default": "https://gitlab.example.com/",
+          "label": "Gitlab URL",
+          "name": "GITLAB_URL"
+        },
+        {
+          "label": "Runner Token",
+          "name": "RUNNER_TOKEN"
+        },
+        {
+          "default": "docker",
+          "label": "Executor",
+          "name": "EXECUTOR"
+        },
+        {
+          "default": "alpine:latest",
+          "label": "Docker Image",
+          "name": "DOCKER_IMAGE"
+        },
+        {
+          "default": "docker-runner",
+          "label": "Description",
+          "name": "DESCRIPTION"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    }    
 
 
 

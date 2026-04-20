@@ -1,0 +1,20 @@
+services:
+  gitlab-runner:
+    container_name: ${COMPOSE_PROJECT_NAME}
+    image: heptapod/heptapod-runner:${GITLAB_CE_RUNNER_TAG}
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab-runner-config:/etc/gitlab-runner/
+      - gitlab-runner-cache:/cache
+    environment:
+      TZ: ${TZ}
+      
+volumes:
+  gitlab-runner-config:
+  gitlab-runner-cache:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
