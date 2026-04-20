@@ -3050,26 +3050,26 @@
     {
       "id": 37,
       "type": 3,
-      "title": "GitLab CE Runner",
-      "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
-      "note": "Deploys a GitLab Runner instance.",
+      "title": "Heptapod CE Runner",
+      "description": "Heptapod Runner is an application that works with Heptapod CI/CD to run the job in a pipeline.",
+      "note": "Deploys a Heptapod Runner instance.",
       "categories": ["CI/CD"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gitlab-ce-runner/docker-compose.yml"
+        "stackfile": "stacks/heptapod-ce-runner/docker-compose.yml"
       },
       "env": [
         {
-          "default": "gitlab/gitlab-runner",
-          "label": "GitLab CE Runner Image",
-          "name": "GITLAB_CE_RUNNER_IMAGE"
+          "default": "heptapod/heptapod-runner",
+          "label": "Heptapod CE Runner Image",
+          "name": "HEPTAPOD_CE_RUNNER_IMAGE"
         },
         {
-          "default": "v18.4.0",
-          "label": "GitLab CE Runner Tag",
-          "name": "GITLAB_CE_RUNNER_TAG"
+          "default": "18.0.0",
+          "label": "Heptapod CE Runner Tag",
+          "name": "HEPTAPOD_CE_RUNNER_TAG"
         },
         {
           "default": "America/Santo_Domingo",
@@ -3091,21 +3091,26 @@
       "note": "Deploys a GitLab Runner instance to register a runner.",
       "categories": ["CI/CD"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/gitlab-ce-runner-register/docker-compose.yml"
+        "stackfile": "stacks/heptapod-ce-runner-register/docker-compose.yml"
       },
       "env": [
         {
-          "default": "v18.4.0",
-          "label": "GitLab CE Runner Tag",
-          "name": "GITLAB_CE_RUNNER_TAG"
+          "default": "heptapod/heptapod-runner",
+          "label": "Heptapod CE Runner Image",
+          "name": "HEPTAPOD_CE_RUNNER_IMAGE"
+        },        
+        {
+          "default": "18.0.0",
+          "label": "Heptapod CE Runner Tag",
+          "name": "HEPTAPOD_CE_RUNNER_TAG"
         },
         {
           "default": "https://gitlab.example.com/",
-          "label": "Gitlab URL",
-          "name": "GITLAB_URL"
+          "label": "Heptapod URL",
+          "name": "HEPTAPOD_URL"
         },
         {
           "label": "Runner Token",

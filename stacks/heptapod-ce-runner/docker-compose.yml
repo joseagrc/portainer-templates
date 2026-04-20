@@ -1,7 +1,7 @@
 services:
   gitlab-runner:
     container_name: ${COMPOSE_PROJECT_NAME}
-    image: heptapod/heptapod-runner:${GITLAB_CE_RUNNER_TAG}
+    image: heptapod/heptapod-runner:${HEPTAPOD_CE_RUNNER_TAG}
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock

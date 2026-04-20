@@ -1,7 +1,7 @@
 services:
   gitlab-runner-register:
     container_name: ${COMPOSE_PROJECT_NAME}-register
-    image: heptapod/heptapod-runner:${GITLAB_CE_RUNNER_TAG}
+    image: ${HEPTAPOD_CE_RUNNER_IMAGE}:${HEPTAPOD_CE_RUNNER_TAG}
     restart: no
     command:
       - register
