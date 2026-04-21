@@ -8,10 +8,9 @@ services:
       TZ: ${TZ}
       SSH_HOST: ${HEPTAPOD_HOST}
       SSH_PORT: ${HEPTAPOD_CE_SSH_PORT}
-      HEPTAPOD_OMNIBUS_CONFIG: |
+      GITLAB_OMNIBUS_CONFIG: |
         external_url 'https://${HEPTAPOD_HOST}'
         pages_external_url 'https://${HEPTAPOD_PAGES}'
-
         nginx['listen_port'] = 80
         nginx['listen_https'] = false
         nginx['proxy_set_headers'] = {
@@ -19,34 +18,29 @@ services:
           "X-Forwarded-Ssl" => "on"
         }
         nginx['client_max_body_size'] = "0"
-
         gitlab_pages['enable'] = true
         pages_nginx['listen_port'] = 80
         pages_nginx['listen_https'] = false
         gitlab_pages['log_directory'] = "/var/log/gitlab/gitlab-pages"
-
         # Container Registry
         gitlab_rails['registry_enabled'] = true
         registry['enable'] = true
         registry_external_url 'https://${HEPTAPOD_REGISTRY}'
-
-        # Backend real del registry (interno)
+        # backend real del registry
         registry['registry_http_addr'] = "127.0.0.1:5000"
-
-        # GitLab -> registry (comunicación interna)
+        # GitLab -> registry interno
         gitlab_rails['registry_api_url'] = "http://127.0.0.1:5000"
         gitlab_rails['registry_host'] = '${HEPTAPOD_REGISTRY}'
-        gitlab_rails['registry_port'] = 443
-
-        # Frontend nginx del registry - CORREGIDO a 5000
+        gitlab_rails['registry_port'] = nil
+        # frontend nginx del registry
         registry_nginx['enable'] = true
-        registry_nginx['listen_port'] = 5000  # ✅ Ahora es correcto
+        registry_nginx['listen_port'] = 5050
         registry_nginx['listen_https'] = false
         registry_nginx['proxy_set_headers'] = {
           "X-Forwarded-Proto" => "https",
-          "X-Forwarded-Ssl" => "on"
+          "X-Forwarded-Ssl" => "on",
+          "Host" => "${HEPTAPOD_REGISTRY}"
         }
-
         gitlab_rails['time_zone'] = '${TZ}'
         gitlab_rails['smtp_enable'] = ${HEPTAPOD_SMTP_ENABLE}
         gitlab_rails['smtp_address'] = "${HEPTAPOD_SMTP_HOST}"
@@ -59,15 +53,23 @@ services:
         gitlab_rails['smtp_tls'] = true
         gitlab_rails['gitlab_email_from'] = "${HEPTAPOD_SMTP_USER_NAME}"
         gitlab_rails['gitlab_email_reply_to'] = "${HEPTAPOD_SMTP_USER_NAME}"
-
+        # Reply by email
+        gitlab_rails['incoming_email_enabled'] = true
+        gitlab_rails['incoming_email_address'] = "reply+%{key}@example.com"
+        gitlab_rails['incoming_email_email'] = "reply@example.com"
+        gitlab_rails['incoming_email_password'] = "your-password"
+        gitlab_rails['incoming_email_host'] = "imap.example.com"
+        gitlab_rails['incoming_email_port'] = 993
+        gitlab_rails['incoming_email_ssl'] = true
+        gitlab_rails['incoming_email_start_tls'] = false
+        gitlab_rails['incoming_email_mailbox_name'] = "inbox"
+        gitlab_rails['incoming_email_idle_timeout'] = 60
+        # Optional: delete processed emails
+        gitlab_rails['incoming_email_delete_after_delivery'] = true
         prometheus_monitoring['enable'] = false
         sidekiq['concurrency'] = 2
         postgresql['shared_buffers'] = "256MB"
         manage_accounts['enable'] = true
-        user['username'] = 'git'
-        user['group'] = 'git'
-        user['uid'] = 1234
-        user['gid'] = 1234
 
     volumes:
       - config:/etc/gitlab
