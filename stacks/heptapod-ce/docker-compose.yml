@@ -1,7 +1,7 @@
 services:
-  gitlab-ce:
+  heptapod-ce:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    hostname: ${HEPTAPOD_HOST}
+    hostname: ${COMPOSE_PROJECT_NAME}-app
     image: ${HEPTAPOD_CE_IMAGE}:${HEPTAPOD_CE_TAG}
     restart: always
     environment:
