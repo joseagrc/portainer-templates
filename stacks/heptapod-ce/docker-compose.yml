@@ -6,29 +6,47 @@ services:
     restart: always
     environment:
       TZ: ${TZ}
-      # VIRTUAL_HOST: ${HEPTAPOD_HOST},${HEPTAPOD_REGISTRY},${HEPTAPOD_PAGES}
-      # LETSENCRYPT_HOST: ${HEPTAPOD_HOST},${HEPTAPOD_REGISTRY},${HEPTAPOD_PAGES}
       SSH_HOST: ${HEPTAPOD_HOST}
       SSH_PORT: ${HEPTAPOD_CE_SSH_PORT}
       HEPTAPOD_OMNIBUS_CONFIG: |
         external_url 'https://${HEPTAPOD_HOST}'
         pages_external_url 'https://${HEPTAPOD_PAGES}'
+
         nginx['listen_port'] = 80
         nginx['listen_https'] = false
-        registry_nginx['listen_port'] = 80
-        registry_nginx['listen_https'] = false
-        nginx['proxy_set_headers'] = {  "X-Forwarded-Proto" => "https", "X-Forwarded-Ssl" => "on" }
+        nginx['proxy_set_headers'] = {
+          "X-Forwarded-Proto" => "https",
+          "X-Forwarded-Ssl" => "on"
+        }
+        nginx['client_max_body_size'] = "0"
+
         gitlab_pages['enable'] = true
         pages_nginx['listen_port'] = 80
         pages_nginx['listen_https'] = false
         gitlab_pages['log_directory'] = "/var/log/gitlab/gitlab-pages"
-        nginx['client_max_body_size'] = "0"
-        # Enable the registry
+
+        # Container Registry
         gitlab_rails['registry_enabled'] = true
         registry['enable'] = true
         registry_external_url 'https://${HEPTAPOD_REGISTRY}'
-        gitlab_rails['registry_host'] = "://${HEPTAPOD_REGISTRY}"
-        gitlab_rails['registry_port'] = '${HEPTAPOD_CE_REGISTRY_PORT}'
+
+        # Backend real del registry (interno)
+        registry['registry_http_addr'] = "127.0.0.1:5000"
+
+        # GitLab -> registry (comunicación interna)
+        gitlab_rails['registry_api_url'] = "http://127.0.0.1:5000"
+        gitlab_rails['registry_host'] = '${HEPTAPOD_REGISTRY}'
+        gitlab_rails['registry_port'] = 443
+
+        # Frontend nginx del registry - CORREGIDO a 5000
+        registry_nginx['enable'] = true
+        registry_nginx['listen_port'] = 5000  # ✅ Ahora es correcto
+        registry_nginx['listen_https'] = false
+        registry_nginx['proxy_set_headers'] = {
+          "X-Forwarded-Proto" => "https",
+          "X-Forwarded-Ssl" => "on"
+        }
+
         gitlab_rails['time_zone'] = '${TZ}'
         gitlab_rails['smtp_enable'] = ${HEPTAPOD_SMTP_ENABLE}
         gitlab_rails['smtp_address'] = "${HEPTAPOD_SMTP_HOST}"
@@ -40,8 +58,8 @@ services:
         gitlab_rails['smtp_enable_starttls_auto'] = false
         gitlab_rails['smtp_tls'] = true
         gitlab_rails['gitlab_email_from'] = "${HEPTAPOD_SMTP_USER_NAME}"
-        gitlab_rails['gitlab_email_reply_to'] = "${HEPTAPOD_SMTP_USER_NAME}"  
-        # Add any other gitlab.rb configuration here, each on its own line
+        gitlab_rails['gitlab_email_reply_to'] = "${HEPTAPOD_SMTP_USER_NAME}"
+
         prometheus_monitoring['enable'] = false
         sidekiq['concurrency'] = 2
         postgresql['shared_buffers'] = "256MB"
@@ -50,29 +68,55 @@ services:
         user['group'] = 'git'
         user['uid'] = 1234
         user['gid'] = 1234
-    ports:
-#      - "${HEPTAPOD_CE_SSH_PORT}:22"
-      - "${HEPTAPOD_CE_REGISTRY_PORT}:5000"
+
     volumes:
       - config:/etc/gitlab
       - logs:/var/log/gitlab
       - data:/var/opt/gitlab
-    shm_size: '256m'
+
+    shm_size: "256m"
+
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
-      # Redirecciona HTTP -> HTTPS
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${HEPTAPOD_HOST}`) || Host(`${HEPTAPOD_REGISTRY}`) || Host(`${HEPTAPOD_PAGES}`)"
+
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+
+      # APP
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${HEPTAPOD_HOST}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
-      # HTTPS (con SSL automático)
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${HEPTAPOD_HOST}`) || Host(`${HEPTAPOD_REGISTRY}`) || Host(`${HEPTAPOD_PAGES}`)"
+
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${HEPTAPOD_HOST}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      # Servicio backend GitLab
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.service=${COMPOSE_PROJECT_NAME}"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
+
+      # REGISTRY - CORREGIDO a puerto 5000
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry-http.rule=Host(`${HEPTAPOD_REGISTRY}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry.rule=Host(`${HEPTAPOD_REGISTRY}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-registry.service=${COMPOSE_PROJECT_NAME}-registry"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-registry.loadbalancer.server.port=5000"  # ✅ Cambiado a 5000
+
+      # PAGES
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages-http.rule=Host(`${HEPTAPOD_PAGES}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages.rule=Host(`${HEPTAPOD_PAGES}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-pages.service=${COMPOSE_PROJECT_NAME}-pages"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-pages.loadbalancer.server.port=8090"
 
 volumes:
   config:
