@@ -5,14 +5,14 @@ services:
     restart: always
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - gitlab-runner-config:/etc/gitlab-runner/
-      - gitlab-runner-cache:/cache
+      - heptapod-runner-config:/etc/heptapod-runner/
+      - heptapod-runner-cache:/cache
     environment:
       TZ: ${TZ}
       
 volumes:
-  gitlab-runner-config:
-  gitlab-runner-cache:
+  heptapod-runner-config:
+  heptapod-runner-cache:
 
 networks:
   default:
