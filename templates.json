@@ -3137,7 +3137,62 @@
           "name": "NETWORK"
         }
       ]
-    }    
+    },
+    {
+      "id": 39,
+      "type": 3,
+      "title": "DGII e-CF Stack",
+      "description": "DGII e-CF stack is an application that works electronic invoicing for Dominican Republic.",
+      "note": "Deploys a DGII e-CF stack instance to electronic invoicing.",
+      "categories": ["API"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/dgii-ecf-stack/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/dgii-ecf-stack/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "heptapod/heptapod-runner",
+          "label": "Heptapod CE Runner Image",
+          "name": "HEPTAPOD_CE_RUNNER_IMAGE"
+        },        
+        {
+          "default": "18.0.0",
+          "label": "Heptapod CE Runner Tag",
+          "name": "HEPTAPOD_CE_RUNNER_TAG"
+        },
+        {
+          "default": "https://gitlab.example.com/",
+          "label": "Heptapod URL",
+          "name": "HEPTAPOD_URL"
+        },
+        {
+          "label": "Runner Token",
+          "name": "RUNNER_TOKEN"
+        },
+        {
+          "default": "docker",
+          "label": "Executor",
+          "name": "EXECUTOR"
+        },
+        {
+          "default": "alpine:latest",
+          "label": "Docker Image",
+          "name": "DOCKER_IMAGE"
+        },
+        {
+          "default": "docker-runner",
+          "label": "Description",
+          "name": "DESCRIPTION"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    }        
 
 
 
