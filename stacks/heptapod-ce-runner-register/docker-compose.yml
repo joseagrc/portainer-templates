@@ -12,7 +12,7 @@ services:
       - --docker-image=${DOCKER_IMAGE}
       - --description=${DESCRIPTION}
     volumes:
-      - config:/etc/gitlab-runner/
+      - config:/etc/heptapod-runner/
 
 volumes:
   config:
