@@ -3183,7 +3183,7 @@
           "name": "POSTGRES_PORT"
         },
         {
-          "default": "registry.joseagrc.com/e-cf/docker-dgii-ecf-engine",
+          "default": "registry.joseagrc.com/e-cf/dgii-ecf-engine",
           "label": "DGII e-CF Engine Image",
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
@@ -3303,7 +3303,7 @@
           "name": "RATE_LIMIT_RULES"
         },
         {
-          "default": "registry.joseagrc.com/e-cf/docker-dgii-ecf-portal",
+          "default": "registry.joseagrc.com/e-cf/dgii-ecf-portal",
           "label": "DGII e-CF Engine Image",
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
