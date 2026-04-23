@@ -2675,9 +2675,9 @@
     {
       "id": 32,
       "type": 3,
-      "title": "DGII RNC API",
-      "description": "Open-source business API.",
-      "categories": ["API (Application Programming Interface)"],
+      "title": "DGII RNC API from CSV",
+      "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del RNC y Cédula.",
+      "categories": ["API"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/rnc-api/logo/logo.png",
       "repository": {
@@ -2889,9 +2889,9 @@
     {
       "id": 35,
       "type": 3,
-      "title": "DGII RNC API",
-      "description": "Esta es una API de código abierto diseñada para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
-      "categories": ["API (Application Programming Interface)"],
+      "title": "DGII RNC API + CSV + Web scraping",
+      "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
+      "categories": ["API"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-rnc-api/logo/logo.png",
       "repository": {
