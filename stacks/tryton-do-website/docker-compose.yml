@@ -11,8 +11,6 @@ services:
       GUNICORN_THREADS: ${GUNICORN_THREADS}
       GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT}
       SERVER_NAME: ${URL_HOST}
-    ports:
-      - "5000:5000"
     volumes:
       - critical-css:/critical-css:ro
     depends_on:
