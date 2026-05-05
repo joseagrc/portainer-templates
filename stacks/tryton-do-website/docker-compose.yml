@@ -1,0 +1,67 @@
+services:
+  website:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${TRYTON_WEBSITE_IMAGE}:${TRYTON_WEBSITE_TAG}
+    environment:
+      FLASK_MEMCACHED: memcached:11211
+      FLASK_CACHE_DEFAULT_TIMEOUT: ${FLASK_CACHE_DEFAULT_TIMEOUT}
+      FLASK_CRITICAL_CSS: /critical-css
+      FLASK_CDN_DEBUG: ${FLASK_CDN_DEBUG}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS}
+      GUNICORN_THREADS: ${GUNICORN_THREADS}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT}
+      SERVER_NAME: ${URL_HOST}
+    ports:
+      - "5000:5000"
+    volumes:
+      - critical-css:/critical-css:ro
+    depends_on:
+      memcached:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/app/check-running"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL_HOST}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend Flask
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5000"
+
+
+  memcached:
+    container_name: ${COMPOSE_PROJECT_NAME}-memcached
+    image: ${MEMCACHED_IMAGE}:${MEMCACHED_TAG}
+    command: ["memcached", "-m", "64", "-o", "modern"]
+    restart: unless-stopped
+
+  critical-css:
+    container_name: ${COMPOSE_PROJECT_NAME}-critical-css
+    image: ${CRITICAL_CSS_IMAGE}:${CRITICAL_CSS_TAG}
+    environment:
+      SERVER_NAME: website:5000
+      OUTPUT: /critical-css
+    volumes:
+      - critical-css:/critical-css
+    depends_on:
+      website:
+        condition: service_healthy
+    profiles:
+      - critical-css
+    restart: unless-stopped
+
+volumes:
+  critical-css:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true

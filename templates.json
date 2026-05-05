@@ -3328,7 +3328,88 @@
           "name": "NETWORK"
         }
       ]
-    }        
+    },
+    {
+      "id": 40,
+      "type": 3,
+      "title": "Tryton Website",
+      "description": "Tryton Website for Dominican Republic.",
+      "note": "Deploys a Tryton website.",
+      "categories": ["Web"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/tryton-do-website/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/tryton-do-website/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "registry.joseagrc.com/tryton/website",
+          "label": "Website Image",
+          "name": "TRYTON_WEBSITE_IMAGE"
+        },        
+        {
+          "default": "latest",
+          "label": "Website Tag",
+          "name": "TRYTON_WEBSITE_TAG"
+        },
+        {
+          "default": "3600",
+          "label": "Flask Cache Default Timeout",
+          "name": "FLASK_CACHE_DEFAULT_TIMEOUT"
+        }, 
+        {
+          "default": "false",
+          "label": "Flask CDN Debug",
+          "name": "FLASK_CDN_DEBUG"
+        }, 
+        {
+          "default": "2",
+          "label": "Gunicorn Workers",
+          "name": "GUNICORN_WORKERS"
+        }, 
+        {
+          "default": "4",
+          "label": "Gunicorn Threads",
+          "name": "GUNICORN_THREADS"
+        }, 
+        {
+          "default": "60",
+          "label": "Gunicorn Timeout",
+          "name": "GUNICORN_TIMEOUT"
+        }, 
+        {
+          "default": "memcached",
+          "label": "Memcached Image",
+          "name": "MEMCACHED_IMAGE"
+        },        
+        {
+          "default": "1.6-alpine",
+          "label": "Memcached Tag",
+          "name": "MEMCACHED_TAG"
+        },
+        {
+          "default": "registry.joseagrc.com/tryton/critical-css",
+          "label": "Critical CSS Image",
+          "name": "CRITICAL_CSS_IMAGE"
+        },        
+        {
+          "default": "latest",
+          "label": "Critical CSS Tag",
+          "name": "CRITICAL_CSS_TAG"
+        },
+        {
+          "default": "example.org.do",
+          "label": "URL Domain",
+          "name": "URL_HOST"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    }             
 
 
 
