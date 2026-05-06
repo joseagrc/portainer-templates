@@ -7,6 +7,10 @@ services:
       FLASK_CACHE_DEFAULT_TIMEOUT: ${FLASK_CACHE_DEFAULT_TIMEOUT}
       FLASK_CRITICAL_CSS: /critical-css
       FLASK_CDN_DEBUG: ${FLASK_CDN_DEBUG}
+      FLASK_SERVER_NAME: ${URL_HOST}
+      FLASK_BRAND_REGION_TEXT_EN: ${FLASK_BRAND_REGION_TEXT_EN}
+      FLASK_BRAND_REGION_TEXT_ES: ${FLASK_BRAND_REGION_TEXT_ES}
+      FLASK_I18N_AUTO_TRANSLATE_HTML: ${FLASK_I18N_AUTO_TRANSLATE_HTML}
       GUNICORN_WORKERS: ${GUNICORN_WORKERS}
       GUNICORN_THREADS: ${GUNICORN_THREADS}
       GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT}
@@ -33,7 +37,6 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
       # Servicio backend Flask
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5000"
-
 
   memcached:
     container_name: ${COMPOSE_PROJECT_NAME}-memcached

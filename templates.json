@@ -3362,7 +3362,22 @@
           "default": "false",
           "label": "Flask CDN Debug",
           "name": "FLASK_CDN_DEBUG"
-        }, 
+        },
+        {
+          "default": "Dominican Republic",
+          "label": "Flask Brand Region Text in English",
+          "name": "FLASK_BRAND_REGION_TEXT_EN"
+        },
+        {
+          "default": "República Dominicana",
+          "label": "Flask Brand Region Text in Spanish",
+          "name": "FLASK_BRAND_REGION_TEXT_ES"
+        },
+        {
+          "default": "true",
+          "label": "Flask i18n Auto Translate HTML",
+          "name": "FLASK_I18N_AUTO_TRANSLATE_HTML"
+        },
         {
           "default": "2",
           "label": "Gunicorn Workers",
