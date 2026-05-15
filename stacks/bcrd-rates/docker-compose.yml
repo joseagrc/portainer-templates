@@ -17,7 +17,7 @@ services:
 
   api:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    image: ${RNC_API_IMAGE}:${RNC_API_TAG}
+    image: ${BCRD_IMAGE}:${BCRD_TAG}
     restart: unless-stopped
     environment:
       APP_NAME: "BCRD Dollar Reference Rate API"

@@ -3463,7 +3463,17 @@
           "default": "bcrd_rates",
           "label": "Postgres Database",
           "name": "POSTGRES_DB"
-        },                    
+        },
+        {
+          "default": "registry.joseagrc.com/docker/docker-bcrd-dollar-reference-rate-api",
+          "label": "BCRD Image",
+          "name": "BCRD_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "BCRD Tag",
+          "name": "BCRD_TAG"
+        },
         {
           "default": "rates.example.com",
           "label": "URL",
