@@ -3424,7 +3424,58 @@
           "name": "NETWORK"
         }
       ]
-    }             
+    },
+    {
+      "id": 41,
+      "type": 3,
+      "title": "Banco Central Rates",
+      "description": "Banco Central Rates for Dominican Republic.",
+      "note": "Deploys a Banco Central Rates API.",
+      "categories": ["API"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/bcrd-rates/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/bcrd-rates/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "postgres",
+          "label": "Postgres Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16-alpine",
+          "label": "Postgres Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "bcrd",
+          "label": "Postgres User",
+          "name": "POSTGRES_USER"
+        },      
+        {
+          "default": "bcrd_password",
+          "label": "Postgres Password",
+          "name": "POSTGRES_PASSWORD"
+        },  
+        {
+          "default": "bcrd_rates",
+          "label": "Postgres Database",
+          "name": "POSTGRES_DB"
+        },                    
+        {
+          "default": "rates.example.com",
+          "label": "URL",
+          "name": "URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
+    }
 
 
 
