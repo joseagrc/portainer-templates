@@ -22,6 +22,8 @@ services:
     environment:
       APP_NAME: "BCRD Dollar Reference Rate API"
       APP_VERSION: "1.0.0"
+      API_KEY: ${API_KEY}
+      SECURE_DOCS: ${SECURE_DOCS}
       DEBUG: "false"
       DATABASE_URL: "postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}"
       SCHEDULER_ENABLED: "true"

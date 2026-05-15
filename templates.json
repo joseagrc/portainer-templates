@@ -3475,6 +3475,16 @@
           "name": "BCRD_TAG"
         },
         {
+          "default": "replace_api_key",
+          "label": "API Key",
+          "name": "API_KEY"
+        },
+        {
+          "default": "false",
+          "label": "Secure Docs",
+          "name": "SECURE_DOCS"
+        },
+        {
           "default": "rates.example.com",
           "label": "URL",
           "name": "URL"
