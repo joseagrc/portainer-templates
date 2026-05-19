@@ -28,11 +28,11 @@ services:
     environment:
       USER_UID: 1000
       USER_GID: 1000
-      FORGEJO__database__DB_TYPE: ${FORGEJO__DATABASE__DB_TYPE}
+      FORGEJO__database__DB_TYPE: ${FORGEJO_DATABASE_DB_TYPE}
       FORGEJO__database__HOST: ${COMPOSE_PROJECT_NAME}-db:3306
-      FORGEJO__database__NAME: ${DATABASE_USERNAME}
-      FORGEJO__database__USER: ${DATABASE_PASSWORD}
-      FORGEJO__database__PASSWD: ${DATABASE_NAME}
+      FORGEJO__database__NAME: ${DATABASE_NAME}
+      FORGEJO__database__USER: ${DATABASE_USERNAME}
+      FORGEJO__database__PASSWD: ${DATABASE_PASSWORD}
       FORGEJO_CUSTOM: /data/forgejo/custom
       FORGEJO____APP_NAME: ${APP_NAME}
       FORGEJO__server__DOMAIN: ${FORGEJO_URL}

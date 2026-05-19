@@ -3513,7 +3513,7 @@
         {
           "default": "mysql",
           "label": "Database Type",
-          "name": "FORGEJO__database__DB_TYPE"
+          "name": "FORGEJO_DATABASE_DB_TYPE"
         },
         {
           "default": "mysql",
