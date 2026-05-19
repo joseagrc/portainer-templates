@@ -3528,20 +3528,20 @@
         {
           "default": "forgejo_example",
           "label": "Database Username",
-          "name": "DATABASE_USERNAME"
+          "name": "MYSQL_USER"
         },
         {
           "label": "Database Password for User",
-          "name": "DATABASE_PASSWORD"
+          "name": "MYSQL_PASSWORD"
         },
         {
           "label": "Database Root Password",
-          "name": "DATABASE_ROOT_PASSWORD"
+          "name": "MYSQL_ROOT_PASSWORD"
         },
         {
           "default": "forgejo_example",
           "label": "Database Name",
-          "name": "DATABASE_NAME"
+          "name": "MYSQL_DATABASE"
         },
         {
           "default": "registry.joseagrc.com/docker/docker-forgejo",
