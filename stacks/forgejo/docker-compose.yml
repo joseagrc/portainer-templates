@@ -1,0 +1,92 @@
+services:
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: ${DATABASE_IMAGE}:${DATABASE_TAG}
+    restart: always
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      MYSQL_USER: ${DATABASE_USERNAME}
+      MYSQL_PASSWORD: ${DATABASE_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DATABASE_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DATABASE_NAME}
+
+  forgejo:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    image: ${FORGEJO_IMAGE}:${FORGEJO_TAG}
+    user: 1000:1000
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "${FORGEJO_SSH_PORT}:22"
+    volumes:
+      - data:/data
+      - custom:/data/forgejo/custom
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      USER_UID: 1000
+      USER_GID: 1000
+      FORGEJO__database__DB_TYPE: ${GITEA__DATABASE__DB_TYPE}
+      FORGEJO__database__HOST: ${COMPOSE_PROJECT_NAME}-db:3306
+      FORGEJO__database__NAME: ${DATABASE_USERNAME}
+      FORGEJO__database__USER: ${DATABASE_PASSWORD}
+      FORGEJO__database__PASSWD: ${DATABASE_NAME}
+      FORGEJO_CUSTOM: /data/forgejo/custom
+      FORGEJO____APP_NAME: ${APP_NAME}
+      FORGEJO__server__DOMAIN: ${FORGEJO_URL}
+      FORGEJO__server__ROOT_URL: https://${FORGEJO_URL}
+      FORGEJO__server__HTTP_PORT: "3000"
+      FORGEJO__server__SSH_PORT: ${FORGEJO_SSH_PORT}
+      FORGEJO__server__SSH_LISTEN_PORT: ${FORGEJO_SSH_PORT}
+      FORGEJO__security__INSTALL_LOCK: "true"
+      FORGEJO__service__DISABLE_REGISTRATION: "false"
+      FORGEJO__service__REQUIRE_SIGNIN_VIEW: "true"
+      FORGEJO__ui__DEFAULT_THEME: "tryton-do"
+      FORGEJO__ui__THEMES: "forgejo-auto,forgejo-light,forgejo-dark,gitea-auto,gitea-light,gitea-dark,arc-green,tryton-do"
+#      GITEA__server__SSH_LISTEN_PORT: ${GITEA_SSH_PORT}
+#      GITEA__server__ROOT_URL: https://${GITEA_URL}
+#      GITEA__service__DISABLE_REGISTRATION: ${DISABLE_REGISTRATION}
+#      GITEA__service__REQUIRE_SIGNIN_VIEW:  ${REQUIRE_SIGNIN_VIEW}
+#      GITEA__service__REGISTER_EMAIL_CONFIRM: ${REGISTER_EMAIL_CONFIRM}
+#      GITEA__service__ENABLE_NOTIFY_MAIL: ${ENABLE_NOTIFY_MAIL}
+#      GITEA__service__ALLOW_ONLY_EXTERNAL_REGISTRATION: ${ALLOW_ONLY_EXTERNAL_REGISTRATION}
+#      GITEA__service__ENABLE_CAPTCHA: ${ENABLE_CAPTCHA}
+#      GITEA__service__DEFAULT_KEEP_EMAIL_PRIVATE: ${DEFAULT_KEEP_EMAIL_PRIVATE}
+#      GITEA__service__DEFAULT_ALLOW_CREATE_ORGANIZATION: ${DEFAULT_ALLOW_CREATE_ORGANIZATION}
+#      GITEA__service__DEFAULT_ENABLE_TIMETRACKING: ${DEFAULT_ENABLE_TIMETRACKING}
+#      GITEA__service__NO_REPLY_ADDRESS: ${NO_REPLY_ADDRESS}
+#      GITEA__cron__update_checker__ENABLED: ${CRON_UPDATE_CHECKER}
+#      GITEA__cron__update_checker__SCHEDULE: ${CRON_UPDATE_CHECKER_SCHEDULE}
+#      GITEA__mailer__ENABLED: ${GITEA__MAILER__ENABLED}
+#      GITEA__mailer__FROM: ${GITEA__MAILER__FROM:?GITEA__mailer__FROM not set}
+#      GITEA__mailer__PROTOCOL: ${GITEA__MAILER__PROTOCOL}
+#      GITEA__mailer__SMTP_ADDR: ${GITEA__MAILER__SMTP_ADDR:?GITEA__mailer__SMTP_ADDR not set}
+#      GITEA__mailer__USER: ${GITEA__MAILER__USER:-apikey}
+#      GITEA__mailer__PASSWD: ${GITEA__MAILER__PASSWD:?GITEA__mailer__PASSWD not set}"""
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${FORGEJO_URL}`) || Host(`www.${FORGEJO_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${FORGEJO_URL}`) || Host(`www.${FORGEJO_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend Forgejo
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000"
+
+volumes:
+  db:
+  data:
+  custom:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true
