@@ -28,7 +28,7 @@ services:
     environment:
       USER_UID: 1000
       USER_GID: 1000
-      FORGEJO__database__DB_TYPE: ${GITEA__DATABASE__DB_TYPE}
+      FORGEJO__database__DB_TYPE: ${FORGEJO__DATABASE__DB_TYPE}
       FORGEJO__database__HOST: ${COMPOSE_PROJECT_NAME}-db:3306
       FORGEJO__database__NAME: ${DATABASE_USERNAME}
       FORGEJO__database__USER: ${DATABASE_PASSWORD}
