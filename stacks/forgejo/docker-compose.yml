@@ -55,10 +55,10 @@ services:
       FORGEJO__security__INSTALL_LOCK: "true"
       FORGEJO__service__DISABLE_REGISTRATION: "false"
       FORGEJO__service__REQUIRE_SIGNIN_VIEW: "true"
-      FORGEJO__ui__DEFAULT_THEME: "tryton-do"
-      FORGEJO__ui__THEMES: "forgejo-auto,forgejo-light,forgejo-dark,gitea-auto,gitea-light,gitea-dark,arc-green,tryton-do"
-
-      TRYTON_DO_CUSTOM_SYNC_MODE: "missing"
+      TRYTON_DO_CUSTOM_SYNC_MODE: "overwrite"
+      
+#      FORGEJO__ui__DEFAULT_THEME: "tryton-do"
+#      FORGEJO__ui__THEMES: "forgejo-auto,forgejo-light,forgejo-dark,gitea-auto,gitea-light,gitea-dark,arc-green,tryton-do"
 #      GITEA__server__SSH_LISTEN_PORT: ${GITEA_SSH_PORT}
 #      GITEA__server__ROOT_URL: https://${GITEA_URL}
 #      GITEA__service__DISABLE_REGISTRATION: ${DISABLE_REGISTRATION}
