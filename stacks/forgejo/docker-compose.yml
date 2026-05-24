@@ -54,9 +54,6 @@ services:
 
       # Ui
       FORGEJO__ui__EXPLORE_PAGING_NUM: ${EXPLORE_PAGING_NUM}
-      FORGEJO__ui__THEMES: ${THEMES}
-      FORGEJO__ui__DEFAULT_THEME: ${DEFAULT_THEME}
-
 
       # Server
       FORGEJO__server__DOMAIN: ${FORGEJO_URL}
