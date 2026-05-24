@@ -47,7 +47,7 @@ services:
       # Default
       FORGEJO____APP_NAME: ${APP_NAME}
       FORGEJO____APP_SLOGAN: ${APP_SLOGAN}
-      FORGEJO____APP_DISPLAY_NAME_FORMAT: {APP_NAME}: {APP_SLOGAN}
+      FORGEJO____APP_DISPLAY_NAME_FORMAT: ${APP_NAME}:${APP_SLOGAN}
       
       # Repository
       FORGEJO__repository__DEFAULT_BRANCH: ${DEFAULT_BRANCH}
