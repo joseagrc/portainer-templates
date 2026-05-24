@@ -3544,17 +3544,17 @@
           "name": "MYSQL_DATABASE"
         },
         {
-          "default": "registry.joseagrc.com/docker/docker-forgejo",
+          "default": "gitea.joseagrc.com/joseagrc/docker-forgejo",
           "label": "Forgejo image",
           "name": "FORGEJO_IMAGE"
         },
         {
-          "default": "15.0.2-rootless-amd64",
+          "default": "15.0.2-rootless",
           "label": "Forgejo Tag",
           "name": "FORGEJO_TAG"
         },
         {
-          "default": "22",
+          "default": "2222",
           "label": "Forgejo SSH Port",
           "name": "FORGEJO_SSH_PORT"
         },
