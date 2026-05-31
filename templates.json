@@ -3183,14 +3183,44 @@
           "name": "POSTGRES_PORT"
         },
         {
-          "default": "registry.joseagrc.com/e-cf/dgii-ecf-engine",
+          "default": "gitea.joseagrc.com/joseagrc/dgii-ecf-engine",
           "label": "DGII e-CF Engine Image",
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1-0-0",
+          "default": "1.0.36",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
+        },
+        {
+          "default": "4000",
+          "label": "DGII ECF Engine Port",
+          "name": "DGII_ECF_ENGINE_PORT"
+        },
+        {
+          "default": "production",
+          "label": "Node Environment",
+          "name": "NODE_ENV"
+        },
+        {
+          "default": "1",
+          "label": "Trust Proxy",
+          "name": "TRUST_PROXY"
+        },
+        {
+          "default": "false",
+          "label": "Security Strict Production",
+          "name": "SECURITY_STRICT_PRODUCTION"
+        },
+        {
+          "default": "false",
+          "label": "Security Require HTTPS",
+          "name": "SECURITY_REQUIRE_HTTPS"
+        },
+        {
+          "default": "x-forwarded-proto",
+          "label": "Security Trusted Proxy Header",
+          "name": "SECURITY_TRUSTED_PROXY_HEADER"
         },
         {
           "default": "ecf.example.com",
@@ -3303,12 +3333,12 @@
           "name": "RATE_LIMIT_RULES"
         },
         {
-          "default": "registry.joseagrc.com/e-cf/dgii-ecf-portal",
+          "default": "gitea.joseagrc.com/joseagrc/dgii-ecf-portal",
           "label": "DGII e-CF Engine Image",
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
         {
-          "default": "1-0-0",
+          "default": "1.0.10",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_PORTAL_TAG"
         },
@@ -3318,10 +3348,103 @@
           "name": "PUBLIC_ENGINE_URL"
         },
         {
+          "default": "3000",
+          "label": "DGII ECF Portal Port",
+          "name": "DGII_ECF_PORTAL_PORT"
+        },
+        {
           "default": "app.example.com",
           "label": "Portal Domain",
           "name": "PORTAL_DOMAIN"
         },
+        {
+          "default": "dpage/pgadmin4",
+          "label": "PGAdmin Image",
+          "name": "PGADMIN_IMAGE"
+        },
+        {
+          "default": "9.14.0",
+          "label": "PGAdmin Tag",
+          "name": "PGADMIN_TAG"
+        },
+        {
+          "default": "email@example.com",
+          "label": "PGAdmin Default Email",
+          "name": "PGADMIN_DEFAULT_EMAIL"
+        },
+        {
+          "label": "PGAdmin Default Password",
+          "name": "PGADMIN_DEFAULT_PASSWORD"
+        },
+        {
+          "default": "redis",
+          "label": "Redis Image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "8.6.3-alpine",
+          "label": "Redis Tag",
+          "name": "REDIS_TAG"
+        },
+        {
+          "default": "yes",
+          "label": "Redis AppendOnly,
+          "name": "REDIS_APPENDONLY"
+        },
+        {
+          "default": "10s",
+          "label": "Redis Health Interval,
+          "name": "REDIS_HEALTH_INTERVAL"
+        },
+        {
+          "default": "5s",
+          "label": "Redis Health Timeout,
+          "name": "REDIS_HEALTH_TIMEOUT"
+        },
+        {
+          "default": "10",
+          "label": "Redis Health Retries,
+          "name": "REDIS_HEALTH_RETRIES"
+        },
+        {
+          "default": "10s",
+          "label": "Redis Health Start Period,
+          "name": "REDIS_HEALTH_START_PERIOD"
+        },
+        {
+          "label": "Redis Password,
+          "name": "REDIS_PASSWORD"
+        },
+        {
+          "default": "redis/redisinsight",
+          "label": "RedisInsight Image",
+          "name": "REDISINSIGHT_IMAGE"
+        },
+        {
+          "default": "3.4.2",
+          "label": "RedisInsight Tag",
+          "name": "REDISINSIGHT_TAG"
+        },
+        {
+          "default": "redis.example.com",
+          "label": "RedisInsight Domain",
+          "name": "REDISINSIGHT_DOMAIN"
+        },
+        {
+          "label": "RedisInsight Username",
+          "name": "RI_REDIS_USERNAME"
+        },
+        {
+          "label": "RedisInsight Password",
+          "name": "RI_REDIS_PASSWORD"
+        },
+
+
+
+
+
+
+
         {
           "default": "proxy",
           "label": "Network name",
