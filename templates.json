@@ -3388,31 +3388,31 @@
         },
         {
           "default": "yes",
-          "label": "Redis AppendOnly,
+          "label": "Redis AppendOnly",
           "name": "REDIS_APPENDONLY"
         },
         {
           "default": "10s",
-          "label": "Redis Health Interval,
+          "label": "Redis Health Interval",
           "name": "REDIS_HEALTH_INTERVAL"
         },
         {
           "default": "5s",
-          "label": "Redis Health Timeout,
+          "label": "Redis Health Timeout",
           "name": "REDIS_HEALTH_TIMEOUT"
         },
         {
           "default": "10",
-          "label": "Redis Health Retries,
+          "label": "Redis Health Retries",
           "name": "REDIS_HEALTH_RETRIES"
         },
         {
           "default": "10s",
-          "label": "Redis Health Start Period,
+          "label": "Redis Health Start Period",
           "name": "REDIS_HEALTH_START_PERIOD"
         },
         {
-          "label": "Redis Password,
+          "label": "Redis Password",
           "name": "REDIS_PASSWORD"
         },
         {
@@ -3438,13 +3438,6 @@
           "label": "RedisInsight Password",
           "name": "RI_REDIS_PASSWORD"
         },
-
-
-
-
-
-
-
         {
           "default": "proxy",
           "label": "Network name",
