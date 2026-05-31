@@ -35,50 +35,67 @@ services:
       USER_UID: 1000
       USER_GID: 1000
 
+      # Custom
+      TRYTON_DO_CUSTOM_SYNC_MODE: ${TRYTON_DO_CUSTOM_SYNC_MODE}
+
+      # non-app.ini configuration
       GITEA_WORK_DIR: /data/forgejo
       GITEA_CUSTOM: /data/forgejo/custom
+      FORGEJO_WORK_DIR: /data/forgejo
       FORGEJO_CUSTOM: /data/forgejo/custom
-
+      
+      # Default
       FORGEJO____APP_NAME: ${APP_NAME}
+      FORGEJO____APP_SLOGAN: ${APP_SLOGAN}
+      FORGEJO____APP_DISPLAY_NAME_FORMAT: ${APP_NAME}:${APP_SLOGAN}
+      
+      # Repository
+      FORGEJO__repository__DEFAULT_BRANCH: ${DEFAULT_BRANCH}
+
+      # Ui
+      FORGEJO__ui__EXPLORE_PAGING_NUM: ${EXPLORE_PAGING_NUM}
+
+      # Server
       FORGEJO__server__DOMAIN: ${FORGEJO_URL}
       FORGEJO__server__ROOT_URL: https://${FORGEJO_URL}
       FORGEJO__server__HTTP_PORT: "3000"
       FORGEJO__server__SSH_PORT: ${FORGEJO_SSH_PORT}
       FORGEJO__server__SSH_LISTEN_PORT: ${FORGEJO_SSH_PORT}
 
+      # Database
       FORGEJO__database__DB_TYPE: ${FORGEJO_DATABASE_DB_TYPE}
       FORGEJO__database__HOST: ${COMPOSE_PROJECT_NAME}-db:3306
       FORGEJO__database__NAME: ${MYSQL_DATABASE}
       FORGEJO__database__USER: ${MYSQL_USER}
       FORGEJO__database__PASSWD: ${MYSQL_PASSWORD}
 
-      FORGEJO__security__INSTALL_LOCK: "true"
-      FORGEJO__service__DISABLE_REGISTRATION: "false"
-      FORGEJO__service__REQUIRE_SIGNIN_VIEW: "true"
-      FORGEJO__ui__DEFAULT_THEME: "tryton-do"
-      FORGEJO__ui__THEMES: "forgejo-auto,forgejo-light,forgejo-dark,gitea-auto,gitea-light,gitea-dark,arc-green,tryton-do"
+      # Security
+      FORGEJO__security__INSTALL_LOCK: ${INSTALL_LOCK}
 
-      TRYTON_DO_CUSTOM_SYNC_MODE: "missing"
-#      GITEA__server__SSH_LISTEN_PORT: ${GITEA_SSH_PORT}
-#      GITEA__server__ROOT_URL: https://${GITEA_URL}
-#      GITEA__service__DISABLE_REGISTRATION: ${DISABLE_REGISTRATION}
-#      GITEA__service__REQUIRE_SIGNIN_VIEW:  ${REQUIRE_SIGNIN_VIEW}
-#      GITEA__service__REGISTER_EMAIL_CONFIRM: ${REGISTER_EMAIL_CONFIRM}
-#      GITEA__service__ENABLE_NOTIFY_MAIL: ${ENABLE_NOTIFY_MAIL}
-#      GITEA__service__ALLOW_ONLY_EXTERNAL_REGISTRATION: ${ALLOW_ONLY_EXTERNAL_REGISTRATION}
-#      GITEA__service__ENABLE_CAPTCHA: ${ENABLE_CAPTCHA}
-#      GITEA__service__DEFAULT_KEEP_EMAIL_PRIVATE: ${DEFAULT_KEEP_EMAIL_PRIVATE}
-#      GITEA__service__DEFAULT_ALLOW_CREATE_ORGANIZATION: ${DEFAULT_ALLOW_CREATE_ORGANIZATION}
-#      GITEA__service__DEFAULT_ENABLE_TIMETRACKING: ${DEFAULT_ENABLE_TIMETRACKING}
-#      GITEA__service__NO_REPLY_ADDRESS: ${NO_REPLY_ADDRESS}
-#      GITEA__cron__update_checker__ENABLED: ${CRON_UPDATE_CHECKER}
-#      GITEA__cron__update_checker__SCHEDULE: ${CRON_UPDATE_CHECKER_SCHEDULE}
-#      GITEA__mailer__ENABLED: ${GITEA__MAILER__ENABLED}
-#      GITEA__mailer__FROM: ${GITEA__MAILER__FROM:?GITEA__mailer__FROM not set}
-#      GITEA__mailer__PROTOCOL: ${GITEA__MAILER__PROTOCOL}
-#      GITEA__mailer__SMTP_ADDR: ${GITEA__MAILER__SMTP_ADDR:?GITEA__mailer__SMTP_ADDR not set}
-#      GITEA__mailer__USER: ${GITEA__MAILER__USER:-apikey}
-#      GITEA__mailer__PASSWD: ${GITEA__MAILER__PASSWD:?GITEA__mailer__PASSWD not set}"""
+      # Service
+      FORGEJO__service__ACTIVE_CODE_LIVE_MINUTES: ${ACTIVE_CODE_LIVE_MINUTES}
+      FORGEJO__service__RESET_PASSWD_CODE_LIVE_MINUTES: ${RESET_PASSWD_CODE_LIVE_MINUTES}
+      FORGEJO__service__REGISTER_EMAIL_CONFIRM: ${REGISTER_EMAIL_CONFIRM}
+      FORGEJO__service__DISABLE_REGISTRATION: ${DISABLE_REGISTRATION}
+      FORGEJO__service__REQUIRE_SIGNIN_VIEW: ${REQUIRE_SIGNIN_VIEW}
+      FORGEJO__service__ENABLE_NOTIFY_MAIL: ${ENABLE_NOTIFY_MAIL}
+      FORGEJO__service__ENABLE_CAPTCHA: ${ENABLE_CAPTCHA}
+      FORGEJO__service__DEFAULT_ALLOW_CREATE_ORGANIZATION: ${DEFAULT_ALLOW_CREATE_ORGANIZATION}
+      FORGEJO__service__NO_REPLY_ADDRESS: ${NO_REPLY_ADDRESS}
+
+      # Mailer
+      FORGEJO__mailer__ENABLED: ${FORGEJO_MAILER_ENABLED}
+      FORGEJO__mailer__FROM: ${FORGEJO_MAILER_FROM}
+      FORGEJO__mailer__PROTOCOL: ${FORGEJO_MAILER_PROTOCOL}
+      FORGEJO__mailer__SMTP_ADDR: ${FORGEJO_MAILER_SMTP_ADDR}
+      FORGEJO__mailer__USER: ${FORGEJO_MAILER_USER}
+      FORGEJO__mailer__PASSWD: ${FORGEJO_MAILER_PASSWD}
+
+      # Cron
+      FORGEJO__cron__ENABLED: ${FORGEJO_CRON_ENABLED}
+      FORGEJO__cron__SCHEDULE: ${FORGEJO_CRON_SCHEDULE}
+      FORGEJO__cron__update_checker__SCHEDULE: ${FORGEJO_CRON_UPDATE_CHECKER_SCHEDULE}
+      
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"

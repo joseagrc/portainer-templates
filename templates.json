@@ -3496,7 +3496,7 @@
         }
       ]
     },
-      {
+    {
       "id": 42,
       "type": 3,
       "title": "Forgejo",
@@ -3544,24 +3544,14 @@
           "name": "MYSQL_DATABASE"
         },
         {
-          "default": "registry.joseagrc.com/docker/docker-forgejo",
+          "default": "gitea.joseagrc.com/joseagrc/docker-forgejo",
           "label": "Forgejo image",
           "name": "FORGEJO_IMAGE"
         },
         {
-          "default": "15.0.2-rootless-amd64",
+          "default": "15.0.2-rootless",
           "label": "Forgejo Tag",
           "name": "FORGEJO_TAG"
-        },
-        {
-          "default": "Tryton República Dominicana",
-          "label": "App Name",
-          "name": "APP_NAME"
-        },
-        {
-          "default": "code.tryton.org.do",
-          "label": "Forgejo URL",
-          "name": "FORGEJO_URL"
         },
         {
           "default": "2222",
@@ -3569,11 +3559,142 @@
           "name": "FORGEJO_SSH_PORT"
         },
         {
+          "default": "overwrite",
+          "label": "Tryton Custom Sync Mode",
+          "name": "TRYTON_DO_CUSTOM_SYNC_MODE"
+        },
+        {
+          "default": "Tryton República Dominicana",
+          "label": "App Name",
+          "name": "APP_NAME"
+        },
+        {
+          "default": "Beyond ERP. We localize.",
+          "label": "App Slogan",
+          "name": "APP_SLOGAN"
+        },
+        {
+          "default": "main",
+          "label": "Default Branch",
+          "name": "DEFAULT_BRANCH"
+        },
+        {
+          "default": "25",
+          "label": "Explore Paging Number",
+          "name": "EXPLORE_PAGING_NUM"
+        },
+        {
+          "default": "true",
+          "label": "Install Lock",
+          "name": "INSTALL_LOCK"
+        },
+        {
+          "default": "180",
+          "label": "Active Code Live Minutes",
+          "name": "ACTIVE_CODE_LIVE_MINUTES"
+        },
+        {
+          "default": "180",
+          "label": "Reset Password Code Live Minutes",
+          "name": "RESET_PASSWD_CODE_LIVE_MINUTES"
+        },
+        {
+          "default": "true",
+          "label": "Register Email Confirm",
+          "name": "REGISTER_EMAIL_CONFIRM"
+        },
+        {
+          "default": "false",
+          "label": "Disable Registration",
+          "name": "DISABLE_REGISTRATION"
+        },
+        {
+          "default": "true",
+          "label": "Require Signin View",
+          "name": "REQUIRE_SIGNIN_VIEW"
+        },
+        {
+          "default": "true",
+          "label": "Enable Notify Mail",
+          "name": "ENABLE_NOTIFY_MAIL"
+        },
+        {
+          "default": "true",
+          "label": "Enable Captcha",
+          "name": "ENABLE_CAPTCHA"
+        },
+        {
+          "default": "false",
+          "label": "Default allow Create Organization",
+          "name": "DEFAULT_ALLOW_CREATE_ORGANIZATION"
+        },
+        {
+          "default": "noreply@example.com",
+          "label": "No Reply Address",
+          "name": "NO_REPLY_ADDRESS"
+        },
+        {
+          "default": "true",
+          "label": "Mailer Enable",
+          "name": "FORGEJO_MAILER_ENABLED"
+        },
+        {
+          "default": "email@domain.com",
+          "label": "Mailer From",
+          "name": "FORGEJO_MAILER_FROM"
+        },
+        {
+          "default": "smtps",
+          "label": "Mailer Protocol",
+          "name": "FORGEJO_MAILER_PROTOCOL"
+        },
+        {
+          "default": "smtp.example.com",
+          "label": "Mailer SMTP Address",
+          "name": "FORGEJO_MAILER_SMTP_ADDR"
+        },
+        {
+          "default": "email@example.com",
+          "label": "Mailer Host User",
+          "name": "FORGEJO_MAILER_USER"
+        },
+        {
+          "default": "",
+          "label": "Mailer Host Password",
+          "name": "FORGEJO_MAILER_PASSWD"
+        },
+        {
+          "default": "true",
+          "label": "Enable Cron",
+          "name": "FORGEJO_CRON_ENABLED"
+        },
+        {
+          "default": "@every 24h",
+          "label": "Cron Schedule",
+          "name": "FORGEJO_CRON_SCHEDULE"
+        },
+        {
+          "default": "true",
+          "label": "Enable Cron Update Checker",
+          "name": "CRON_UPDATE_CHECKER"
+        },
+        {
+          "default": "@every 168h",
+          "label": "Cron Update Checker Schedule",
+          "name": "FORGEJO_CRON_UPDATE_CHECKER_SCHEDULE"
+        },
+        {
+          "default": "code.tryton.org.do",
+          "label": "Forgejo URL",
+          "name": "FORGEJO_URL"
+        },
+
+        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
         }
       ]
-      }
+    }
   ]
 }
