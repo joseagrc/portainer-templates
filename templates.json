@@ -3278,11 +3278,6 @@
           "name": "LOG_PRETTY"
         },
         {
-          "default": "https://app.example.com",
-          "label": "Cors Allowed Origins",
-          "name": "CORS_ALLOWED_ORIGINS"
-        },
-        {
           "default": "true",
           "label": "XML XSD Validation Enabled",
           "name": "XML_XSD_VALIDATION_ENABLED"
@@ -3341,11 +3336,6 @@
           "default": "1.0.10",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_PORTAL_TAG"
-        },
-        {
-          "default": "ecf.example.com",
-          "label": "Public Engine URL",
-          "name": "PUBLIC_ENGINE_URL"
         },
         {
           "default": "3000",

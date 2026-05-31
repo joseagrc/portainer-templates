@@ -114,7 +114,7 @@ services:
       NODE_ENV: ${NODE_ENV}
       PORT: ${DGII_ECF_ENGINE_PORT}
       TRUST_PROXY: ${TRUST_PROXY}
-      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      CORS_ALLOWED_ORIGINS: https://${PORTAL_DOMAIN}
 
       API_REQUEST_BODY_LIMIT: ${API_REQUEST_BODY_LIMIT:-2mb}
       HTTP_REQUEST_TIMEOUT_MS: ${HTTP_REQUEST_TIMEOUT_MS:-30000}
@@ -627,8 +627,8 @@ services:
       HOSTNAME: 0.0.0.0
       CHROMIUM_PATH: /usr/bin/chromium
 
-      NEXT_PUBLIC_API_BASE_URL: https://${PUBLIC_ENGINE_URL}
-      API_BASE_URL: https://${PUBLIC_ENGINE_URL}
+      NEXT_PUBLIC_API_BASE_URL: https://${ENGINE_DOMAIN}
+      API_BASE_URL: https://${ENGINE_DOMAIN}
 
     tmpfs:
       - /tmp:size=512m,nosuid
