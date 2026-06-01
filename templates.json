@@ -3358,6 +3358,11 @@
           "name": "PGADMIN_TAG"
         },
         {
+          "default": "pgadmin.example.com",
+          "label": "PGAdmin Domain",
+          "name": "PGADMIN_DOMAIN"
+        },
+        {
           "default": "email@example.com",
           "label": "PGAdmin Default Email",
           "name": "PGADMIN_DEFAULT_EMAIL"
