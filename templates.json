@@ -3576,15 +3576,45 @@
           "name": "POSTGRES_DB"
         },
         {
-          "default": "registry.joseagrc.com/docker/docker-bcrd-dollar-reference-rate-api",
+          "default": "gitea.joseagrc.com/joseagrc/bcrd-rates-api",
           "label": "BCRD Image",
           "name": "BCRD_IMAGE"
         },
         {
-          "default": "latest",
+          "default": "1.1.0",
           "label": "BCRD Tag",
           "name": "BCRD_TAG"
         },
+        {
+          "default": "false",
+          "label": "Debug",
+          "name": "DEBUG"
+        },
+        {
+          "default": "https://cdn.bancentral.gov.do/documents/estadisticas/mercado-cambiario/documents/TASAS_CONVERTIBLES_OTRAS_MONEDAS.xlsx",
+          "label": "Excel URL",
+          "name": "EXCEL_URL"
+        },
+        {
+          "default": "true",
+          "label": "Scheduler Enabled",
+          "name": "SCHEDULER_ENABLED"
+        },
+        {
+          "default": "1",
+          "label": "Scheduler Interval Days",
+          "name": "SCHEDULER_INTERVAL_DAYS"
+        },
+        {
+          "default": "30",
+          "label": "Request Timeout Seconds",
+          "name": "REQUEST_TIMEOUT_SECONDS"
+        },  
+        {
+          "default": "INFO",
+          "label": "Log Level",
+          "name": "LOG_LEVEL"
+        },        
         {
           "default": "replace_api_key",
           "label": "API Key",
