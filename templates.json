@@ -3586,6 +3586,11 @@
           "name": "BCRD_TAG"
         },
         {
+          "default": "BCRD Convertible Currency Reference Rate API",
+          "label": "APP Name",
+          "name": "APP_NAME"
+        },
+        {
           "default": "false",
           "label": "Debug",
           "name": "DEBUG"
