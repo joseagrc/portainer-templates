@@ -1382,12 +1382,12 @@
       },
       "env": [
         {
-          "default": "redis",
+          "default": "gitea.joseagrc.com/joseagrc/redis",
           "label": "Redis Image",
           "name": "REDIS_IMAGE"
         },
         {
-          "default": "8.2.1",
+          "default": "8.8.0",
           "label": "Redis Tag",
           "name": "REDIS_TAG"
         },
@@ -1416,14 +1416,9 @@
           "name": "INSIGHT_IMAGE"
         },
         {
-          "default": "2.54.0",
+          "default": "3.4.2",
           "label": "Insight Tag",
           "name": "INSIGHT_TAG"
-        },
-        {
-          "default": "5540",
-          "label": "Insight port",
-          "name": "INSIGHT_PORT"
         },
         {
           "default": "info",
