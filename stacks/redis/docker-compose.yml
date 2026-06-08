@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   redis:
     container_name: ${COMPOSE_PROJECT_NAME}-server
@@ -23,19 +21,28 @@ services:
     restart: always
     depends_on:
       - redis
-    ports:
-      - ${INSIGHT_PORT}:5540
     environment:
       RI_APP_HOST: 0.0.0.0
       RI_APP_PORT: ${INSIGHT_PORT}
       RI_LOG_LEVEL: ${RI_LOG_LEVEL}
       RI_FILES_LOGGER: ${RI_FILES_LOGGER}
       RI_STDOUT_LOGGER: ${RI_STDOUT_LOGGER}
-      VIRTUAL_PORT: ${INSIGHT_PORT}
-      VIRTUAL_HOST: ${INSIGHT_DOMAIN}
-      LETSENCRYPT_HOST: ${INSIGHT_DOMAIN}
     volumes:
       - insight:/data
+    labels:
+      - "traefik.enable=true"
+      # Redirecciona HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${INSIGHT_DOMAIN}`) || Host(`www.${INSIGHT_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      # HTTPS (con SSL automático)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${INSIGHT_DOMAIN}`) || Host(`www.${INSIGHT_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      # Servicio backend Rates API
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5540"      
       
 volumes:
   data:
