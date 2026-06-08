@@ -63,6 +63,11 @@ services:
       # Compression
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-compress.compress=true"
 
+volumes:
+  redis-data:
+  redis-logs:
+  redis-insight
+  
 networks:
   default:
     name: ${NETWORK}
