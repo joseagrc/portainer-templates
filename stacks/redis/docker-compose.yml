@@ -4,52 +4,66 @@ services:
     image: ${REDIS_IMAGE}:${REDIS_TAG}
     restart: always
     volumes:
-      - data:/data/db
-      - logs:/data/logs
-    ports:
-      - ${REDIS_PORT}:6379
+      - redis-data:/data
+      - redis-logs:/data/logs
     environment:
-      - CONTAINER_NAME=${COMPOSE_PROJECT_NAME}-server
-      - TIMEZONE=${TIMEZONE}
-      - ENABLE_LOGS=${ENABLE_LOGS}
-      - LOG_LEVEL=${LOG_LEVEL}
-      - REDIS_PASS=${REDIS_PASS}
+      CONTAINER_NAME: ${COMPOSE_PROJECT_NAME}-server
+      TIMEZONE: ${TIMEZONE}
+      ENABLE_LOGS: ${ENABLE_LOGS}
+      LOG_LEVEL: ${LOG_LEVEL}
+      REDIS_PASS: ${REDIS_PASS}
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASS}\" ping | grep PONG || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
 
   insight:
     container_name: ${COMPOSE_PROJECT_NAME}-insight
     image: ${INSIGHT_IMAGE}:${INSIGHT_TAG}
     restart: always
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     environment:
       RI_APP_HOST: 0.0.0.0
-      RI_APP_PORT: ${INSIGHT_PORT}
+      RI_APP_PORT: 5540
       RI_LOG_LEVEL: ${RI_LOG_LEVEL}
       RI_FILES_LOGGER: ${RI_FILES_LOGGER}
       RI_STDOUT_LOGGER: ${RI_STDOUT_LOGGER}
     volumes:
-      - insight:/data
+      - redis-insight:/data
     labels:
       - "traefik.enable=true"
-      # Redirecciona HTTP -> HTTPS
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${INSIGHT_DOMAIN}`) || Host(`www.${INSIGHT_DOMAIN}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
-      # HTTPS (con SSL automático)
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${INSIGHT_DOMAIN}`) || Host(`www.${INSIGHT_DOMAIN}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      # Servicio backend Rates API
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5540"      
-      
-volumes:
-  data:
-  logs:
-  insight:
+      - "traefik.docker.network=${NETWORK}"
+      # HTTP -> HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight-http.rule=Host(`${INSIGHT_DOMAIN}`) || Host(`www.${INSIGHT_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight-http.middlewares=${COMPOSE_PROJECT_NAME}-insight-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-redirect.redirectscheme.permanent=true"
+      # HTTPS
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight.rule=Host(`${INSIGHT_DOMAIN}`) || Host(`www.${INSIGHT_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight.tls.certresolver=letsencrypt"
+      # Middlewares
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-insight.middlewares=${COMPOSE_PROJECT_NAME}-insight-security-headers,${COMPOSE_PROJECT_NAME}-insight-compress"
+      # RedisInsight backend port
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-insight.loadbalancer.server.port=5540"
+      # Security headers
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.stsSeconds=31536000"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.stsIncludeSubdomains=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.stsPreload=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.forceSTSHeader=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.contentTypeNosniff=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.browserXssFilter=true"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-security-headers.headers.referrerPolicy=no-referrer-when-downgrade"
+      # Compression
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-insight-compress.compress=true"
 
 networks:
   default:
     name: ${NETWORK}
-    external: true
+    external: true      
