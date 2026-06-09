@@ -2419,99 +2419,24 @@
           "name": "ENABLE_HTTPS_REVERSE_PROXY"
         },
         {
-          "default": "gitea.joseagrc.com/joseagrc/wordpress",
+          "default": "wordpress",
           "label": "Wordpress image",
           "name": "WORDPRESS_IMAGE"
         },
         {
-          "default": "latest",
+          "default": "6.9.4-php8.4-fpm",
           "label": "Wordpress tag",
           "name": "WORDPRESS_TAG"
         },
         {
           "default": "wp_",
-          "label": "DB Prefix",
-          "name": "DB_PREFIX"
-        },
-        {
-          "default": "jose.arturo.garcia@gmail.com",
-          "label": "Admin email",
-          "name": "ADMIN_EMAIL"
-        },
-        {
-          "default": "admin",
-          "label": "Admin user",
-          "name": "ADMIN_USER"
-        },
-        {
-          "default": "password",
-          "label": "Admin password",
-          "name": "ADMIN_PASS"
-        },
-        {
-          "default": "false",
-          "label": "Debug mode",
-          "name": "DEBUG_MODE"
+          "label": "Wordpress Table Prefix",
+          "name": "WORDPRESS_TABLE_PREFIX"
         },
         {
           "default": "example.com",
           "label": "Site url",
           "name": "SITE_URL"
-        },
-        {
-          "default": "Docker Wordpress",
-          "label": "Site title",
-          "name": "SITE_TITLE"
-        },
-        {
-          "default": "es_ES",
-          "label": "Site locale",
-          "name": "SITE_LOCALE"
-        },
-        {
-          "default": "true",
-          "label": "Wp Cache",
-          "name": "WP_CACHE"
-        },
-        {
-          "default": "redis-joseagrc-server",
-          "label": "Wp redis host",
-          "name": "WP_REDIS_HOST"
-        },
-        {
-          "default": "6379",
-          "label": "Wp redis port",
-          "name": "WP_REDIS_PORT"
-        },
-        {
-          "default": "arturo0510",
-          "label": "Wp Redis Password",
-          "name": "WP_REDIS_PASSWORD"
-        },
-        {
-          "default": "false",
-          "label": "Rotate keys",
-          "name": "ROTATE_KEYS"
-        },
-        {
-          "default": "128M",
-          "label": "PHP Memory Limit",
-          "name": "PHP_MEMORY_LIMIT"
-        },
-        {
-          "default": "10G",
-          "label": "Nginx Upload Max Size",
-          "name": "NGINX_UPLOAD_MAX_SIZE"
-        },
-        {
-          "default": "300",
-          "label": "PHP tIMEOUT",
-          "name": "PHP_TIMEOUT"
-        },
-        {
-          "default": "all",
-          "label": "Update mode",
-          "name": "UPDATE_MODE"
         },
         {
           "default": "proxy",
