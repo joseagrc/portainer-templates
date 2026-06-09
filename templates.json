@@ -2429,6 +2429,11 @@
           "name": "WORDPRESS_TAG"
         },
         {
+          "default": "wp_",
+          "label": "DB Prefix",
+          "name": "DB_PREFIX"
+        },
+        {
           "default": "jose.arturo.garcia@gmail.com",
           "label": "Admin email",
           "name": "ADMIN_EMAIL"
