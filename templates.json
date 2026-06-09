@@ -2424,7 +2424,7 @@
           "name": "WORDPRESS_IMAGE"
         },
         {
-          "default": "6.9.4-php8.4-fpm",
+          "default": "6.9.4-php8.4-apache",
           "label": "Wordpress tag",
           "name": "WORDPRESS_TAG"
         },
