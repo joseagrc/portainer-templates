@@ -2370,43 +2370,33 @@
       },
       "env": [
         {
-          "default": "gitea.joseagrc.com/joseagrc/mariadb",
+          "default": "mariadb",
           "label": "Database image",
           "name": "MARIADB_IMAGE"
         },
         {
-          "default": "11.8",
+          "default": "11.8.8",
           "label": "Database tag",
           "name": "MARIADB_TAG"
         },
         {
-          "default": "America/Santo_Domingo",
-          "label": "Timezone",
-          "name": "TIMEZONE"
-        },
-        {
           "label": "MariaDB Root Password",
-          "name": "ROOT_PASS"
+          "name": "MARIADB_ROOT_PASSWORD"
         },
         {
           "default": "wordpress_database",
-          "label": "MariaDB Database Name",
-          "name": "DB_NAME"
+          "label": "MariaDB Database",
+          "name": "MARIADB_DATABASE"
         },
         {
           "default": "wordpress_user",
-          "label": "MariaDB Database Username",
-          "name": "DB_USER"
+          "label": "MariaDB Username",
+          "name": "MARIADB_USER"
         },
         {
           "default": "password",
-          "label": "MariaDB Database Password",
-          "name": "DB_PASS"
-        },
-        {
-          "default": "wp_",
-          "label": "MariaDB Database prefix",
-          "name": "DB_PREFIX"
+          "label": "MariaDB Password",
+          "name": "MARIADB_PASSWORD"
         },
         {
           "default": "phpmyadmin",
