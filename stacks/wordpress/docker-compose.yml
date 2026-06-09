@@ -25,17 +25,16 @@ services:
     labels:
       - "traefik.enable=true"
       # Redirecciona HTTP -> HTTPS
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-http.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-phpmyadmin-https-redirect.redirectscheme.scheme=https"
       # HTTPS (con SSL automático)
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      # Servicio backend Rates API
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"      
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-phpmyadmin.loadbalancer.server.port=80"      
 
   wordpress:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -80,17 +79,16 @@ services:
     labels:
       - "traefik.enable=true"
       # Redirecciona HTTP -> HTTPS
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-http.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-wordpress-https-redirect.redirectscheme.scheme=https"
       # HTTPS (con SSL automático)
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      # Servicio backend Rates API
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"         
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.tls.certresolver=letsencrypt"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-wordpress.loadbalancer.server.port=80"         
 
 volumes:
   mariadb:
