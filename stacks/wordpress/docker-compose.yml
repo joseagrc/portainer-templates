@@ -31,7 +31,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls.certresolver=letsencrypt"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-phpmyadmin.loadbalancer.server.port=80"    
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-phpmyadmin.loadbalancer.server.port=80"   
 
   wordpress:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -54,13 +54,18 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-http.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-http.entrypoints=web"      
+      
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.tls.certresolver=letsencrypt"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-wordpress.loadbalancer.server.port=80"          
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.entrypoints=web"
+      
+      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.middlewares=redirect-to-https@docker"
+      
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.entrypoints=websecure"
+      
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.tls.certresolver=letsencrypt"       
 
 volumes:
   mariadb:
