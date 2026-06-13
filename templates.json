@@ -3751,6 +3751,115 @@
           "name": "NETWORK"
         }
       ]
+    },
+    {
+      "id": 43,
+      "type": 3,
+      "title": "Roundcube Webmail",
+      "description": "Roundcube Webmail setup with a database MySQL.",
+      "note": "Deploys a Roundcube Webmail instance connected to a database MySQL.",
+      "categories": ["webmail"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/roundcubemail/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/roundcubemail/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "Database Image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.8.8",
+          "label": "Database Tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "label": "Database Root Password",
+          "name": "MARIADB_ROOT_PASSWORD"
+        },
+        {
+          "default": "roundcubemail_example",
+          "label": "Database Username",
+          "name": "MARIADB_USER"
+        },
+        {
+          "label": "Database Password for User",
+          "name": "MARIADB_PASSWORD"
+        },
+        {
+          "default": "roundcubemail_example",
+          "label": "Database Name",
+          "name": "MARIADB_DATABASE"
+        },
+        {
+          "default": "roundcube/roundcubemail",
+          "label": "Roundcube Image",
+          "name": "ROUNDCUBEMAIL_IMAGE"
+        },
+        {
+          "default": "1.6.16-fpm-alpine",
+          "label": "Roundcube Tag",
+          "name": "ROUNDCUBEMAIL_TAG"
+        },
+        {
+          "default": "mysql",
+          "label": "Database Type",
+          "name": "ROUNDCUBEMAIL_DB_TYPE"
+        },
+        {
+          "default": "3306",
+          "label": "Database Port",
+          "name": "ROUNDCUBEMAIL_DB_PORT"
+        },
+        {
+          "default": "imap.example.com",
+          "label": "Hostname of the IMAP server",
+          "name": "ROUNDCUBEMAIL_DEFAULT_HOST"
+        },
+        {
+          "default": "993",
+          "label": "IMAP server port",
+          "name": "ROUNDCUBEMAIL_DEFAULT_PORT"
+        },
+        {
+          "default": "smtp.example.com",
+          "label": "Hostname of the SMTP server",
+          "name": "ROUNDCUBEMAIL_SMTP_SERVER"
+        },
+        {
+          "default": "465",
+          "label": "SMTP server port",
+          "name": "ROUNDCUBEMAIL_SMTP_PORT"
+        },
+        {
+          "default": "example.com",
+          "label": "Username Domain",
+          "name": "ROUNDCUBEMAIL_USERNAME_DOMAIN"
+        },
+        {
+          "default": "true",
+          "label": "Install plugins",
+          "name": "ROUNDCUBEMAIL_INSTALL_PLUGINS"
+        },
+        {
+          "default": "archive,emoticons,markasjunk,newmail_notifier,password,vcard_attachments,zipdownload",
+          "label": "Plugins",
+          "name": "ROUNDCUBEMAIL_PLUGINS"
+        },
+        {
+          "default": "webmail.example.com",
+          "label": "Site URL",
+          "name": "SITE_URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
     }
   ]
 }
