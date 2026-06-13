@@ -3815,7 +3815,7 @@
           "name": "ROUNDCUBEMAIL_DB_PORT"
         },
         {
-          "default": "imap.example.com",
+          "default": "ssl://imap.example.com",
           "label": "Hostname of the IMAP server",
           "name": "ROUNDCUBEMAIL_DEFAULT_HOST"
         },
@@ -3825,7 +3825,7 @@
           "name": "ROUNDCUBEMAIL_DEFAULT_PORT"
         },
         {
-          "default": "smtp.example.com",
+          "default": "ssl://smtp.example.com",
           "label": "Hostname of the SMTP server",
           "name": "ROUNDCUBEMAIL_SMTP_SERVER"
         },
