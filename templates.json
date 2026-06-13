@@ -3850,6 +3850,16 @@
           "name": "ROUNDCUBEMAIL_PLUGINS"
         },
         {
+          "default": "elastic",
+          "label": "Skin",
+          "name": "ROUNDCUBEMAIL_SKIN"
+        },
+        {
+          "default": "50M",
+          "label": "Upload Max Filesize",
+          "name": "ROUNDCUBEMAIL_UPLOAD_MAX_FILESIZE"
+        },
+        {
           "default": "webmail.example.com",
           "label": "Site URL",
           "name": "SITE_URL"

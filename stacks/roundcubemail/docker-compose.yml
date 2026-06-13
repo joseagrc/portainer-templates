@@ -61,7 +61,9 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.entrypoints=websecure"
       
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls.certresolver=letsencrypt"       
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls.certresolver=letsencrypt"
+
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=80"       
 
 volumes:
   mariadb:
