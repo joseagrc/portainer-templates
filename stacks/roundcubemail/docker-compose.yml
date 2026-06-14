@@ -20,7 +20,7 @@ services:
 
   roundcubemail:
     container_name: ${COMPOSE_PROJECT_NAME}-app
-    hostname: ${COMPOSE_PROJECT_NAME}-app
+    hostname: ${SITE_URL}
     image: ${ROUNDCUBEMAIL_IMAGE}:${ROUNDCUBEMAIL_TAG}
     restart: unless-stopped
     depends_on:

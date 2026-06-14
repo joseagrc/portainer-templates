@@ -3800,7 +3800,7 @@
           "name": "ROUNDCUBEMAIL_IMAGE"
         },
         {
-          "default": "1.6.16-fpm-alpine",
+          "default": "1.6.16-apache",
           "label": "Roundcube Tag",
           "name": "ROUNDCUBEMAIL_TAG"
         },
