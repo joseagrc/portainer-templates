@@ -4040,8 +4040,8 @@
           "name": "REDIS_PASSWORD"
         },
         {
-          "default": "3600",
-          "label": "Redis Max TTL (seconds)",
+          "default": "21600",
+          "label": "Redis Max TTL in seconds (3600=1h, 21600=6h, 86400=24h)",
           "name": "REDIS_MAXTTL"
         }
       ]
