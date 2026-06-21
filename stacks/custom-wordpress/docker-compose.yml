@@ -23,16 +23,27 @@ services:
     environment:
       PMA_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
       PMA_PORT: 3306
-      PMA_ARBITRARY: 1 # To allow fill db credentials
+      PMA_ARBITRARY: 1
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-http.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
+
+      # Router principal: sirve www.phpmyadmin.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`www.${PHPMYADMIN_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.service=${COMPOSE_PROJECT_NAME}-phpmyadmin"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.middlewares=security@file,hsts@file,compression_https@file,auth@file,rate-limit-strict@file"
+
+      # Router de redirect: phpmyadmin.domain.com → www.phpmyadmin.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.rule=Host(`${PHPMYADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.middlewares=www-redirect@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.service=${COMPOSE_PROJECT_NAME}-phpmyadmin"
+
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-phpmyadmin.loadbalancer.server.port=80"
 
   wordpress:
@@ -72,18 +83,22 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
 
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=web"
+      # Router principal: sirve www.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.service=${COMPOSE_PROJECT_NAME}-app"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.middlewares=security@file,hsts@file,compression_https@file,upload-10g@file"
 
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.middlewares=${COMPOSE_PROJECT_NAME}-redirect-to-https@docker"
+      # Router de redirect: domain.com → www.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.rule=Host(`${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.middlewares=www-redirect@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.service=${COMPOSE_PROJECT_NAME}-app"
 
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.service=${COMPOSE_PROJECT_NAME}-app"
-
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls.certresolver=letsencrypt"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=80"
 
 volumes:
