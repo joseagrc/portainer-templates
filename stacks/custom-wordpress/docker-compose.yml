@@ -91,7 +91,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls.certresolver=letsencrypt"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.service=${COMPOSE_PROJECT_NAME}-app"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.middlewares=security@file,hsts@file,compression_https@file,upload-10g@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.middlewares=security@file,hsts@file,compression_https@file"
 
       # Router de redirect: domain.com → www.domain.com
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.rule=Host(`${SITE_URL}`)"
