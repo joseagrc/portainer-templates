@@ -4005,23 +4005,18 @@
           "name": "ENABLE_REDIS"
         },
         {
-          "default": "redis",
-          "label": "Redis Image",
-          "name": "REDIS_IMAGE"
+          "default": "redis-server",
+          "label": "Redis Host (container name of shared Redis)",
+          "name": "REDIS_HOST"
         },
         {
-          "default": "alpine",
-          "label": "Redis Tag",
-          "name": "REDIS_TAG"
-        },
-        {
-          "default": "128mb",
-          "label": "Redis Max Memory",
-          "name": "REDIS_MAXMEMORY"
+          "default": "6379",
+          "label": "Redis Port",
+          "name": "REDIS_PORT"
         },
         {
           "default": "0",
-          "label": "Redis Database Index",
+          "label": "Redis Database Index (0-15, unique per WordPress instance)",
           "name": "REDIS_DATABASE"
         },
         {
