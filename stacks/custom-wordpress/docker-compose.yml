@@ -28,20 +28,20 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
 
-      # Router principal: sirve www.phpmyadmin.domain.com
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`www.${PHPMYADMIN_DOMAIN}`)"
+      # Router principal: sirve phpmyadmin.domain.com (canónico sin www)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`${PHPMYADMIN_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls.certresolver=letsencrypt"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.service=${COMPOSE_PROJECT_NAME}-phpmyadmin"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.middlewares=security@file,hsts@file,compression_https@file,auth@file,rate-limit-strict@file"
 
-      # Router de redirect: phpmyadmin.domain.com → www.phpmyadmin.domain.com
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.rule=Host(`${PHPMYADMIN_DOMAIN}`)"
+      # Router de redirect: www.phpmyadmin.domain.com → phpmyadmin.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.rule=Host(`www.${PHPMYADMIN_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.middlewares=www-redirect@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.middlewares=non-www-redirect@file"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.service=${COMPOSE_PROJECT_NAME}-phpmyadmin"
 
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-phpmyadmin.loadbalancer.server.port=80"
@@ -85,20 +85,20 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
 
-      # Router principal: sirve www.domain.com
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`www.${SITE_URL}`)"
+      # Router principal: sirve domain.com (canónico sin www)
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${SITE_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls.certresolver=letsencrypt"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.service=${COMPOSE_PROJECT_NAME}-app"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.middlewares=security@file,hsts@file,compression_https@file"
 
-      # Router de redirect: domain.com → www.domain.com
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.rule=Host(`${SITE_URL}`)"
+      # Router de redirect: www.domain.com → domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.rule=Host(`www.${SITE_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.middlewares=www-redirect@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.middlewares=non-www-redirect@file"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-redirect.service=${COMPOSE_PROJECT_NAME}-app"
 
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-app.loadbalancer.server.port=80"
