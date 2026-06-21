@@ -5,7 +5,7 @@ services:
     image: ${MARIADB_IMAGE}:${MARIADB_TAG}
     restart: always
     volumes:
-      - mariadb:/var/lib/mysql
+      - mariadb-data:/var/lib/mysql
       - mariadb-logs:/logs
     environment:
       TIMEZONE: ${TIMEZONE}
