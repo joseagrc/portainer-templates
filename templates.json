@@ -3975,7 +3975,7 @@
           "name": "ADMIN_PASS"
         },
         {
-          "default": "en_US",
+          "default": "es_DO",
           "label": "Wordpress Site Locale",
           "name": "SITE_LOCALE"
         },
