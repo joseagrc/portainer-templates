@@ -1,4 +1,10 @@
 services:
+  redis:
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    image: ${REDIS_IMAGE}:${REDIS_TAG}
+    restart: unless-stopped
+    command: redis-server --maxmemory ${REDIS_MAXMEMORY} --maxmemory-policy allkeys-lru
+
   mariadb:
     container_name: ${COMPOSE_PROJECT_NAME}-mariadb
     stop_grace_period: 3m
@@ -42,6 +48,7 @@ services:
     restart: unless-stopped
     depends_on:
       - mariadb
+      - redis
     links:
       - mariadb:mariadb
     volumes:
@@ -62,6 +69,12 @@ services:
       SITE_TITLE: ${SITE_TITLE}
       SITE_URL: ${SITE_URL}
       UPDATE_MODE: ${UPDATE_MODE}
+      ENABLE_REDIS: ${ENABLE_REDIS}
+      REDIS_HOST: ${COMPOSE_PROJECT_NAME}-redis
+      REDIS_PORT: 6379
+      REDIS_DATABASE: ${REDIS_DATABASE}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
+      REDIS_MAXTTL: ${REDIS_MAXTTL}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"

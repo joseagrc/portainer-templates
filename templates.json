@@ -3998,6 +3998,41 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "default": "true",
+          "label": "Enable Redis Object Cache",
+          "name": "ENABLE_REDIS"
+        },
+        {
+          "default": "redis",
+          "label": "Redis Image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "alpine",
+          "label": "Redis Tag",
+          "name": "REDIS_TAG"
+        },
+        {
+          "default": "128mb",
+          "label": "Redis Max Memory",
+          "name": "REDIS_MAXMEMORY"
+        },
+        {
+          "default": "0",
+          "label": "Redis Database Index",
+          "name": "REDIS_DATABASE"
+        },
+        {
+          "default": "",
+          "label": "Redis Password (optional)",
+          "name": "REDIS_PASSWORD"
+        },
+        {
+          "default": "3600",
+          "label": "Redis Max TTL (seconds)",
+          "name": "REDIS_MAXTTL"
         }
       ]
     }
