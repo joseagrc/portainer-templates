@@ -65,17 +65,17 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
       
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=web"
       
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.middlewares=redirect-to-https@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.middlewares=redirect-to-https@docker"
       
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.entrypoints=websecure"
       
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.tls.certresolver=letsencrypt"       
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls.certresolver=letsencrypt"
 
 volumes:
   mariadb:
