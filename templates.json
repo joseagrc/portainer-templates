@@ -4005,6 +4005,16 @@
           "name": "NETWORK"
         },
         {
+          "default": "false",
+          "label": "Enable Zabbix Monitoring",
+          "name": "CONTAINER_ENABLE_MONITORING"
+        },
+        {
+          "default": "zabbix-proxy",
+          "label": "Zabbix Server/Proxy hostname (if monitoring enabled)",
+          "name": "ZABBIX_SERVER_HOST"
+        },
+        {
           "default": "true",
           "label": "Enable Redis Object Cache",
           "name": "ENABLE_REDIS"
