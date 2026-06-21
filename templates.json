@@ -3870,6 +3870,131 @@
           "name": "NETWORK"
         }
       ]
+    },
+    {
+      "id": 44,
+      "type": 3,
+      "title": "Custom WordPress",
+      "description": "Custom WordPress setup with a Mariadb database",
+      "note": "Deploys a Custom WordPress instance connected to a Mariadb database.",
+      "categories": ["CMS"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/custom-wordpress/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/custom-wordpress/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mariadb",
+          "label": "Database image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.8.8",
+          "label": "Database tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "label": "MariaDB Root Password",
+          "name": "MARIADB_ROOT_PASSWORD"
+        },
+        {
+          "default": "wordpress_database",
+          "label": "MariaDB Database",
+          "name": "MARIADB_DATABASE"
+        },
+        {
+          "default": "wordpress_user",
+          "label": "MariaDB Username",
+          "name": "MARIADB_USER"
+        },
+        {
+          "default": "password",
+          "label": "MariaDB Password",
+          "name": "MARIADB_PASSWORD"
+        },
+        {
+          "default": "phpmyadmin",
+          "label": "Phpmyadmin image",
+          "name": "PHPMYADMIN_IMAGE"
+        },
+        {
+          "default": "5.2.1-apache",
+          "label": "Phpmyadmin tag",
+          "name": "PHPMYADMIN_TAG"
+        },
+        {
+          "default": "phpmyadmin.example.com",
+          "label": "Phpmyadmin domain",
+          "name": "PHPMYADMIN_DOMAIN"
+        },
+        {
+          "default": "true",
+          "label": "Enable HTTPS reverse proxy",
+          "name": "ENABLE_HTTPS_REVERSE_PROXY"
+        },
+        {
+          "default": "gitea.joseagrc.com/joseagrc/wordpress",
+          "label": "Wordpress Image",
+          "name": "WORDPRESS_IMAGE"
+        },
+        {
+          "default": "php8.4-6.9.4-alpine-3.23",
+          "label": "Wordpress Tag",
+          "name": "WORDPRESS_TAG"
+        },
+        {
+          "default": "sltm_",
+          "label": "Wordpress Table Prefix",
+          "name": "WORDPRESS_TABLE_PREFIX"
+        },
+        {
+          "default": "",
+          "label": "Wordpress Admin Email",
+          "name": "ADMIN_EMAIL"
+        },
+        {
+          "default": "",
+          "label": "Wordpress Admin User",
+          "name": "ADMIN_USER"
+        },
+        {
+          "default": "",
+          "label": "Wordpress Admin Password",
+          "name": "ADMIN_PASS"
+        },
+        {
+          "default": "en_US",
+          "label": "Wordpress Site Locale",
+          "name": "SITE_LOCALE"
+        },
+        {
+          "default": "Docker Wordpress",
+          "label": "Wordpress Site Title",
+          "name": "SITE_TITLE"
+        },
+        {
+          "default": "example.com",
+          "label": "Site url",
+          "name": "SITE_URL"
+        },
+        {
+          "default": "none",
+          "label": "Wordpress Update Mode",
+          "name": "UPDATE_MODE"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
     }
   ]
 }
