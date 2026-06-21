@@ -3886,13 +3886,13 @@
       },
       "env": [
         {
-          "default": "mariadb",
-          "label": "Database image",
+          "default": "gitea.joseagrc.com/joseagrc/mariadb",
+          "label": "Database Image",
           "name": "MARIADB_IMAGE"
         },
         {
           "default": "11.8.8",
-          "label": "Database tag",
+          "label": "Database Tag",
           "name": "MARIADB_TAG"
         },
         {
@@ -3921,17 +3921,17 @@
         },
         {
           "default": "phpmyadmin",
-          "label": "Phpmyadmin image",
+          "label": "Phpmyadmin Image",
           "name": "PHPMYADMIN_IMAGE"
         },
         {
           "default": "5.2.1-apache",
-          "label": "Phpmyadmin tag",
+          "label": "Phpmyadmin Tag",
           "name": "PHPMYADMIN_TAG"
         },
         {
           "default": "phpmyadmin.example.com",
-          "label": "Phpmyadmin domain",
+          "label": "Phpmyadmin Domain",
           "name": "PHPMYADMIN_DOMAIN"
         },
         {

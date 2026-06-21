@@ -6,7 +6,7 @@ services:
     restart: always
     volumes:
       - mariadb:/var/lib/mysql
-      - logs:/logs
+      - mariadb-logs:/logs
     environment:
       TIMEZONE: ${TIMEZONE}
       ROOT_PASS: ${MARIADB_ROOT_PASSWORD}
@@ -45,8 +45,8 @@ services:
     links:
       - mariadb:mariadb
     volumes:
-      - data:/www/wordpress
-      - logs:/www/logs
+      - wordpress-data:/www/wordpress
+      - wordpress-logs:/www/logs
     environment:
       DB_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
       DB_USER: ${MARIADB_USER}
@@ -78,9 +78,10 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app-https.tls.certresolver=letsencrypt"
 
 volumes:
-  mariadb:
-  data:
-  logs:
+  mariadb-data:
+  mariadb-logs:
+  wordpress-data:
+  wordpress-logs:
 
 networks:
   default:
