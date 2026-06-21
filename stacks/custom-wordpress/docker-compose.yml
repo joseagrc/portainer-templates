@@ -28,13 +28,21 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
 
-      # Router principal: acepta phpmyadmin.domain.com y www.phpmyadmin.domain.com
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`${PHPMYADMIN_DOMAIN}`) || Host(`www.${PHPMYADMIN_DOMAIN}`)"
+      # Router principal: sirve www.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.rule=Host(`www.${PHPMYADMIN_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.tls.certresolver=letsencrypt"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.service=${COMPOSE_PROJECT_NAME}-phpmyadmin"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.middlewares=security@file,hsts@file,compression_https@file,auth@file,rate-limit-strict@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin.middlewares=security@file,hsts@file,compression_https@file,rate-limit-strict@file"
+
+      # Router de redirect: domain.com → www.domain.com
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.rule=Host(`${PHPMYADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.middlewares=www-redirect@file"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-phpmyadmin-redirect.service=${COMPOSE_PROJECT_NAME}-phpmyadmin"
 
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}-phpmyadmin.loadbalancer.server.port=80"
 
@@ -45,8 +53,6 @@ services:
     restart: unless-stopped
     depends_on:
       - mariadb
-    links:
-      - mariadb:mariadb
     volumes:
       - wordpress-data:/www/wordpress
       - wordpress-logs:/www/logs
