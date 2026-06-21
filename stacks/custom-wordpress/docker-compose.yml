@@ -63,14 +63,6 @@ services:
       DB_NAME: ${MARIADB_DATABASE}
       DB_PREFIX: ${WORDPRESS_TABLE_PREFIX}
       ENABLE_HTTPS_REVERSE_PROXY: ${ENABLE_HTTPS_REVERSE_PROXY}
-      WORDPRESS_VERSION: ${WORDPRESS_VERSION}
-      ADMIN_EMAIL: ${ADMIN_EMAIL}
-      ADMIN_USER: ${ADMIN_USER}
-      ADMIN_PASS: ${ADMIN_PASS}
-      SITE_LOCALE: ${SITE_LOCALE}
-      SITE_TITLE: ${SITE_TITLE}
-      SITE_URL: ${SITE_URL}
-      UPDATE_MODE: ${UPDATE_MODE}
       CONTAINER_ENABLE_MONITORING: ${CONTAINER_ENABLE_MONITORING}
       ZABBIX_SERVER_HOST: ${ZABBIX_SERVER_HOST}
       ENABLE_REDIS: ${ENABLE_REDIS}
@@ -79,13 +71,19 @@ services:
       REDIS_DATABASE: ${REDIS_DATABASE}
       REDIS_PASSWORD: ${REDIS_PASSWORD}
       REDIS_MAXTTL: ${REDIS_MAXTTL}
+      WORDPRESS_VERSION: ${WORDPRESS_VERSION}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASS: ${ADMIN_PASS}
+      SITE_LOCALE: ${SITE_LOCALE}
+      SITE_TITLE: ${SITE_TITLE}
+      SITE_URL: www.${WORDPRESS_DOMAIN}
+      UPDATE_MODE: ${UPDATE_MODE}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"
 
-      # Router principal: acepta domain.com y www.domain.com
-      # WordPress redirige al canónico según WP_HOME (definido por SITE_URL)
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.rule=Host(`${WORDPRESS_DOMAIN}`) || Host(`www.${WORDPRESS_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-app.tls.certresolver=letsencrypt"
