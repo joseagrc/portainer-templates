@@ -3950,6 +3950,11 @@
           "name": "WORDPRESS_TAG"
         },
         {
+          "default": "6.9.4",
+          "label": "Wordpress Versión",
+          "name": "WORDPRESS_VERSION"
+        },
+        {
           "default": "sltm_",
           "label": "Wordpress Table Prefix",
           "name": "WORDPRESS_TABLE_PREFIX"
