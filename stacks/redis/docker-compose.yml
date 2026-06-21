@@ -12,6 +12,7 @@ services:
       ENABLE_LOGS: ${ENABLE_LOGS}
       LOG_LEVEL: ${LOG_LEVEL}
       REDIS_PASS: ${REDIS_PASS}
+      REDIS_DATABASES: ${REDIS_DATABASES}
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASS}\" ping | grep PONG || exit 1"]
       interval: 30s
