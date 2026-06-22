@@ -1,41 +1,39 @@
-services:
-  netdata:
-    container_name: ${COMPOSE_PROJECT_NAME}
-    image: ${NETDATA_IMAGE}:${NETDATA_TAG}
-    hostname: ${NETDATA_HOSTNAME}
-    pid: host
-    restart: unless-stopped
-    cap_add:
-      - SYS_PTRACE
-      - SYS_ADMIN
-    security_opt:
-      - apparmor:unconfined
-    volumes:
-      - netdata-config:/etc/netdata
-      - netdata-lib:/var/lib/netdata
-      - netdata-cache:/var/cache/netdata
-      - /etc/passwd:/host/etc/passwd:ro
-      - /etc/group:/host/etc/group:ro
-      - /etc/localtime:/etc/localtime:ro
-      - /proc:/host/proc:ro
-      - /sys:/host/sys:ro
-      - /etc/os-release:/host/etc/os-release:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      NETDATA_CLAIM_TOKEN: ${NETDATA_CLAIM_TOKEN}
-      NETDATA_CLAIM_URL: ${NETDATA_CLAIM_URL}
-      NETDATA_CLAIM_ROOMS: ${NETDATA_CLAIM_ROOMS}
-      PGID: ${PGID}
-    labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=${NETWORK}"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.service=${COMPOSE_PROJECT_NAME}"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.middlewares=security@file,hsts@file,compression_https@file,rate-limit-strict@file"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=19999"
+  services:
+    netdata:
+      container_name: ${COMPOSE_PROJECT_NAME}
+      image: ${NETDATA_IMAGE}:${NETDATA_TAG}
+      hostname: ${NETDATA_HOSTNAME}
+      pid: host
+      restart: unless-stopped
+      cap_add:
+        - SYS_PTRACE
+        - SYS_ADMIN
+        - DAC_READ_SEARCH
+      security_opt:
+        - apparmor:unconfined
+      volumes:
+        - netdata-config:/etc/netdata
+        - netdata-lib:/var/lib/netdata
+        - netdata-cache:/var/cache/netdata
+        - /etc/passwd:/host/etc/passwd:ro
+        - /etc/group:/host/etc/group:ro
+        - /etc/localtime:/etc/localtime:ro
+        - /proc:/host/proc:ro
+        - /sys:/host/sys:ro
+        - /etc/os-release:/host/etc/os-release:ro
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+      environment:
+        PGID: ${PGID}
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=${NETWORK}"
+        - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${DOMAIN}`)"
+        - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+        - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+        - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.service=${COMPOSE_PROJECT_NAME}"
+        - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.middlewares=security@file,hsts@file,compression_https@file,rate-limit-strict@file"
+        - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=19999"
 
 volumes:
   netdata-config:
