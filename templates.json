@@ -4045,6 +4045,67 @@
           "name": "REDIS_MAXTTL"
         }
       ]
+    },
+    {
+      "id": 45,
+      "type": 3,
+      "title": "Netdata",
+      "description": "Real-time performance and health monitoring for systems and applications",
+      "note": "Deploys a Netdata monitoring instance with full host and Docker container metrics. PGID must match the docker group ID on the host (run: stat -c '%g' /var/run/docker.sock).",
+      "categories": ["monitoring"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/netdata/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/netdata/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "netdata/netdata",
+          "label": "Netdata Image",
+          "name": "NETDATA_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Netdata Tag",
+          "name": "NETDATA_TAG"
+        },
+        {
+          "default": "netdata.example.com",
+          "label": "Domain (for Traefik routing and TLS cert)",
+          "name": "DOMAIN"
+        },
+        {
+          "default": "my-server",
+          "label": "Hostname shown in Netdata dashboard",
+          "name": "NETDATA_HOSTNAME"
+        },
+        {
+          "default": "",
+          "label": "Netdata Cloud Claim Token (leave empty to skip Cloud)",
+          "name": "NETDATA_CLAIM_TOKEN"
+        },
+        {
+          "default": "https://app.netdata.cloud",
+          "label": "Netdata Cloud URL",
+          "name": "NETDATA_CLAIM_URL"
+        },
+        {
+          "default": "",
+          "label": "Netdata Cloud Room IDs (comma-separated, optional)",
+          "name": "NETDATA_CLAIM_ROOMS"
+        },
+        {
+          "default": "999",
+          "label": "Docker group GID (run: stat -c '%g' /var/run/docker.sock)",
+          "name": "PGID"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ]
     }
   ]
 }
