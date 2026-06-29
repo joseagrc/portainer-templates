@@ -1,123 +1,212 @@
-version: '3'
-
 services:
   mariadb:
     container_name: ${COMPOSE_PROJECT_NAME}-mariadb
     image: ${MARIADB_IMAGE}:${MARIADB_TAG}
     restart: unless-stopped
-    volumes:
-      - db_data:/var/lib/mysql
     environment:
-      MARIADB_ROOT_PASSWORD: ${ROOT_PASS}
-      MARIADB_DATABASE: ${DB_NAME}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
       MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASS}
+      MARIADB_PASSWORD: ${DB_PASSWORD}
+      TZ: ${TIMEZONE}
+    command:
+      - --character-set-server=latin1
+      - --collation-server=latin1_swedish_ci
+      - --max-allowed-packet=64M
+    volumes:
+      - wso2-mariadb-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  wso2-sql-export:
+    container_name: ${COMPOSE_PROJECT_NAME}-sql-export
+    image: ${WSO2_IMAGE}:${WSO2_TAG}
+    restart: "no"
+    entrypoint: ["/bin/sh"]
+    command:
+      - -ec
+      - |
+        mkdir -p /sql/apimgt
+        cp ${WSO2_HOME}/dbscripts/mysql.sql /sql/mysql.sql
+        cp ${WSO2_HOME}/dbscripts/apimgt/mysql.sql /sql/apimgt/mysql.sql
+        chmod -R 644 /sql/*.sql /sql/apimgt/*.sql
+    volumes:
+      - wso2-sql-scripts:/sql
+
+  wso2-db-init:
+    container_name: ${COMPOSE_PROJECT_NAME}-db-init
+    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    restart: "no"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      wso2-sql-export:
+        condition: service_completed_successfully
+    entrypoint: ["/bin/sh"]
+    command:
+      - -ec
+      - |
+        mariadb -hmariadb -uroot -p"$${MARIADB_ROOT_PASSWORD}" -e "
+          CREATE DATABASE IF NOT EXISTS ${APIM_DB} CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+          CREATE DATABASE IF NOT EXISTS ${SHARED_DB} CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+          CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+          GRANT ALL PRIVILEGES ON ${APIM_DB}.* TO '${DB_USER}'@'%';
+          GRANT ALL PRIVILEGES ON ${SHARED_DB}.* TO '${DB_USER}'@'%';
+          FLUSH PRIVILEGES;
+        "
+        if [ "$(mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${APIM_DB}' AND table_name='AM_API'")" = "0" ]; then
+          mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" ${APIM_DB} < /sql/apimgt/mysql.sql
+        fi
+        if [ "$(mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${SHARED_DB}' AND table_name='UM_USER'")" = "0" ]; then
+          mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" ${SHARED_DB} < /sql/mysql.sql
+        fi
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+    volumes:
+      - wso2-sql-scripts:/sql:ro
+
+  wso2-jdbc-driver:
+    container_name: ${COMPOSE_PROJECT_NAME}-jdbc-driver
+    image: curlimages/curl:${CURL_TAG}
+    restart: "no"
+    command:
+      - -fsSL
+      - -o
+      - /jdbc/mariadb-java-client.jar
+      - https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/${MARIADB_JDBC_VERSION}/mariadb-java-client-${MARIADB_JDBC_VERSION}.jar
+    volumes:
+      - wso2-jdbc-driver:/jdbc
 
   wso2-apim:
     container_name: ${COMPOSE_PROJECT_NAME}-wso2-apim
-    image: wso2/wso2am:4.7.0-rocky
+    image: ${WSO2_IMAGE}:${WSO2_TAG}
     restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      wso2-db-init:
+        condition: service_completed_successfully
+      wso2-jdbc-driver:
+        condition: service_completed_successfully
     environment:
-      TZ: America/Santo_Domingo
+      TZ: ${TIMEZONE}
+    configs:
+      - source: wso2-deployment-toml
+        target: ${WSO2_HOME}/repository/conf/deployment.toml
     volumes:
-      - wso2_apim_repository:/home/wso2carbon/wso2am-4.7.0/repository
-      - wso2_apim_logs:/home/wso2carbon/wso2am-4.7.0/repository/logs
+      - wso2-apim-repository:${WSO2_HOME}/repository
+      - wso2-apim-logs:${WSO2_HOME}/repository/logs
+      - wso2-jdbc-driver:${WSO2_HOME}/repository/components/lib:ro
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=proxy"
+      - "traefik.docker.network=${NETWORK}"
 
-      # ==========================================================
-      # WSO2 Management Console / Carbon
-      # https://admin-api.efiscalrd.com/carbon
-      # ==========================================================
-      - "traefik.http.routers.wso2-carbon.rule=Host(`admin-api.efiscalrd.com`)"
-      - "traefik.http.routers.wso2-carbon.entrypoints=websecure"
-      - "traefik.http.routers.wso2-carbon.tls=true"
-      - "traefik.http.routers.wso2-carbon.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wso2-carbon.service=wso2-mgt"
-      - "traefik.http.routers.wso2-carbon.middlewares=wso2-headers@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${ADMIN_DOMAIN}`) || Host(`${PUBLISHER_DOMAIN}`) || Host(`${DEVPORTAL_DOMAIN}`) || Host(`${GATEWAY_DOMAIN}`) || Host(`${SANDBOX_GATEWAY_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
 
-      # ==========================================================
-      # WSO2 Publisher
-      # https://publisher.efiscalrd.com/publisher
-      # ==========================================================
-      - "traefik.http.routers.wso2-publisher.rule=Host(`publisher.efiscalrd.com`)"
-      - "traefik.http.routers.wso2-publisher.entrypoints=websecure"
-      - "traefik.http.routers.wso2-publisher.tls=true"
-      - "traefik.http.routers.wso2-publisher.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wso2-publisher.service=wso2-mgt"
-      - "traefik.http.routers.wso2-publisher.middlewares=wso2-headers@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin.rule=Host(`${ADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin.service=${COMPOSE_PROJECT_NAME}-management"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-admin.middlewares=${COMPOSE_PROJECT_NAME}-headers"
 
-      # ==========================================================
-      # WSO2 Developer Portal
-      # https://devportal.efiscalrd.com/devportal
-      # ==========================================================
-      - "traefik.http.routers.wso2-devportal.rule=Host(`devportal.efiscalrd.com`)"
-      - "traefik.http.routers.wso2-devportal.entrypoints=websecure"
-      - "traefik.http.routers.wso2-devportal.tls=true"
-      - "traefik.http.routers.wso2-devportal.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wso2-devportal.service=wso2-mgt"
-      - "traefik.http.routers.wso2-devportal.middlewares=wso2-headers@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-publisher.rule=Host(`${PUBLISHER_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-publisher.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-publisher.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-publisher.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-publisher.service=${COMPOSE_PROJECT_NAME}-management"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-publisher.middlewares=${COMPOSE_PROJECT_NAME}-headers"
 
-      # ==========================================================
-      # WSO2 Gateway Producción
-      # https://api.efiscalrd.com
-      # ==========================================================
-      - "traefik.http.routers.wso2-gateway-prod.rule=Host(`api.efiscalrd.com`)"
-      - "traefik.http.routers.wso2-gateway-prod.entrypoints=websecure"
-      - "traefik.http.routers.wso2-gateway-prod.tls=true"
-      - "traefik.http.routers.wso2-gateway-prod.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wso2-gateway-prod.service=wso2-gateway"
-      - "traefik.http.routers.wso2-gateway-prod.middlewares=wso2-headers@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-devportal.rule=Host(`${DEVPORTAL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-devportal.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-devportal.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-devportal.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-devportal.service=${COMPOSE_PROJECT_NAME}-management"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-devportal.middlewares=${COMPOSE_PROJECT_NAME}-headers"
 
-      # ==========================================================
-      # WSO2 Gateway Certificación
-      # https://api-cert.efiscalrd.com
-      # ==========================================================
-      - "traefik.http.routers.wso2-gateway-cert.rule=Host(`api-cert.efiscalrd.com`)"
-      - "traefik.http.routers.wso2-gateway-cert.entrypoints=websecure"
-      - "traefik.http.routers.wso2-gateway-cert.tls=true"
-      - "traefik.http.routers.wso2-gateway-cert.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wso2-gateway-cert.service=wso2-gateway"
-      - "traefik.http.routers.wso2-gateway-cert.middlewares=wso2-headers@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-gateway.rule=Host(`${GATEWAY_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-gateway.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-gateway.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-gateway.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-gateway.service=${COMPOSE_PROJECT_NAME}-gateway"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-gateway.middlewares=${COMPOSE_PROJECT_NAME}-headers"
 
-      # ==========================================================
-      # WSO2 Gateway Pruebas / TesteCF
-      # https://api-test.efiscalrd.com
-      # ==========================================================
-      - "traefik.http.routers.wso2-gateway-test.rule=Host(`api-test.efiscalrd.com`)"
-      - "traefik.http.routers.wso2-gateway-test.entrypoints=websecure"
-      - "traefik.http.routers.wso2-gateway-test.tls=true"
-      - "traefik.http.routers.wso2-gateway-test.tls.certresolver=letsencrypt"
-      - "traefik.http.routers.wso2-gateway-test.service=wso2-gateway"
-      - "traefik.http.routers.wso2-gateway-test.middlewares=wso2-headers@docker"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-sandbox.rule=Host(`${SANDBOX_GATEWAY_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-sandbox.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-sandbox.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-sandbox.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-sandbox.service=${COMPOSE_PROJECT_NAME}-gateway"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-sandbox.middlewares=${COMPOSE_PROJECT_NAME}-headers"
 
-      # ==========================================================
-      # Servicios internos Traefik -> WSO2
-      # WSO2 usa HTTPS interno con certificado propio/self-signed.
-      # Por eso usamos serversTransport insecure.
-      # ==========================================================
-      - "traefik.http.services.wso2-mgt.loadbalancer.server.scheme=https"
-      - "traefik.http.services.wso2-mgt.loadbalancer.server.port=9443"
-      - "traefik.http.services.wso2-mgt.loadbalancer.serversTransport=wso2-insecure-transport@docker"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-management.loadbalancer.server.scheme=https"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-management.loadbalancer.server.port=9443"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-management.loadbalancer.serversTransport=${COMPOSE_PROJECT_NAME}-insecure-transport@docker"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-gateway.loadbalancer.server.scheme=https"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-gateway.loadbalancer.server.port=8243"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}-gateway.loadbalancer.serversTransport=${COMPOSE_PROJECT_NAME}-insecure-transport@docker"
+      - "traefik.http.serversTransports.${COMPOSE_PROJECT_NAME}-insecure-transport.insecureSkipVerify=true"
 
-      - "traefik.http.services.wso2-gateway.loadbalancer.server.scheme=https"
-      - "traefik.http.services.wso2-gateway.loadbalancer.server.port=8243"
-      - "traefik.http.services.wso2-gateway.loadbalancer.serversTransport=wso2-insecure-transport@docker"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.customrequestheaders.X-Forwarded-Port=443"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-headers.headers.customrequestheaders.X-Forwarded-Ssl=on"
 
-      # ==========================================================
-      # Headers recomendados detrás de proxy
-      # ==========================================================
-      - "traefik.http.middlewares.wso2-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
-      - "traefik.http.middlewares.wso2-headers.headers.customrequestheaders.X-Forwarded-Port=443"
-      - "traefik.http.middlewares.wso2-headers.headers.customrequestheaders.X-Forwarded-Ssl=on"
+configs:
+  wso2-deployment-toml:
+    content: |
+      [server]
+      hostname = "${PUBLISHER_DOMAIN}"
+      base_path = "https://${PUBLISHER_DOMAIN}"
+      server_role = "default"
 
-      # Permite que Traefik hable con el HTTPS interno self-signed de WSO2
-      - "traefik.http.serversTransports.wso2-insecure-transport.insecureSkipVerify=true"
+      [super_admin]
+      username = "${WSO2_ADMIN_USER}"
+      password = "${WSO2_ADMIN_PASSWORD}"
+      create_admin_account = true
+
+      [transport.https.properties]
+      proxyPort = 443
+
+      [database.apim_db]
+      type = "mysql"
+      url = "jdbc:mariadb://mariadb:3306/${APIM_DB}?useSSL=false"
+      username = "${DB_USER}"
+      password = "${DB_PASSWORD}"
+      driver = "org.mariadb.jdbc.Driver"
+      validationQuery = "SELECT 1"
+
+      [database.shared_db]
+      type = "mysql"
+      url = "jdbc:mariadb://mariadb:3306/${SHARED_DB}?useSSL=false"
+      username = "${DB_USER}"
+      password = "${DB_PASSWORD}"
+      driver = "org.mariadb.jdbc.Driver"
+      validationQuery = "SELECT 1"
+
+      [[apim.gateway.environment]]
+      name = "Production and Sandbox"
+      type = "hybrid"
+      display_in_api_console = true
+      description = "Default gateway exposed through Traefik"
+      service_url = "https://${ADMIN_DOMAIN}/services/"
+      username = "${WSO2_ADMIN_USER}"
+      password = "${WSO2_ADMIN_PASSWORD}"
+      http_endpoint = "http://${GATEWAY_DOMAIN}"
+      https_endpoint = "https://${GATEWAY_DOMAIN}"
+      ws_endpoint = "ws://${GATEWAY_DOMAIN}"
+      wss_endpoint = "wss://${GATEWAY_DOMAIN}"
 
 volumes:
-  wso2_apim_repository:
-  wso2_apim_logs:
+  wso2-mariadb-data:
+  wso2-sql-scripts:
+  wso2-jdbc-driver:
+  wso2-apim-repository:
+  wso2-apim-logs:
 
 networks:
   default:

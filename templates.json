@@ -4106,6 +4106,132 @@
           "name": "NETWORK"
         }
       ]
+    },
+    {
+      "id": 46,
+      "type": 3,
+      "title": "WSO2 API Manager",
+      "description": "WSO2 API Manager for publishing, securing, managing and monetizing APIs behind Traefik.",
+      "note": "Deploys a single-node WSO2 API Manager instance. Default WSO2 credentials are admin/admin; change them after first login. For production monetization, configure WSO2 plans, billing provider and persistent databases from the WSO2 admin/publisher configuration.",
+      "categories": ["API Management"],
+      "platform": "linux",
+      "logo": "https://wso2.cachefly.net/wso2/sites/all/image_resources/wso2-logo.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/wso2/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "wso2/wso2am",
+          "label": "WSO2 API Manager Image",
+          "name": "WSO2_IMAGE"
+        },
+        {
+          "default": "4.7.0-rocky",
+          "label": "WSO2 API Manager Tag",
+          "name": "WSO2_TAG"
+        },
+        {
+          "default": "/home/wso2carbon/wso2am-4.7.0",
+          "label": "WSO2 Home Path",
+          "name": "WSO2_HOME"
+        },
+        {
+          "default": "mariadb",
+          "label": "MariaDB Image",
+          "name": "MARIADB_IMAGE"
+        },
+        {
+          "default": "11.4",
+          "label": "MariaDB Tag",
+          "name": "MARIADB_TAG"
+        },
+        {
+          "label": "MariaDB Root Password",
+          "name": "MARIADB_ROOT_PASSWORD"
+        },
+        {
+          "default": "WSO2AM_DB",
+          "label": "WSO2 API Manager Database",
+          "name": "APIM_DB"
+        },
+        {
+          "default": "WSO2SHARED_DB",
+          "label": "WSO2 Shared Database",
+          "name": "SHARED_DB"
+        },
+        {
+          "default": "wso2_user",
+          "label": "Database Username",
+          "name": "DB_USER"
+        },
+        {
+          "label": "Database Password",
+          "name": "DB_PASSWORD"
+        },
+        {
+          "default": "admin",
+          "label": "WSO2 Admin User",
+          "name": "WSO2_ADMIN_USER"
+        },
+        {
+          "label": "WSO2 Admin Password",
+          "name": "WSO2_ADMIN_PASSWORD"
+        },
+        {
+          "default": "8.16.0",
+          "label": "Curl Image Tag",
+          "name": "CURL_TAG"
+        },
+        {
+          "default": "3.5.3",
+          "label": "MariaDB JDBC Driver Version",
+          "name": "MARIADB_JDBC_VERSION"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "admin-api.example.com",
+          "label": "Admin Domain",
+          "name": "ADMIN_DOMAIN"
+        },
+        {
+          "default": "publisher.example.com",
+          "label": "Publisher Domain",
+          "name": "PUBLISHER_DOMAIN"
+        },
+        {
+          "default": "devportal.example.com",
+          "label": "Developer Portal Domain",
+          "name": "DEVPORTAL_DOMAIN"
+        },
+        {
+          "default": "api.example.com",
+          "label": "Production Gateway Domain",
+          "name": "GATEWAY_DOMAIN"
+        },
+        {
+          "default": "sandbox-api.example.com",
+          "label": "Sandbox Gateway Domain",
+          "name": "SANDBOX_GATEWAY_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network name",
+          "name": "NETWORK"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/home/wso2carbon/wso2am-4.7.0/repository"
+        },
+        {
+          "container": "/home/wso2carbon/wso2am-4.7.0/repository/logs"
+        }
+      ]
     }
   ]
 }
