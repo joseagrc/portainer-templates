@@ -1,21 +1,21 @@
 services:
-  mariadb:
-    container_name: ${COMPOSE_PROJECT_NAME}-mariadb
-    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+  mysql:
+    container_name: ${COMPOSE_PROJECT_NAME}-mysql
+    image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     restart: unless-stopped
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      MARIADB_USER: ${DB_USER}
-      MARIADB_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
       TZ: ${TIMEZONE}
     command:
       - --character-set-server=latin1
       - --collation-server=latin1_swedish_ci
       - --max-allowed-packet=64M
     volumes:
-      - wso2-mariadb-data:/var/lib/mysql
+      - wso2-mysql-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mariadb-admin ping -h 127.0.0.1 -uroot -p$${MARIADB_ROOT_PASSWORD} --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
       retries: 30
@@ -41,11 +41,11 @@ services:
 
   wso2-db-init:
     container_name: ${COMPOSE_PROJECT_NAME}-db-init
-    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    image: ${MYSQL_IMAGE}:${MYSQL_TAG}
     user: "0:0"
     restart: "no"
     depends_on:
-      mariadb:
+      mysql:
         condition: service_healthy
       wso2-sql-export:
         condition: service_completed_successfully
@@ -53,7 +53,7 @@ services:
     command:
       - -ec
       - |
-        mariadb -hmariadb -uroot -p"$${MARIADB_ROOT_PASSWORD}" -e "
+        mysql -hmysql -uroot -p"$${MYSQL_ROOT_PASSWORD}" -e "
           CREATE DATABASE IF NOT EXISTS ${APIM_DB} CHARACTER SET latin1 COLLATE latin1_swedish_ci;
           CREATE DATABASE IF NOT EXISTS ${SHARED_DB} CHARACTER SET latin1 COLLATE latin1_swedish_ci;
           CREATE USER IF NOT EXISTS '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
@@ -61,14 +61,14 @@ services:
           GRANT ALL PRIVILEGES ON ${SHARED_DB}.* TO '${DB_USER}'@'%';
           FLUSH PRIVILEGES;
         "
-        if [ "$(mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${APIM_DB}' AND table_name='AM_API'")" = "0" ]; then
-          mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" ${APIM_DB} < /sql/apimgt/mysql.sql
+        if [ "$(mysql -hmysql -u"${DB_USER}" -p"${DB_PASSWORD}" -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${APIM_DB}' AND table_name='AM_API'")" = "0" ]; then
+          mysql -hmysql -u"${DB_USER}" -p"${DB_PASSWORD}" ${APIM_DB} < /sql/apimgt/mysql.sql
         fi
-        if [ "$(mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${SHARED_DB}' AND table_name='UM_USER'")" = "0" ]; then
-          mariadb -hmariadb -u"${DB_USER}" -p"${DB_PASSWORD}" ${SHARED_DB} < /sql/mysql.sql
+        if [ "$(mysql -hmysql -u"${DB_USER}" -p"${DB_PASSWORD}" -Nse "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${SHARED_DB}' AND table_name='UM_USER'")" = "0" ]; then
+          mysql -hmysql -u"${DB_USER}" -p"${DB_PASSWORD}" ${SHARED_DB} < /sql/mysql.sql
         fi
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
       - wso2-sql-scripts:/sql:ro
 
@@ -80,8 +80,8 @@ services:
     command:
       - -fsSL
       - -o
-      - /jdbc/mariadb-java-client.jar
-      - https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/${MARIADB_JDBC_VERSION}/mariadb-java-client-${MARIADB_JDBC_VERSION}.jar
+      - /jdbc/mysql-connector-j.jar
+      - https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/${MYSQL_JDBC_VERSION}/mysql-connector-j-${MYSQL_JDBC_VERSION}.jar
     volumes:
       - wso2-jdbc-driver:/jdbc
 
@@ -90,7 +90,7 @@ services:
     image: ${WSO2_IMAGE}:${WSO2_TAG}
     restart: unless-stopped
     depends_on:
-      mariadb:
+      mysql:
         condition: service_healthy
       wso2-db-init:
         condition: service_completed_successfully
@@ -179,18 +179,18 @@ configs:
 
       [database.apim_db]
       type = "mysql"
-      url = "jdbc:mariadb://mariadb:3306/${APIM_DB}?useSSL=false"
+      url = "jdbc:mysql://mysql:3306/${APIM_DB}?useSSL=false&allowPublicKeyRetrieval=true"
       username = "${DB_USER}"
       password = "${DB_PASSWORD}"
-      driver = "org.mariadb.jdbc.Driver"
+      driver = "com.mysql.cj.jdbc.Driver"
       validationQuery = "SELECT 1"
 
       [database.shared_db]
       type = "mysql"
-      url = "jdbc:mariadb://mariadb:3306/${SHARED_DB}?useSSL=false"
+      url = "jdbc:mysql://mysql:3306/${SHARED_DB}?useSSL=false&allowPublicKeyRetrieval=true"
       username = "${DB_USER}"
       password = "${DB_PASSWORD}"
-      driver = "org.mariadb.jdbc.Driver"
+      driver = "com.mysql.cj.jdbc.Driver"
       validationQuery = "SELECT 1"
 
       [[apim.gateway.environment]]
@@ -207,7 +207,7 @@ configs:
       wss_endpoint = "wss://${GATEWAY_DOMAIN}"
 
 volumes:
-  wso2-mariadb-data:
+  wso2-mysql-data:
   wso2-sql-scripts:
   wso2-jdbc-driver:
   wso2-apim-repository:
