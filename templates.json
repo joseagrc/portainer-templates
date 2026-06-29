@@ -4112,7 +4112,7 @@
       "type": 3,
       "title": "WSO2 API Manager",
       "description": "WSO2 API Manager for publishing, securing, managing and monetizing APIs behind Traefik.",
-      "note": "Deploys a single-node WSO2 API Manager instance. Default WSO2 credentials are admin/admin; change them after first login. For production monetization, configure WSO2 plans, billing provider and persistent databases from the WSO2 admin/publisher configuration.",
+      "note": "Deploys a single-node WSO2 API Manager instance with an external database container. For production, use strong passwords, DNS records for every domain, regular database backups, and configure WSO2 plans, throttling, monetization and billing provider after first login.",
       "categories": ["API Management"],
       "platform": "linux",
       "logo": "https://wso2.cachefly.net/wso2/sites/all/image_resources/wso2-logo.svg",
