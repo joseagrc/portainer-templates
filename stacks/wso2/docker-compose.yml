@@ -24,12 +24,15 @@ services:
   wso2-sql-export:
     container_name: ${COMPOSE_PROJECT_NAME}-sql-export
     image: ${WSO2_IMAGE}:${WSO2_TAG}
+    user: "0:0"
     restart: "no"
     entrypoint: ["/bin/sh"]
     command:
       - -ec
       - |
         mkdir -p /sql/apimgt
+        test -f ${WSO2_HOME}/dbscripts/mysql.sql
+        test -f ${WSO2_HOME}/dbscripts/apimgt/mysql.sql
         cp ${WSO2_HOME}/dbscripts/mysql.sql /sql/mysql.sql
         cp ${WSO2_HOME}/dbscripts/apimgt/mysql.sql /sql/apimgt/mysql.sql
         chmod -R 644 /sql/*.sql /sql/apimgt/*.sql
@@ -39,6 +42,7 @@ services:
   wso2-db-init:
     container_name: ${COMPOSE_PROJECT_NAME}-db-init
     image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    user: "0:0"
     restart: "no"
     depends_on:
       mariadb:
@@ -71,6 +75,7 @@ services:
   wso2-jdbc-driver:
     container_name: ${COMPOSE_PROJECT_NAME}-jdbc-driver
     image: curlimages/curl:${CURL_TAG}
+    user: "0:0"
     restart: "no"
     command:
       - -fsSL
