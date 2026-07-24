@@ -103,10 +103,12 @@ services:
       - ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
       - --protected-mode
       - "yes"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
     volumes:
       - redis_data:/data
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli --pass \"$${REDIS_PASSWORD}\" ping | grep -q PONG"]
+      test: ["CMD-SHELL", "redis-cli --no-auth-warning --pass \"$${REDIS_PASSWORD}\" ping | grep -q PONG"]
       interval: ${REDIS_HEALTH_INTERVAL:-10s}
       timeout: ${REDIS_HEALTH_TIMEOUT:-5s}
       retries: ${REDIS_HEALTH_RETRIES:-12}
