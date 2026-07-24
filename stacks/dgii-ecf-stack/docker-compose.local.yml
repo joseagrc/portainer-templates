@@ -1,0 +1,322 @@
+name: dgii-ecf-local
+
+x-engine-env: &engine-env
+  NODE_ENV: production
+  APP_VERSION: ${DGII_ECF_ENGINE_TAG:-1.0.78}
+  PORT: ${DGII_ECF_ENGINE_PORT:-4000}
+  TRUST_PROXY: "1"
+  CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:13000,http://127.0.0.1:13000}
+
+  DATABASE_ENABLED: "true"
+  DATABASE_URL: postgresql://${POSTGRES_USER:-dgii_ecf_user}:${POSTGRES_PASSWORD:-dgii_ecf_pass}@postgres:5432/${POSTGRES_DB:-dgii_ecf_db}?schema=public
+  DATABASE_LOG_QUERIES: "false"
+  RUN_PRISMA_MIGRATE_ON_BOOT: ${RUN_PRISMA_MIGRATE_ON_BOOT:-true}
+
+  REDIS_ENABLED: "true"
+  REDIS_URL: redis://:${REDIS_PASSWORD:-dgii_ecf_redis_pass}@redis:6379
+  REDIS_KEY_PREFIX: dgii-ecf-local
+  REDIS_CONNECT_TIMEOUT_MS: "5000"
+  REDIS_COMMAND_TIMEOUT_MS: "3000"
+  RATE_LIMIT_REDIS_FAIL_OPEN: "true"
+
+  APP_DATA_DIR: /data
+  APP_LOG_DIR: /logs
+  TRANSACTIONS_DIR: /data/transactions
+  CERT_STORE_DIR: /data/certificates
+  REGISTRY_FILE: /data/registry.json
+  API_KEYS_FILE: /data/api_keys.json
+  USERS_FILE: /data/users.json
+  AUDIT_LOG_FILE: /logs/audit.log
+
+  CERT_MASTER_KEY_BASE64: ${CERT_MASTER_KEY_BASE64:-MDEyMzQ1Njc4OWFiY2RlZjAxMjM0NTY3ODlhYmNkZWY=}
+  INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:-local-internal-token-change-me-32-chars}
+  API_KEY_PEPPER: ${API_KEY_PEPPER:-local-api-key-pepper-change-me-32-chars}
+  APP_JWT_SECRET: ${APP_JWT_SECRET:-local-jwt-secret-change-me-32-chars}
+  APP_JWT_EXPIRES_IN: 7d
+
+  EMAIL_VERIFICATION_REQUIRED: "false"
+  PORTAL_PUBLIC_URL: ${PORTAL_PUBLIC_URL:-http://localhost:13000}
+  SMTP_ENABLED: "false"
+  SMTP_HOST: ""
+  SMTP_PORT: "587"
+  SMTP_SECURE: "false"
+  SMTP_USER: ""
+  SMTP_PASSWORD: ""
+  SMTP_FROM_EMAIL: noreply@example.local
+  SMTP_FROM_NAME: DGII e-CF Local
+
+  XML_XSD_VALIDATION_ENABLED: ${XML_XSD_VALIDATION_ENABLED:-true}
+  XML_VALIDATOR_PYTHON: python3
+  SAVE_TRANSACTIONS: "true"
+  SAVE_TRANSACTIONS_INCLUDE_JSON: "true"
+  SAVE_TRANSACTIONS_INCLUDE_RESPONSE: "true"
+
+  RATE_LIMIT_ENABLED: "true"
+  RATE_LIMIT_WINDOW_MS: "60000"
+  RATE_LIMIT_DEFAULT_MAX: "120"
+  RATE_LIMIT_BYPASS_INTERNAL: "true"
+
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  LOG_PRETTY: ${LOG_PRETTY:-false}
+  QUEUE_SCHEDULER_ENABLED: "false"
+
+  METRICS_ENABLED: "true"
+  HEALTH_DEEP_TOKEN: ""
+  METRICS_AUTH_TOKEN: ""
+
+  SECURITY_STRICT_PRODUCTION: "false"
+  SECURITY_REQUIRE_HTTPS: "false"
+  SECURITY_TRUSTED_PROXY_HEADER: x-forwarded-proto
+
+  WEBHOOKS_ENABLED: "true"
+  WEBHOOK_ALLOW_PRIVATE_URLS: "true"
+  WEBHOOK_REQUIRE_HTTPS: "false"
+
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-16-alpine}
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-dgii_ecf_db}
+      POSTGRES_USER: ${POSTGRES_USER:-dgii_ecf_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dgii_ecf_pass}
+    ports:
+      - "${POSTGRES_LOCAL_PORT:-15432}:5432"
+    volumes:
+      - dgii_ecf_local_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  redis:
+    image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-7-alpine}
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - ${REDIS_PASSWORD:-dgii_ecf_redis_pass}
+      - --protected-mode
+      - "yes"
+    ports:
+      - "${REDIS_LOCAL_PORT:-16379}:6379"
+    volumes:
+      - dgii_ecf_local_redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli --pass '${REDIS_PASSWORD:-dgii_ecf_redis_pass}' ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 10s
+
+  dgii-ecf-engine:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      <<: *engine-env
+    ports:
+      - "${ENGINE_LOCAL_PORT:-4000}:${DGII_ECF_ENGINE_PORT:-4000}"
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "node -e \"const port=process.env.PORT||4000; fetch('http://127.0.0.1:'+port+'/api/v1/health/live',{headers:{'x-forwarded-proto':'https'}}).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""
+        ]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 180s
+
+  dgii-ecf-scheduler:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    command: ["node", "dist/workers/runQueueScheduler.js"]
+    environment:
+      <<: *engine-env
+      RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+      QUEUE_SCHEDULER_ENABLED: "true"
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+
+  dgii-ecf-worker-send:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    command:
+      - node
+      - dist/workers/runQueueWorker.js
+      - --queue=send-normal
+      - --mode=loop
+      - --max=5
+      - --sleepMs=3000
+    environment:
+      <<: *engine-env
+      PORT: "4001"
+      RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+      QUEUE_SCHEDULER_ENABLED: "false"
+      WORKER_QUEUE: SEND_NORMAL
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+
+  dgii-ecf-worker-send-high:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    command:
+      - node
+      - dist/workers/runQueueWorker.js
+      - --queue=send-high
+      - --mode=loop
+      - --max=10
+      - --sleepMs=1000
+    environment:
+      <<: *engine-env
+      PORT: "4002"
+      RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+      QUEUE_SCHEDULER_ENABLED: "false"
+      WORKER_QUEUE: SEND_HIGH_PRIORITY
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+
+  dgii-ecf-worker-send-bulk:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    command:
+      - node
+      - dist/workers/runQueueWorker.js
+      - --queue=send-bulk
+      - --mode=loop
+      - --max=2
+      - --sleepMs=5000
+    environment:
+      <<: *engine-env
+      PORT: "4003"
+      RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+      QUEUE_SCHEDULER_ENABLED: "false"
+      WORKER_QUEUE: SEND_BULK
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+
+  dgii-ecf-housekeeping:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    command:
+      - node
+      - dist/workers/runHousekeepingWorker.js
+      - --mode=loop
+      - --sleepMs=300000
+    environment:
+      <<: *engine-env
+      PORT: "4004"
+      RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+      QUEUE_SCHEDULER_ENABLED: "false"
+      HOUSEKEEPING_ENABLED: "true"
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+
+  dgii-ecf-webhook-worker:
+    image: ${DGII_ECF_ENGINE_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-engine}:${DGII_ECF_ENGINE_TAG:-1.0.78}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    command:
+      - node
+      - dist/workers/runWebhookWorker.js
+      - --mode=loop
+      - --max=20
+      - --sleepMs=3000
+    environment:
+      <<: *engine-env
+      PORT: "4005"
+      RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+      QUEUE_SCHEDULER_ENABLED: "false"
+      WEBHOOKS_ENABLED: "true"
+    volumes:
+      - dgii_ecf_local_engine_data:/data
+      - dgii_ecf_local_engine_logs:/logs
+
+  dgii-ecf-portal:
+    image: ${DGII_ECF_PORTAL_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-ecf-portal}:${DGII_ECF_PORTAL_TAG:-1.0.10}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: ${DGII_ECF_PORTAL_PORT:-3000}
+      HOSTNAME: 0.0.0.0
+      CHROMIUM_PATH: /usr/bin/chromium
+      NEXT_PUBLIC_API_BASE_URL: ${LOCAL_PUBLIC_ENGINE_URL:-http://localhost:4000}
+      API_BASE_URL: ${LOCAL_ENGINE_INTERNAL_URL:-http://dgii-ecf-engine:4000}
+    ports:
+      - "${PORTAL_LOCAL_PORT:-13000}:${DGII_ECF_PORTAL_PORT:-3000}"
+    tmpfs:
+      - /tmp:size=512m,nosuid
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS 'http://127.0.0.1:${DGII_ECF_PORTAL_PORT:-3000}/api/health' || exit 1"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 90s
+
+  pgadmin:
+    image: ${PGADMIN_IMAGE:-dpage/pgadmin4}:${PGADMIN_TAG:-9.14.0}
+    profiles:
+      - admin
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-admin@example.local}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    ports:
+      - "${PGADMIN_LOCAL_PORT:-18080}:80"
+    volumes:
+      - dgii_ecf_local_pgadmin_data:/var/lib/pgadmin
+
+  redisinsight:
+    image: ${REDISINSIGHT_IMAGE:-redis/redisinsight}:${REDISINSIGHT_TAG:-3.4.2}
+    profiles:
+      - admin
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "${REDISINSIGHT_LOCAL_PORT:-15540}:5540"
+    volumes:
+      - dgii_ecf_local_redisinsight_data:/data
+
+volumes:
+  dgii_ecf_local_postgres_data:
+  dgii_ecf_local_redis_data:
+  dgii_ecf_local_engine_data:
+  dgii_ecf_local_engine_logs:
+  dgii_ecf_local_pgadmin_data:
+  dgii_ecf_local_redisinsight_data:

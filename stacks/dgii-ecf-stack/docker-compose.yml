@@ -217,7 +217,7 @@ services:
       test:
         [
           "CMD-SHELL",
-          "node -e \"const port=process.env.PORT||4000; fetch('http://127.0.0.1:'+port+'/api/v1/health',{headers:{'x-forwarded-proto':'https'}}).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""
+          "node -e \"const port=process.env.PORT||4000; fetch('http://127.0.0.1:'+port+'/api/v1/health/live',{headers:{'x-forwarded-proto':'https'}}).then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))\""
         ]
       interval: ${ENGINE_HEALTH_INTERVAL:-20s}
       timeout: ${ENGINE_HEALTH_TIMEOUT:-10s}
