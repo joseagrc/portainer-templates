@@ -79,11 +79,11 @@ services:
     volumes:
       - dgii_ecf_postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\" -h 127.0.0.1"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432"]
       interval: ${POSTGRES_HEALTH_INTERVAL:-10s}
       timeout: ${POSTGRES_HEALTH_TIMEOUT:-5s}
-      retries: ${POSTGRES_HEALTH_RETRIES:-12}
-      start_period: ${POSTGRES_HEALTH_START_PERIOD:-45s}
+      retries: ${POSTGRES_HEALTH_RETRIES:-30}
+      start_period: ${POSTGRES_HEALTH_START_PERIOD:-120s}
     stop_grace_period: 60s
     logging:
       driver: json-file

@@ -3128,7 +3128,22 @@
           "name": "POSTGRES_WORK_MEM"
         },
         {
-          "default": "45s",
+          "default": "10s",
+          "label": "Postgres Health Interval",
+          "name": "POSTGRES_HEALTH_INTERVAL"
+        },
+        {
+          "default": "5s",
+          "label": "Postgres Health Timeout",
+          "name": "POSTGRES_HEALTH_TIMEOUT"
+        },
+        {
+          "default": "30",
+          "label": "Postgres Health Retries",
+          "name": "POSTGRES_HEALTH_RETRIES"
+        },
+        {
+          "default": "120s",
           "label": "Postgres Health Start Period",
           "name": "POSTGRES_HEALTH_START_PERIOD"
         },
