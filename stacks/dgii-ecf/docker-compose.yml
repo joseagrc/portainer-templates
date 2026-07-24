@@ -31,8 +31,83 @@ x-engine-env: &engine-env
   LOG_LEVEL: ${LOG_LEVEL:-info}
   LOG_PRETTY: ${LOG_PRETTY:-false}
 
+x-engine-entrypoint: &engine-entrypoint
+  - /sbin/tini
+  - --
+  - sh
+  - -ec
+  - |
+    require_env() {
+      var_name="$$1"
+      eval "var_value=\$${$$var_name:-}"
+      if [ -z "$$var_value" ]; then
+        echo "ERROR: La variable de entorno requerida '$$var_name' no está definida." >&2
+        exit 1
+      fi
+    }
+
+    validate_base64_32_bytes() {
+      decoded_len="$$(printf '%s' "$$CERT_MASTER_KEY_BASE64" | base64 -d 2>/dev/null | wc -c | tr -d ' ')"
+      if [ "$$decoded_len" != "32" ]; then
+        echo "ERROR: CERT_MASTER_KEY_BASE64 debe decodificar exactamente a 32 bytes. Longitud actual: $$decoded_len." >&2
+        exit 1
+      fi
+    }
+
+    ensure_parent_dir() {
+      mkdir -p "$$(dirname "$$1")"
+    }
+
+    echo "Validando variables de entorno requeridas..."
+    require_env CERT_MASTER_KEY_BASE64
+    require_env INTERNAL_API_TOKEN
+    require_env API_KEY_PEPPER
+    require_env APP_JWT_SECRET
+    validate_base64_32_bytes
+
+    export PORT="$${PORT:-4000}"
+    export NODE_ENV="$${NODE_ENV:-production}"
+    export APP_DATA_DIR="$${APP_DATA_DIR:-/data}"
+    export APP_LOG_DIR="$${APP_LOG_DIR:-/logs}"
+    export CERT_STORE_DIR="$${CERT_STORE_DIR:-$$APP_DATA_DIR/certificates}"
+    export REGISTRY_FILE="$${REGISTRY_FILE:-$$APP_DATA_DIR/registry.json}"
+    export API_KEYS_FILE="$${API_KEYS_FILE:-$$APP_DATA_DIR/api_keys.json}"
+    export USERS_FILE="$${USERS_FILE:-$$APP_DATA_DIR/users.json}"
+    export AUDIT_LOG_FILE="$${AUDIT_LOG_FILE:-$$APP_LOG_DIR/audit.log}"
+    export TRANSACTIONS_DIR="$${TRANSACTIONS_DIR:-$$APP_DATA_DIR/transactions}"
+    export XML_VALIDATOR_PYTHON="$${XML_VALIDATOR_PYTHON:-python3}"
+    export XML_XSD_VALIDATION_ENABLED="$${XML_XSD_VALIDATION_ENABLED:-true}"
+    export DATABASE_ENABLED="$${DATABASE_ENABLED:-false}"
+    export RUN_PRISMA_MIGRATE_ON_BOOT="$${RUN_PRISMA_MIGRATE_ON_BOOT:-false}"
+
+    echo "Preparando directorios de datos..."
+    mkdir -p "$$CERT_STORE_DIR" "$$TRANSACTIONS_DIR" "$$APP_LOG_DIR"
+    ensure_parent_dir "$$REGISTRY_FILE"
+    ensure_parent_dir "$$API_KEYS_FILE"
+    ensure_parent_dir "$$USERS_FILE"
+    ensure_parent_dir "$$AUDIT_LOG_FILE"
+
+    [ -f "$$REGISTRY_FILE" ] || printf '%s\n' '{"schema_version":1,"createdAt":"","updatedAt":"","tenants":[],"companies":[]}' > "$$REGISTRY_FILE"
+    [ -f "$$API_KEYS_FILE" ] || printf '%s\n' '{"schema_version":1,"createdAt":"","updatedAt":"","keys":[]}' > "$$API_KEYS_FILE"
+    [ -f "$$USERS_FILE" ] || printf '%s\n' '{"schema_version":1,"createdAt":"","updatedAt":"","users":[],"tenantMemberships":[]}' > "$$USERS_FILE"
+    [ -f "$$AUDIT_LOG_FILE" ] || touch "$$AUDIT_LOG_FILE"
+
+    echo "Ajustando permisos de volúmenes..."
+    chown -R node:node "$$APP_DATA_DIR" "$$APP_LOG_DIR"
+
+    if [ "$$DATABASE_ENABLED" = "true" ] && [ "$$RUN_PRISMA_MIGRATE_ON_BOOT" = "true" ]; then
+      echo "Ejecutando prisma migrate deploy..."
+      su-exec node npx prisma migrate deploy
+    fi
+
+    echo "Entorno validado correctamente."
+    echo "Comando a ejecutar: $$*"
+    exec su-exec node "$$@"
+  - --
+
 x-engine-service: &engine-service
   image: ${DGII_ECF_ENGINE_IMAGE}:${DGII_ECF_ENGINE_TAG}
+  entrypoint: *engine-entrypoint
   restart: unless-stopped
   depends_on:
     postgres:

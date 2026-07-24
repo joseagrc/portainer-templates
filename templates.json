@@ -3558,8 +3558,113 @@
         }
       ]
     },
+
+
     {
       "id": 40,
+      "type": 3,
+      "title": "DGII e-CF Swarm",
+      "description": "DGII e-CF Swarm is an application that works electronic invoicing for Dominican Republic.",
+      "note": "Deploys a DGII e-CF Swarm instance to electronic invoicing.",
+      "categories": [
+          "API"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/swarm/dgii-ecf/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "swarm/dgii-ecf/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Compose Project Name",
+          "default": "dgii-ecf"
+        },
+        {
+          "name": "POSTGRES_IMAGE",
+          "label": "Postgres Image",
+          "default": "postgres"
+        },        
+        {
+          "name": "POSTGRES_TAG",
+          "label": "Postgres Tag",
+          "default": "18-alpine"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "label": "Database Name",
+          "default": "dgii_ecf_db"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "label": "Postgres User",
+          "default": "dgii_ecf_user"
+        },
+        {
+          "name": "POSTGRES_MAX_CONNECTIONS",
+          "label": "Postgres Max Connections",
+          "default": "100"
+        },
+        {
+          "name": "POSTGRES_SHARED_BUFFERS",
+          "label": "Postgres Shared Buffers",
+          "default": "256MB"
+        },
+        {
+          "name": "POSTGRES_EFFECTIVE_CACHE_SIZE",
+          "label": "Postgres Effective Cache Size",
+          "default": "1GB"
+        },
+        {
+          "name": "POSTGRES_MAINTENANCE_WORK_MEM",
+          "label": "Postgres Maintenance Work Mem",
+          "default": "128MB"
+        },
+        {
+          "name": "POSTGRES_WORK_MEM",
+          "label": "Postgres Work Mem",
+          "default": "4MB"
+        },
+        {
+          "name": "POSTGRES_HEALTH_INTERVAL",
+          "label": "Postgres Health Interval",
+          "default": "10s"
+        },
+        {
+          "name": "POSTGRES_HEALTH_TIMEOUT",
+          "label": "Postgres Health Timeout",
+          "default": "5s"
+        },
+        {
+          "name": "POSTGRES_HEALTH_RETRIES",
+          "label": "Postgres Health Retries",
+          "default": "30"
+        },
+        {
+          "name": "POSTGRES_HEALTH_START_PERIOD",
+          "label": "Postgres Health Start Period",
+          "default": "120s"
+        },
+        {
+          "name": "LOG_MAX_SIZE",
+          "label": "Container Log Max Size",
+          "default": "10m"
+        },
+        {
+          "name": "LOG_MAX_FILES",
+          "label": "Container Log Max Files",
+          "default": "5"
+        },
+        {
+          "name": "NETWORK",
+          "label": "Network Name",
+          "default": "proxy"
+        }
+      ]
+    },
+    {
+      "id": 41,
       "type": 3,
       "title": "Tryton Website",
       "description": "Tryton Website for Dominican Republic.",
@@ -3655,7 +3760,7 @@
       ]
     },
     {
-      "id": 41,
+      "id": 42,
       "type": 3,
       "title": "Banco Central Rates",
       "description": "Banco Central Rates for Dominican Republic.",
@@ -3761,7 +3866,7 @@
       ]
     },
     {
-      "id": 42,
+      "id": 43,
       "type": 3,
       "title": "Forgejo",
       "description": "Forgejo setup with a database MySQL.",
@@ -3961,7 +4066,7 @@
       ]
     },
     {
-      "id": 43,
+      "id": 44,
       "type": 3,
       "title": "Roundcube Webmail",
       "description": "Roundcube Webmail setup with a database MySQL.",
@@ -4080,7 +4185,7 @@
       ]
     },
     {
-      "id": 44,
+      "id": 45,
       "type": 3,
       "title": "Custom WordPress",
       "description": "Custom WordPress setup with a Mariadb database",
@@ -4250,7 +4355,7 @@
       ]
     },
     {
-      "id": 45,
+      "id": 46,
       "type": 3,
       "title": "Netdata",
       "description": "Real-time performance and health monitoring for systems and applications",
@@ -4311,7 +4416,7 @@
       ]
     },
     {
-      "id": 46,
+      "id": 47,
       "type": 3,
       "title": "WSO2 API Manager",
       "description": "WSO2 API Manager for publishing, securing, managing and monetizing APIs behind Traefik.",
