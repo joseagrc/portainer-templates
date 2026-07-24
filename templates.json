@@ -3103,7 +3103,7 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.0.36",
+          "default": "1.0.78",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
         },
@@ -3193,6 +3193,11 @@
           "name": "LOG_PRETTY"
         },
         {
+          "default": "https://app.example.com",
+          "label": "CORS Alloed Origins",
+          "name": "CORS_ALLOWED_ORIGINS"
+        },        
+        {
           "default": "true",
           "label": "XML XSD Validation Enabled",
           "name": "XML_XSD_VALIDATION_ENABLED"
@@ -3252,6 +3257,11 @@
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_PORTAL_TAG"
         },
+        {
+          "default": "ecf.example.com",
+          "label": "Public Engine URL",
+          "name": "PUBLIC_ENGINE_URL"
+        },        
         {
           "default": "3000",
           "label": "DGII ECF Portal Port",
@@ -3348,6 +3358,85 @@
           "label": "RedisInsight Password",
           "name": "RI_REDIS_PASSWORD"
         },
+        {
+          "default": "true",
+          "label": "Email Verification Required",
+          "name": "EMAIL_VERIFICATION_REQUIRED"
+        },
+        {
+          "default": "60",
+          "label": "Email Verification Token TTL Minutes",
+          "name": "EMAIL_VERIFICATION_TOKEN_TTL_MINUTES"
+        },
+        {
+          "default": "true",
+          "label": "SMTP Enabled",
+          "name": "SMTP_HOST"
+        },
+        {
+          "default": "smtp.example.com",
+          "label": "SMTP Host",
+          "name": "SMTP_ENABLED"
+        },        
+        {
+          "default": "465",
+          "label": "SMTP Port",
+          "name": "SMTP_PORT"
+        },
+        {
+          "default": "true",
+          "label": "SMTP Secure",
+          "name": "SMTP_SECURE"
+        },
+        {
+          "default": "noreply@example.com",
+          "label": "SMTP User",
+          "name": "SMTP_USER"
+        }, 
+        {
+          "label": "SMTP Password",
+          "name": "SMTP_PASSWORD"
+        },
+        {
+          "default": "noreply@example.com",          
+          "label": "SMTP From Email",
+          "name": "SMTP_FROM_EMAIL"
+        },
+        {
+          "default": "DGII e-CF Portal",          
+          "label": "SMTP From Name",
+          "name": "SMTP_FROM_NAME"
+        },
+        {
+          "default": "https://app.example.com",          
+          "label": "Portal Public URL",
+          "name": "PORTAL_PUBLIC_URL"
+        },
+        {
+          "default": "noreply@example.com",          
+          "label": "Admin Notification Emails",
+          "name": "ADMIN_NOTIFICATION_EMAILS"
+        },
+        {
+          "default": ".example.com",          
+          "label": "Session Cookie Domain",
+          "name": "SESSION_COOKIE_DOMAIN"
+        },        
+        {
+          "default": "lax",          
+          "label": "Session Cookie Same Site",
+          "name": "SESSION_COOKIE_SAME_SITE"
+        }, 
+        {
+          "default": "true",          
+          "label": "Session Cookie Secure",
+          "name": "SESSION_COOKIE_SECURE"
+        },  
+        {
+          "default": "/",          
+          "label": "Session Cookie Path",
+          "name": "SESSION_COOKIE_PATH"
+        },          
         {
           "default": "proxy",
           "label": "Network name",
