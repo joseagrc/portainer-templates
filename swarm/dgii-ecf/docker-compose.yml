@@ -24,7 +24,7 @@ services:
     secrets:
       - postgres_password
     volumes:
-      - dgii_ecf_postgres_data:/var/lib/postgresql/data
+      - dgii_ecf_postgres_data:/var/lib/postgresql
     shm_size: ${POSTGRES_SHM_SIZE:-256mb}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U ${POSTGRES_USER}"]
@@ -38,7 +38,6 @@ services:
         max-size: ${LOG_MAX_SIZE:-10m}
         max-file: ${LOG_MAX_FILES:-5}
     deploy:
-      replicas: 2
       placement:
         constraints:
           - node.labels.postgres == true
@@ -59,8 +58,6 @@ services:
         failure_action: rollback
       labels:
         - "com.dgii-ecf.service=postgres"
-
-
 
 
 # x-engine-env: &engine-env
@@ -647,7 +644,7 @@ volumes:
 secrets:
   postgres_password:
     external: true
-        
+
 networks:
   default:
     name: ${NETWORK:-proxy}
