@@ -3661,7 +3661,8 @@
           "label": "Network Name",
           "default": "proxy"
         }
-      ]
+      ],
+      "note": "Requiere el secret 'postgres_password' creado previamente en Docker Swarm (Secrets → Add secret) antes de desplegar este stack."
     },
     {
       "id": 41,
