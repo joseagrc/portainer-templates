@@ -3602,6 +3602,11 @@
           "default": "dgii_ecf_user"
         },
         {
+          "name": "POSTGRES_PASSWORD",
+          "label": "Postgres Password",
+          "default": ""
+        },
+        {
           "name": "POSTGRES_MAX_CONNECTIONS",
           "label": "Postgres Max Connections",
           "default": "100"
@@ -3662,7 +3667,7 @@
           "default": "proxy"
         }
       ],
-      "note": "Requiere el secret 'postgres_password' creado previamente en Docker Swarm (Secrets → Add secret) antes de desplegar este stack."
+      "note": "Requiere el 'POSTGRES_PASSWORD'."
     },
     {
       "id": 41,
