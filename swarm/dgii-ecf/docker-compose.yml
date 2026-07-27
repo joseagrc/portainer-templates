@@ -138,7 +138,6 @@ services:
 
   redis:
     image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8.8.1-alpine}
-    restart: unless-stopped
     command:
       - redis-server
       - --appendonly
@@ -174,6 +173,29 @@ services:
 
       labels:
         - com.dgii-ecf.service=redis
+        - com.dgii-ecf.component=database
+
+  redisinsight:
+    image: ${REDISINSIGHT_IMAGE:-redis/redisinsight}:${REDISINSIGHT_TAG:-3.4.2}
+    volumes:
+      - dgii_ecf_redisinsight_data:/data
+    environment:
+      RI_REDIS_USERNAME: ${RI_REDIS_USERNAME:-default}
+      RI_REDIS_PASSWORD: ${RI_REDIS_PASSWORD:-${REDIS_PASSWORD}}
+    security_opt:
+      - no-new-privileges:true
+
+    deploy:
+      mode: replicated
+      replicas: 1
+
+      restart_policy:
+        condition: any
+        delay: ${POSTGRES_RESTART_DELAY:-10s}
+        window: ${POSTGRES_RESTART_WINDOW:-180s}
+
+      labels:
+        - com.dgii-ecf.service=redisinsight
         - com.dgii-ecf.component=database
 
 # x-engine-env: &engine-env
@@ -676,30 +698,7 @@ services:
 #         max-file: ${LOG_MAX_FILES:-5}
 
 
-
-#   redisinsight:
-#     container_name: ${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight
-#     image: ${REDISINSIGHT_IMAGE:-redis/redisinsight}:${REDISINSIGHT_TAG:-3.4.2}
-#     restart: unless-stopped
-#     volumes:
-#       - redisinsight_data:/data
-#     environment:
-#       RI_REDIS_USERNAME: ${RI_REDIS_USERNAME:-default}
-#       RI_REDIS_PASSWORD: ${RI_REDIS_PASSWORD:-${REDIS_PASSWORD}}
-#     security_opt:
-#       - no-new-privileges:true
-#     labels:
-#       - traefik.enable=true
-#       - traefik.docker.network=${NETWORK:-proxy}
-#       - traefik.http.routers.redisinsight.rule=Host(`${REDISINSIGHT_DOMAIN}`)
-#       - traefik.http.routers.redisinsight.entrypoints=websecure
-#       - traefik.http.routers.redisinsight.tls=true
-#       - traefik.http.routers.redisinsight.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
-#       - traefik.http.services.redisinsight.loadbalancer.server.port=5540
-
 # volumes:
-#   redis_data:
-#   redisinsight_data:
 #   dgii_ecf_postgres_data:
 #   dgii_ecf_engine_data:
 #   dgii_ecf_engine_logs:
@@ -710,6 +709,8 @@ volumes:
   dgii_ecf_pgadmin_data:
     driver: local
   dgii_ecf_redis_data:
+    driver: local
+  dgii_ecf_redisinsight_data:
     driver: local
 
 networks:

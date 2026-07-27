@@ -3774,8 +3774,26 @@
           "label": "Redis Password",
           "default": ""
         },
-
-
+        {
+          "name": "REDISINSIGHT_IMAGE",
+          "label": "RedisInsight Image",
+          "default": "redis/redisinsight"
+        },
+        {
+          "name": "REDISINSIGHT_TAG",
+          "label": "RedisInsight Tag",
+          "default": "3.4.2"
+        },
+        {
+          "name": "REDISINSIGHT_IMAGE",
+          "label": "RedisInsight Image",
+          "default": "redis/redisinsight"
+        },
+        {
+          "name": "REDISINSIGHT_TAG",
+          "label": "RedisInsight Tag",
+          "default": "3.4.2"
+        },
 
 
 
