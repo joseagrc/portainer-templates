@@ -117,7 +117,7 @@ services:
       postgres:
         condition: service_healthy
     volumes:
-      - pgadmin_data:/var/lib/pgadmin
+      - dgii_ecf_pgadmin_data:/var/lib/pgadmin
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:?PGADMIN_DEFAULT_EMAIL requerido}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?PGADMIN_DEFAULT_PASSWORD requerido}
@@ -135,16 +135,6 @@ services:
       labels:
         - com.dgii-ecf.service=pgadmin
         - com.dgii-ecf.component=database
-
-
-
-
-
-
-
-
-
-
 
 
 # x-engine-env: &engine-env
@@ -705,6 +695,8 @@ services:
 
 volumes:
   dgii_ecf_postgres_data:
+    driver: local
+  dgii_ecf_pgadmin_data:
     driver: local
 
 networks:
