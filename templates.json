@@ -3735,6 +3735,26 @@
           "default": "5"
         },
         {
+          "name": "PGADMIN_IMAGE",
+          "label": "pgAdmin Image",
+          "default": "dpage/pgadmin4"
+        },
+        {
+          "name": "PGADMIN_TAG",
+          "label": "pgAdmin Tag",
+          "default": "9.14.0"
+        },
+        {
+          "name": "PGADMIN_DEFAULT_EMAIL",
+          "label": "pgAdmin Default Email",
+          "default": ""
+        },
+        {
+          "name": "PGADMIN_DEFAULT_PASSWORD",
+          "label": "pgAdmin Default Password",
+          "default": ""
+        },
+        {
           "name": "NETWORK",
           "label": "Network Name",
           "default": "proxy"
