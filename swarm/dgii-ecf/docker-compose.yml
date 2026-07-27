@@ -3,8 +3,10 @@ services:
     image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-18-alpine}
     command:
       - postgres
+      # Conexiones
       - -c
       - max_connections=${POSTGRES_MAX_CONNECTIONS:-100}
+      # Memoria
       - -c
       - shared_buffers=${POSTGRES_SHARED_BUFFERS:-256MB}
       - -c
@@ -13,16 +15,50 @@ services:
       - maintenance_work_mem=${POSTGRES_MAINTENANCE_WORK_MEM:-128MB}
       - -c
       - work_mem=${POSTGRES_WORK_MEM:-4MB}
+      # WAL y checkpoints
+      - -c
+      - wal_compression=${POSTGRES_WAL_COMPRESSION:-lz4}
       - -c
       - checkpoint_completion_target=${POSTGRES_CHECKPOINT_COMPLETION_TARGET:-0.9}
       - -c
-      - wal_compression=${POSTGRES_WAL_COMPRESSION:-on}
+      - checkpoint_timeout=${POSTGRES_CHECKPOINT_TIMEOUT:-15min}
+      - -c
+      - min_wal_size=${POSTGRES_MIN_WAL_SIZE:-512MB}
+      - -c
+      - max_wal_size=${POSTGRES_MAX_WAL_SIZE:-2GB}
+      # SSD/NVMe
+      - -c
+      - random_page_cost=${POSTGRES_RANDOM_PAGE_COST:-1.1}
+      - -c
+      - effective_io_concurrency=${POSTGRES_EFFECTIVE_IO_CONCURRENCY:-200}
+
+      # Monitoreo y diagnóstico
+      - -c
+      - shared_preload_libraries=pg_stat_statements
+      - -c
+      - track_io_timing=${POSTGRES_TRACK_IO_TIMING:-on}
+      - -c
+      - log_checkpoints=${POSTGRES_LOG_CHECKPOINTS:-on}
+      - -c
+      - log_lock_waits=${POSTGRES_LOG_LOCK_WAITS:-on}
+      - -c
+      - log_min_duration_statement=${POSTGRES_LOG_MIN_DURATION_STATEMENT:-1000}
+      - -c
+      - deadlock_timeout=${POSTGRES_DEADLOCK_TIMEOUT:-1s}
+
+      # Protección frente a sesiones abandonadas
+      - -c
+      - idle_in_transaction_session_timeout=${POSTGRES_IDLE_TRANSACTION_TIMEOUT:-5min}
+      - -c
+      - statement_timeout=${POSTGRES_STATEMENT_TIMEOUT:-0}
     environment:
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB requerido}
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER requerido}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requerido}
     volumes:
       - dgii_ecf_postgres_data:/var/lib/postgresql
+    tmpfs:
+      - /dev/shm:size=${POSTGRES_SHM_SIZE:-512m},mode=1777
     shm_size: ${POSTGRES_SHM_SIZE:-256mb}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
@@ -36,26 +72,44 @@ services:
         max-size: ${LOG_MAX_SIZE:-10m}
         max-file: ${LOG_MAX_FILES:-5}
     deploy:
+      mode: replicated
+      replicas: 1
+
+      endpoint_mode: dnsrr
+
       placement:
         constraints:
           - node.labels.postgres == true
+
       resources:
         limits:
-          cpus: ${POSTGRES_CPU_LIMIT:-2}
+          cpus: "${POSTGRES_CPU_LIMIT:-2.00}"
           memory: ${POSTGRES_MEM_LIMIT:-2G}
         reservations:
-          cpus: ${POSTGRES_CPU_RESERVATION:-0.5}
-          memory: ${POSTGRES_MEM_RESERVATION:-512M}
+          cpus: "${POSTGRES_CPU_RESERVATION:-0.50}"
+          memory: ${POSTGRES_MEM_RESERVATION:-1G}
+
       restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
+        condition: any
+        delay: ${POSTGRES_RESTART_DELAY:-10s}
+        max_attempts: ${POSTGRES_RESTART_MAX_ATTEMPTS:-10}
+        window: ${POSTGRES_RESTART_WINDOW:-180s}
+
       update_config:
+        parallelism: 1
         order: stop-first
+        delay: 10s
+        monitor: 60s
         failure_action: rollback
+
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: 60s
+
       labels:
-        - "com.dgii-ecf.service=postgres"
+        - com.dgii-ecf.service=postgres
+        - com.dgii-ecf.component=database
 
 
 # x-engine-env: &engine-env
