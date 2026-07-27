@@ -59,7 +59,7 @@ services:
       - dgii_ecf_postgres_data:/var/lib/postgresql
     tmpfs:
       - /dev/shm:size=${POSTGRES_SHM_SIZE:-512mb},mode=1777
-    shm_size: ${POSTGRES_SHM_SIZE:-256mb}
+    shm_size: "${POSTGRES_SHM_SIZE:-256mb}"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: ${POSTGRES_HEALTH_INTERVAL:-10s}
@@ -84,10 +84,10 @@ services:
       resources:
         limits:
           cpus: "${POSTGRES_CPU_LIMIT:-2.00}"
-          memory: ${POSTGRES_MEM_LIMIT:-2G}
+          memory: "${POSTGRES_MEM_LIMIT:-2G}"
         reservations:
           cpus: "${POSTGRES_CPU_RESERVATION:-0.50}"
-          memory: ${POSTGRES_MEM_RESERVATION:-1G}
+          memory: "${POSTGRES_MEM_RESERVATION:-1G}"
 
       restart_policy:
         condition: any
@@ -112,10 +112,6 @@ services:
 
   pgadmin:
     image: ${PGADMIN_IMAGE:-dpage/pgadmin4}:${PGADMIN_TAG:-9.14.0}
-    restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
     volumes:
       - dgii_ecf_pgadmin_data:/var/lib/pgadmin
     environment:
@@ -181,7 +177,7 @@ services:
       - dgii_ecf_redisinsight_data:/data
     environment:
       RI_REDIS_USERNAME: ${RI_REDIS_USERNAME:-default}
-      RI_REDIS_PASSWORD: ${RI_REDIS_PASSWORD:-${REDIS_PASSWORD}}
+      RI_REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
     security_opt:
       - no-new-privileges:true
 
@@ -200,11 +196,6 @@ services:
 
   dgii-ecf-engine:
     image: ${DGII_ECF_ENGINE_IMAGE}:${DGII_ECF_ENGINE_TAG}
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
     environment:
       NODE_ENV: ${NODE_ENV:-production}
       APP_VERSION: ${DGII_ECF_ENGINE_TAG}
@@ -252,7 +243,7 @@ services:
       SESSION_COOKIE_PATH: ${SESSION_COOKIE_PATH:-/api/v1/app}
 
       REDIS_ENABLED: ${REDIS_ENABLED:-true}
-      REDIS_URL: ${REDIS_URL:-redis://:${REDIS_PASSWORD}@redis:6379}
+      REDIS_URL: redis://:${REDIS_PASSWORD:?REDIS_PASSWORD requerido}@redis:6379
       REDIS_KEY_PREFIX: ${REDIS_KEY_PREFIX:-dgii-ecf-engine-local}
       REDIS_CONNECT_TIMEOUT_MS: ${REDIS_CONNECT_TIMEOUT_MS:-5000}
       REDIS_COMMAND_TIMEOUT_MS: ${REDIS_COMMAND_TIMEOUT_MS:-3000}
@@ -348,10 +339,6 @@ services:
 
   dgii-ecf-portal:
     image: ${DGII_ECF_PORTAL_IMAGE}:${DGII_ECF_PORTAL_TAG}
-    depends_on:
-      dgii-ecf-engine:
-        condition: service_healthy
-        restart: true
     environment:
       NODE_ENV: ${NODE_ENV:-production}
       PORT: ${DGII_ECF_PORTAL_PORT:-3000}
