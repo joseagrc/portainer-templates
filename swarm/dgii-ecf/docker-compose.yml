@@ -345,6 +345,53 @@ services:
         - com.dgii-ecf.service=dgii-ecf-engine
         - com.dgii-ecf.component=api
 
+
+  dgii-ecf-portal:
+    image: ${DGII_ECF_PORTAL_IMAGE}:${DGII_ECF_PORTAL_TAG}
+    depends_on:
+      dgii-ecf-engine:
+        condition: service_healthy
+        restart: true
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${DGII_ECF_PORTAL_PORT:-3000}
+      HOSTNAME: 0.0.0.0
+      CHROMIUM_PATH: /usr/bin/chromium
+      NEXT_PUBLIC_API_BASE_URL: https://${PUBLIC_ENGINE_URL}
+      API_BASE_URL: https://${PUBLIC_ENGINE_URL}
+    tmpfs:
+      - /tmp:size=512m,nosuid
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fsS \"http://127.0.0.1:${DGII_ECF_PORTAL_PORT:-3000}/api/health\" || exit 1"
+        ]
+      interval: ${PORTAL_HEALTH_INTERVAL:-30s}
+      timeout: ${PORTAL_HEALTH_TIMEOUT:-5s}
+      start_period: ${PORTAL_HEALTH_START_PERIOD:-90s}
+      retries: ${PORTAL_HEALTH_RETRIES:-5}
+    logging:
+      driver: json-file
+      options:
+        max-size: ${LOG_MAX_SIZE:-10m}
+        max-file: ${LOG_MAX_FILES:-5}
+    deploy:
+      mode: replicated
+      replicas: 2
+
+      restart_policy:
+        condition: any
+        delay: ${POSTGRES_RESTART_DELAY:-10s}
+        window: ${POSTGRES_RESTART_WINDOW:-180s}
+
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-portal
+        - com.dgii-ecf.component=portal
+
+
 # x-engine-env: &engine-env
 #   NODE_ENV: ${NODE_ENV:-production}
 #   APP_VERSION: ${DGII_ECF_ENGINE_TAG}
