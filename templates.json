@@ -3630,6 +3630,81 @@
           "default": "4MB"
         },
         {
+          "name": "POSTGRES_WAL_COMPRESSION",
+          "label": "Postgres WAL Compression",
+          "default": "lz4"
+        },
+        {
+          "name": "POSTGRES_CHECKPOINT_COMPLETION_TARGET",
+          "label": "Postgres Checkpoint Completion Target",
+          "default": "0.9"
+        },
+        {
+          "name": "POSTGRES_CHECKPOINT_TIMEOUT",
+          "label": "Postgres Checkpoint Timeout",
+          "default": "15min"
+        },
+        {
+          "name": "POSTGRES_MIN_WAL_SIZE",
+          "label": "Postgres Min WAL Size",
+          "default": "512MB"
+        },
+        {
+          "name": "POSTGRES_MAX_WAL_SIZE",
+          "label": "Postgres Min WAL Size",
+          "default": "2GB"
+        },
+        {
+          "name": "POSTGRES_RANDOM_PAGE_COST",
+          "label": "Postgres Random Page Cost",
+          "default": "1.1"
+        },
+        {
+          "name": "POSTGRES_EFFECTIVE_IO_CONCURRENCY",
+          "label": "Postgres Effective IO Concurrency",
+          "default": "200"
+        },
+        {
+          "name": "POSTGRES_TRACK_IO_TIMING",
+          "label": "Postgres Track IO Timing",
+          "default": "on"
+        },
+        {
+          "name": "POSTGRES_LOG_CHECKPOINTS",
+          "label": "Postgres Log Checkpoints",
+          "default": "on"
+        },
+        {
+          "name": "POSTGRES_LOG_LOCK_WAITS",
+          "label": "Postgres Log Lock Wits",
+          "default": "on"
+        },
+        {
+          "name": "POSTGRES_LOG_MIN_DURATION_STATEMENT",
+          "label": "Postgres Log Min Duration Statement",
+          "default": "1000"
+        },
+        {
+          "name": "POSTGRES_DEADLOCK_TIMEOUT",
+          "label": "Postgres Deadlock Timeout",
+          "default": "1s"
+        },
+        {
+          "name": "POSTGRES_IDLE_TRANSACTION_TIMEOUT",
+          "label": "Postgres IDLE Transaction Timeout",
+          "default": "5min"
+        },
+        {
+          "name": "POSTGRES_STATEMENT_TIMEOUT",
+          "label": "Postgres Statement Timeout",
+          "default": "0"
+        },
+        {
+          "name": "POSTGRES_SHM_SIZE",
+          "label": "Postgres SHM Size",
+          "default": "512m"
+        },
+        {
           "name": "POSTGRES_HEALTH_INTERVAL",
           "label": "Postgres Health Interval",
           "default": "10s"

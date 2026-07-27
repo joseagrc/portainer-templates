@@ -58,7 +58,7 @@ services:
     volumes:
       - dgii_ecf_postgres_data:/var/lib/postgresql
     tmpfs:
-      - /dev/shm:size=${POSTGRES_SHM_SIZE:-512m},mode=1777
+      - /dev/shm:size=${POSTGRES_SHM_SIZE:-512mb},mode=1777
     shm_size: ${POSTGRES_SHM_SIZE:-256mb}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
