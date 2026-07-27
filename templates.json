@@ -3755,6 +3755,31 @@
           "default": ""
         },
         {
+          "name": "REDIS_IMAGE",
+          "label": "Redis Image",
+          "default": "redis"
+        },
+        {
+          "name": "REDIS_TAG",
+          "label": "Redis Tag",
+          "default": "8.8.1-alpine"
+        },
+        {
+          "name": "REDIS_APPENDONLY",
+          "label": "Redis Append Only",
+          "default": "yes"
+        },
+        {
+          "name": "REDIS_PASSWORD",
+          "label": "Redis Password",
+          "default": ""
+        },
+
+
+
+
+
+        {
           "name": "NETWORK",
           "label": "Network Name",
           "default": "proxy"

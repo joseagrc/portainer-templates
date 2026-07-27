@@ -136,6 +136,45 @@ services:
         - com.dgii-ecf.service=pgadmin
         - com.dgii-ecf.component=database
 
+  redis:
+    image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8.8.1-alpine}
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - ${REDIS_APPENDONLY:-yes}
+      - --requirepass
+      - ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
+      - --protected-mode
+      - "yes"
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
+    volumes:
+      - dgii_ecf_redis_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli --no-auth-warning --pass \"$${REDIS_PASSWORD}\" ping | grep -q PONG"]
+      interval: ${REDIS_HEALTH_INTERVAL:-10s}
+      timeout: ${REDIS_HEALTH_TIMEOUT:-5s}
+      retries: ${REDIS_HEALTH_RETRIES:-12}
+      start_period: ${REDIS_HEALTH_START_PERIOD:-20s}
+    stop_grace_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: ${LOG_MAX_SIZE:-10m}
+        max-file: ${LOG_MAX_FILES:-5}
+    deploy:
+      mode: replicated
+      replicas: 1
+
+      restart_policy:
+        condition: any
+        delay: ${POSTGRES_RESTART_DELAY:-10s}
+        window: ${POSTGRES_RESTART_WINDOW:-180s}
+
+      labels:
+        - com.dgii-ecf.service=redis
+        - com.dgii-ecf.component=database
 
 # x-engine-env: &engine-env
 #   NODE_ENV: ${NODE_ENV:-production}
@@ -266,34 +305,7 @@ services:
 #       max-file: ${LOG_MAX_FILES:-5}
 
 # services:
-#   redis:
-#     container_name: ${COMPOSE_PROJECT_NAME:-dgii-ecf}-redis
-#     image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8-alpine}
-#     restart: unless-stopped
-#     command:
-#       - redis-server
-#       - --appendonly
-#       - ${REDIS_APPENDONLY:-yes}
-#       - --requirepass
-#       - ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
-#       - --protected-mode
-#       - "yes"
-#     environment:
-#       REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
-#     volumes:
-#       - redis_data:/data
-#     healthcheck:
-#       test: ["CMD-SHELL", "redis-cli --no-auth-warning --pass \"$${REDIS_PASSWORD}\" ping | grep -q PONG"]
-#       interval: ${REDIS_HEALTH_INTERVAL:-10s}
-#       timeout: ${REDIS_HEALTH_TIMEOUT:-5s}
-#       retries: ${REDIS_HEALTH_RETRIES:-12}
-#       start_period: ${REDIS_HEALTH_START_PERIOD:-20s}
-#     stop_grace_period: 30s
-#     logging:
-#       driver: json-file
-#       options:
-#         max-size: ${LOG_MAX_SIZE:-10m}
-#         max-file: ${LOG_MAX_FILES:-5}
+
 
 #   dgii-ecf-engine:
 #     <<: *engine-service
@@ -686,7 +698,6 @@ services:
 #       - traefik.http.services.redisinsight.loadbalancer.server.port=5540
 
 # volumes:
-#   pgadmin_data:
 #   redis_data:
 #   redisinsight_data:
 #   dgii_ecf_postgres_data:
@@ -697,6 +708,8 @@ volumes:
   dgii_ecf_postgres_data:
     driver: local
   dgii_ecf_pgadmin_data:
+    driver: local
+  dgii_ecf_redis_data:
     driver: local
 
 networks:
