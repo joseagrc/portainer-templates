@@ -3153,7 +3153,7 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.0.78",
+          "default": "1.1.42",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
         },
@@ -3228,9 +3228,19 @@
           "name": "DATABASE_LOG_QUERIES"
         },
         {
-          "default": "true",
+          "default": "false",
           "label": "Run Prisma Migration on Boot",
           "name": "RUN_PRISMA_MIGRATE_ON_BOOT"
+        },
+        {
+          "default": "true",
+          "label": "Require Redis for Distributed Locks in Production",
+          "name": "DISTRIBUTED_LOCK_REQUIRE_REDIS_IN_PRODUCTION"
+        },
+        {
+          "default": "false",
+          "label": "Disable NPM Update Notifier",
+          "name": "NPM_CONFIG_UPDATE_NOTIFIER"
         },
         {
           "default": "true",
@@ -3308,7 +3318,7 @@
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
         {
-          "default": "1.0.10",
+          "default": "1.1.42",
           "label": "DGII e-CF Portal Tag",
           "name": "DGII_ECF_PORTAL_TAG"
         },
@@ -3326,6 +3336,11 @@
           "default": "app.example.com",
           "label": "Portal Domain",
           "name": "PORTAL_DOMAIN"
+        },
+        {
+          "default": "",
+          "label": "Next Server Actions Encryption Key",
+          "name": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY"
         },
         {
           "default": "dpage/pgadmin4",
@@ -3792,7 +3807,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.40"
+          "default": "1.1.42"
         },
         {
           "name": "CERT_MASTER_KEY_BASE64",
@@ -3828,6 +3843,21 @@
           "name": "TRUST_PROXY",
           "label": "Trust Proxy",
           "default": "1"
+        },
+        {
+          "name": "RUN_PRISMA_MIGRATE_ON_BOOT",
+          "label": "Run Prisma Migration on Boot",
+          "default": "false"
+        },
+        {
+          "name": "DISTRIBUTED_LOCK_REQUIRE_REDIS_IN_PRODUCTION",
+          "label": "Require Redis for Distributed Locks in Production",
+          "default": "true"
+        },
+        {
+          "name": "NPM_CONFIG_UPDATE_NOTIFIER",
+          "label": "Disable NPM Update Notifier",
+          "default": "false"
         },
         {
           "name": "CORS_ALLOWED_ORIGINS",
@@ -3887,7 +3917,7 @@
         {
           "name": "DGII_ECF_PORTAL_TAG",
           "label": "DGII ECF Portal Tag",
-          "default": "1.1.40"
+          "default": "1.1.42"
         },
         {
           "name": "DGII_ECF_PORTAL_PORT",
@@ -3898,6 +3928,11 @@
           "name": "PUBLIC_ENGINE_URL",
           "label": "Public Engine URL",
           "default": "ecf.example.com"
+        },
+        {
+          "name": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
+          "label": "Next Server Actions Encryption Key",
+          "default": ""
         },
 
 
