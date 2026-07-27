@@ -92,7 +92,6 @@ services:
       restart_policy:
         condition: any
         delay: ${POSTGRES_RESTART_DELAY:-10s}
-        max_attempts: ${POSTGRES_RESTART_MAX_ATTEMPTS:-10}
         window: ${POSTGRES_RESTART_WINDOW:-180s}
 
       update_config:
