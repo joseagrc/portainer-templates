@@ -25,7 +25,7 @@ services:
       - dgii_ecf_postgres_data:/var/lib/postgresql
     shm_size: ${POSTGRES_SHM_SIZE:-256mb}
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -p 5432 -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: ${POSTGRES_HEALTH_INTERVAL:-10s}
       timeout: ${POSTGRES_HEALTH_TIMEOUT:-5s}
       retries: ${POSTGRES_HEALTH_RETRIES:-30}
