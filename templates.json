@@ -3795,6 +3795,26 @@
           "default": "1.1.40"
         },
         {
+          "name": "CERT_MASTER_KEY_BASE64",
+          "label": "Cert Master Key Base64",
+          "default": ""
+        },
+        {
+          "name": "INTERNAL_API_TOKEN",
+          "label": "Internal API Token",
+          "default": ""
+        },
+        {
+          "name": "API_KEY_PEPPER",
+          "label": "API Key Pepper",
+          "default": ""
+        },
+        {
+          "name": "APP_JWT_SECRET",
+          "label": "APP JWT Secret",
+          "default": ""
+        },
+        {
           "name": "NODE_ENV",
           "label": "Node Enviroment",
           "default": "production"
@@ -3812,12 +3832,12 @@
         {
           "name": "CORS_ALLOWED_ORIGINS",
           "label": "Cors Allowed Origins",
-          "default": ""
+          "default": "https://app.example.com"
         },
         {
           "name": "PORTAL_PUBLIC_URL",
           "label": "Portal Public URL",
-          "default": ""
+          "default": "https://app.example.com"
         },
         {
           "name": "SMTP_ENABLED",
@@ -3827,7 +3847,7 @@
         {
           "name": "SMTP_HOST",
           "label": "SMTP Host",
-          "default": ""
+          "default": "smtp.example.com"
         },
         {
           "name": "SMTP_PORT",
@@ -3842,7 +3862,7 @@
         {
           "name": "SMTP_USER",
           "label": "SMTP User",
-          "default": ""
+          "default": "email@example.com"
         },
         {
           "name": "SMTP_PASSWORD",
