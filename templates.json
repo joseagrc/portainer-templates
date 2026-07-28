@@ -3974,11 +3974,6 @@
           "label": "Next Server Actions Encryption Key",
           "default": ""
         },
-
-
-
-
-
         {
           "name": "DGII_ECF_SCHEDULER_REPLICAS",
           "label": "Scheduler Replicas",
