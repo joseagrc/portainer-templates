@@ -1,3 +1,69 @@
+x-engine-worker-env: &engine-worker-env
+  NODE_ENV: ${NODE_ENV:-production}
+  APP_VERSION: ${DGII_ECF_ENGINE_TAG}
+  TRUST_PROXY: ${TRUST_PROXY:-1}
+
+  CERT_MASTER_KEY_BASE64: ${CERT_MASTER_KEY_BASE64:?CERT_MASTER_KEY_BASE64 requerido}
+  INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?INTERNAL_API_TOKEN requerido}
+  API_KEY_PEPPER: ${API_KEY_PEPPER:?API_KEY_PEPPER requerido}
+  APP_JWT_SECRET: ${APP_JWT_SECRET:?APP_JWT_SECRET requerido}
+
+  DATABASE_ENABLED: ${DATABASE_ENABLED:-true}
+  POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+  DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB}?schema=public
+  DATABASE_LOG_QUERIES: ${DATABASE_LOG_QUERIES:-false}
+  RUN_PRISMA_MIGRATE_ON_BOOT: "false"
+  NPM_CONFIG_UPDATE_NOTIFIER: ${NPM_CONFIG_UPDATE_NOTIFIER:-false}
+
+  REDIS_ENABLED: ${REDIS_ENABLED:-true}
+  REDIS_URL: redis://:${REDIS_PASSWORD:?REDIS_PASSWORD requerido}@redis:6379
+  REDIS_KEY_PREFIX: ${REDIS_KEY_PREFIX:-dgii-ecf-engine-local}
+  REDIS_CONNECT_TIMEOUT_MS: ${REDIS_CONNECT_TIMEOUT_MS:-5000}
+  REDIS_COMMAND_TIMEOUT_MS: ${REDIS_COMMAND_TIMEOUT_MS:-3000}
+  DISTRIBUTED_LOCK_REQUIRE_REDIS_IN_PRODUCTION: ${DISTRIBUTED_LOCK_REQUIRE_REDIS_IN_PRODUCTION:-true}
+  RATE_LIMIT_REDIS_FAIL_OPEN: ${RATE_LIMIT_REDIS_FAIL_OPEN:-true}
+
+  APP_DATA_DIR: ${APP_DATA_DIR:-/data}
+  APP_LOG_DIR: ${APP_LOG_DIR:-/logs}
+  TRANSACTIONS_DIR: ${TRANSACTIONS_DIR:-/data/transactions}
+  CERT_STORE_DIR: ${CERT_STORE_DIR:-/data/certificates}
+  REGISTRY_FILE: ${REGISTRY_FILE:-/data/registry.json}
+  API_KEYS_FILE: ${API_KEYS_FILE:-/data/api_keys.json}
+  USERS_FILE: ${USERS_FILE:-/data/users.json}
+  AUDIT_LOG_FILE: ${AUDIT_LOG_FILE:-/logs/audit.log}
+
+  DGII_HTTP_TIMEOUT_MS: ${DGII_HTTP_TIMEOUT_MS:-45000}
+  BUYER_DELIVERY_TIMEOUT_MS: ${BUYER_DELIVERY_TIMEOUT_MS:-15000}
+  XML_VALIDATION_TIMEOUT_MS: ${XML_VALIDATION_TIMEOUT_MS:-10000}
+  WORKER_JOB_TIMEOUT_MS: ${WORKER_JOB_TIMEOUT_MS:-120000}
+  XML_XSD_VALIDATION_ENABLED: ${XML_XSD_VALIDATION_ENABLED:-true}
+  XML_VALIDATOR_PYTHON: ${XML_VALIDATOR_PYTHON:-python3}
+
+  SAVE_TRANSACTIONS: ${SAVE_TRANSACTIONS:-true}
+  SAVE_TRANSACTIONS_INCLUDE_JSON: ${SAVE_TRANSACTIONS_INCLUDE_JSON:-true}
+  SAVE_TRANSACTIONS_INCLUDE_RESPONSE: ${SAVE_TRANSACTIONS_INCLUDE_RESPONSE:-true}
+
+  FE_RECEPTION_DEFAULT_ENV: ${FE_RECEPTION_DEFAULT_ENV:-TesteCF}
+  LOG_LEVEL: ${LOG_LEVEL:-info}
+  LOG_PRETTY: ${LOG_PRETTY:-false}
+  QUEUE_SCHEDULER_ENABLED: "false"
+  WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-1}
+
+x-engine-worker-service: &engine-worker-service
+  image: ${DGII_ECF_ENGINE_IMAGE}:${DGII_ECF_ENGINE_TAG}
+  entrypoint: ["/bin/sh", "-c"]
+  volumes:
+    - dgii_ecf_engine_data:/data
+    - dgii_ecf_engine_logs:/logs
+  security_opt:
+    - no-new-privileges:true
+  stop_grace_period: 60s
+  logging:
+    driver: json-file
+    options:
+      max-size: ${LOG_MAX_SIZE:-10m}
+      max-file: ${LOG_MAX_FILES:-5}
+
 services:
   postgres:
     image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-18-alpine}
@@ -452,191 +518,388 @@ services:
         - com.dgii-ecf.service=dgii-ecf-portal
         - com.dgii-ecf.component=portal
 
-# services:
-#   dgii-ecf-scheduler:
-#     <<: *engine-service
-#     deploy:
-#       replicas: ${DGII_ECF_SCHEDULER_REPLICAS:-1}
-#       update_config:
-#         order: start-first
-#         failure_action: rollback
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#       redis:
-#         condition: service_healthy
-#       dgii-ecf-engine:
-#         condition: service_healthy
-#     command: ["node", "dist/workers/runQueueScheduler.js"]
-#     environment:
-#       <<: *engine-env
-#       QUEUE_SCHEDULER_ENABLED: "true"
-#       QUEUE_SCHEDULER_RECOVERY_INTERVAL_MS: ${QUEUE_SCHEDULER_RECOVERY_INTERVAL_MS:-60000}
-#       QUEUE_SCHEDULER_CLEANUP_INTERVAL_MS: ${QUEUE_SCHEDULER_CLEANUP_INTERVAL_MS:-300000}
-#       QUEUE_SCHEDULER_MAX_RUNNING_MINUTES: ${QUEUE_SCHEDULER_MAX_RUNNING_MINUTES:-10}
-#       QUEUE_SCHEDULER_MAX_AGE_DAYS_DONE: ${QUEUE_SCHEDULER_MAX_AGE_DAYS_DONE:-7}
-#       QUEUE_SCHEDULER_MAX_AGE_DAYS_FAILED: ${QUEUE_SCHEDULER_MAX_AGE_DAYS_FAILED:-30}
+  dgii-ecf-scheduler:
+    <<: *engine-worker-service
+    command:
+      - |
+        wait_for_tcp() {
+          service_name="$$1"
+          host="$$2"
+          port="$$3"
+          attempts="$${4:-40}"
 
-#   dgii-ecf-worker-send:
-#     <<: *engine-service
-#     deploy:
-#       replicas: ${DGII_ECF_WORKER_SEND_REPLICAS:-2}
-#       update_config:
-#         order: start-first
-#         failure_action: rollback
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#       redis:
-#         condition: service_healthy
-#       dgii-ecf-engine:
-#         condition: service_healthy
-#     command:
-#       - node
-#       - dist/workers/runQueueWorker.js
-#       - --queue=send-normal
-#       - --mode=loop
-#       - --max=${WORKER_SEND_MAX:-5}
-#       - --sleepMs=${WORKER_SEND_SLEEP_MS:-3000}
-#     environment:
-#       <<: *engine-env
-#       PORT: "4001"
-#       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
-#       RATE_LIMIT_REDIS_FAIL_OPEN: ${RATE_LIMIT_REDIS_FAIL_OPEN:-true}
-#       XML_XSD_VALIDATION_ENABLED: ${XML_XSD_VALIDATION_ENABLED:-true}
-#       XML_VALIDATOR_PYTHON: ${XML_VALIDATOR_PYTHON:-python3}
-#       QUEUE_SCHEDULER_ENABLED: "false"
-#       WORKER_QUEUE: SEND_NORMAL
-#       WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-1}
+          echo "Esperando conectividad con $$service_name ($$host:$$port)..."
+          i=0
+          until node -e 'const net = require("net"); const host = process.argv[1]; const port = Number(process.argv[2]); const socket = net.createConnection(port, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });' "$$host" "$$port"; do
+            i=$$((i+1))
+            if [ "$$i" -ge "$$attempts" ]; then
+              echo "Timeout esperando a $$service_name ($$host:$$port), abortando."
+              exit 1
+            fi
+            echo "$$service_name no disponible aún (intento $$i), reintentando en 3s..."
+            sleep 3
+          done
+        }
 
-#   dgii-ecf-worker-send-high:
-#     <<: *engine-service
-#     deploy:
-#       replicas: ${DGII_ECF_WORKER_SEND_HIGH_REPLICAS:-2}
-#       update_config:
-#         order: start-first
-#         failure_action: rollback
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#       redis:
-#         condition: service_healthy
-#       dgii-ecf-engine:
-#         condition: service_healthy
-#     command:
-#       - node
-#       - dist/workers/runQueueWorker.js
-#       - --queue=send-high
-#       - --mode=loop
-#       - --max=${WORKER_SEND_HIGH_MAX:-10}
-#       - --sleepMs=${WORKER_SEND_HIGH_SLEEP_MS:-1000}
-#     environment:
-#       <<: *engine-env
-#       PORT: "4002"
-#       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
-#       RATE_LIMIT_REDIS_FAIL_OPEN: ${RATE_LIMIT_REDIS_FAIL_OPEN:-true}
-#       XML_XSD_VALIDATION_ENABLED: ${XML_XSD_VALIDATION_ENABLED:-true}
-#       XML_VALIDATOR_PYTHON: ${XML_VALIDATOR_PYTHON:-python3}
-#       QUEUE_SCHEDULER_ENABLED: "false"
-#       WORKER_QUEUE: SEND_HIGH_PRIORITY
-#       WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-1}
+        wait_for_tcp postgres "$${POSTGRES_HOST:-postgres}" 5432
+        wait_for_tcp redis redis 6379
 
-#   dgii-ecf-worker-send-bulk:
-#     <<: *engine-service
-#     deploy:
-#       replicas: ${DGII_ECF_WORKER_SEND_BULK_REPLICAS:-1}
-#       update_config:
-#         order: start-first
-#         failure_action: rollback
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#       redis:
-#         condition: service_healthy
-#       dgii-ecf-engine:
-#         condition: service_healthy
-#     command:
-#       - node
-#       - dist/workers/runQueueWorker.js
-#       - --queue=send-bulk
-#       - --mode=loop
-#       - --max=${WORKER_SEND_BULK_MAX:-2}
-#       - --sleepMs=${WORKER_SEND_BULK_SLEEP_MS:-5000}
-#     environment:
-#       <<: *engine-env
-#       PORT: "4003"
-#       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
-#       RATE_LIMIT_REDIS_FAIL_OPEN: ${RATE_LIMIT_REDIS_FAIL_OPEN:-true}
-#       XML_XSD_VALIDATION_ENABLED: ${XML_XSD_VALIDATION_ENABLED:-true}
-#       XML_VALIDATOR_PYTHON: ${XML_VALIDATOR_PYTHON:-python3}
-#       QUEUE_SCHEDULER_ENABLED: "false"
-#       WORKER_QUEUE: SEND_BULK
-#       WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-1}
+        echo "Verificando estado de migraciones..."
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
+          echo "Esperando a que dgii-ecf-engine-migrate complete..."
+          sleep 5
+        done
 
-#   dgii-ecf-housekeeping:
-#     <<: *engine-service
-#     deploy:
-#       replicas: ${DGII_ECF_HOUSEKEEPING_REPLICAS:-1}
-#       update_config:
-#         order: start-first
-#         failure_action: rollback
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#       redis:
-#         condition: service_healthy
-#       dgii-ecf-engine:
-#         condition: service_healthy
-#     command:
-#       - node
-#       - dist/workers/runHousekeepingWorker.js
-#       - --mode=loop
-#       - --sleepMs=${HOUSEKEEPING_WORKER_SLEEP_MS:-300000}
-#     environment:
-#       <<: *engine-env
-#       PORT: "4004"
-#       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
-#       QUEUE_SCHEDULER_ENABLED: "false"
-#       HOUSEKEEPING_ENABLED: ${HOUSEKEEPING_ENABLED:-true}
-#       HOUSEKEEPING_INTERVAL_MS: ${HOUSEKEEPING_INTERVAL_MS:-300000}
-#       HOUSEKEEPING_QUEUE_DONE_RETENTION_DAYS: ${HOUSEKEEPING_QUEUE_DONE_RETENTION_DAYS:-7}
-#       HOUSEKEEPING_QUEUE_FAILED_RETENTION_DAYS: ${HOUSEKEEPING_QUEUE_FAILED_RETENTION_DAYS:-30}
-#       HOUSEKEEPING_QUEUE_ARCHIVE_RETENTION_DAYS: ${HOUSEKEEPING_QUEUE_ARCHIVE_RETENTION_DAYS:-90}
-#       HOUSEKEEPING_IDEMPOTENCY_PENDING_RETENTION_HOURS: ${HOUSEKEEPING_IDEMPOTENCY_PENDING_RETENTION_HOURS:-24}
+        echo "Dependencias listas, iniciando scheduler..."
+        exec /app/docker-entrypoint.sh node dist/workers/runQueueScheduler.js
+    environment:
+      <<: *engine-worker-env
+      QUEUE_SCHEDULER_ENABLED: "true"
+      QUEUE_SCHEDULER_RECOVERY_INTERVAL_MS: ${QUEUE_SCHEDULER_RECOVERY_INTERVAL_MS:-60000}
+      QUEUE_SCHEDULER_CLEANUP_INTERVAL_MS: ${QUEUE_SCHEDULER_CLEANUP_INTERVAL_MS:-300000}
+      QUEUE_SCHEDULER_MAX_RUNNING_MINUTES: ${QUEUE_SCHEDULER_MAX_RUNNING_MINUTES:-10}
+      QUEUE_SCHEDULER_MAX_AGE_DAYS_DONE: ${QUEUE_SCHEDULER_MAX_AGE_DAYS_DONE:-7}
+      QUEUE_SCHEDULER_MAX_AGE_DAYS_FAILED: ${QUEUE_SCHEDULER_MAX_AGE_DAYS_FAILED:-30}
+    deploy:
+      mode: replicated
+      replicas: ${DGII_ECF_SCHEDULER_REPLICAS:-1}
+      restart_policy:
+        condition: any
+        delay: ${SCHEDULER_RESTART_DELAY:-10s}
+        window: ${SCHEDULER_RESTART_WINDOW:-180s}
+      update_config:
+        parallelism: 1
+        order: stop-first
+        delay: ${SCHEDULER_UPDATE_DELAY:-10s}
+        monitor: ${SCHEDULER_UPDATE_MONITOR:-60s}
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: ${SCHEDULER_ROLLBACK_MONITOR:-60s}
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-scheduler
+        - com.dgii-ecf.component=scheduler
 
-#   dgii-ecf-webhook-worker:
-#     <<: *engine-service
-#     deploy:
-#       replicas: ${DGII_ECF_WEBHOOK_WORKER_REPLICAS:-1}
-#       update_config:
-#         order: start-first
-#         failure_action: rollback
-#     depends_on:
-#       postgres:
-#         condition: service_healthy
-#       redis:
-#         condition: service_healthy
-#       dgii-ecf-engine:
-#         condition: service_healthy
-#     command:
-#       - node
-#       - dist/workers/runWebhookWorker.js
-#       - --mode=loop
-#       - --max=${WEBHOOK_WORKER_MAX:-20}
-#       - --sleepMs=${WEBHOOK_WORKER_SLEEP_MS:-3000}
-#     environment:
-#       <<: *engine-env
-#       PORT: "4005"
-#       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
-#       WEBHOOKS_ENABLED: ${WEBHOOKS_ENABLED:-true}
-#       WEBHOOK_WORKER_INTERVAL_MS: ${WEBHOOK_WORKER_INTERVAL_MS:-3000}
-#       WEBHOOK_MAX_ATTEMPTS: ${WEBHOOK_MAX_ATTEMPTS:-8}
-#       WEBHOOK_DEFAULT_TIMEOUT_MS: ${WEBHOOK_DEFAULT_TIMEOUT_MS:-10000}
-#       WEBHOOK_MAX_RESPONSE_BODY_CHARS: ${WEBHOOK_MAX_RESPONSE_BODY_CHARS:-4000}
-#       WEBHOOK_ALLOW_PRIVATE_URLS: ${WEBHOOK_ALLOW_PRIVATE_URLS:-false}
-#       WEBHOOK_REQUIRE_HTTPS: ${WEBHOOK_REQUIRE_HTTPS:-true}
-#       WEBHOOK_ALLOWED_HOSTS: ${WEBHOOK_ALLOWED_HOSTS:-}
-#       QUEUE_SCHEDULER_ENABLED: "false"
+  dgii-ecf-worker-send:
+    <<: *engine-worker-service
+    command:
+      - |
+        wait_for_tcp() {
+          service_name="$$1"
+          host="$$2"
+          port="$$3"
+          attempts="$${4:-40}"
+
+          echo "Esperando conectividad con $$service_name ($$host:$$port)..."
+          i=0
+          until node -e 'const net = require("net"); const host = process.argv[1]; const port = Number(process.argv[2]); const socket = net.createConnection(port, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });' "$$host" "$$port"; do
+            i=$$((i+1))
+            if [ "$$i" -ge "$$attempts" ]; then
+              echo "Timeout esperando a $$service_name ($$host:$$port), abortando."
+              exit 1
+            fi
+            echo "$$service_name no disponible aún (intento $$i), reintentando en 3s..."
+            sleep 3
+          done
+        }
+
+        wait_for_tcp postgres "$${POSTGRES_HOST:-postgres}" 5432
+        wait_for_tcp redis redis 6379
+
+        echo "Verificando estado de migraciones..."
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
+          echo "Esperando a que dgii-ecf-engine-migrate complete..."
+          sleep 5
+        done
+
+        echo "Dependencias listas, iniciando worker send-normal..."
+        exec /app/docker-entrypoint.sh node dist/workers/runQueueWorker.js --queue=send-normal --mode=loop --max="$${WORKER_SEND_MAX:-5}" --sleepMs="$${WORKER_SEND_SLEEP_MS:-3000}"
+    environment:
+      <<: *engine-worker-env
+      PORT: "4001"
+      WORKER_QUEUE: SEND_NORMAL
+      WORKER_SEND_MAX: ${WORKER_SEND_MAX:-5}
+      WORKER_SEND_SLEEP_MS: ${WORKER_SEND_SLEEP_MS:-3000}
+    deploy:
+      mode: replicated
+      replicas: ${DGII_ECF_WORKER_SEND_REPLICAS:-2}
+      restart_policy:
+        condition: any
+        delay: ${WORKER_RESTART_DELAY:-10s}
+        window: ${WORKER_RESTART_WINDOW:-180s}
+      update_config:
+        parallelism: 1
+        order: start-first
+        delay: ${WORKER_UPDATE_DELAY:-10s}
+        monitor: ${WORKER_UPDATE_MONITOR:-60s}
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: ${WORKER_ROLLBACK_MONITOR:-60s}
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-worker-send
+        - com.dgii-ecf.component=worker
+        - com.dgii-ecf.queue=send-normal
+
+  dgii-ecf-worker-send-high:
+    <<: *engine-worker-service
+    command:
+      - |
+        wait_for_tcp() {
+          service_name="$$1"
+          host="$$2"
+          port="$$3"
+          attempts="$${4:-40}"
+
+          echo "Esperando conectividad con $$service_name ($$host:$$port)..."
+          i=0
+          until node -e 'const net = require("net"); const host = process.argv[1]; const port = Number(process.argv[2]); const socket = net.createConnection(port, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });' "$$host" "$$port"; do
+            i=$$((i+1))
+            if [ "$$i" -ge "$$attempts" ]; then
+              echo "Timeout esperando a $$service_name ($$host:$$port), abortando."
+              exit 1
+            fi
+            echo "$$service_name no disponible aún (intento $$i), reintentando en 3s..."
+            sleep 3
+          done
+        }
+
+        wait_for_tcp postgres "$${POSTGRES_HOST:-postgres}" 5432
+        wait_for_tcp redis redis 6379
+
+        echo "Verificando estado de migraciones..."
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
+          echo "Esperando a que dgii-ecf-engine-migrate complete..."
+          sleep 5
+        done
+
+        echo "Dependencias listas, iniciando worker send-high..."
+        exec /app/docker-entrypoint.sh node dist/workers/runQueueWorker.js --queue=send-high --mode=loop --max="$${WORKER_SEND_HIGH_MAX:-10}" --sleepMs="$${WORKER_SEND_HIGH_SLEEP_MS:-1000}"
+    environment:
+      <<: *engine-worker-env
+      PORT: "4002"
+      WORKER_QUEUE: SEND_HIGH_PRIORITY
+      WORKER_SEND_HIGH_MAX: ${WORKER_SEND_HIGH_MAX:-10}
+      WORKER_SEND_HIGH_SLEEP_MS: ${WORKER_SEND_HIGH_SLEEP_MS:-1000}
+    deploy:
+      mode: replicated
+      replicas: ${DGII_ECF_WORKER_SEND_HIGH_REPLICAS:-2}
+      restart_policy:
+        condition: any
+        delay: ${WORKER_RESTART_DELAY:-10s}
+        window: ${WORKER_RESTART_WINDOW:-180s}
+      update_config:
+        parallelism: 1
+        order: start-first
+        delay: ${WORKER_UPDATE_DELAY:-10s}
+        monitor: ${WORKER_UPDATE_MONITOR:-60s}
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: ${WORKER_ROLLBACK_MONITOR:-60s}
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-worker-send-high
+        - com.dgii-ecf.component=worker
+        - com.dgii-ecf.queue=send-high
+
+  dgii-ecf-worker-send-bulk:
+    <<: *engine-worker-service
+    command:
+      - |
+        wait_for_tcp() {
+          service_name="$$1"
+          host="$$2"
+          port="$$3"
+          attempts="$${4:-40}"
+
+          echo "Esperando conectividad con $$service_name ($$host:$$port)..."
+          i=0
+          until node -e 'const net = require("net"); const host = process.argv[1]; const port = Number(process.argv[2]); const socket = net.createConnection(port, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });' "$$host" "$$port"; do
+            i=$$((i+1))
+            if [ "$$i" -ge "$$attempts" ]; then
+              echo "Timeout esperando a $$service_name ($$host:$$port), abortando."
+              exit 1
+            fi
+            echo "$$service_name no disponible aún (intento $$i), reintentando en 3s..."
+            sleep 3
+          done
+        }
+
+        wait_for_tcp postgres "$${POSTGRES_HOST:-postgres}" 5432
+        wait_for_tcp redis redis 6379
+
+        echo "Verificando estado de migraciones..."
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
+          echo "Esperando a que dgii-ecf-engine-migrate complete..."
+          sleep 5
+        done
+
+        echo "Dependencias listas, iniciando worker send-bulk..."
+        exec /app/docker-entrypoint.sh node dist/workers/runQueueWorker.js --queue=send-bulk --mode=loop --max="$${WORKER_SEND_BULK_MAX:-2}" --sleepMs="$${WORKER_SEND_BULK_SLEEP_MS:-5000}"
+    environment:
+      <<: *engine-worker-env
+      PORT: "4003"
+      WORKER_QUEUE: SEND_BULK
+      WORKER_SEND_BULK_MAX: ${WORKER_SEND_BULK_MAX:-2}
+      WORKER_SEND_BULK_SLEEP_MS: ${WORKER_SEND_BULK_SLEEP_MS:-5000}
+    deploy:
+      mode: replicated
+      replicas: ${DGII_ECF_WORKER_SEND_BULK_REPLICAS:-1}
+      restart_policy:
+        condition: any
+        delay: ${WORKER_RESTART_DELAY:-10s}
+        window: ${WORKER_RESTART_WINDOW:-180s}
+      update_config:
+        parallelism: 1
+        order: start-first
+        delay: ${WORKER_UPDATE_DELAY:-10s}
+        monitor: ${WORKER_UPDATE_MONITOR:-60s}
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: ${WORKER_ROLLBACK_MONITOR:-60s}
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-worker-send-bulk
+        - com.dgii-ecf.component=worker
+        - com.dgii-ecf.queue=send-bulk
+
+  dgii-ecf-housekeeping:
+    <<: *engine-worker-service
+    command:
+      - |
+        wait_for_tcp() {
+          service_name="$$1"
+          host="$$2"
+          port="$$3"
+          attempts="$${4:-40}"
+
+          echo "Esperando conectividad con $$service_name ($$host:$$port)..."
+          i=0
+          until node -e 'const net = require("net"); const host = process.argv[1]; const port = Number(process.argv[2]); const socket = net.createConnection(port, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });' "$$host" "$$port"; do
+            i=$$((i+1))
+            if [ "$$i" -ge "$$attempts" ]; then
+              echo "Timeout esperando a $$service_name ($$host:$$port), abortando."
+              exit 1
+            fi
+            echo "$$service_name no disponible aún (intento $$i), reintentando en 3s..."
+            sleep 3
+          done
+        }
+
+        wait_for_tcp postgres "$${POSTGRES_HOST:-postgres}" 5432
+        wait_for_tcp redis redis 6379
+
+        echo "Verificando estado de migraciones..."
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
+          echo "Esperando a que dgii-ecf-engine-migrate complete..."
+          sleep 5
+        done
+
+        echo "Dependencias listas, iniciando housekeeping..."
+        exec /app/docker-entrypoint.sh node dist/workers/runHousekeepingWorker.js --mode=loop --sleepMs="$${HOUSEKEEPING_WORKER_SLEEP_MS:-300000}"
+    environment:
+      <<: *engine-worker-env
+      PORT: "4004"
+      HOUSEKEEPING_WORKER_SLEEP_MS: ${HOUSEKEEPING_WORKER_SLEEP_MS:-300000}
+      HOUSEKEEPING_ENABLED: ${HOUSEKEEPING_ENABLED:-true}
+      HOUSEKEEPING_INTERVAL_MS: ${HOUSEKEEPING_INTERVAL_MS:-300000}
+      HOUSEKEEPING_QUEUE_DONE_RETENTION_DAYS: ${HOUSEKEEPING_QUEUE_DONE_RETENTION_DAYS:-7}
+      HOUSEKEEPING_QUEUE_FAILED_RETENTION_DAYS: ${HOUSEKEEPING_QUEUE_FAILED_RETENTION_DAYS:-30}
+      HOUSEKEEPING_QUEUE_ARCHIVE_RETENTION_DAYS: ${HOUSEKEEPING_QUEUE_ARCHIVE_RETENTION_DAYS:-90}
+      HOUSEKEEPING_IDEMPOTENCY_PENDING_RETENTION_HOURS: ${HOUSEKEEPING_IDEMPOTENCY_PENDING_RETENTION_HOURS:-24}
+    deploy:
+      mode: replicated
+      replicas: ${DGII_ECF_HOUSEKEEPING_REPLICAS:-1}
+      restart_policy:
+        condition: any
+        delay: ${HOUSEKEEPING_RESTART_DELAY:-10s}
+        window: ${HOUSEKEEPING_RESTART_WINDOW:-180s}
+      update_config:
+        parallelism: 1
+        order: stop-first
+        delay: ${HOUSEKEEPING_UPDATE_DELAY:-10s}
+        monitor: ${HOUSEKEEPING_UPDATE_MONITOR:-60s}
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: ${HOUSEKEEPING_ROLLBACK_MONITOR:-60s}
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-housekeeping
+        - com.dgii-ecf.component=housekeeping
+
+  dgii-ecf-webhook-worker:
+    <<: *engine-worker-service
+    command:
+      - |
+        wait_for_tcp() {
+          service_name="$$1"
+          host="$$2"
+          port="$$3"
+          attempts="$${4:-40}"
+
+          echo "Esperando conectividad con $$service_name ($$host:$$port)..."
+          i=0
+          until node -e 'const net = require("net"); const host = process.argv[1]; const port = Number(process.argv[2]); const socket = net.createConnection(port, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });' "$$host" "$$port"; do
+            i=$$((i+1))
+            if [ "$$i" -ge "$$attempts" ]; then
+              echo "Timeout esperando a $$service_name ($$host:$$port), abortando."
+              exit 1
+            fi
+            echo "$$service_name no disponible aún (intento $$i), reintentando en 3s..."
+            sleep 3
+          done
+        }
+
+        wait_for_tcp postgres "$${POSTGRES_HOST:-postgres}" 5432
+        wait_for_tcp redis redis 6379
+
+        echo "Verificando estado de migraciones..."
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
+          echo "Esperando a que dgii-ecf-engine-migrate complete..."
+          sleep 5
+        done
+
+        echo "Dependencias listas, iniciando webhook worker..."
+        exec /app/docker-entrypoint.sh node dist/workers/runWebhookWorker.js --mode=loop --max="$${WEBHOOK_WORKER_MAX:-20}" --sleepMs="$${WEBHOOK_WORKER_SLEEP_MS:-3000}"
+    environment:
+      <<: *engine-worker-env
+      PORT: "4005"
+      WEBHOOKS_ENABLED: ${WEBHOOKS_ENABLED:-true}
+      WEBHOOK_WORKER_MAX: ${WEBHOOK_WORKER_MAX:-20}
+      WEBHOOK_WORKER_SLEEP_MS: ${WEBHOOK_WORKER_SLEEP_MS:-3000}
+      WEBHOOK_WORKER_INTERVAL_MS: ${WEBHOOK_WORKER_INTERVAL_MS:-3000}
+      WEBHOOK_MAX_ATTEMPTS: ${WEBHOOK_MAX_ATTEMPTS:-8}
+      WEBHOOK_DEFAULT_TIMEOUT_MS: ${WEBHOOK_DEFAULT_TIMEOUT_MS:-10000}
+      WEBHOOK_MAX_RESPONSE_BODY_CHARS: ${WEBHOOK_MAX_RESPONSE_BODY_CHARS:-4000}
+      WEBHOOK_ALLOW_PRIVATE_URLS: ${WEBHOOK_ALLOW_PRIVATE_URLS:-false}
+      WEBHOOK_REQUIRE_HTTPS: ${WEBHOOK_REQUIRE_HTTPS:-true}
+      WEBHOOK_ALLOWED_HOSTS: ${WEBHOOK_ALLOWED_HOSTS:-}
+    deploy:
+      mode: replicated
+      replicas: ${DGII_ECF_WEBHOOK_WORKER_REPLICAS:-1}
+      restart_policy:
+        condition: any
+        delay: ${WEBHOOK_WORKER_RESTART_DELAY:-10s}
+        window: ${WEBHOOK_WORKER_RESTART_WINDOW:-180s}
+      update_config:
+        parallelism: 1
+        order: start-first
+        delay: ${WEBHOOK_WORKER_UPDATE_DELAY:-10s}
+        monitor: ${WEBHOOK_WORKER_UPDATE_MONITOR:-60s}
+        failure_action: rollback
+      rollback_config:
+        parallelism: 1
+        order: stop-first
+        monitor: ${WEBHOOK_WORKER_ROLLBACK_MONITOR:-60s}
+      labels:
+        - com.dgii-ecf.service=dgii-ecf-webhook-worker
+        - com.dgii-ecf.component=worker
+        - com.dgii-ecf.queue=webhook
 
 volumes:
   dgii_ecf_postgres_data:

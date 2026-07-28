@@ -3980,6 +3980,211 @@
 
 
         {
+          "name": "DGII_ECF_SCHEDULER_REPLICAS",
+          "label": "Scheduler Replicas",
+          "default": "1"
+        },
+        {
+          "name": "QUEUE_SCHEDULER_RECOVERY_INTERVAL_MS",
+          "label": "Queue Scheduler Recovery Interval Ms",
+          "default": "60000"
+        },
+        {
+          "name": "QUEUE_SCHEDULER_CLEANUP_INTERVAL_MS",
+          "label": "Queue Scheduler Cleanup Interval Ms",
+          "default": "300000"
+        },
+        {
+          "name": "QUEUE_SCHEDULER_MAX_RUNNING_MINUTES",
+          "label": "Queue Scheduler Max Running Minutes",
+          "default": "10"
+        },
+        {
+          "name": "QUEUE_SCHEDULER_MAX_AGE_DAYS_DONE",
+          "label": "Queue Scheduler Done Retention Days",
+          "default": "7"
+        },
+        {
+          "name": "QUEUE_SCHEDULER_MAX_AGE_DAYS_FAILED",
+          "label": "Queue Scheduler Failed Retention Days",
+          "default": "30"
+        },
+        {
+          "name": "DGII_ECF_WORKER_SEND_REPLICAS",
+          "label": "Send Worker Replicas",
+          "default": "2"
+        },
+        {
+          "name": "WORKER_SEND_MAX",
+          "label": "Send Worker Batch Max",
+          "default": "5"
+        },
+        {
+          "name": "WORKER_SEND_SLEEP_MS",
+          "label": "Send Worker Sleep Ms",
+          "default": "3000"
+        },
+        {
+          "name": "DGII_ECF_WORKER_SEND_HIGH_REPLICAS",
+          "label": "High Priority Send Worker Replicas",
+          "default": "2"
+        },
+        {
+          "name": "WORKER_SEND_HIGH_MAX",
+          "label": "High Priority Send Worker Batch Max",
+          "default": "10"
+        },
+        {
+          "name": "WORKER_SEND_HIGH_SLEEP_MS",
+          "label": "High Priority Send Worker Sleep Ms",
+          "default": "1000"
+        },
+        {
+          "name": "DGII_ECF_WORKER_SEND_BULK_REPLICAS",
+          "label": "Bulk Send Worker Replicas",
+          "default": "1"
+        },
+        {
+          "name": "WORKER_SEND_BULK_MAX",
+          "label": "Bulk Send Worker Batch Max",
+          "default": "2"
+        },
+        {
+          "name": "WORKER_SEND_BULK_SLEEP_MS",
+          "label": "Bulk Send Worker Sleep Ms",
+          "default": "5000"
+        },
+        {
+          "name": "WORKER_CONCURRENCY",
+          "label": "Worker Concurrency",
+          "default": "1"
+        },
+        {
+          "name": "WORKER_JOB_TIMEOUT_MS",
+          "label": "Worker Job Timeout Ms",
+          "default": "120000"
+        },
+        {
+          "name": "DGII_ECF_HOUSEKEEPING_REPLICAS",
+          "label": "Housekeeping Replicas",
+          "default": "1"
+        },
+        {
+          "name": "HOUSEKEEPING_WORKER_SLEEP_MS",
+          "label": "Housekeeping Worker Sleep Ms",
+          "default": "300000"
+        },
+        {
+          "name": "HOUSEKEEPING_ENABLED",
+          "label": "Housekeeping Enabled",
+          "default": "true"
+        },
+        {
+          "name": "HOUSEKEEPING_INTERVAL_MS",
+          "label": "Housekeeping Interval Ms",
+          "default": "300000"
+        },
+        {
+          "name": "HOUSEKEEPING_QUEUE_DONE_RETENTION_DAYS",
+          "label": "Housekeeping Done Retention Days",
+          "default": "7"
+        },
+        {
+          "name": "HOUSEKEEPING_QUEUE_FAILED_RETENTION_DAYS",
+          "label": "Housekeeping Failed Retention Days",
+          "default": "30"
+        },
+        {
+          "name": "HOUSEKEEPING_QUEUE_ARCHIVE_RETENTION_DAYS",
+          "label": "Housekeeping Archive Retention Days",
+          "default": "90"
+        },
+        {
+          "name": "HOUSEKEEPING_IDEMPOTENCY_PENDING_RETENTION_HOURS",
+          "label": "Housekeeping Idempotency Pending Retention Hours",
+          "default": "24"
+        },
+        {
+          "name": "DGII_ECF_WEBHOOK_WORKER_REPLICAS",
+          "label": "Webhook Worker Replicas",
+          "default": "1"
+        },
+        {
+          "name": "WEBHOOKS_ENABLED",
+          "label": "Webhooks Enabled",
+          "default": "true"
+        },
+        {
+          "name": "WEBHOOK_WORKER_MAX",
+          "label": "Webhook Worker Batch Max",
+          "default": "20"
+        },
+        {
+          "name": "WEBHOOK_WORKER_SLEEP_MS",
+          "label": "Webhook Worker Sleep Ms",
+          "default": "3000"
+        },
+        {
+          "name": "WEBHOOK_WORKER_INTERVAL_MS",
+          "label": "Webhook Worker Interval Ms",
+          "default": "3000"
+        },
+        {
+          "name": "WEBHOOK_MAX_ATTEMPTS",
+          "label": "Webhook Max Attempts",
+          "default": "8"
+        },
+        {
+          "name": "WEBHOOK_DEFAULT_TIMEOUT_MS",
+          "label": "Webhook Default Timeout Ms",
+          "default": "10000"
+        },
+        {
+          "name": "WEBHOOK_MAX_RESPONSE_BODY_CHARS",
+          "label": "Webhook Max Response Body Chars",
+          "default": "4000"
+        },
+        {
+          "name": "WEBHOOK_ALLOW_PRIVATE_URLS",
+          "label": "Webhook Allow Private URLs",
+          "default": "false"
+        },
+        {
+          "name": "WEBHOOK_REQUIRE_HTTPS",
+          "label": "Webhook Require HTTPS",
+          "default": "true"
+        },
+        {
+          "name": "WEBHOOK_ALLOWED_HOSTS",
+          "label": "Webhook Allowed Hosts",
+          "default": ""
+        },
+        {
+          "name": "WORKER_RESTART_DELAY",
+          "label": "Worker Restart Delay",
+          "default": "10s"
+        },
+        {
+          "name": "WORKER_RESTART_WINDOW",
+          "label": "Worker Restart Window",
+          "default": "180s"
+        },
+        {
+          "name": "WORKER_UPDATE_DELAY",
+          "label": "Worker Update Delay",
+          "default": "10s"
+        },
+        {
+          "name": "WORKER_UPDATE_MONITOR",
+          "label": "Worker Update Monitor",
+          "default": "60s"
+        },
+        {
+          "name": "WORKER_ROLLBACK_MONITOR",
+          "label": "Worker Rollback Monitor",
+          "default": "60s"
+        },
+        {
           "name": "NETWORK",
           "label": "Network Name",
           "default": "proxy"
