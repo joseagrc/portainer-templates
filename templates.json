@@ -3615,6 +3615,11 @@
           "default": "dgii_ecf_user"
         },
         {
+          "name": "POSTGRES_HOST",
+          "label": "Postgres Host",
+          "default": "postgres"
+        },
+        {
           "name": "POSTGRES_PASSWORD",
           "label": "Postgres Password",
           "default": ""

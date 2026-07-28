@@ -199,16 +199,16 @@ services:
       - |
         echo "Esperando a que postgres acepte conexiones..."
         i=0
-        until pg_isready -h postgres -p 5432 -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}" >/dev/null 2>&1; do
+        until node -e 'const net = require("net"); const host = process.env.POSTGRES_HOST || "postgres"; const socket = net.createConnection(5432, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });'; do
           i=$$((i+1))
           if [ "$$i" -ge 40 ]; then
-            echo "Timeout esperando a postgres, abortando."
+            echo "Timeout esperando a $${POSTGRES_HOST}:5432, abortando."
             exit 1
           fi
-          echo "postgres no disponible aún (intento $$i), reintentando en 3s..."
+          echo "$${POSTGRES_HOST}:5432 no disponible aún (intento $$i), reintentando en 3s..."
           sleep 3
         done
-        echo "postgres listo, ejecutando migraciones..."
+        echo "$${POSTGRES_HOST}:5432 listo, ejecutando migraciones..."
         exec npx prisma migrate deploy
     environment:
       CERT_MASTER_KEY_BASE64: ${CERT_MASTER_KEY_BASE64:?CERT_MASTER_KEY_BASE64 requerido}
@@ -216,9 +216,10 @@ services:
       API_KEY_PEPPER: ${API_KEY_PEPPER:?API_KEY_PEPPER requerido}
       APP_JWT_SECRET: ${APP_JWT_SECRET:?APP_JWT_SECRET requerido}
       DATABASE_ENABLED: ${DATABASE_ENABLED:-true}
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
       POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER requerido}
       POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB requerido}
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB}?schema=public
       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
     volumes:
       - dgii_ecf_engine_data:/data
@@ -240,8 +241,20 @@ services:
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
+        echo "Esperando conectividad con $${POSTGRES_HOST}:5432..."
+        i=0
+        until node -e 'const net = require("net"); const host = process.env.POSTGRES_HOST || "postgres"; const socket = net.createConnection(5432, host); socket.once("connect", () => { socket.destroy(); process.exit(0); }); socket.once("error", () => process.exit(1)); socket.setTimeout(3000, () => { socket.destroy(); process.exit(1); });'; do
+          i=$$((i+1))
+          if [ "$$i" -ge 40 ]; then
+            echo "Timeout esperando a $${POSTGRES_HOST}:5432, abortando."
+            exit 1
+          fi
+          echo "$${POSTGRES_HOST}:5432 no disponible aún (intento $$i), reintentando en 3s..."
+          sleep 3
+        done
+
         echo "Verificando estado de migraciones..."
-        until npx prisma migrate status --schema=./prisma/schema.prisma | grep -q "Database schema is up to date"; do
+        until npx prisma migrate status --schema=./prisma/schema.prisma 2>&1 | grep -q "Database schema is up to date"; do
           echo "Esperando a que dgii-ecf-engine-migrate complete..."
           sleep 5
         done
@@ -289,7 +302,8 @@ services:
       WORKER_JOB_TIMEOUT_MS: ${WORKER_JOB_TIMEOUT_MS:-120000}
 
       DATABASE_ENABLED: ${DATABASE_ENABLED:-true}
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST:-postgres}:5432/${POSTGRES_DB}?schema=public
       DATABASE_LOG_QUERIES: ${DATABASE_LOG_QUERIES:-false}
       RUN_PRISMA_MIGRATE_ON_BOOT: "false"
       NPM_CONFIG_UPDATE_NOTIFIER: ${NPM_CONFIG_UPDATE_NOTIFIER:-false}
