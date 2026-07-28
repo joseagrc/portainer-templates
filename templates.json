@@ -3790,6 +3790,11 @@
           "default": ""
         },
         {
+          "name": "RATE_LIMIT_REDIS_FAIL_OPEN",
+          "label": "Rate Limit Redis Fail Open",
+          "default": "false"
+        },
+        {
           "name": "REDISINSIGHT_IMAGE",
           "label": "RedisInsight Image",
           "default": "redis/redisinsight"
@@ -3852,6 +3857,21 @@
         {
           "name": "APP_JWT_SECRET",
           "label": "APP JWT Secret",
+          "default": ""
+        },
+        {
+          "name": "METRICS_ENABLED",
+          "label": "Metrics Enabled",
+          "default": "true"
+        },
+        {
+          "name": "HEALTH_DEEP_TOKEN",
+          "label": "Health Deep Token",
+          "default": ""
+        },
+        {
+          "name": "METRICS_AUTH_TOKEN",
+          "label": "Metrics Auth Token",
           "default": ""
         },
         {
