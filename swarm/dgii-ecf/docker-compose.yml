@@ -198,6 +198,10 @@ services:
     image: ${DGII_ECF_ENGINE_IMAGE}:${DGII_ECF_ENGINE_TAG}
     command: ["npx", "prisma", "migrate", "deploy"]
     environment:
+      CERT_MASTER_KEY_BASE64: ${CERT_MASTER_KEY_BASE64:?CERT_MASTER_KEY_BASE64 requerido}
+      INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?INTERNAL_API_TOKEN requerido}
+      API_KEY_PEPPER: ${API_KEY_PEPPER:?API_KEY_PEPPER requerido}
+      APP_JWT_SECRET: ${APP_JWT_SECRET:?APP_JWT_SECRET requerido}
       RUN_PRISMA_MIGRATE_ON_BOOT: ${RUN_PRISMA_MIGRATE_ON_BOOT}
     volumes:
       - dgii_ecf_engine_data:/data
