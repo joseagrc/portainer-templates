@@ -202,6 +202,8 @@ services:
       INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?INTERNAL_API_TOKEN requerido}
       API_KEY_PEPPER: ${API_KEY_PEPPER:?API_KEY_PEPPER requerido}
       APP_JWT_SECRET: ${APP_JWT_SECRET:?APP_JWT_SECRET requerido}
+      DATABASE_ENABLED: ${DATABASE_ENABLED:-true}
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
       RUN_PRISMA_MIGRATE_ON_BOOT: ${RUN_PRISMA_MIGRATE_ON_BOOT}
     volumes:
       - dgii_ecf_engine_data:/data
