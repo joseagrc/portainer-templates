@@ -3810,6 +3810,31 @@
           "default": "1.1.42"
         },
         {
+          "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
+          "label": "Platform Admin Enabled",
+          "default": "true"
+        },
+        {
+          "name": "PLATFORM_ADMIN_EMAIL",
+          "label": "Platform Admin Email",
+          "default": ""
+        },
+        {
+          "name": "PLATFORM_ADMIN_FULL_NAME",
+          "label": "Platform Admin Full Name",
+          "default": "Administrator"
+        },
+        {
+          "name": "PLATFORM_ADMIN_PASSWORD",
+          "label": "Platform Admin Password",
+          "default": ""
+        },
+        {
+          "name": "PLATFORM_ADMIN_RESET_PASSWORD_ON_BOOT",
+          "label": "Platform Admin Reset Password on Boot",
+          "default": "false"
+        },
+        {
           "name": "CERT_MASTER_KEY_BASE64",
           "label": "Cert Master Key Base64",
           "default": ""
