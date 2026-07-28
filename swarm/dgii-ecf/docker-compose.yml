@@ -75,8 +75,6 @@ services:
       mode: replicated
       replicas: 1
 
-      endpoint_mode: dnsrr
-
       placement:
         constraints:
           - node.labels.postgres == true
@@ -196,7 +194,22 @@ services:
 
   dgii-ecf-engine-migrate:
     image: ${DGII_ECF_ENGINE_IMAGE}:${DGII_ECF_ENGINE_TAG}
-    command: ["npx", "prisma", "migrate", "deploy"]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Esperando a que postgres acepte conexiones..."
+        i=0
+        until pg_isready -h postgres -p 5432 -U "${POSTGRES_USER}" -d "${POSTGRES_DB}" >/dev/null 2>&1; do
+          i=$((i+1))
+          if [ "$i" -ge 40 ]; then
+            echo "Timeout esperando a postgres, abortando."
+            exit 1
+          fi
+          echo "postgres no disponible aún (intento $i), reintentando en 3s..."
+          sleep 3
+        done
+        echo "postgres listo, ejecutando migraciones..."
+        exec npx prisma migrate deploy
     environment:
       CERT_MASTER_KEY_BASE64: ${CERT_MASTER_KEY_BASE64:?CERT_MASTER_KEY_BASE64 requerido}
       INTERNAL_API_TOKEN: ${INTERNAL_API_TOKEN:?INTERNAL_API_TOKEN requerido}
@@ -215,7 +228,8 @@ services:
       replicas: 1
       restart_policy:
         condition: on-failure
-        max_attempts: 3
+        max_attempts: 5
+        delay: 5s
       labels:
         - com.dgii-ecf.service=dgii-ecf-engine-migrate
 
