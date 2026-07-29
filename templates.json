@@ -3590,11 +3590,6 @@
       },
       "env": [
         {
-          "name": "COMPOSE_PROJECT_NAME",
-          "label": "Compose Project Name",
-          "default": "dgii-ecf"
-        },
-        {
           "name": "POSTGRES_IMAGE",
           "label": "Postgres Image",
           "default": "postgres"
@@ -3817,7 +3812,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.49"
+          "default": "1.1.54"
         },
         {
           "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
@@ -3878,6 +3873,11 @@
           "name": "INSTANCE_BACKUP_MAX_UPLOAD_BYTES",
           "label": "Instance Backup Max Upload Bytes",
           "default": "10737418240"
+        },
+        {
+          "name": "INSTANCE_BACKUP_HTTP_TIMEOUT_MS",
+          "label": "Instance Backup HTTP Timeout Ms",
+          "default": "900000"
         },
         {
           "name": "METRICS_ENABLED",
@@ -3972,7 +3972,7 @@
         {
           "name": "DGII_ECF_PORTAL_TAG",
           "label": "DGII ECF Portal Tag",
-          "default": "1.1.49"
+          "default": "1.1.54"
         },
         {
           "name": "DGII_ECF_PORTAL_PORT",
@@ -3983,21 +3983,6 @@
           "name": "PUBLIC_ENGINE_URL",
           "label": "Public Engine URL",
           "default": "ecf.example.com"
-        },
-        {
-          "name": "PORTAL_DOMAIN",
-          "label": "Portal Domain",
-          "default": "app.example.com"
-        },
-        {
-          "name": "PGADMIN_DOMAIN",
-          "label": "pgAdmin Domain",
-          "default": "pgadmin.example.com"
-        },
-        {
-          "name": "REDISINSIGHT_DOMAIN",
-          "label": "RedisInsight Domain",
-          "default": "redisinsight.example.com"
         },
         {
           "name": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
@@ -4213,11 +4198,6 @@
           "name": "NETWORK",
           "label": "Network Name",
           "default": "proxy"
-        },
-        {
-          "name": "TRAEFIK_CERT_RESOLVER",
-          "label": "Traefik Certificate Resolver",
-          "default": "letsencrypt"
         }
       ],
       "note": "Requiere el 'POSTGRES_PASSWORD'. Las migraciones Prisma se ejecutan mediante el job dgii-ecf-engine-migrate; el engine arranca con migraciones desactivadas y usa PORTAL_PUBLIC_URL como origen CORS."
