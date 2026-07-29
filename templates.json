@@ -3153,7 +3153,7 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.1.58",
+          "default": "1.1.59",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
         },
@@ -3318,7 +3318,7 @@
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
         {
-          "default": "1.1.55",
+          "default": "1.1.59",
           "label": "DGII e-CF Portal Tag",
           "name": "DGII_ECF_PORTAL_TAG"
         },
@@ -3817,7 +3817,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.58"
+          "default": "1.1.59"
         },
         {
           "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
@@ -3883,6 +3883,11 @@
           "name": "INSTANCE_BACKUP_HTTP_TIMEOUT_MS",
           "label": "Instance Backup HTTP Timeout Ms",
           "default": "900000"
+        },
+        {
+          "name": "BACKUP_AUTOMATION_SCHEDULER_ENABLED",
+          "label": "Backup Automation Scheduler Enabled",
+          "default": "true"
         },
         {
           "name": "BACKUP_REMOTE_ENABLED",
@@ -4037,7 +4042,7 @@
         {
           "name": "DGII_ECF_PORTAL_TAG",
           "label": "DGII ECF Portal Tag",
-          "default": "1.1.55"
+          "default": "1.1.59"
         },
         {
           "name": "DGII_ECF_PORTAL_PORT",
