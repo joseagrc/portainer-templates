@@ -3153,7 +3153,7 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.1.57",
+          "default": "1.1.58",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
         },
@@ -3817,7 +3817,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.57"
+          "default": "1.1.58"
         },
         {
           "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
@@ -3883,6 +3883,66 @@
           "name": "INSTANCE_BACKUP_HTTP_TIMEOUT_MS",
           "label": "Instance Backup HTTP Timeout Ms",
           "default": "900000"
+        },
+        {
+          "name": "BACKUP_REMOTE_ENABLED",
+          "label": "Remote Backup Enabled",
+          "default": "false"
+        },
+        {
+          "name": "BACKUP_REMOTE_DRIVER",
+          "label": "Remote Backup Driver",
+          "default": "rclone"
+        },
+        {
+          "name": "BACKUP_REMOTE_TARGET",
+          "label": "Remote Backup Target",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_VERIFY",
+          "label": "Remote Backup Verify",
+          "default": "true"
+        },
+        {
+          "name": "BACKUP_REMOTE_RCLONE_FLAGS",
+          "label": "Remote Backup Rclone Flags",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_RSYNC_FLAGS",
+          "label": "Remote Backup Rsync Flags",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_SCP_FLAGS",
+          "label": "Remote Backup SCP Flags",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_LFTP_FLAGS",
+          "label": "Remote Backup LFTP Flags",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_FTP_URL",
+          "label": "Remote Backup FTP URL",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_FTP_USER",
+          "label": "Remote Backup FTP User",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_FTP_PASSWORD",
+          "label": "Remote Backup FTP Password",
+          "default": ""
+        },
+        {
+          "name": "BACKUP_REMOTE_FTP_DIR",
+          "label": "Remote Backup FTP Dir",
+          "default": ""
         },
         {
           "name": "METRICS_ENABLED",
