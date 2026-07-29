@@ -105,6 +105,16 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-wazuh}-certs-generator
     hostname: wazuh-certs-generator
     restart: "no"
+    entrypoint:
+      - /bin/sh
+      - -ec
+    command:
+      - |
+        if [ -s /certificates/root-ca.pem ] && [ -s /certificates/wazuh.indexer.pem ] && [ -s /certificates/wazuh.manager.pem ]; then
+          echo "Wazuh certificates already exist, skipping generation."
+          exit 0
+        fi
+        exec /entrypoint.sh
     depends_on:
       wazuh-config:
         condition: service_completed_successfully
@@ -136,13 +146,14 @@ services:
       - wazuh_certs:/usr/share/wazuh-indexer/config/certs:ro
       - wazuh_config:/config:ro
     entrypoint:
-      - /bin/bash
+      - /usr/bin/env
+      - bash
       - -ec
     command:
       - |
         cp /config/wazuh_indexer/wazuh.indexer.yml /usr/share/wazuh-indexer/config/opensearch.yml
         cp /config/wazuh_indexer/internal_users.yml /usr/share/wazuh-indexer/config/opensearch-security/internal_users.yml
-        exec /entrypoint.sh opensearch
+        exec /entrypoint.sh opensearchwrapper
     networks:
       default:
         aliases:
@@ -164,7 +175,7 @@ services:
     environment:
       INDEXER_URL: https://wazuh.indexer:9200
       INDEXER_USERNAME: admin
-      INDEXER_PASSWORD: ${WAZUH_INDEXER_PASSWORD:-SecretPassword}
+      INDEXER_PASSWORD: SecretPassword
       FILEBEAT_SSL_VERIFICATION_MODE: full
       SSL_CERTIFICATE_AUTHORITIES: /etc/ssl/root-ca.pem
       SSL_CERTIFICATE: /etc/ssl/filebeat.pem
@@ -192,7 +203,8 @@ services:
       - filebeat_var:/var/lib/filebeat
       - wazuh_certs:/certs:ro
     entrypoint:
-      - /bin/bash
+      - /usr/bin/env
+      - bash
       - -ec
     command:
       - |
@@ -217,10 +229,10 @@ services:
         condition: service_started
     environment:
       INDEXER_USERNAME: admin
-      INDEXER_PASSWORD: ${WAZUH_INDEXER_PASSWORD:-SecretPassword}
+      INDEXER_PASSWORD: SecretPassword
       WAZUH_API_URL: https://wazuh.manager
       DASHBOARD_USERNAME: kibanaserver
-      DASHBOARD_PASSWORD: ${WAZUH_DASHBOARD_SYSTEM_PASSWORD:-kibanaserver}
+      DASHBOARD_PASSWORD: kibanaserver
       API_USERNAME: ${WAZUH_API_USERNAME:-wazuh-wui}
       API_PASSWORD: ${WAZUH_API_PASSWORD:-MyS3cr37P450r.*-}
     volumes:
@@ -229,7 +241,8 @@ services:
       - wazuh_certs:/usr/share/wazuh-dashboard/certs:ro
       - wazuh_config:/config:ro
     entrypoint:
-      - /bin/bash
+      - /usr/bin/env
+      - bash
       - -ec
     command:
       - |

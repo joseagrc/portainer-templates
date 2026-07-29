@@ -5185,16 +5185,6 @@
           "name": "OPENSEARCH_JAVA_OPTS"
         },
         {
-          "default": "SecretPassword",
-          "label": "Indexer Admin Password",
-          "name": "WAZUH_INDEXER_PASSWORD"
-        },
-        {
-          "default": "kibanaserver",
-          "label": "Dashboard System Password",
-          "name": "WAZUH_DASHBOARD_SYSTEM_PASSWORD"
-        },
-        {
           "default": "wazuh-wui",
           "label": "Wazuh API Username",
           "name": "WAZUH_API_USERNAME"
