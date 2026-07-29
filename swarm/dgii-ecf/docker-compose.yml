@@ -388,6 +388,46 @@ services:
           echo "Esperando a que dgii-ecf-engine-migrate complete..."
           sleep 5
         done
+        cat > /app/scripts/backup-verify.sh <<'VERIFY_EOF'
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        BACKUP_DIR="$${1:?Uso: scripts/backup-verify.sh backups/full/YYYYMMDD-HHMMSS}"
+
+        if [ ! -d "$$BACKUP_DIR" ]; then
+          echo "No existe BACKUP_DIR: $$BACKUP_DIR" >&2
+          exit 1
+        fi
+
+        echo "== Verificando backups en $$BACKUP_DIR =="
+
+        find "$$BACKUP_DIR" -name '*.sha256' -print0 | while IFS= read -r -d '' checksum_file; do
+          checksum_dir="$$(dirname "$$checksum_file")"
+          checksum_name="$$(basename "$$checksum_file")"
+          target_name="$${checksum_name%.sha256}"
+          target_file="$$checksum_dir/$$target_name"
+
+          echo "Verificando $$checksum_file"
+
+          if [ ! -f "$$target_file" ]; then
+            echo "No existe archivo respaldado esperado: $$target_file" >&2
+            exit 1
+          fi
+
+          expected_hash="$$(awk 'NF >= 1 { print $$1; exit }' "$$checksum_file")"
+          actual_hash="$$(sha256sum "$$target_file" | awk '{ print $$1 }')"
+
+          if [ -z "$$expected_hash" ] || [ "$$expected_hash" != "$$actual_hash" ]; then
+            echo "$$target_file: FAILED" >&2
+            exit 1
+          fi
+
+          echo "$$target_file: OK"
+        done
+
+        echo "Verificación completada."
+        VERIFY_EOF
+        chmod +x /app/scripts/backup-verify.sh
         echo "Migraciones al día, iniciando aplicación..."
         exec /app/docker-entrypoint.sh node dist/server.js
     environment:
