@@ -428,6 +428,35 @@ services:
         echo "Verificación completada."
         VERIFY_EOF
         chmod +x /app/scripts/backup-verify.sh
+        cat > /app/scripts/backup-verify-file.sh <<'VERIFY_FILE_EOF'
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        BACKUP_FILE="$${1:?Uso: scripts/backup-verify-file.sh archivo}"
+        CHECKSUM_FILE="$$BACKUP_FILE.sha256"
+
+        if [ ! -f "$$BACKUP_FILE" ]; then
+          echo "No existe BACKUP_FILE: $$BACKUP_FILE" >&2
+          exit 1
+        fi
+
+        if [ ! -f "$$CHECKSUM_FILE" ]; then
+          echo "No existe CHECKSUM_FILE: $$CHECKSUM_FILE" >&2
+          exit 1
+        fi
+
+        expected_hash="$$(awk 'NF >= 1 { print $$1; exit }' "$$CHECKSUM_FILE")"
+        actual_hash="$$(sha256sum "$$BACKUP_FILE" | awk '{ print $$1 }')"
+
+        if [ -z "$$expected_hash" ] || [ "$$expected_hash" != "$$actual_hash" ]; then
+          echo "$$BACKUP_FILE: FAILED" >&2
+          exit 1
+        fi
+
+        echo "$$BACKUP_FILE: OK"
+        VERIFY_FILE_EOF
+        chmod +x /app/scripts/backup-verify-file.sh
+        sed -i 's#sha256sum -c "$$BACKUP_FILE.sha256"#/app/scripts/backup-verify-file.sh "$$BACKUP_FILE"#' /app/scripts/restore-*.sh
         echo "Migraciones al día, iniciando aplicación..."
         exec /app/docker-entrypoint.sh node dist/server.js
     environment:
