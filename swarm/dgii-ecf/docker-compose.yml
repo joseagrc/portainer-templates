@@ -183,6 +183,9 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?PGADMIN_DEFAULT_PASSWORD requerido}
     security_opt:
       - no-new-privileges:true
+    networks:
+      - default
+      - proxy
     labels:
       - com.dgii-ecf.service=pgadmin
       - com.dgii-ecf.component=database
@@ -273,6 +276,9 @@ services:
       RI_REDIS_PASSWORD: ${REDIS_PASSWORD:?REDIS_PASSWORD requerido}
     security_opt:
       - no-new-privileges:true
+    networks:
+      - default
+      - proxy
     labels:
       - com.dgii-ecf.service=redisinsight
       - com.dgii-ecf.component=database
@@ -526,6 +532,9 @@ services:
       timeout: 10s
       retries: 30
       start_period: 300s
+    networks:
+      - default
+      - proxy
     labels:
       - com.dgii-ecf.service=dgii-ecf-engine
       - com.dgii-ecf.component=api
@@ -612,6 +621,9 @@ services:
       options:
         max-size: ${LOG_MAX_SIZE:-10m}
         max-file: ${LOG_MAX_FILES:-5}
+    networks:
+      - default
+      - proxy
     labels:
       - com.dgii-ecf.service=dgii-ecf-portal
       - com.dgii-ecf.component=portal
@@ -1059,5 +1071,8 @@ volumes:
 
 networks:
   default:
+    driver: bridge
+
+  proxy:
     name: ${NETWORK:-proxy}
     external: true
