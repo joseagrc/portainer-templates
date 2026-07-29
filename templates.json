@@ -3153,7 +3153,7 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.1.42",
+          "default": "1.1.49",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
         },
@@ -3318,7 +3318,7 @@
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
         {
-          "default": "1.1.42",
+          "default": "1.1.49",
           "label": "DGII e-CF Portal Tag",
           "name": "DGII_ECF_PORTAL_TAG"
         },
@@ -3578,7 +3578,7 @@
       "type": 3,
       "title": "DGII e-CF Swarm",
       "description": "DGII e-CF Swarm is an application that works electronic invoicing for Dominican Republic.",
-      "note": "Deploys a DGII e-CF Swarm instance to electronic invoicing.",
+      "note": "Deploys a DGII e-CF Swarm instance to electronic invoicing. Instance backup/restore from the portal is enabled by default and mounts /var/run/docker.sock in the engine container; restrict portal superadmin access.",
       "categories": [
           "API"
       ],
@@ -3817,7 +3817,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.42"
+          "default": "1.1.49"
         },
         {
           "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
@@ -3863,6 +3863,21 @@
           "name": "APP_JWT_SECRET",
           "label": "APP JWT Secret",
           "default": ""
+        },
+        {
+          "name": "INSTANCE_BACKUP_ENABLED",
+          "label": "Instance Backup Enabled",
+          "default": "true"
+        },
+        {
+          "name": "INSTANCE_BACKUP_WORK_DIR",
+          "label": "Instance Backup Work Dir",
+          "default": "/tmp/dgii-ecf-instance-backups"
+        },
+        {
+          "name": "INSTANCE_BACKUP_MAX_UPLOAD_BYTES",
+          "label": "Instance Backup Max Upload Bytes",
+          "default": "10737418240"
         },
         {
           "name": "METRICS_ENABLED",
@@ -3957,7 +3972,7 @@
         {
           "name": "DGII_ECF_PORTAL_TAG",
           "label": "DGII ECF Portal Tag",
-          "default": "1.1.42"
+          "default": "1.1.49"
         },
         {
           "name": "DGII_ECF_PORTAL_PORT",

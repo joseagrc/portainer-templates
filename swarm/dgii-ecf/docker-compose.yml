@@ -428,6 +428,9 @@ services:
       API_KEYS_FILE: ${API_KEYS_FILE:-/data/api_keys.json}
       USERS_FILE: ${USERS_FILE:-/data/users.json}
       AUDIT_LOG_FILE: ${AUDIT_LOG_FILE:-/logs/audit.log}
+      INSTANCE_BACKUP_ENABLED: ${INSTANCE_BACKUP_ENABLED:-true}
+      INSTANCE_BACKUP_WORK_DIR: ${INSTANCE_BACKUP_WORK_DIR:-/tmp/dgii-ecf-instance-backups}
+      INSTANCE_BACKUP_MAX_UPLOAD_BYTES: ${INSTANCE_BACKUP_MAX_UPLOAD_BYTES:-10737418240}
 
       APP_JWT_EXPIRES_IN: ${APP_JWT_EXPIRES_IN:-7d}
       DGII_STATUS_API_KEY: ${DGII_STATUS_API_KEY:-}
@@ -484,6 +487,7 @@ services:
     volumes:
       - dgii_ecf_engine_data:/data
       - dgii_ecf_engine_logs:/logs
+      - /var/run/docker.sock:/var/run/docker.sock
     healthcheck:
       test:
         [
