@@ -3970,6 +3970,21 @@
           "default": "ecf.example.com"
         },
         {
+          "name": "PORTAL_DOMAIN",
+          "label": "Portal Domain",
+          "default": "app.example.com"
+        },
+        {
+          "name": "PGADMIN_DOMAIN",
+          "label": "pgAdmin Domain",
+          "default": "pgadmin.example.com"
+        },
+        {
+          "name": "REDISINSIGHT_DOMAIN",
+          "label": "RedisInsight Domain",
+          "default": "redisinsight.example.com"
+        },
+        {
           "name": "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY",
           "label": "Next Server Actions Encryption Key",
           "default": ""
@@ -4183,6 +4198,11 @@
           "name": "NETWORK",
           "label": "Network Name",
           "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik Certificate Resolver",
+          "default": "letsencrypt"
         }
       ],
       "note": "Requiere el 'POSTGRES_PASSWORD'. Las migraciones Prisma se ejecutan mediante el job dgii-ecf-engine-migrate; el engine arranca con migraciones desactivadas y usa PORTAL_PUBLIC_URL como origen CORS."

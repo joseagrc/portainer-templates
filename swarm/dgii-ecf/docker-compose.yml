@@ -195,6 +195,22 @@ services:
       labels:
         - com.dgii-ecf.service=pgadmin
         - com.dgii-ecf.component=database
+        - traefik.enable=true
+        - traefik.docker.network=${NETWORK:-proxy}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-http.rule=Host(`${PGADMIN_DOMAIN}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-http.entrypoints=web
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-http.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-https-redirect
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-https-redirect.redirectscheme.scheme=https
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-https-redirect.redirectscheme.permanent=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.rule=Host(`${PGADMIN_DOMAIN}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.entrypoints=websecure
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.tls=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.service=${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-security-headers
+        - traefik.http.services.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin.loadbalancer.server.port=80
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-security-headers.headers.contentTypeNosniff=true
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-pgadmin-security-headers.headers.referrerPolicy=no-referrer
 
   redis:
     image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8.8.1-alpine}
@@ -257,6 +273,22 @@ services:
       labels:
         - com.dgii-ecf.service=redisinsight
         - com.dgii-ecf.component=database
+        - traefik.enable=true
+        - traefik.docker.network=${NETWORK:-proxy}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-http.rule=Host(`${REDISINSIGHT_DOMAIN}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-http.entrypoints=web
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-http.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-https-redirect
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-https-redirect.redirectscheme.scheme=https
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-https-redirect.redirectscheme.permanent=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.rule=Host(`${REDISINSIGHT_DOMAIN}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.entrypoints=websecure
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.tls=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.service=${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-security-headers
+        - traefik.http.services.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight.loadbalancer.server.port=5540
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-security-headers.headers.contentTypeNosniff=true
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-redisinsight-security-headers.headers.referrerPolicy=no-referrer
 
   dgii-ecf-engine-migrate:
     image: ${DGII_ECF_ENGINE_IMAGE}:${DGII_ECF_ENGINE_TAG}
@@ -474,6 +506,26 @@ services:
       labels:
         - com.dgii-ecf.service=dgii-ecf-engine
         - com.dgii-ecf.component=api
+        - traefik.enable=true
+        - traefik.docker.network=${NETWORK:-proxy}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-http.rule=Host(`${PUBLIC_ENGINE_URL}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-http.entrypoints=web
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-http.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-https-redirect
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-https-redirect.redirectscheme.scheme=https
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-https-redirect.redirectscheme.permanent=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.rule=Host(`${PUBLIC_ENGINE_URL}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.entrypoints=websecure
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.tls=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.service=${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers
+        - traefik.http.services.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine.loadbalancer.server.port=${DGII_ECF_ENGINE_PORT:-4000}
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers.headers.customrequestheaders.X-Forwarded-Proto=https
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers.headers.customrequestheaders.X-Forwarded-Port=443
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers.headers.customrequestheaders.X-Forwarded-Ssl=on
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers.headers.contentTypeNosniff=true
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers.headers.frameDeny=true
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-engine-security-headers.headers.referrerPolicy=no-referrer
 
   dgii-ecf-portal:
     image: ${DGII_ECF_PORTAL_IMAGE}:${DGII_ECF_PORTAL_TAG}
@@ -517,6 +569,22 @@ services:
       labels:
         - com.dgii-ecf.service=dgii-ecf-portal
         - com.dgii-ecf.component=portal
+        - traefik.enable=true
+        - traefik.docker.network=${NETWORK:-proxy}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-http.rule=Host(`${PORTAL_DOMAIN}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-http.entrypoints=web
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-http.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-https-redirect
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-https-redirect.redirectscheme.scheme=https
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-https-redirect.redirectscheme.permanent=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.rule=Host(`${PORTAL_DOMAIN}`)
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.entrypoints=websecure
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.tls=true
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.service=${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal
+        - traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.middlewares=${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-security-headers
+        - traefik.http.services.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal.loadbalancer.server.port=${DGII_ECF_PORTAL_PORT:-3000}
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-security-headers.headers.contentTypeNosniff=true
+        - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-ecf}-portal-security-headers.headers.referrerPolicy=strict-origin-when-cross-origin
 
   dgii-ecf-scheduler:
     <<: *engine-worker-service
