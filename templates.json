@@ -5104,6 +5104,118 @@
           "container": "/home/wso2carbon/wso2am-4.7.0/repository/logs"
         }
       ]
+    },
+    {
+      "id": 48,
+      "type": 3,
+      "title": "Wazuh",
+      "description": "Wazuh is an open source SIEM and XDR platform with manager, indexer and dashboard services.",
+      "note": "Deploys a single-node Wazuh stack using official Docker images. Requires at least 4 CPU cores, 8 GB RAM and 50 GB storage. Set vm.max_map_count=262144 on the Docker host before deploying. Dashboard is exposed through Traefik; manager agent ports are published directly.",
+      "categories": ["Security"],
+      "platform": "linux",
+      "logo": "https://wazuh.com/uploads/2022/05/wazuh-logo.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/wazuh/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "wazuh",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "4.14.6",
+          "label": "Wazuh Version",
+          "name": "WAZUH_VERSION"
+        },
+        {
+          "default": "0.0.4",
+          "label": "Wazuh Certs Generator Tag",
+          "name": "WAZUH_CERTS_GENERATOR_TAG"
+        },
+        {
+          "default": "4.14",
+          "label": "Wazuh Cert Tool Version",
+          "name": "WAZUH_CERT_TOOL_VERSION"
+        },
+        {
+          "default": "3.22",
+          "label": "Alpine Tag",
+          "name": "ALPINE_TAG"
+        },
+        {
+          "default": "wazuh.example.com",
+          "label": "Wazuh Dashboard Domain",
+          "name": "WAZUH_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        },
+        {
+          "default": "1514",
+          "label": "Agent TCP Port",
+          "name": "WAZUH_AGENT_TCP_PORT"
+        },
+        {
+          "default": "1515",
+          "label": "Agent Enrollment Port",
+          "name": "WAZUH_AGENT_ENROLLMENT_PORT"
+        },
+        {
+          "default": "514",
+          "label": "Syslog UDP Port",
+          "name": "WAZUH_SYSLOG_UDP_PORT"
+        },
+        {
+          "default": "55000",
+          "label": "Manager API Port",
+          "name": "WAZUH_MANAGER_API_PORT"
+        },
+        {
+          "default": "-Xms1g -Xmx1g",
+          "label": "Indexer Java Options",
+          "name": "OPENSEARCH_JAVA_OPTS"
+        },
+        {
+          "default": "SecretPassword",
+          "label": "Indexer Admin Password",
+          "name": "WAZUH_INDEXER_PASSWORD"
+        },
+        {
+          "default": "kibanaserver",
+          "label": "Dashboard System Password",
+          "name": "WAZUH_DASHBOARD_SYSTEM_PASSWORD"
+        },
+        {
+          "default": "wazuh-wui",
+          "label": "Wazuh API Username",
+          "name": "WAZUH_API_USERNAME"
+        },
+        {
+          "default": "MyS3cr37P450r.*-",
+          "label": "Wazuh API Password",
+          "name": "WAZUH_API_PASSWORD"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/ossec"
+        },
+        {
+          "container": "/var/lib/wazuh-indexer"
+        },
+        {
+          "container": "/usr/share/wazuh-dashboard/data/wazuh/config"
+        }
+      ]
     }
   ]
 }
