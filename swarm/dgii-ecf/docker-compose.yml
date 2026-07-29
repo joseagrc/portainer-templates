@@ -457,7 +457,8 @@ services:
         VERIFY_FILE_EOF
         chmod +x /app/scripts/backup-verify-file.sh
         sed -i 's#sha256sum -c "$$BACKUP_FILE.sha256"#/app/scripts/backup-verify-file.sh "$$BACKUP_FILE"#' /app/scripts/restore-*.sh
-                #!/usr/bin/env bash
+        cat > /app/scripts/restore-full.sh <<'RESTORE_FULL_EOF'
+        #!/usr/bin/env bash
         set -euo pipefail
 
         source "$$(dirname "$$0")/container-runtime.sh"
@@ -638,6 +639,7 @@ services:
 
         echo "Restore full completado."
         echo "Recomendado: ejecutar health/readiness y una prueba de login/envio antes de abrir tráfico."
+        RESTORE_FULL_EOF
         chmod +x /app/scripts/restore-full.sh
         echo "Migraciones al día, iniciando aplicación..."
         exec /app/docker-entrypoint.sh node dist/server.js
