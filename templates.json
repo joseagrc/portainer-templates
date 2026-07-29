@@ -3153,7 +3153,7 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.1.49",
+          "default": "1.1.56",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
         },
@@ -3318,7 +3318,7 @@
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
         {
-          "default": "1.1.49",
+          "default": "1.1.55",
           "label": "DGII e-CF Portal Tag",
           "name": "DGII_ECF_PORTAL_TAG"
         },
@@ -3817,7 +3817,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.55"
+          "default": "1.1.56"
         },
         {
           "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
