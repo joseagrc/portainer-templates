@@ -90,16 +90,6 @@ services:
         opensearch_security.session.keepalive: true
         EOF
 
-        cat > /config/wazuh_dashboard/wazuh.yml <<EOF
-        hosts:
-          - default:
-              url: "https://wazuh.manager"
-              port: 55000
-              username: "$${WAZUH_API_USERNAME}"
-              password: "$${WAZUH_API_PASSWORD}"
-              run_as: true
-        EOF
-
   wazuh-certs-generator:
     image: wazuh/wazuh-certs-generator:${WAZUH_CERTS_GENERATOR_TAG:-0.0.4}
     container_name: ${COMPOSE_PROJECT_NAME:-wazuh}-certs-generator
@@ -247,8 +237,17 @@ services:
     command:
       - |
         cp /config/wazuh_dashboard/opensearch_dashboards.yml /usr/share/wazuh-dashboard/config/opensearch_dashboards.yml
-        cp /config/wazuh_dashboard/wazuh.yml /usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml
-        exec /entrypoint.sh
+        rm -f /usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml
+        /entrypoint.sh &
+        dashboard_pid=$$!
+        for _ in $(seq 1 60); do
+          if [ -f /usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml ]; then
+            sed -i 's/run_as: true/run_as: false/' /usr/share/wazuh-dashboard/data/wazuh/config/wazuh.yml
+            break
+          fi
+          sleep 1
+        done
+        wait "$$dashboard_pid"
     networks:
       default:
         aliases:
