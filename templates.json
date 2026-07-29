@@ -5206,6 +5206,116 @@
           "container": "/usr/share/wazuh-dashboard/data/wazuh/config"
         }
       ]
+    },
+    {
+      "id": 49,
+      "type": 3,
+      "title": "Beszel Hub",
+      "description": "Beszel is a lightweight server monitoring hub with Docker stats, historical data and alerts.",
+      "note": "Deploys the Beszel hub behind Traefik on port 8090. After first login, create the admin user and generate a token/public key for each Beszel Agent from the Add System flow or /settings/tokens.",
+      "categories": ["Monitoring"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/beszel/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "beszel",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "henrygd/beszel",
+          "label": "Beszel Hub Image",
+          "name": "BESZEL_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Beszel Hub Tag",
+          "name": "BESZEL_TAG"
+        },
+        {
+          "default": "beszel.example.com",
+          "label": "Beszel Domain",
+          "name": "BESZEL_DOMAIN"
+        },
+        {
+          "default": "https://beszel.example.com",
+          "label": "Beszel App URL",
+          "name": "BESZEL_APP_URL"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/beszel_data"
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "type": 3,
+      "title": "Beszel Agent",
+      "description": "Beszel Agent collects host and Docker metrics for a Beszel hub.",
+      "note": "Deploy this on each Docker host you want to monitor. Generate the TOKEN and KEY from the Beszel Hub Add System flow or from /settings/tokens before deploying. The agent uses host networking and reads the Docker socket.",
+      "categories": ["Monitoring"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/beszel-agent/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "beszel-agent",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "henrygd/beszel-agent",
+          "label": "Beszel Agent Image",
+          "name": "BESZEL_AGENT_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Beszel Agent Tag",
+          "name": "BESZEL_AGENT_TAG"
+        },
+        {
+          "default": "45876",
+          "label": "Agent Listen Address or Port",
+          "name": "BESZEL_AGENT_LISTEN"
+        },
+        {
+          "default": "https://beszel.example.com",
+          "label": "Beszel Hub URL",
+          "name": "BESZEL_HUB_URL"
+        },
+        {
+          "label": "Beszel Agent Token",
+          "name": "BESZEL_AGENT_TOKEN"
+        },
+        {
+          "label": "Beszel Agent Public Key",
+          "name": "BESZEL_AGENT_KEY"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/beszel-agent"
+        }
+      ]
     }
   ]
 }

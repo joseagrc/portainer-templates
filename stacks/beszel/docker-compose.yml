@@ -1,0 +1,31 @@
+services:
+  beszel:
+    container_name: ${COMPOSE_PROJECT_NAME:-beszel}
+    image: ${BESZEL_IMAGE:-henrygd/beszel}:${BESZEL_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      APP_URL: ${BESZEL_APP_URL:-https://${BESZEL_DOMAIN}}
+    volumes:
+      - beszel_data:/beszel_data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}-http.rule=Host(`${BESZEL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}-http.middlewares=${COMPOSE_PROJECT_NAME:-beszel}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-beszel}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-beszel}-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}.rule=Host(`${BESZEL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-beszel}.service=${COMPOSE_PROJECT_NAME:-beszel}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-beszel}.loadbalancer.server.port=8090"
+
+volumes:
+  beszel_data:
+
+networks:
+  default:
+    name: ${NETWORK:-proxy}
+    external: true
