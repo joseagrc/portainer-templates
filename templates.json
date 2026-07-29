@@ -5268,7 +5268,7 @@
       "type": 3,
       "title": "Beszel Agent",
       "description": "Beszel Agent collects host and Docker metrics for a Beszel hub.",
-      "note": "Deploy this on each Docker host you want to monitor. Generate the TOKEN and KEY from the Beszel Hub Add System flow or from /settings/tokens before deploying. The agent uses host networking and reads the Docker socket.",
+      "note": "Deploy this on each Docker host you want to monitor. BESZEL_AGENT_TOKEN must be a token created in the Beszel Hub at /settings/tokens; an empty, random or unknown token causes WebSocket 401. BESZEL_AGENT_KEY is the public key shown by the hub when adding a system. The agent uses host networking and reads the Docker socket.",
       "categories": ["Monitoring"],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel.svg",
@@ -5303,11 +5303,11 @@
           "name": "BESZEL_HUB_URL"
         },
         {
-          "label": "Beszel Agent Token",
+          "label": "Beszel Universal Token",
           "name": "BESZEL_AGENT_TOKEN"
         },
         {
-          "label": "Beszel Agent Public Key",
+          "label": "Beszel Hub Public Key",
           "name": "BESZEL_AGENT_KEY"
         }
       ],
