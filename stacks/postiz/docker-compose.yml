@@ -1,0 +1,268 @@
+services:
+  postiz:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-app
+    image: ${POSTIZ_IMAGE:-ghcr.io/gitroomhq/postiz-app}:${POSTIZ_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      MAIN_URL: ${POSTIZ_MAIN_URL:-https://${POSTIZ_DOMAIN}}
+      FRONTEND_URL: ${POSTIZ_FRONTEND_URL:-https://${POSTIZ_DOMAIN}}
+      NEXT_PUBLIC_BACKEND_URL: ${POSTIZ_BACKEND_PUBLIC_URL:-https://${POSTIZ_DOMAIN}/api}
+      BACKEND_INTERNAL_URL: ${POSTIZ_BACKEND_INTERNAL_URL:-http://localhost:3000}
+      JWT_SECRET: ${POSTIZ_JWT_SECRET:?POSTIZ_JWT_SECRET requerido}
+      DATABASE_URL: postgresql://${POSTIZ_DB_USER:-postiz}:${POSTIZ_DB_PASSWORD:?POSTIZ_DB_PASSWORD requerido}@postiz-postgres:5432/${POSTIZ_DB_NAME:-postiz}
+      REDIS_URL: redis://postiz-redis:6379
+      TEMPORAL_ADDRESS: temporal:7233
+      IS_GENERAL: ${POSTIZ_IS_GENERAL:-true}
+      DISABLE_REGISTRATION: ${POSTIZ_DISABLE_REGISTRATION:-false}
+      RUN_CRON: ${POSTIZ_RUN_CRON:-true}
+      STORAGE_PROVIDER: ${POSTIZ_STORAGE_PROVIDER:-local}
+      UPLOAD_DIRECTORY: /uploads
+      NEXT_PUBLIC_UPLOAD_DIRECTORY: /uploads
+      API_LIMIT: ${POSTIZ_API_LIMIT:-30}
+      X_API_KEY: ${X_API_KEY:-}
+      X_API_SECRET: ${X_API_SECRET:-}
+      LINKEDIN_CLIENT_ID: ${LINKEDIN_CLIENT_ID:-}
+      LINKEDIN_CLIENT_SECRET: ${LINKEDIN_CLIENT_SECRET:-}
+      REDDIT_CLIENT_ID: ${REDDIT_CLIENT_ID:-}
+      REDDIT_CLIENT_SECRET: ${REDDIT_CLIENT_SECRET:-}
+      FACEBOOK_APP_ID: ${FACEBOOK_APP_ID:-}
+      FACEBOOK_APP_SECRET: ${FACEBOOK_APP_SECRET:-}
+      YOUTUBE_CLIENT_ID: ${YOUTUBE_CLIENT_ID:-}
+      YOUTUBE_CLIENT_SECRET: ${YOUTUBE_CLIENT_SECRET:-}
+      TIKTOK_CLIENT_ID: ${TIKTOK_CLIENT_ID:-}
+      TIKTOK_CLIENT_SECRET: ${TIKTOK_CLIENT_SECRET:-}
+      PINTEREST_CLIENT_ID: ${PINTEREST_CLIENT_ID:-}
+      PINTEREST_CLIENT_SECRET: ${PINTEREST_CLIENT_SECRET:-}
+      THREADS_APP_ID: ${THREADS_APP_ID:-}
+      THREADS_APP_SECRET: ${THREADS_APP_SECRET:-}
+      MASTODON_URL: ${MASTODON_URL:-https://mastodon.social}
+      MASTODON_CLIENT_ID: ${MASTODON_CLIENT_ID:-}
+      MASTODON_CLIENT_SECRET: ${MASTODON_CLIENT_SECRET:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      NEXT_PUBLIC_DISCORD_SUPPORT: ${NEXT_PUBLIC_DISCORD_SUPPORT:-}
+      NEXT_PUBLIC_POLOTNO: ${NEXT_PUBLIC_POLOTNO:-}
+    volumes:
+      - postiz_config:/config
+      - postiz_uploads:/uploads
+    depends_on:
+      postiz-postgres:
+        condition: service_healthy
+      postiz-redis:
+        condition: service_healthy
+      temporal:
+        condition: service_healthy
+    networks:
+      - default
+      - postiz
+      - temporal
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"const r=require('http').get('http://localhost:5000/',res=>process.exit(res.statusCode<500?0:1));r.on('error',()=>process.exit(1));r.setTimeout(4000,()=>{r.destroy();process.exit(1)})\""]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-http.rule=Host(`${POSTIZ_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-http.middlewares=${COMPOSE_PROJECT_NAME:-postiz}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-postiz}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-postiz}-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}.rule=Host(`${POSTIZ_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}.service=${COMPOSE_PROJECT_NAME:-postiz}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-postiz}.loadbalancer.server.port=5000"
+
+  postiz-postgres:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-postgres
+    image: ${POSTIZ_POSTGRES_IMAGE:-postgres}:${POSTIZ_POSTGRES_TAG:-17-alpine}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTIZ_DB_NAME:-postiz}
+      POSTGRES_USER: ${POSTIZ_DB_USER:-postiz}
+      POSTGRES_PASSWORD: ${POSTIZ_DB_PASSWORD:?POSTIZ_DB_PASSWORD requerido}
+    volumes:
+      - postiz_postgres_data:/var/lib/postgresql/data
+    networks:
+      - postiz
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTIZ_DB_USER:-postiz} -d ${POSTIZ_DB_NAME:-postiz}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  postiz-redis:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-redis
+    image: ${POSTIZ_REDIS_IMAGE:-redis}:${POSTIZ_REDIS_TAG:-7.2-alpine}
+    restart: unless-stopped
+    volumes:
+      - postiz_redis_data:/data
+    networks:
+      - postiz
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  temporal-config:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-config
+    image: alpine:${ALPINE_TAG:-3.22}
+    restart: "no"
+    volumes:
+      - temporal_dynamic_config:/dynamicconfig
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        cat > /dynamicconfig/development-sql.yaml <<'EOF'
+        limit.maxIDLength:
+          - value: 255
+            constraints: {}
+        system.forceSearchAttributesCacheRefreshOnRead:
+          - value: true
+            constraints: {}
+        EOF
+
+  temporal-elasticsearch:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-elasticsearch
+    image: ${TEMPORAL_ELASTICSEARCH_IMAGE:-elasticsearch}:${TEMPORAL_ELASTICSEARCH_TAG:-7.17.27}
+    restart: unless-stopped
+    environment:
+      cluster.routing.allocation.disk.threshold_enabled: "true"
+      cluster.routing.allocation.disk.watermark.low: 512mb
+      cluster.routing.allocation.disk.watermark.high: 256mb
+      cluster.routing.allocation.disk.watermark.flood_stage: 128mb
+      discovery.type: single-node
+      ES_JAVA_OPTS: ${TEMPORAL_ES_JAVA_OPTS:--Xms256m -Xmx256m}
+      xpack.security.enabled: "false"
+    volumes:
+      - temporal_elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - temporal
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS \"http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s\" || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
+
+  temporal-postgresql:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-postgresql
+    image: ${TEMPORAL_POSTGRES_IMAGE:-postgres}:${TEMPORAL_POSTGRES_TAG:-16-alpine}
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${TEMPORAL_POSTGRES_PASSWORD:-temporal}
+      POSTGRES_USER: ${TEMPORAL_POSTGRES_USER:-temporal}
+    volumes:
+      - temporal_postgres_data:/var/lib/postgresql/data
+    networks:
+      - temporal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${TEMPORAL_POSTGRES_USER:-temporal}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  temporal:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal
+    image: ${TEMPORAL_IMAGE:-temporalio/auto-setup}:${TEMPORAL_TAG:-1.28.1}
+    restart: unless-stopped
+    depends_on:
+      temporal-config:
+        condition: service_completed_successfully
+      temporal-postgresql:
+        condition: service_healthy
+      temporal-elasticsearch:
+        condition: service_healthy
+    environment:
+      DB: postgres12
+      DB_PORT: 5432
+      POSTGRES_USER: ${TEMPORAL_POSTGRES_USER:-temporal}
+      POSTGRES_PWD: ${TEMPORAL_POSTGRES_PASSWORD:-temporal}
+      POSTGRES_SEEDS: temporal-postgresql
+      DYNAMIC_CONFIG_FILE_PATH: config/dynamicconfig/development-sql.yaml
+      ENABLE_ES: "true"
+      ES_SEEDS: temporal-elasticsearch
+      ES_VERSION: v7
+      TEMPORAL_NAMESPACE: default
+    volumes:
+      - temporal_dynamic_config:/etc/temporal/config/dynamicconfig:ro
+    networks:
+      temporal:
+        aliases:
+          - temporal
+    healthcheck:
+      test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "temporal:7233"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  temporal-admin-tools:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-admin-tools
+    image: ${TEMPORAL_ADMIN_TOOLS_IMAGE:-temporalio/admin-tools}:${TEMPORAL_ADMIN_TOOLS_TAG:-1.28.1-tctl-1.18.4-cli-1.4.1}
+    restart: on-failure
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_CLI_ADDRESS: temporal:7233
+    depends_on:
+      temporal:
+        condition: service_healthy
+    networks:
+      - temporal
+    stdin_open: true
+    tty: true
+
+  temporal-ui:
+    container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui
+    image: ${TEMPORAL_UI_IMAGE:-temporalio/ui}:${TEMPORAL_UI_TAG:-2.34.0}
+    restart: unless-stopped
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+      TEMPORAL_CORS_ORIGINS: ${POSTIZ_TEMPORAL_UI_CORS_ORIGINS:-https://${POSTIZ_TEMPORAL_UI_DOMAIN}}
+    depends_on:
+      temporal:
+        condition: service_healthy
+    networks:
+      - default
+      - temporal
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/healthz || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    labels:
+      - "traefik.enable=${POSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED:-false}"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui.rule=Host(`${POSTIZ_TEMPORAL_UI_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui.service=${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-postiz}-temporal-ui.loadbalancer.server.port=8080"
+
+volumes:
+  postiz_config:
+  postiz_uploads:
+  postiz_postgres_data:
+  postiz_redis_data:
+  temporal_dynamic_config:
+  temporal_postgres_data:
+  temporal_elasticsearch_data:
+
+networks:
+  default:
+    name: ${NETWORK:-proxy}
+    external: true
+  postiz:
+    name: ${COMPOSE_PROJECT_NAME:-postiz}_internal
+  temporal:
+    name: ${COMPOSE_PROJECT_NAME:-postiz}_temporal

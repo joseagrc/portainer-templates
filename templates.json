@@ -5381,6 +5381,261 @@
           "container": "/var/lib/beszel-agent"
         }
       ]
+    },
+    {
+      "id": 51,
+      "type": 3,
+      "title": "Postiz",
+      "description": "Postiz is an open-source social media scheduling and automation platform.",
+      "note": "Deploys Postiz with PostgreSQL, Redis and the required Temporal stack. Postiz is exposed through Traefik on port 5000. Set POSTIZ_JWT_SECRET and POSTIZ_DB_PASSWORD before deploying. Temporal UI is included but not exposed unless POSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED=true.",
+      "categories": ["Social Media", "Productivity"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postiz.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/postiz/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "postiz",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "ghcr.io/gitroomhq/postiz-app",
+          "label": "Postiz Image",
+          "name": "POSTIZ_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Postiz Tag",
+          "name": "POSTIZ_TAG"
+        },
+        {
+          "default": "postiz.example.com",
+          "label": "Postiz Domain",
+          "name": "POSTIZ_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        },
+        {
+          "label": "Postiz JWT Secret",
+          "name": "POSTIZ_JWT_SECRET"
+        },
+        {
+          "default": "postiz",
+          "label": "Postiz Database Name",
+          "name": "POSTIZ_DB_NAME"
+        },
+        {
+          "default": "postiz",
+          "label": "Postiz Database User",
+          "name": "POSTIZ_DB_USER"
+        },
+        {
+          "label": "Postiz Database Password",
+          "name": "POSTIZ_DB_PASSWORD"
+        },
+        {
+          "default": "false",
+          "label": "Disable Registration",
+          "name": "POSTIZ_DISABLE_REGISTRATION"
+        },
+        {
+          "default": "true",
+          "label": "Run Cron",
+          "name": "POSTIZ_RUN_CRON"
+        },
+        {
+          "default": "local",
+          "label": "Storage Provider",
+          "name": "POSTIZ_STORAGE_PROVIDER"
+        },
+        {
+          "default": "30",
+          "label": "API Limit",
+          "name": "POSTIZ_API_LIMIT"
+        },
+        {
+          "label": "X API Key",
+          "name": "X_API_KEY"
+        },
+        {
+          "label": "X API Secret",
+          "name": "X_API_SECRET"
+        },
+        {
+          "label": "LinkedIn Client ID",
+          "name": "LINKEDIN_CLIENT_ID"
+        },
+        {
+          "label": "LinkedIn Client Secret",
+          "name": "LINKEDIN_CLIENT_SECRET"
+        },
+        {
+          "label": "Facebook App ID",
+          "name": "FACEBOOK_APP_ID"
+        },
+        {
+          "label": "Facebook App Secret",
+          "name": "FACEBOOK_APP_SECRET"
+        },
+        {
+          "label": "YouTube Client ID",
+          "name": "YOUTUBE_CLIENT_ID"
+        },
+        {
+          "label": "YouTube Client Secret",
+          "name": "YOUTUBE_CLIENT_SECRET"
+        },
+        {
+          "default": "false",
+          "label": "Expose Temporal UI",
+          "name": "POSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED"
+        },
+        {
+          "default": "postiz-temporal.example.com",
+          "label": "Temporal UI Domain",
+          "name": "POSTIZ_TEMPORAL_UI_DOMAIN"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/config"
+        },
+        {
+          "container": "/uploads"
+        },
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/data"
+        },
+        {
+          "container": "/usr/share/elasticsearch/data"
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "type": 3,
+      "title": "Mixpost Lite",
+      "description": "Mixpost Lite is the free self-hosted social media management application.",
+      "note": "Deploys Mixpost Lite with MySQL and Redis behind Traefik. Generate APP_KEY at https://mixpost.app/tools/encryption-key-generator before deploying. Default login after first boot is admin@example.com / changeme; change it immediately.",
+      "categories": ["Social Media", "Productivity"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mixpost.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/mixpost/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mixpost",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "inovector/mixpost",
+          "label": "Mixpost Image",
+          "name": "MIXPOST_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Mixpost Tag",
+          "name": "MIXPOST_TAG"
+        },
+        {
+          "default": "Mixpost",
+          "label": "Application Name",
+          "name": "APP_NAME"
+        },
+        {
+          "label": "Application Key",
+          "name": "APP_KEY"
+        },
+        {
+          "default": "false",
+          "label": "Debug Mode",
+          "name": "APP_DEBUG"
+        },
+        {
+          "default": "mixpost.example.com",
+          "label": "Application Domain",
+          "name": "APP_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        },
+        {
+          "default": "mixpost_db",
+          "label": "Database Name",
+          "name": "DB_DATABASE"
+        },
+        {
+          "default": "mixpost_user",
+          "label": "Database User",
+          "name": "DB_USERNAME"
+        },
+        {
+          "label": "Database Password",
+          "name": "DB_PASSWORD"
+        },
+        {
+          "label": "MySQL Root Password",
+          "name": "MYSQL_ROOT_PASSWORD"
+        },
+        {
+          "default": "mysql/mysql-server",
+          "label": "MySQL Image",
+          "name": "MYSQL_IMAGE"
+        },
+        {
+          "default": "8.0",
+          "label": "MySQL Tag",
+          "name": "MYSQL_TAG"
+        },
+        {
+          "default": "redis",
+          "label": "Redis Image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "7-alpine",
+          "label": "Redis Tag",
+          "name": "REDIS_TAG"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/www/html/storage/app"
+        },
+        {
+          "container": "/var/www/html/storage/logs"
+        },
+        {
+          "container": "/var/lib/mysql"
+        },
+        {
+          "container": "/data"
+        }
+      ]
     }
   ]
 }
