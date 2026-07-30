@@ -3,6 +3,14 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-mixpost}-app
     image: ${MIXPOST_IMAGE:-inovector/mixpost}:${MIXPOST_TAG:-latest}
     restart: unless-stopped
+    entrypoint:
+      - /bin/sh
+      - -ec
+    command:
+      - |
+        cp /usr/local/bin/start.sh /tmp/mixpost-start.sh
+        sed -i 's#chown -R www-data:www-data /var/www/html#chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache#' /tmp/mixpost-start.sh
+        exec /bin/sh /tmp/mixpost-start.sh
     environment:
       APP_NAME: ${APP_NAME:-Mixpost}
       APP_KEY: ${APP_KEY:?APP_KEY requerido}
@@ -50,23 +58,22 @@ services:
 
   mysql:
     container_name: ${COMPOSE_PROJECT_NAME:-mixpost}-mysql
-    image: ${MYSQL_IMAGE:-mysql}:${MYSQL_TAG:-8.0}
+    image: ${MYSQL_IMAGE:-mysql/mysql-server}:${MYSQL_TAG:-8.0}
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-mixpost_db}
       MYSQL_USER: ${DB_USERNAME:-mixpost_user}
       MYSQL_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD requerido}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD requerido}
     volumes:
       - mixpost_mysql:/var/lib/mysql
     networks:
       - internal
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u\"$${MYSQL_USER}\" -p\"$${MYSQL_PASSWORD}\" --silent"]
       interval: 10s
       timeout: 5s
       retries: 30
-      start_period: 120s
+      start_period: 180s
 
   redis:
     container_name: ${COMPOSE_PROJECT_NAME:-mixpost}-redis
