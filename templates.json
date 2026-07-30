@@ -5387,7 +5387,7 @@
       "type": 3,
       "title": "Postiz",
       "description": "Postiz is an open-source social media scheduling and automation platform.",
-      "note": "Deploys Postiz with PostgreSQL, Redis and the required Temporal stack. Postiz is exposed through Traefik on port 5000. Set POSTIZ_JWT_SECRET and POSTIZ_DB_PASSWORD before deploying. Temporal UI is included but not exposed unless POSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED=true.",
+      "note": "Deploys Postiz with PostgreSQL, Redis and the required Temporal stack. Required values: POSTIZ_JWT_SECRET must be a long random private string, for example generated with openssl rand -hex 64; POSTIZ_DB_PASSWORD must be a strong database password. Optional provider values: X_API_KEY/X_API_SECRET enable X/Twitter, LINKEDIN_CLIENT_ID/LINKEDIN_CLIENT_SECRET enable LinkedIn, FACEBOOK_APP_ID/FACEBOOK_APP_SECRET enable Facebook/Instagram, and YOUTUBE_CLIENT_ID/YOUTUBE_CLIENT_SECRET enable YouTube; leave them empty until you create each OAuth app in the provider developer console and configure its callback URL in Postiz. Temporal UI is an internal workflow admin/debug UI; keep Expose Temporal UI=false unless you explicitly need to debug Temporal. Temporal UI Domain is only used when Expose Temporal UI=true, for example postiz-temporal.example.com.",
       "categories": ["Social Media", "Productivity"],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postiz.svg",
@@ -5427,7 +5427,7 @@
           "name": "TRAEFIK_CERT_RESOLVER"
         },
         {
-          "label": "Postiz JWT Secret",
+          "label": "Postiz JWT Secret (required, random)",
           "name": "POSTIZ_JWT_SECRET"
         },
         {
@@ -5465,45 +5465,45 @@
           "name": "POSTIZ_API_LIMIT"
         },
         {
-          "label": "X API Key",
+          "label": "X API Key (optional)",
           "name": "X_API_KEY"
         },
         {
-          "label": "X API Secret",
+          "label": "X API Secret (optional)",
           "name": "X_API_SECRET"
         },
         {
-          "label": "LinkedIn Client ID",
+          "label": "LinkedIn Client ID (optional)",
           "name": "LINKEDIN_CLIENT_ID"
         },
         {
-          "label": "LinkedIn Client Secret",
+          "label": "LinkedIn Client Secret (optional)",
           "name": "LINKEDIN_CLIENT_SECRET"
         },
         {
-          "label": "Facebook App ID",
+          "label": "Facebook App ID (optional)",
           "name": "FACEBOOK_APP_ID"
         },
         {
-          "label": "Facebook App Secret",
+          "label": "Facebook App Secret (optional)",
           "name": "FACEBOOK_APP_SECRET"
         },
         {
-          "label": "YouTube Client ID",
+          "label": "YouTube Client ID (optional)",
           "name": "YOUTUBE_CLIENT_ID"
         },
         {
-          "label": "YouTube Client Secret",
+          "label": "YouTube Client Secret (optional)",
           "name": "YOUTUBE_CLIENT_SECRET"
         },
         {
           "default": "false",
-          "label": "Expose Temporal UI",
+          "label": "Expose Temporal UI (debug only)",
           "name": "POSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED"
         },
         {
           "default": "postiz-temporal.example.com",
-          "label": "Temporal UI Domain",
+          "label": "Temporal UI Domain (if exposed)",
           "name": "POSTIZ_TEMPORAL_UI_DOMAIN"
         }
       ],
