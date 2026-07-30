@@ -59,8 +59,8 @@ services:
       test: ["CMD-SHELL", "node -e \"const r=require('http').get('http://localhost:5000/',res=>process.exit(res.statusCode<500?0:1));r.on('error',()=>process.exit(1));r.setTimeout(4000,()=>{r.destroy();process.exit(1)})\""]
       interval: 30s
       timeout: 10s
-      retries: 5
-      start_period: 120s
+      retries: 20
+      start_period: 240s
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK:-proxy}"
@@ -92,8 +92,8 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${POSTIZ_DB_USER:-postiz} -d ${POSTIZ_DB_NAME:-postiz}"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 10s
+      retries: 30
+      start_period: 120s
 
   postiz-redis:
     container_name: ${COMPOSE_PROJECT_NAME:-postiz}-redis
@@ -149,8 +149,8 @@ services:
       test: ["CMD-SHELL", "curl -fsS \"http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s\" || exit 1"]
       interval: 10s
       timeout: 10s
-      retries: 10
-      start_period: 60s
+      retries: 30
+      start_period: 180s
 
   temporal-postgresql:
     container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-postgresql
@@ -167,8 +167,8 @@ services:
       test: ["CMD-SHELL", "pg_isready -U ${TEMPORAL_POSTGRES_USER:-temporal}"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 10s
+      retries: 60
+      start_period: 240s
 
   temporal:
     container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal
@@ -201,9 +201,9 @@ services:
     healthcheck:
       test: ["CMD", "temporal", "operator", "cluster", "health", "--address", "temporal:7233"]
       interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+      timeout: 10s
+      retries: 60
+      start_period: 180s
 
   temporal-admin-tools:
     container_name: ${COMPOSE_PROJECT_NAME:-postiz}-temporal-admin-tools
@@ -237,8 +237,8 @@ services:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/healthz || exit 1"]
       interval: 30s
       timeout: 5s
-      retries: 5
-      start_period: 20s
+      retries: 10
+      start_period: 60s
     labels:
       - "traefik.enable=${POSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED:-false}"
       - "traefik.docker.network=${NETWORK:-proxy}"
