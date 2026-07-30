@@ -5530,7 +5530,7 @@
       "type": 3,
       "title": "Mixpost Lite",
       "description": "Mixpost Lite is the free self-hosted social media management application.",
-      "note": "Deploys Mixpost Lite with MySQL and Redis behind Traefik. For Application Key, generate a valid key at https://mixpost.app/tools/encryption-key-generator and paste the full value including the base64: prefix. Default login after first boot is admin@example.com / changeme; change it immediately.",
+      "note": "Deploys Mixpost Lite with MySQL and Redis behind Traefik. For Application Key, generate a valid key at https://mixpost.app/tools/encryption-key-generator and paste the full value including the base64: prefix. MySQL first boot can take a few minutes while the data directory is initialized. Default login after first boot is admin@example.com / changeme; change it immediately.",
       "categories": ["Social Media", "Productivity"],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mixpost.svg",
@@ -5602,7 +5602,7 @@
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
-          "default": "mysql/mysql-server",
+          "default": "mysql",
           "label": "MySQL Image",
           "name": "MYSQL_IMAGE"
         },

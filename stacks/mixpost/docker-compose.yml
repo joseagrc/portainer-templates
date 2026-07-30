@@ -50,7 +50,7 @@ services:
 
   mysql:
     container_name: ${COMPOSE_PROJECT_NAME:-mixpost}-mysql
-    image: ${MYSQL_IMAGE:-mysql/mysql-server}:${MYSQL_TAG:-8.0}
+    image: ${MYSQL_IMAGE:-mysql}:${MYSQL_TAG:-8.0}
     restart: unless-stopped
     environment:
       MYSQL_DATABASE: ${DB_DATABASE:-mixpost_db}
@@ -62,11 +62,11 @@ services:
     networks:
       - internal
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -p\"${DB_PASSWORD}\" | grep -q alive"]
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$${MYSQL_ROOT_PASSWORD}\" --silent"]
       interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 30
+      start_period: 120s
 
   redis:
     container_name: ${COMPOSE_PROJECT_NAME:-mixpost}-redis
