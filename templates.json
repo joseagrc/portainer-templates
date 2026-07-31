@@ -795,7 +795,7 @@
       "type": 3,
       "title": "Gravitee APIM",
       "description": "Gravitee API Management deploys an API Gateway, Management API, Console UI and Developer Portal with MongoDB and Elasticsearch.",
-      "note": "Deploys Gravitee APIM Community Edition with MongoDB, Elasticsearch, Gateway, Management API, Console UI and Developer Portal. Requires vm.max_map_count=262144 on the Docker host for Elasticsearch. First boot can take several minutes while MongoDB, Elasticsearch and APIM initialize. Default login for Console and Portal is admin / admin; change it immediately. Traefik exposes four domains: gateway, API, console and portal. Enterprise license files and custom plugins require extending the stack with bind mounts or Docker configs.",
+      "note": "Deploys Gravitee APIM Community Edition with MongoDB, Elasticsearch, Gateway, Management API, Console UI and Developer Portal. Requires vm.max_map_count=262144 on the Docker host for Elasticsearch. First boot can take several minutes while MongoDB, Elasticsearch and APIM initialize; MongoDB URI timeouts are extended to avoid first-boot write timeouts. Default login for Console and Portal is admin / admin; change it immediately. GRAVITEE_API_ENCRYPTION_SECRET and GRAVITEE_JWT_SECRET must be changed before production and kept stable after deployment. Traefik exposes four domains: gateway, API, console and portal. Enterprise license files and custom plugins require extending the stack with bind mounts or Docker configs.",
       "categories": ["API Management", "Gateway"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gravitee/logo/logo.png",
@@ -868,6 +868,16 @@
           "default": "false",
           "label": "Enable Federation",
           "name": "GRAVITEE_FEDERATION_ENABLED"
+        },
+        {
+          "default": "change-this-32-byte-secret-value",
+          "label": "API Encryption Secret",
+          "name": "GRAVITEE_API_ENCRYPTION_SECRET"
+        },
+        {
+          "default": "change-this-jwt-secret-value",
+          "label": "JWT Secret",
+          "name": "GRAVITEE_JWT_SECRET"
         },
         {
           "default": "",

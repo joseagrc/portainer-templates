@@ -53,9 +53,10 @@ services:
       elasticsearch:
         condition: service_healthy
     environment:
-      gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-      gravitee_ratelimit_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=30000&connectTimeoutMS=30000&timeoutMS=60000
+      gravitee_ratelimit_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=30000&connectTimeoutMS=30000&timeoutMS=60000
       gravitee_reporters_elasticsearch_endpoints_0: http://elasticsearch:9200
+      gravitee_api_properties_encryption_secret: ${GRAVITEE_API_ENCRYPTION_SECRET:-change-this-32-byte-secret-value}
       gravitee_plugins_path_0: /opt/graviteeio-gateway/plugins
       gravitee_plugins_path_1: /opt/graviteeio-gateway/plugins-ext
     volumes:
@@ -64,6 +65,12 @@ services:
     networks:
       - storage
       - default
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8082"]
+      interval: 30s
+      timeout: 5s
+      retries: 20
+      start_period: 240s
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK:-proxy}"
@@ -89,9 +96,11 @@ services:
       elasticsearch:
         condition: service_healthy
     environment:
-      gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=30000&connectTimeoutMS=30000&timeoutMS=60000
       gravitee_analytics_elasticsearch_endpoints_0: http://elasticsearch:9200
       gravitee_installation_standalone_portal_url: ${GRAVITEE_PORTAL_URL:-https://${GRAVITEE_PORTAL_DOMAIN}}
+      gravitee_api_properties_encryption_secret: ${GRAVITEE_API_ENCRYPTION_SECRET:-change-this-32-byte-secret-value}
+      gravitee_jwt_secret: ${GRAVITEE_JWT_SECRET:-change-this-jwt-secret-value}
       gravitee_plugins_path_0: /opt/graviteeio-management-api/plugins
       gravitee_plugins_path_1: /opt/graviteeio-management-api/plugins-ext
       gravitee_integration_enabled: ${GRAVITEE_FEDERATION_ENABLED:-false}
@@ -106,6 +115,12 @@ services:
     networks:
       - storage
       - default
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8083"]
+      interval: 30s
+      timeout: 5s
+      retries: 20
+      start_period: 240s
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK:-proxy}"
@@ -133,6 +148,12 @@ services:
       - gravitee_management_ui_logs:/var/log/nginx
     networks:
       - default
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8080"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK:-proxy}"
@@ -160,6 +181,12 @@ services:
       - gravitee_portal_ui_logs:/var/log/nginx
     networks:
       - default
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8080"]
+      interval: 30s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK:-proxy}"
