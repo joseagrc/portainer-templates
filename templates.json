@@ -2909,6 +2909,11 @@
           "name": "POSTGRES_DB"
         },
         {
+          "default": "postgres",
+          "label": "Database Host",
+          "name": "POSTGRES_HOST"
+        },
+        {
           "default": "--data-checksums",
           "label": "Postgres Init Args",
           "name": "POSTGRES_INITDB_ARGS"
@@ -2987,11 +2992,6 @@
           "default": "1048576",
           "label": "DGII ZIP Chunk Size",
           "name": "DGII_ZIP_CHUNK_SIZE"
-        },
-        {
-          "default": "/app/data/dgii_staging.sqlite3",
-          "label": "Staging SQLite Path",
-          "name": "STAGING_SQLITE_PATH"
         },
         {
           "default": "168",
