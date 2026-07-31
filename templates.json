@@ -793,50 +793,91 @@
       {
       "id": 11,
       "type": 3,
-      "title": "Gravitee",
-      "description": "Gravitee helps organizations manage and secure their entire API lifecycle with solutions for API design, management, security, productization, real-time observability, and more.",
-      "categories": ["API Management"],
+      "title": "Gravitee APIM",
+      "description": "Gravitee API Management deploys an API Gateway, Management API, Console UI and Developer Portal with MongoDB and Elasticsearch.",
+      "note": "Deploys Gravitee APIM Community Edition with MongoDB, Elasticsearch, Gateway, Management API, Console UI and Developer Portal. Requires vm.max_map_count=262144 on the Docker host for Elasticsearch. First boot can take several minutes while MongoDB, Elasticsearch and APIM initialize. Default login for Console and Portal is admin / admin; change it immediately. Traefik exposes four domains: gateway, API, console and portal. Enterprise license files and custom plugins require extending the stack with bind mounts or Docker configs.",
+      "categories": ["API Management", "Gateway"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/gravitee/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gravitee/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gravitee/docker-compose.yml"
       },
       "env": [
         {
-          "default": "7.0.11",
-          "label": "Mongo Tag",
-          "name": "MONGO_TAG"
+          "default": "gravitee",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
         },
         {
-          "default": "root",
-          "label": "Root Username",
-          "name": "MONGO_INITDB_ROOT_USERNAME"
+          "default": "4.12.12",
+          "label": "Gravitee APIM Tag",
+          "name": "GRAVITEE_APIM_TAG"
         },
         {
-          "default": "password",
-          "label": "Root Password",
-          "name": "MONGO_INITDB_ROOT_PASSWORD"
+          "default": "gateway.example.com",
+          "label": "Gateway Domain",
+          "name": "GRAVITEE_GATEWAY_DOMAIN"
         },
         {
-          "default": "8.13.4",
-          "label": "Elasticsearch Tag",
-          "name": "ELASTICSEARCH_TAG"
+          "default": "gravitee-api.example.com",
+          "label": "Management API Domain",
+          "name": "GRAVITEE_API_DOMAIN"
         },
         {
-          "default": "single-node",
-          "label": "Discovery Type",
-          "name": "DISCOVERY_TYPE"
+          "default": "gravitee-console.example.com",
+          "label": "Console UI Domain",
+          "name": "GRAVITEE_CONSOLE_DOMAIN"
         },
         {
-          "default": "1g",
-          "label": "Memory Limit",
-          "name": "MEMORY_LIMIT"
+          "default": "gravitee-portal.example.com",
+          "label": "Developer Portal Domain",
+          "name": "GRAVITEE_PORTAL_DOMAIN"
         },
         {
           "default": "proxy",
-          "label": "Network name",
+          "label": "Traefik Network Name",
           "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        },
+        {
+          "default": "7.0",
+          "label": "MongoDB Tag",
+          "name": "GRAVITEE_MONGO_TAG"
+        },
+        {
+          "default": "8.16.1",
+          "label": "Elasticsearch Tag",
+          "name": "GRAVITEE_ELASTICSEARCH_TAG"
+        },
+        {
+          "default": "1g",
+          "label": "Elasticsearch Memory Limit",
+          "name": "GRAVITEE_ES_MEMORY_LIMIT"
+        },
+        {
+          "default": "-Xms512m -Xmx512m",
+          "label": "Elasticsearch JVM Options",
+          "name": "GRAVITEE_ES_JAVA_OPTS"
+        },
+        {
+          "default": "false",
+          "label": "Enable Federation",
+          "name": "GRAVITEE_FEDERATION_ENABLED"
+        },
+        {
+          "default": "",
+          "label": "Management API Public URL (optional)",
+          "name": "GRAVITEE_API_URL"
+        },
+        {
+          "default": "",
+          "label": "Developer Portal Public URL (optional)",
+          "name": "GRAVITEE_PORTAL_URL"
         }
      ],
       "volumes": [
@@ -844,10 +885,22 @@
           "container": "/data/db"
         },
         {
-          "container": "/var/log/mongodb"
+          "container": "/usr/share/elasticsearch/data"
         },
         {
-          "container": "/usr/share/elasticsearch/data"
+          "container": "/opt/graviteeio-gateway/logs"
+        },
+        {
+          "container": "/opt/graviteeio-gateway/plugins-ext"
+        },
+        {
+          "container": "/opt/graviteeio-management-api/logs"
+        },
+        {
+          "container": "/opt/graviteeio-management-api/plugins-ext"
+        },
+        {
+          "container": "/var/log/nginx"
         }
         ]
     },

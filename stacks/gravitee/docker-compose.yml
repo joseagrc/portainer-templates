@@ -1,90 +1,193 @@
-version: '3'
-
 services:
   mongodb:
-    container_name: ${COMPOSE_PROJECT_NAME}-mongo
-    image: mongo:${MONGO_TAG}
-    restart: always
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+    container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-mongodb
+    image: mongo:${GRAVITEE_MONGO_TAG:-7.0}
+    restart: unless-stopped
     volumes:
-      - mongo-data:/data/db
-      - mongo-logs:/var/log/mongodb
+      - gravitee_mongodb_data:/data/db
+    networks:
+      - storage
     healthcheck:
-      test: ["CMD","mongosh", "--eval", "db.adminCommand('ping')"]
-      interval: 5s
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand(\"ping\").ok' | grep -q 1"]
+      interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 5s
+      retries: 30
+      start_period: 60s
 
   elasticsearch:
-    container_name: ${COMPOSE_PROJECT_NAME}-elasticsearch
-    image: elasticsearch:${ELASTICSEARCH_TAG}
-    restart: always
+    container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:${GRAVITEE_ELASTICSEARCH_TAG:-8.16.1}
+    restart: unless-stopped
     environment:
-      - cluster.name=elasticsearch
-      - discovery.type=${DISCOVERY_TYPE}
-      - xpack.security.enabled=false
-      - http.host=0.0.0.0
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      http.host: 0.0.0.0
+      transport.host: 0.0.0.0
+      xpack.security.enabled: "false"
+      cluster.name: elasticsearch
+      bootstrap.memory_lock: "true"
+      discovery.type: single-node
+      ES_JAVA_OPTS: ${GRAVITEE_ES_JAVA_OPTS:--Xms512m -Xmx512m}
     ulimits:
       memlock:
         soft: -1
         hard: -1
       nofile: 65536
-    mem_limit: ${MEMORY_LIMIT}
+    mem_limit: ${GRAVITEE_ES_MEMORY_LIMIT:-1g}
     volumes:
-      - elasticsearch-data:/usr/share/elasticsearch/data
+      - gravitee_elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - storage
     healthcheck:
-      test: [
-        "CMD-SHELL",
-        "curl -fsSL http://localhost:9200/_cat/health?h=status | grep -q -E 'green|yellow'"
-      ]
-      interval: 5s
-      timeout: 5s
-      retries: 10
-      start_period: 1m
+      test: ["CMD-SHELL", "curl -fsS 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=5s' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 30
+      start_period: 120s
 
   gateway:
-    container_name: ${COMPOSE_PROJECT_NAME}-gateway
-    image: graviteeio/apim-gateway:${VERSION_TAG}
-    restart: always
-    ports:
-      - "8082:8082"
+    container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-gateway
+    image: graviteeio/apim-gateway:${GRAVITEE_APIM_TAG:-4.12.12}
+    restart: unless-stopped
     depends_on:
-      # - mongodb
-      # - elasticsearch
-      - mongodb:
-          condition: service_healthy
-      - elasticsearch:
-          condition: service_healthy
-    volumes:
-      - gateway-logs:/opt/graviteeio-gateway/logs
+      mongodb:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
     environment:
-      - gravitee_management_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-      - gravitee_ratelimit_mongodb_uri=mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
-      - gravitee_reporters_elasticsearch_endpoints_0=http://elasticsearch:9200
-      #- gravitee_management_type=mongodb
-      #- gravitee_http_secured=true
-      #- gravitee_http_ssl_clientAuth=request
-      #- gravitee_http_ssl_keystore_type=pkcs12
-      #- gravitee_http_ssl_keystore_path=/opt/graviteeio-gateway/certificates/server.p12
-      #- gravitee_http_ssl_keystore_password=server-secret
-      #- gravitee_http_ssl_truststore_type=pkcs12
-      #- gravitee_http_ssl_truststore_path=/opt/graviteeio-gateway/certificates/ca.p12
-      #- gravitee_http_ssl_truststore_password=ca-secret
-      - VIRTUAL_PORT: 8082
-      - VIRTUAL_HOST: ${GATEWAY_URL}
-      - LETSENCRYPT_HOST: ${GATEWAY_URL}
+      gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      gravitee_ratelimit_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      gravitee_reporters_elasticsearch_endpoints_0: http://elasticsearch:9200
+      gravitee_plugins_path_0: /opt/graviteeio-gateway/plugins
+      gravitee_plugins_path_1: /opt/graviteeio-gateway/plugins-ext
+    volumes:
+      - gravitee_gateway_logs:/opt/graviteeio-gateway/logs
+      - gravitee_gateway_plugins:/opt/graviteeio-gateway/plugins-ext
+    networks:
+      - storage
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-http.rule=Host(`${GRAVITEE_GATEWAY_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-http.middlewares=${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.rule=Host(`${GRAVITEE_GATEWAY_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.service=${COMPOSE_PROJECT_NAME:-gravitee}-gateway"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.loadbalancer.server.port=8082"
+
+  management-api:
+    container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-management-api
+    image: graviteeio/apim-management-api:${GRAVITEE_APIM_TAG:-4.12.12}
+    restart: unless-stopped
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+    environment:
+      gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=5000&connectTimeoutMS=5000&socketTimeoutMS=5000
+      gravitee_analytics_elasticsearch_endpoints_0: http://elasticsearch:9200
+      gravitee_installation_standalone_portal_url: ${GRAVITEE_PORTAL_URL:-https://${GRAVITEE_PORTAL_DOMAIN}}
+      gravitee_plugins_path_0: /opt/graviteeio-management-api/plugins
+      gravitee_plugins_path_1: /opt/graviteeio-management-api/plugins-ext
+      gravitee_integration_enabled: ${GRAVITEE_FEDERATION_ENABLED:-false}
+      gravitee_exchange_controller_enabled: ${GRAVITEE_FEDERATION_ENABLED:-false}
+      gravitee_exchange_controller_ws_enabled: ${GRAVITEE_FEDERATION_ENABLED:-false}
+      gravitee_exchange_controller_ws_port: 8072
+      gravitee_exchange_controller_ws_host: 0.0.0.0
+      gravitee_federation_agent_enabled: ${GRAVITEE_FEDERATION_ENABLED:-false}
+    volumes:
+      - gravitee_management_api_logs:/opt/graviteeio-management-api/logs
+      - gravitee_management_api_plugins:/opt/graviteeio-management-api/plugins-ext
+    networks:
+      - storage
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api-http.rule=Host(`${GRAVITEE_API_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api-http.middlewares=${COMPOSE_PROJECT_NAME:-gravitee}-api-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-api-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-api-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api.rule=Host(`${GRAVITEE_API_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-api.service=${COMPOSE_PROJECT_NAME:-gravitee}-api"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-gravitee}-api.loadbalancer.server.port=8083"
+
+  management-ui:
+    container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-management-ui
+    image: graviteeio/apim-management-ui:${GRAVITEE_APIM_TAG:-4.12.12}
+    restart: unless-stopped
+    depends_on:
+      - management-api
+    environment:
+      MGMT_API_URL: ${GRAVITEE_API_URL:-https://${GRAVITEE_API_DOMAIN}}/management/organizations/DEFAULT/environments/DEFAULT/
+    volumes:
+      - gravitee_management_ui_logs:/var/log/nginx
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console-http.rule=Host(`${GRAVITEE_CONSOLE_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console-http.middlewares=${COMPOSE_PROJECT_NAME:-gravitee}-console-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-console-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-console-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console.rule=Host(`${GRAVITEE_CONSOLE_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-console.service=${COMPOSE_PROJECT_NAME:-gravitee}-console"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-gravitee}-console.loadbalancer.server.port=8080"
+
+  portal-ui:
+    container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-portal-ui
+    image: graviteeio/apim-portal-ui:${GRAVITEE_APIM_TAG:-4.12.12}
+    restart: unless-stopped
+    depends_on:
+      - management-api
+    environment:
+      PORTAL_API_URL: ${GRAVITEE_API_URL:-https://${GRAVITEE_API_DOMAIN}}/portal/environments/DEFAULT
+    volumes:
+      - gravitee_portal_ui_logs:/var/log/nginx
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal-http.rule=Host(`${GRAVITEE_PORTAL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal-http.middlewares=${COMPOSE_PROJECT_NAME:-gravitee}-portal-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-portal-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-portal-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal.rule=Host(`${GRAVITEE_PORTAL_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-portal.service=${COMPOSE_PROJECT_NAME:-gravitee}-portal"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-gravitee}-portal.loadbalancer.server.port=8080"
 
 volumes:
-  mongo-data:
-  mongo-logs:
-  elasticsearch-data:
-  gateway-logs:
+  gravitee_mongodb_data:
+  gravitee_elasticsearch_data:
+  gravitee_gateway_logs:
+  gravitee_gateway_plugins:
+  gravitee_management_api_logs:
+  gravitee_management_api_plugins:
+  gravitee_management_ui_logs:
+  gravitee_portal_ui_logs:
 
 networks:
   default:
-    name: ${NETWORK}
+    name: ${NETWORK:-proxy}
     external: true
+  storage:
+    name: ${COMPOSE_PROJECT_NAME:-gravitee}_storage
