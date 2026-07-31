@@ -5,9 +5,9 @@ services:
     restart: unless-stopped
     stop_grace_period: 60s
     environment:
-      POSTGRES_USER: ${POSTGRES_USER:-rnc_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-database-password}
-      POSTGRES_DB: ${POSTGRES_DB:-rnc_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-dgii_rnc_db}
       POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS:---data-checksums}
     volumes:
       - dgii_rnc_postgres_data:/var/lib/postgresql/data
@@ -42,10 +42,10 @@ services:
       APP_HOST: 0.0.0.0
       APP_PORT: 8000
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
-      POSTGRES_PORT: 5432
-      POSTGRES_DB: ${POSTGRES_DB:-rnc_db}
-      POSTGRES_USER: ${POSTGRES_USER:-rnc_user}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-database-password}
+      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
+      POSTGRES_DB: ${POSTGRES_DB:-dgii_rnc_db}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       DATABASE_URL: ${DATABASE_URL:-}
       DGII_RNC_URL: ${DGII_RNC_URL:-https://dgii.gov.do/app/WebApps/ConsultasWeb2/ConsultasWeb/consultas/rnc.aspx}
       DGII_TIMEOUT: ${DGII_TIMEOUT:-20}
