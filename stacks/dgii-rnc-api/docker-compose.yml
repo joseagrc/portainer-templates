@@ -1,48 +1,50 @@
 services:
   postgres:
-    container_name: ${COMPOSE_PROJECT_NAME}-postgres
-    image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
-    restart: unless-stopped    
+    container_name: ${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-postgres
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-16.6-alpine}
+    restart: unless-stopped
+    stop_grace_period: 60s
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:-rnc_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-database-password}
+      POSTGRES_DB: ${POSTGRES_DB:-rnc_db}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS:---data-checksums}
     volumes:
-      - dgii_rnc_postgres_data:/var/lib/postgresql/data      
+      - dgii_rnc_postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
       interval: 10s
       timeout: 5s
-      retries: 10    
+      retries: 20
+      start_period: 30s
     labels:
-      # Habilita Traefik para TCP (no HTTP)
-      - "traefik.enable=true"
-      # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-pg.rule=HostSNI(`pg.${URL}`) || HostSNI(`www.pg.${URL}`)"  # Ej: pg-instancia1.tudominio.com
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-pg.entrypoints=postgres"  # Entrypoint TCP definido en Traefik
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-pg.tls=true"  # Opcional: TLS para seguridad
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-pg.tls.certresolver=letsencrypt"
-      # Backend (puerto de PostgreSQL)
-      - "traefik.tcp.services.${COMPOSE_PROJECT_NAME}-pg.loadbalancer.server.port=5432"
+      - "traefik.enable=false"
+    logging:
+      driver: json-file
+      options:
+        max-size: ${LOG_MAX_SIZE:-10m}
+        max-file: ${LOG_MAX_FILE:-3}
 
   api:
-    container_name: ${COMPOSE_PROJECT_NAME}-app
-    image: ${RNC_API_IMAGE}:${RNC_API_TAG}
+    container_name: ${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-app
+    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-latest}
     restart: unless-stopped
-    links:
-      - postgres:postgres
+    init: true
+    stop_grace_period: 30s
     volumes:
-      - dgii_rnc_data:/app/data      
+      - dgii_rnc_data:/app/data
     environment:
       APP_ENV: ${APP_ENV:-production}
       APP_DEBUG: ${APP_DEBUG:-false}
       APP_HOST: 0.0.0.0
       APP_PORT: 8000
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
-      POSTGRES_PORT: ${POSTGRES_PORT:-5432}
-      POSTGRES_DB: ${POSTGRES_DB:-dgii_rnc_db}
-      POSTGRES_USER: ${POSTGRES_USER:-postgres}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-rnc_db}
+      POSTGRES_USER: ${POSTGRES_USER:-rnc_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-this-database-password}
       DATABASE_URL: ${DATABASE_URL:-}
       DGII_RNC_URL: ${DGII_RNC_URL:-https://dgii.gov.do/app/WebApps/ConsultasWeb2/ConsultasWeb/consultas/rnc.aspx}
       DGII_TIMEOUT: ${DGII_TIMEOUT:-20}
@@ -60,29 +62,45 @@ services:
       SCHEDULER_ENABLED: ${SCHEDULER_ENABLED:-true}
       SCHEDULER_TIMEZONE: ${SCHEDULER_TIMEZONE:-America/Santo_Domingo}
       SCHEDULER_FULL_SYNC_CRON: ${SCHEDULER_FULL_SYNC_CRON:-0 2 * * *}
+    networks:
+      - internal
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import socket; s=socket.create_connection(('127.0.0.1', 8000), 5); s.close()\""]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
     labels:
       - "traefik.enable=true"
-      # Redirecciona HTTP -> HTTPS
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
-      # HTTPS (con SSL automático)
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL}`) || Host(`www.${URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
-      # Servicio backend RNC API
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-http.middlewares=${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}.rule=Host(`${URL}`) || Host(`www.${URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}.service=${COMPOSE_PROJECT_NAME:-dgii-rnc-api}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-dgii-rnc-api}.loadbalancer.server.port=8000"
     depends_on:
       postgres:
         condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: ${LOG_MAX_SIZE:-10m}
+        max-file: ${LOG_MAX_FILE:-3}
 
 volumes:
   dgii_rnc_postgres_data:
   dgii_rnc_data:
 
 networks:
-  default:
-    name: ${NETWORK}
+  proxy:
+    name: ${NETWORK:-proxy}
     external: true
+  internal:
+    driver: bridge

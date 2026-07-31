@@ -2869,6 +2869,7 @@
       "type": 3,
       "title": "DGII RNC API + CSV + Web scraping",
       "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
+      "note": "Template preparado para producción detrás de Traefik: solo la API se publica por HTTPS y PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. El scheduler viene activo para sincronización automática; ajusta SCHEDULER_FULL_SYNC_CRON y SCHEDULER_TIMEZONE según tu operación.",
       "categories": ["API"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-rnc-api/logo/logo.png",
@@ -2878,12 +2879,17 @@
       },
       "env": [
         {
+          "default": "dgii-rnc-api",
+          "label": "Stack Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
           "default": "postgres",
           "label": "PostgreSQL image",
           "name": "POSTGRES_IMAGE"
         },
         {
-          "default": "16.2-alpine3.19",
+          "default": "16.6-alpine",
           "label": "PostgreSQL tag",
           "name": "POSTGRES_TAG"
         },
@@ -2893,7 +2899,7 @@
           "name": "POSTGRES_USER"
         },
         {
-          "default": "rnc_pass",
+          "default": "change-this-database-password",
           "label": "Database Password for user",
           "name": "POSTGRES_PASSWORD"
         },
@@ -2903,9 +2909,9 @@
           "name": "POSTGRES_DB"
         },
         {
-          "default": "5432",
-          "label": "Postgres Port",
-          "name": "POSTGRES_PORT"
+          "default": "--data-checksums",
+          "label": "Postgres Init Args",
+          "name": "POSTGRES_INITDB_ARGS"
         },
         {
           "default": "gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi",
@@ -2918,9 +2924,119 @@
           "name": "RNC_API_TAG"
         },
         {
+          "default": "production",
+          "label": "Application Environment",
+          "name": "APP_ENV"
+        },
+        {
+          "default": "false",
+          "label": "Application Debug",
+          "name": "APP_DEBUG"
+        },
+        {
+          "default": "",
+          "label": "Database URL override",
+          "name": "DATABASE_URL"
+        },
+        {
+          "default": "https://dgii.gov.do/app/WebApps/ConsultasWeb2/ConsultasWeb/consultas/rnc.aspx",
+          "label": "DGII RNC Query URL",
+          "name": "DGII_RNC_URL"
+        },
+        {
+          "default": "20",
+          "label": "DGII Query Timeout",
+          "name": "DGII_TIMEOUT"
+        },
+        {
+          "default": "120",
+          "label": "DGII ZIP Timeout",
+          "name": "DGII_ZIP_TIMEOUT"
+        },
+        {
+          "default": "1000",
+          "label": "DGII Batch Size",
+          "name": "DGII_BATCH_SIZE"
+        },
+        {
+          "default": "remote",
+          "label": "DGII ZIP Source",
+          "name": "DGII_ZIP_SOURCE"
+        },
+        {
+          "default": "csv",
+          "label": "DGII ZIP Format",
+          "name": "DGII_ZIP_FORMAT"
+        },
+        {
+          "default": "",
+          "label": "DGII Local ZIP Path",
+          "name": "DGII_RNC_ZIP_LOCAL_PATH"
+        },
+        {
+          "default": "3",
+          "label": "DGII ZIP Retries",
+          "name": "DGII_ZIP_DOWNLOAD_RETRIES"
+        },
+        {
+          "default": "1048576",
+          "label": "DGII ZIP Chunk Size",
+          "name": "DGII_ZIP_CHUNK_SIZE"
+        },
+        {
+          "default": "/app/data/dgii_staging.sqlite3",
+          "label": "Staging SQLite Path",
+          "name": "STAGING_SQLITE_PATH"
+        },
+        {
+          "default": "168",
+          "label": "Cache TTL Hours",
+          "name": "CACHE_TTL_HOURS"
+        },
+        {
+          "default": "24",
+          "label": "HTML Refresh Hours",
+          "name": "HTML_REFRESH_HOURS"
+        },
+        {
+          "default": "INFO",
+          "label": "Log Level",
+          "name": "LOG_LEVEL"
+        },
+        {
+          "default": "true",
+          "label": "Scheduler Enabled",
+          "name": "SCHEDULER_ENABLED"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Scheduler Timezone",
+          "name": "SCHEDULER_TIMEZONE"
+        },
+        {
+          "default": "0 2 * * *",
+          "label": "Full Sync Cron",
+          "name": "SCHEDULER_FULL_SYNC_CRON"
+        },
+        {
+          "default": "10m",
+          "label": "Log Max Size",
+          "name": "LOG_MAX_SIZE"
+        },
+        {
+          "default": "3",
+          "label": "Log Max File",
+          "name": "LOG_MAX_FILE"
+        },
+        {
           "default": "rnc.example.com",
           "label": "URL",
           "name": "URL"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Cert Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
         },
         {
           "default": "proxy",
@@ -2931,6 +3047,9 @@
       "volumes": [
         {
           "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/app/data"
         }
       ]
     },
