@@ -2869,7 +2869,7 @@
       "type": 3,
       "title": "DGII RNC API + CSV + Web scraping",
       "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
-      "note": "Template preparado para producción detrás de Traefik: solo la API se publica por HTTPS y PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. El scheduler viene activo para sincronización automática; ajusta SCHEDULER_FULL_SYNC_CRON y SCHEDULER_TIMEZONE según tu operación.",
+      "note": "Template preparado para producción detrás de Traefik: solo la API se publica por HTTPS y PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. El scheduler viene activo para sincronización automática; SCHEDULER_FULL_SYNC_CRON debe usar formato cron de 5 campos, por ejemplo 0 2 * * *.",
       "categories": ["API"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-rnc-api/logo/logo.png",
@@ -2922,6 +2922,11 @@
           "default": "latest",
           "label": "RNC API Tag",
           "name": "RNC_API_TAG"
+        },
+        {
+          "default": "DGII RNC FastAPI",
+          "label": "Application Name",
+          "name": "APP_NAME"
         },
         {
           "default": "production",
