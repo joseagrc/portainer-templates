@@ -2869,7 +2869,7 @@
       "type": 3,
       "title": "DGII RNC API + CSV + Web scraping",
       "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
-      "note": "Template preparado para producción detrás de Traefik: solo la API se publica por HTTPS y PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. El scheduler viene activo para sincronización automática; SCHEDULER_FULL_SYNC_CRON debe usar formato cron de 5 campos, por ejemplo 0 2 * * *.",
+      "note": "Template preparado para producción detrás de Traefik: solo la API se publica por HTTPS y PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. El scheduler viene activo para sincronización automática. SCHEDULER_FULL_SYNC_CRON y HTML_ENRICHMENT_CRON deben usar formato cron de 5 campos, por ejemplo 0 2 * * *.",
       "categories": ["API"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-rnc-api/logo/logo.png",
@@ -3004,6 +3004,36 @@
           "name": "HTML_REFRESH_HOURS"
         },
         {
+          "default": "true",
+          "label": "HTML Enrichment Enabled",
+          "name": "HTML_ENRICHMENT_ENABLED"
+        },
+        {
+          "default": "*/15 * * * *",
+          "label": "HTML Enrichment Cron",
+          "name": "HTML_ENRICHMENT_CRON"
+        },
+        {
+          "default": "25",
+          "label": "HTML Enrichment Batch Size",
+          "name": "HTML_ENRICHMENT_BATCH_SIZE"
+        },
+        {
+          "default": "15",
+          "label": "HTML Enrichment Delay Seconds",
+          "name": "HTML_ENRICHMENT_DELAY_SECONDS"
+        },
+        {
+          "default": "5",
+          "label": "HTML Enrichment Jitter Seconds",
+          "name": "HTML_ENRICHMENT_JITTER_SECONDS"
+        },
+        {
+          "default": "60",
+          "label": "HTML Enrichment Error Delay Seconds",
+          "name": "HTML_ENRICHMENT_ERROR_DELAY_SECONDS"
+        },
+        {
           "default": "INFO",
           "label": "Log Level",
           "name": "LOG_LEVEL"
@@ -3022,6 +3052,21 @@
           "default": "0 2 * * *",
           "label": "Full Sync Cron",
           "name": "SCHEDULER_FULL_SYNC_CRON"
+        },
+        {
+          "default": "true",
+          "label": "Startup Sync Enabled",
+          "name": "SCHEDULER_STARTUP_SYNC_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Startup Sync Clear Existing",
+          "name": "SCHEDULER_STARTUP_SYNC_CLEAR_EXISTING"
+        },
+        {
+          "default": "true",
+          "label": "Startup Enrichment Enabled",
+          "name": "SCHEDULER_STARTUP_ENRICHMENT_ENABLED"
         },
         {
           "default": "10m",
