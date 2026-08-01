@@ -77,6 +77,9 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-http.rule=Host(`${GRAVITEE_GATEWAY_DOMAIN}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-http.entrypoints=web"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-http.middlewares=${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra-http.rule=Host(`${GRAVITEE_GATEWAY_EXTRA_DOMAIN:-disabled.example.invalid}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra-http.middlewares=${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect.redirectscheme.scheme=https"
       - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-https-redirect.redirectscheme.permanent=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.rule=Host(`${GRAVITEE_GATEWAY_DOMAIN}`)"
@@ -84,6 +87,11 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.tls=true"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.service=${COMPOSE_PROJECT_NAME:-gravitee}-gateway"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra.rule=Host(`${GRAVITEE_GATEWAY_EXTRA_DOMAIN:-disabled.example.invalid}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-gravitee}-gateway-extra.service=${COMPOSE_PROJECT_NAME:-gravitee}-gateway"
       - "traefik.http.services.${COMPOSE_PROJECT_NAME:-gravitee}-gateway.loadbalancer.server.port=8082"
 
   management-api:

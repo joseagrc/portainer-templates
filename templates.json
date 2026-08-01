@@ -820,6 +820,11 @@
           "name": "GRAVITEE_GATEWAY_DOMAIN"
         },
         {
+          "default": "disabled.example.invalid",
+          "label": "Gateway Extra API Domain",
+          "name": "GRAVITEE_GATEWAY_EXTRA_DOMAIN"
+        },
+        {
           "default": "gravitee-api.example.com",
           "label": "Management API Domain",
           "name": "GRAVITEE_API_DOMAIN"
@@ -2719,6 +2724,11 @@
           "name": "URL"
         },
         {
+          "default": "true",
+          "label": "Expose RNC API directly with Traefik",
+          "name": "RNC_API_TRAEFIK_ENABLE"
+        },
+        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
@@ -3087,6 +3097,11 @@
           "default": "rnc.example.com",
           "label": "URL",
           "name": "URL"
+        },
+        {
+          "default": "true",
+          "label": "Expose RNC API directly with Traefik",
+          "name": "RNC_API_TRAEFIK_ENABLE"
         },
         {
           "default": "letsencrypt",

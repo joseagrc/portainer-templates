@@ -31,7 +31,7 @@ services:
       TIMEZONE: ${TIMEZONE}
       DGII_RNC_ZIP_URL: ${DGII_RNC_ZIP_URL}
     labels:
-      - "traefik.enable=true"
+      - "traefik.enable=${RNC_API_TRAEFIK_ENABLE:-true}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
