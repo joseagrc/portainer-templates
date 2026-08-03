@@ -5802,6 +5802,26 @@
           "name": "EINSTORE_GIT_REF"
         },
         {
+          "default": "einstore-api",
+          "label": "Einstore API Image",
+          "name": "EINSTORE_API_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Einstore API Tag",
+          "name": "EINSTORE_API_TAG"
+        },
+        {
+          "default": "einstore-admin",
+          "label": "Einstore Admin Image",
+          "name": "EINSTORE_ADMIN_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Einstore Admin Tag",
+          "name": "EINSTORE_ADMIN_TAG"
+        },
+        {
           "default": "einstore-admin.example.com",
           "label": "Admin Domain",
           "name": "EINSTORE_ADMIN_DOMAIN"
