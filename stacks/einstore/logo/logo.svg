@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Einstore">
+  <rect width="256" height="256" rx="40" fill="#101828"/>
+  <path fill="#38bdf8" d="M58 60h140v34H96v31h92v33H96v38h106v34H58z"/>
+  <path fill="#f8fafc" d="M112 26h32v204h-32z" opacity=".18"/>
+</svg>

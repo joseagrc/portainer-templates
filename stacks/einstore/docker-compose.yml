@@ -1,0 +1,101 @@
+services:
+  api:
+    container_name: ${COMPOSE_PROJECT_NAME:-einstore}-api
+    build:
+      context: .
+      dockerfile: API.Dockerfile
+      args:
+        EINSTORE_GIT_REF: ${EINSTORE_GIT_REF:-main}
+    image: ${EINSTORE_API_IMAGE:-einstore-api}:${EINSTORE_API_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "npm run prisma:ensure-schema && npm run prisma:deploy && npm run start"
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: 8100
+      DATABASE_URL: postgresql://${POSTGRES_USER:-einstore}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requerido}@db:5432/${POSTGRES_DB:-einstore}?schema=public
+      ENABLE_SCHEMA_CREATE: "true"
+      AAPT_PATH: /usr/local/bin/aapt2
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:?AUTH_JWT_SECRET requerido}
+      AUTH_JWT_ISSUER: ${AUTH_JWT_ISSUER:-einstore}
+      AUTH_JWT_AUDIENCE: ${AUTH_JWT_AUDIENCE:-einstore-api}
+      AUTH_REFRESH_TTL_DAYS: ${AUTH_REFRESH_TTL_DAYS:-30}
+      AUTH_ACCESS_TTL_MINUTES: ${AUTH_ACCESS_TTL_MINUTES:-15}
+      API_KEY_SECRET: ${API_KEY_SECRET:?API_KEY_SECRET requerido}
+    networks:
+      - default
+      - internal
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api-http.rule=Host(`${EINSTORE_API_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api-http.middlewares=${COMPOSE_PROJECT_NAME:-einstore}-api-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-einstore}-api-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-einstore}-api-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api.rule=Host(`${EINSTORE_API_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-api.service=${COMPOSE_PROJECT_NAME:-einstore}-api"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-einstore}-api.loadbalancer.server.port=8100"
+
+  admin:
+    container_name: ${COMPOSE_PROJECT_NAME:-einstore}-admin
+    build:
+      context: .
+      dockerfile: Admin.Dockerfile
+      args:
+        EINSTORE_GIT_REF: ${EINSTORE_GIT_REF:-main}
+    image: ${EINSTORE_ADMIN_IMAGE:-einstore-admin}:${EINSTORE_ADMIN_TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      - api
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+    networks:
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin-http.rule=Host(`${EINSTORE_ADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin-http.middlewares=${COMPOSE_PROJECT_NAME:-einstore}-admin-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-einstore}-admin-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-einstore}-admin-https-redirect.redirectscheme.permanent=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin.rule=Host(`${EINSTORE_ADMIN_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-einstore}-admin.service=${COMPOSE_PROJECT_NAME:-einstore}-admin"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-einstore}-admin.loadbalancer.server.port=8101"
+
+  db:
+    container_name: ${COMPOSE_PROJECT_NAME:-einstore}-db
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-17-alpine}
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-einstore}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requerido}
+      POSTGRES_DB: ${POSTGRES_DB:-einstore}
+    volumes:
+      - pgsql_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-einstore} -d ${POSTGRES_DB:-einstore}"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 60s
+
+volumes:
+  pgsql_data:
+
+networks:
+  default:
+    name: ${NETWORK:-proxy}
+    external: true
+  internal:

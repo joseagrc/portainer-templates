@@ -5778,6 +5778,109 @@
       ]
     },
     {
+      "id": 53,
+      "type": 3,
+      "title": "Einstore",
+      "description": "Einstore is an open-source private app distribution platform for iOS and Android.",
+      "note": "Deploys Einstore API, Admin, and PostgreSQL behind Traefik. This template builds the API and Admin images from the official Einstore GitHub repository because current upstream compose files build from source. Use separate DNS records for Admin and API, both pointing to Traefik. Configure S3-compatible storage CORS for the Admin and API domains before using browser uploads.",
+      "categories": ["App Store", "Development"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/einstore/logo/logo.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/einstore/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "einstore",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "main",
+          "label": "Einstore Git Ref",
+          "name": "EINSTORE_GIT_REF"
+        },
+        {
+          "default": "einstore-admin.example.com",
+          "label": "Admin Domain",
+          "name": "EINSTORE_ADMIN_DOMAIN"
+        },
+        {
+          "default": "einstore-api.example.com",
+          "label": "API Domain",
+          "name": "EINSTORE_API_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        },
+        {
+          "default": "postgres",
+          "label": "PostgreSQL Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "17-alpine",
+          "label": "PostgreSQL Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "einstore",
+          "label": "Database Name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "einstore",
+          "label": "Database User",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "Database Password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "JWT Secret",
+          "name": "AUTH_JWT_SECRET"
+        },
+        {
+          "default": "einstore",
+          "label": "JWT Issuer",
+          "name": "AUTH_JWT_ISSUER"
+        },
+        {
+          "default": "einstore-api",
+          "label": "JWT Audience",
+          "name": "AUTH_JWT_AUDIENCE"
+        },
+        {
+          "default": "30",
+          "label": "Refresh Token TTL Days",
+          "name": "AUTH_REFRESH_TTL_DAYS"
+        },
+        {
+          "default": "15",
+          "label": "Access Token TTL Minutes",
+          "name": "AUTH_ACCESS_TTL_MINUTES"
+        },
+        {
+          "label": "API Key Secret",
+          "name": "API_KEY_SECRET"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/postgresql/data"
+        }
+      ]
+    },
+    {
       "id": 52,
       "type": 3,
       "title": "Mixpost Lite",
