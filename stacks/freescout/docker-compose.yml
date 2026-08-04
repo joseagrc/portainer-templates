@@ -53,6 +53,7 @@ services:
       ENABLE_AUTO_UPDATE: ${ENABLE_AUTO_UPDATE}
       APP_PROXY: ${APP_PROXY}
       ENABLE_SSL_PROXY: ${ENABLE_SSL_PROXY}
+      CONTAINER_ENABLE_MONITORING: ${CONTAINER_ENABLE_MONITORING}
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=${NETWORK}"

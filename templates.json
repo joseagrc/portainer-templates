@@ -213,6 +213,11 @@
           "name": "ENABLE_SSL_PROXY"
         },
         {
+          "default": "False",
+          "label": "Enable Zabbix Monitoring",
+          "name": "CONTAINER_ENABLE_MONITORING"
+        },
+        {
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
