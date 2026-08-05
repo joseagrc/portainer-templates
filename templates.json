@@ -2944,7 +2944,7 @@
           "name": "RNC_API_IMAGE"
         },
         {
-          "default": "latest",
+          "default": "2.4.1",
           "label": "RNC API Tag",
           "name": "RNC_API_TAG"
         },

@@ -29,7 +29,7 @@ services:
 
   api:
     container_name: ${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-app
-    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-latest}
+    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-2.4.1}
     restart: unless-stopped
     init: true
     stop_grace_period: 30s
