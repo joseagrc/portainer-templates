@@ -3410,9 +3410,99 @@
           "name": "DGII_ECF_ENGINE_IMAGE"
         },        
         {
-          "default": "1.1.59",
+          "default": "1.1.79",
           "label": "DGII e-CF Engine Tag",
           "name": "DGII_ECF_ENGINE_TAG"
+        },
+        {
+          "default": "true",
+          "label": "Instance Backup Enabled",
+          "name": "INSTANCE_BACKUP_ENABLED"
+        },
+        {
+          "default": "/tmp/dgii-ecf-instance-backups",
+          "label": "Instance Backup Work Dir",
+          "name": "INSTANCE_BACKUP_WORK_DIR"
+        },
+        {
+          "default": "10737418240",
+          "label": "Instance Backup Max Upload Bytes",
+          "name": "INSTANCE_BACKUP_MAX_UPLOAD_BYTES"
+        },
+        {
+          "default": "900000",
+          "label": "Instance Backup HTTP Timeout Ms",
+          "name": "INSTANCE_BACKUP_HTTP_TIMEOUT_MS"
+        },
+        {
+          "default": "true",
+          "label": "Backup Restore Verify On Create",
+          "name": "BACKUP_RESTORE_VERIFY_ON_CREATE"
+        },
+        {
+          "default": "true",
+          "label": "Backup Automation Scheduler Enabled",
+          "name": "BACKUP_AUTOMATION_SCHEDULER_ENABLED"
+        },
+        {
+          "default": "false",
+          "label": "Remote Backup Enabled",
+          "name": "BACKUP_REMOTE_ENABLED"
+        },
+        {
+          "default": "rclone",
+          "label": "Remote Backup Driver",
+          "name": "BACKUP_REMOTE_DRIVER"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup Target",
+          "name": "BACKUP_REMOTE_TARGET"
+        },
+        {
+          "default": "true",
+          "label": "Remote Backup Verify",
+          "name": "BACKUP_REMOTE_VERIFY"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup Rclone Flags",
+          "name": "BACKUP_REMOTE_RCLONE_FLAGS"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup Rsync Flags",
+          "name": "BACKUP_REMOTE_RSYNC_FLAGS"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup SCP Flags",
+          "name": "BACKUP_REMOTE_SCP_FLAGS"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup Lftp Flags",
+          "name": "BACKUP_REMOTE_LFTP_FLAGS"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup FTP URL",
+          "name": "BACKUP_REMOTE_FTP_URL"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup FTP User",
+          "name": "BACKUP_REMOTE_FTP_USER"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup FTP Password",
+          "name": "BACKUP_REMOTE_FTP_PASSWORD"
+        },
+        {
+          "default": "",
+          "label": "Remote Backup FTP Dir",
+          "name": "BACKUP_REMOTE_FTP_DIR"
         },
         {
           "default": "4000",
@@ -3473,6 +3563,51 @@
           "default": "",
           "label": "Cert Master Key BASE64",
           "name": "CERT_MASTER_KEY_BASE64"
+        },
+        {
+          "default": "primary",
+          "label": "Cert Master Key Version",
+          "name": "CERT_MASTER_KEY_VERSION"
+        },
+        {
+          "default": "normal",
+          "label": "Operational Mode",
+          "name": "OPERATIONAL_MODE"
+        },
+        {
+          "default": "",
+          "label": "Operational Mode Reason",
+          "name": "OPERATIONAL_MODE_REASON"
+        },
+        {
+          "default": "false",
+          "label": "Operational Degraded Reject Writes",
+          "name": "OPERATIONAL_DEGRADED_REJECT_WRITES"
+        },
+        {
+          "default": "60",
+          "label": "Operational Retry After Seconds",
+          "name": "OPERATIONAL_RETRY_AFTER_SECONDS"
+        },
+        {
+          "default": "true",
+          "label": "Backpressure Enabled",
+          "name": "BACKPRESSURE_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Fair Usage Enabled",
+          "name": "FAIR_USAGE_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Fiscal Retention Policy Enabled",
+          "name": "FISCAL_RETENTION_POLICY_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Audit Hash Chain Enabled",
+          "name": "AUDIT_HASH_CHAIN_ENABLED"
         },
         {
           "default": "true",
@@ -3575,9 +3710,19 @@
           "name": "DGII_ECF_PORTAL_IMAGE"
         },        
         {
-          "default": "1.1.59",
+          "default": "1.1.79",
           "label": "DGII e-CF Portal Tag",
           "name": "DGII_ECF_PORTAL_TAG"
+        },
+        {
+          "default": "2097152",
+          "label": "Print Max XML Bytes",
+          "name": "PRINT_MAX_XML_BYTES"
+        },
+        {
+          "default": "30000",
+          "label": "Print PDF Timeout Ms",
+          "name": "PRINT_PDF_TIMEOUT_MS"
         },
         {
           "default": "ecf.example.com",
@@ -4074,7 +4219,7 @@
         {
           "name": "DGII_ECF_ENGINE_TAG",
           "label": "DGII ECF Engine Tag",
-          "default": "1.1.59"
+          "default": "1.1.79"
         },
         {
           "name": "PLATFORM_ADMIN_BOOTSTRAP_ENABLED",
@@ -4105,6 +4250,51 @@
           "name": "CERT_MASTER_KEY_BASE64",
           "label": "Cert Master Key Base64",
           "default": ""
+        },
+        {
+          "default": "primary",
+          "label": "Cert Master Key Version",
+          "name": "CERT_MASTER_KEY_VERSION"
+        },
+        {
+          "default": "normal",
+          "label": "Operational Mode",
+          "name": "OPERATIONAL_MODE"
+        },
+        {
+          "default": "",
+          "label": "Operational Mode Reason",
+          "name": "OPERATIONAL_MODE_REASON"
+        },
+        {
+          "default": "false",
+          "label": "Operational Degraded Reject Writes",
+          "name": "OPERATIONAL_DEGRADED_REJECT_WRITES"
+        },
+        {
+          "default": "60",
+          "label": "Operational Retry After Seconds",
+          "name": "OPERATIONAL_RETRY_AFTER_SECONDS"
+        },
+        {
+          "default": "true",
+          "label": "Backpressure Enabled",
+          "name": "BACKPRESSURE_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Fair Usage Enabled",
+          "name": "FAIR_USAGE_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Fiscal Retention Policy Enabled",
+          "name": "FISCAL_RETENTION_POLICY_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Audit Hash Chain Enabled",
+          "name": "AUDIT_HASH_CHAIN_ENABLED"
         },
         {
           "name": "INTERNAL_API_TOKEN",
@@ -4140,6 +4330,11 @@
           "name": "INSTANCE_BACKUP_HTTP_TIMEOUT_MS",
           "label": "Instance Backup HTTP Timeout Ms",
           "default": "900000"
+        },
+        {
+          "default": "true",
+          "label": "Backup Restore Verify On Create",
+          "name": "BACKUP_RESTORE_VERIFY_ON_CREATE"
         },
         {
           "name": "BACKUP_AUTOMATION_SCHEDULER_ENABLED",
@@ -4299,7 +4494,17 @@
         {
           "name": "DGII_ECF_PORTAL_TAG",
           "label": "DGII ECF Portal Tag",
-          "default": "1.1.59"
+          "default": "1.1.79"
+        },
+        {
+          "default": "2097152",
+          "label": "Print Max XML Bytes",
+          "name": "PRINT_MAX_XML_BYTES"
+        },
+        {
+          "default": "30000",
+          "label": "Print PDF Timeout Ms",
+          "name": "PRINT_PDF_TIMEOUT_MS"
         },
         {
           "name": "DGII_ECF_PORTAL_PORT",
