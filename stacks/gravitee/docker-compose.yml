@@ -1,14 +1,14 @@
 services:
   mongodb:
     container_name: ${COMPOSE_PROJECT_NAME:-gravitee}-mongodb
-    image: mongo:${GRAVITEE_MONGO_TAG:-7.0}
+    image: mongo:${GRAVITEE_MONGO_TAG:-4.4.29}
     restart: unless-stopped
     volumes:
       - gravitee_mongodb_data:/data/db
     networks:
       - storage
     healthcheck:
-      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand(\"ping\").ok' | grep -q 1"]
+      test: ["CMD-SHELL", "mongo --quiet --eval 'db.adminCommand(\"ping\").ok' | grep -q 1"]
       interval: 10s
       timeout: 5s
       retries: 30

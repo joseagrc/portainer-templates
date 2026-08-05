@@ -855,7 +855,7 @@
           "name": "TRAEFIK_CERT_RESOLVER"
         },
         {
-          "default": "7.0",
+          "default": "4.4.29",
           "label": "MongoDB Tag",
           "name": "GRAVITEE_MONGO_TAG"
         },
