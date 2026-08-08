@@ -37,6 +37,7 @@ services:
       FREESSL_CERTIFICATES_BASE: /www/html/storage/certificates
       FREESSL_SETTINGS_PATH: /www/html/config/settings/settings.json
       FREESSL_CRON_ENABLED: ${FREESSL_CRON_ENABLED}
+      FREESSL_CRON_LOG: /www/logs/cron.log
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}

@@ -6068,7 +6068,7 @@
           "name": "FREESSL_IMAGE"
         },
         {
-          "default": "0.0.12",
+          "default": "0.0.13",
           "label": "FreeSSL Tag",
           "name": "FREESSL_TAG"
         },
