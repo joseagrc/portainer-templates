@@ -6078,7 +6078,7 @@
           "name": "MARIADB_IMAGE"
         },
         {
-          "default": "11.4",
+          "default": "latest",
           "label": "Database Tag",
           "name": "MARIADB_TAG"
         },
