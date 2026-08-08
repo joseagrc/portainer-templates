@@ -29,18 +29,20 @@ services:
 
   api:
     container_name: ${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-app
-    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-2.4.1}
+    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-2.4.3}
     restart: unless-stopped
     init: true
     stop_grace_period: 30s
     volumes:
       - dgii_rnc_data:/app/data
     environment:
-      APP_NAME: ${APP_NAME:-DGII RNC FastAPI}
+      APP_NAME: ${APP_NAME:-DGII RNC API}
       APP_ENV: ${APP_ENV:-production}
       APP_DEBUG: ${APP_DEBUG:-false}
       APP_HOST: 0.0.0.0
       APP_PORT: 8000
+      API_KEY: ${API_KEY:-change-this-api-key}
+      API_KEY_VALIDATION_MODE: ${API_KEY_VALIDATION_MODE:-static}
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_DB: ${POSTGRES_DB:-dgii_rnc_db}
@@ -68,8 +70,9 @@ services:
       SCHEDULER_ENABLED: ${SCHEDULER_ENABLED:-true}
       SCHEDULER_TIMEZONE: ${SCHEDULER_TIMEZONE:-America/Santo_Domingo}
       SCHEDULER_FULL_SYNC_CRON: "${SCHEDULER_FULL_SYNC_CRON:-0 2 * * *}"
-      SCHEDULER_STARTUP_SYNC_ENABLED: ${SCHEDULER_STARTUP_SYNC_ENABLED:-true}
-      SCHEDULER_STARTUP_SYNC_CLEAR_EXISTING: ${SCHEDULER_STARTUP_SYNC_CLEAR_EXISTING:-true}
+      SCHEDULER_STARTUP_SYNC_ENABLED: ${SCHEDULER_STARTUP_SYNC_ENABLED:-false}
+      SCHEDULER_STARTUP_SYNC_CLEAR_EXISTING: ${SCHEDULER_STARTUP_SYNC_CLEAR_EXISTING:-false}
+      SCHEDULER_STARTUP_FULL_SYNC_WHEN_NO_PENDING: ${SCHEDULER_STARTUP_FULL_SYNC_WHEN_NO_PENDING:-false}
       SCHEDULER_STARTUP_ENRICHMENT_ENABLED: ${SCHEDULER_STARTUP_ENRICHMENT_ENABLED:-true}
     networks:
       - internal

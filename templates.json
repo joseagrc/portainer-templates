@@ -2884,7 +2884,7 @@
       "type": 3,
       "title": "DGII RNC API + CSV + Web scraping",
       "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
-      "note": "Template preparado para producción detrás de Traefik: solo la API se publica por HTTPS y PostgreSQL queda en una red interna privada. Los defaults de PostgreSQL siguen el código de la aplicación; cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_PORT/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. El scheduler viene activo para sincronización automática. SCHEDULER_FULL_SYNC_CRON y HTML_ENRICHMENT_CRON deben usar formato cron de 5 campos, por ejemplo 0 2 * * *.",
+      "note": "Template preparado para producción detrás de Traefik o Gravitee. PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_PORT/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. Para exponer sin Gravitee usa API_KEY_VALIDATION_MODE=static, define API_KEY y deja RNC_API_TRAEFIK_ENABLE=true. Para usar Gravitee como gateway usa API_KEY_VALIDATION_MODE=gateway, deja que Gravitee valide las API keys de suscripción y considera RNC_API_TRAEFIK_ENABLE=false para evitar bypass público directo. El scheduler viene activo para sincronización automática. SCHEDULER_FULL_SYNC_CRON y HTML_ENRICHMENT_CRON deben usar formato cron de 5 campos, por ejemplo 0 2 * * *.",
       "categories": ["API"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-rnc-api/logo/logo.png",
@@ -2944,12 +2944,12 @@
           "name": "RNC_API_IMAGE"
         },
         {
-          "default": "2.4.1",
+          "default": "2.4.3",
           "label": "RNC API Tag",
           "name": "RNC_API_TAG"
         },
         {
-          "default": "DGII RNC FastAPI",
+          "default": "DGII RNC API",
           "label": "Application Name",
           "name": "APP_NAME"
         },
@@ -2967,6 +2967,16 @@
           "default": "",
           "label": "Database URL override",
           "name": "DATABASE_URL"
+        },
+        {
+          "default": "static",
+          "label": "API key validation mode: static direct mode, gateway for Gravitee",
+          "name": "API_KEY_VALIDATION_MODE"
+        },
+        {
+          "default": "change-this-api-key",
+          "label": "Static API key used only when API_KEY_VALIDATION_MODE=static",
+          "name": "API_KEY"
         },
         {
           "default": "https://dgii.gov.do/app/WebApps/ConsultasWeb2/ConsultasWeb/consultas/rnc.aspx",
@@ -3074,14 +3084,19 @@
           "name": "SCHEDULER_FULL_SYNC_CRON"
         },
         {
-          "default": "true",
-          "label": "Startup Sync Enabled",
+          "default": "false",
+          "label": "Startup sync enabled: resumes staging at startup; does not download ZIP unless configured",
           "name": "SCHEDULER_STARTUP_SYNC_ENABLED"
         },
         {
-          "default": "true",
+          "default": "false",
           "label": "Startup Sync Clear Existing",
           "name": "SCHEDULER_STARTUP_SYNC_CLEAR_EXISTING"
+        },
+        {
+          "default": "false",
+          "label": "Download/process ZIP on startup when no staging is pending",
+          "name": "SCHEDULER_STARTUP_FULL_SYNC_WHEN_NO_PENDING"
         },
         {
           "default": "true",
@@ -3105,7 +3120,7 @@
         },
         {
           "default": "true",
-          "label": "Expose RNC API directly with Traefik",
+          "label": "Expose RNC API directly with Traefik; set false when Gravitee is the only public gateway",
           "name": "RNC_API_TRAEFIK_ENABLE"
         },
         {
