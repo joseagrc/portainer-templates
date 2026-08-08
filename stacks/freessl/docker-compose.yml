@@ -34,6 +34,7 @@ services:
       NGINX_ENABLE_CREATE_SAMPLE_HTML: "FALSE"
       FREESSL_INSTALL_DB_HOST: ${COMPOSE_PROJECT_NAME}-db
       FREESSL_CERTIFICATES_BASE: /www/html/storage/certificates
+      FREESSL_SETTINGS_PATH: /www/html/config/settings/settings.json
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
