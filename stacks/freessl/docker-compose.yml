@@ -32,9 +32,11 @@ services:
       NGINX_WEBROOT: /www/html
       NGINX_SITE_ENABLED: freessl
       NGINX_ENABLE_CREATE_SAMPLE_HTML: "FALSE"
+      CONTAINER_ENABLE_SCHEDULING: "TRUE"
       FREESSL_INSTALL_DB_HOST: ${COMPOSE_PROJECT_NAME}-db
       FREESSL_CERTIFICATES_BASE: /www/html/storage/certificates
       FREESSL_SETTINGS_PATH: /www/html/config/settings/settings.json
+      FREESSL_CRON_ENABLED: ${FREESSL_CRON_ENABLED}
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}

@@ -6068,7 +6068,7 @@
           "name": "FREESSL_IMAGE"
         },
         {
-          "default": "0.0.5",
+          "default": "0.0.6",
           "label": "FreeSSL Tag",
           "name": "FREESSL_TAG"
         },
@@ -6114,6 +6114,11 @@
           "default": "proxy",
           "label": "Network Name",
           "name": "NETWORK"
+        },
+        {
+          "default": "TRUE",
+          "label": "Enable FreeSSL Cron",
+          "name": "FREESSL_CRON_ENABLED"
         },
         {
           "default": "TRUE",
