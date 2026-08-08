@@ -33,6 +33,9 @@ services:
       NGINX_SITE_ENABLED: freessl
       NGINX_ENABLE_CREATE_SAMPLE_HTML: "FALSE"
       FREESSL_INSTALL_DB_HOST: ${COMPOSE_PROJECT_NAME}-db
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
       FREESSL_CPANEL_VERIFY_TLS: ${FREESSL_CPANEL_VERIFY_TLS}
     labels:
       - "traefik.enable=true"
