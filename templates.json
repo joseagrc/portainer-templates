@@ -898,6 +898,11 @@
           "default": "",
           "label": "Developer Portal Public URL (optional)",
           "name": "GRAVITEE_PORTAL_URL"
+        },
+        {
+          "default": "",
+          "label": "Console UI Public URL (optional)",
+          "name": "GRAVITEE_CONSOLE_URL"
         }
      ],
       "volumes": [

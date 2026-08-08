@@ -107,6 +107,7 @@ services:
       gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=30000&connectTimeoutMS=30000&timeoutMS=60000
       gravitee_analytics_elasticsearch_endpoints_0: http://elasticsearch:9200
       gravitee_installation_standalone_portal_url: ${GRAVITEE_PORTAL_URL:-https://${GRAVITEE_PORTAL_DOMAIN}}
+      gravitee_installation_standalone_console_url: ${GRAVITEE_CONSOLE_URL:-https://${GRAVITEE_CONSOLE_DOMAIN}}
       gravitee_api_properties_encryption_secret: ${GRAVITEE_API_ENCRYPTION_SECRET:-change-this-32-byte-secret-value}
       gravitee_jwt_secret: ${GRAVITEE_JWT_SECRET:-change-this-jwt-secret-value}
       gravitee_plugins_path_0: /opt/graviteeio-management-api/plugins
