@@ -6048,7 +6048,7 @@
       "type": 3,
       "title": "FreeSSL",
       "description": "FreeSSL.tech Auto with MariaDB.",
-      "note": "Deploys FreeSSL.tech Auto behind Traefik using the joseagrc nginx-php-fpm based image. Complete the browser installer at /install.php and use the database host shown by the DB container name.",
+      "note": "Deploys FreeSSL.tech Auto behind Traefik using the joseagrc nginx-php-fpm based image. Complete the browser installer at /install.php and use the prefilled database host, or ${COMPOSE_PROJECT_NAME}-db if entering it manually.",
       "categories": ["Security", "Certificates"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/freessl/logo/logo.svg",

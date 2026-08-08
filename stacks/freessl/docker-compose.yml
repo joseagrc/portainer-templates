@@ -32,6 +32,7 @@ services:
       NGINX_WEBROOT: /www/html
       NGINX_SITE_ENABLED: freessl
       NGINX_ENABLE_CREATE_SAMPLE_HTML: "FALSE"
+      FREESSL_INSTALL_DB_HOST: ${COMPOSE_PROJECT_NAME}-db
       FREESSL_CPANEL_VERIFY_TLS: ${FREESSL_CPANEL_VERIFY_TLS}
     labels:
       - "traefik.enable=true"
