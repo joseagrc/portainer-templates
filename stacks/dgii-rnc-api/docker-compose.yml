@@ -29,7 +29,7 @@ services:
 
   api:
     container_name: ${COMPOSE_PROJECT_NAME:-dgii-rnc-api}-app
-    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-2.4.3}
+    image: ${RNC_API_IMAGE:-gitea.joseagrc.com/joseagrc/dgii-rnc-fastapi}:${RNC_API_TAG:-2.4.4}
     restart: unless-stopped
     init: true
     stop_grace_period: 30s
@@ -43,6 +43,8 @@ services:
       APP_PORT: 8000
       API_KEY: ${API_KEY:-change-this-api-key}
       API_KEY_VALIDATION_MODE: ${API_KEY_VALIDATION_MODE:-static}
+      FRONTEND_API_KEY: ${FRONTEND_API_KEY:-}
+      FRONTEND_API_BASE_URL: ${FRONTEND_API_BASE_URL:-}
       POSTGRES_HOST: ${POSTGRES_HOST:-postgres}
       POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       POSTGRES_DB: ${POSTGRES_DB:-dgii_rnc_db}
