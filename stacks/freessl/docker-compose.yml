@@ -1,0 +1,58 @@
+services:
+  freessl-db:
+    container_name: ${COMPOSE_PROJECT_NAME}-db
+    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
+    volumes:
+      - freessl-db:/var/lib/mysql
+    environment:
+      CONTAINER_NAME: ${COMPOSE_PROJECT_NAME}-db
+      TIMEZONE: ${TIMEZONE}
+      ROOT_PASS: ${ROOT_PASS}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+    restart: unless-stopped
+
+  freessl-app:
+    container_name: ${COMPOSE_PROJECT_NAME}-app
+    hostname: ${COMPOSE_PROJECT_NAME}-app
+    image: ${FREESSL_IMAGE}:${FREESSL_TAG}
+    restart: unless-stopped
+    depends_on:
+      - freessl-db
+    links:
+      - freessl-db:freessl-db
+    volumes:
+      - freessl-config:/www/html/config
+      - freessl-storage:/www/html/storage
+      - freessl-logs:/www/logs
+    environment:
+      CONTAINER_NAME: ${COMPOSE_PROJECT_NAME}-app
+      TIMEZONE: ${TIMEZONE}
+      NGINX_WEBROOT: /www/html
+      NGINX_SITE_ENABLED: freessl
+      NGINX_ENABLE_CREATE_SAMPLE_HTML: "FALSE"
+      FREESSL_CPANEL_VERIFY_TLS: ${FREESSL_CPANEL_VERIFY_TLS}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
+
+volumes:
+  freessl-db:
+  freessl-config:
+  freessl-storage:
+  freessl-logs:
+
+networks:
+  default:
+    name: ${NETWORK}
+    external: true

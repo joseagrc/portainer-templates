@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="FreeSSL">
+  <rect width="128" height="128" rx="20" fill="#0f766e"/>
+  <path fill="#ffffff" d="M64 18 28 34v28c0 23 15 44 36 50 21-6 36-27 36-50V34L64 18Zm0 13 24 11v20c0 16-9 31-24 37-15-6-24-21-24-37V42l24-11Z"/>
+  <path fill="#99f6e4" d="M76 58h-6v-9c0-4-3-7-6-7s-6 3-6 7v9h-6v-9c0-8 5-14 12-14s12 6 12 14v9Z"/>
+  <rect x="45" y="56" width="38" height="30" rx="5" fill="#ffffff"/>
+  <circle cx="64" cy="70" r="5" fill="#0f766e"/>
+  <path fill="#0f766e" d="M61 73h6v8h-6z"/>
+</svg>
