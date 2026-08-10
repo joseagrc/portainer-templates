@@ -1316,29 +1316,29 @@
       "id": 18,
       "type": 3,
       "title": "Phorge",
-      "description": "Phorge is a collection of web applications which help software companies build better software.",
-      "note": "Phorge is a community-maintained fork of Phabricator.",
+      "description": "Phorge 2026.27 with PHP 8.4 and MySQL 8.4 LTS.",
+      "note": "Production-oriented Phorge stack with persistent repositories, health checks, an isolated database network and reverse-proxy support.",
       "categories": ["continuous-integration"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/phorge/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/phorge/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/phorge/docker-compose.yml"
       },
       "env": [
         {
-          "default": "registry.gruposolutema.com/docker-base-images/docker-mariadb",
-          "label": "MariaDB image",
-          "name": "MARIADB_IMAGE"
+          "default": "registry.gruposolutema.com/phorge/docker-phorge-mysql",
+          "label": "MySQL image",
+          "name": "MYSQL_IMAGE"
         },
         {
-          "default": "11.5",
-          "label": "MariaDB tag",
-          "name": "MARIADB_TAG"
+          "default": "8.4",
+          "label": "MySQL tag",
+          "name": "MYSQL_TAG"
         },
         {
           "label": "Database root password",
-          "name": "ROOT_PASS"
+          "name": "MYSQL_ROOT_PASSWORD"
         },
         {
           "default": "registry.gruposolutema.com/phorge/docker-phorge",
@@ -1346,21 +1346,16 @@
           "name": "PHORGE_IMAGE"
         },
         {
-          "default": "2023.49",
+          "default": "2026.27",
           "label": "Phorge tag",
           "name": "PHORGE_TAG"
         },
         {
-          "label": "Phorge title",
-          "name": "PHABRICATOR_TITLE"
-        },
-        {
-          "default": "mail.example.com",
           "label": "SMTP host",
           "name": "SMTP_HOST"
         },
         {
-          "default": "465",
+          "default": "587",
           "label": "SMTP port",
           "name": "SMTP_PORT"
         },
@@ -1373,7 +1368,7 @@
           "name": "SMTP_PASSWORD"
         },
         {
-          "default": "ssl",
+          "default": "tls",
           "label": "SMTP protocol",
           "name": "SMTP_PROTOCOL"
         },

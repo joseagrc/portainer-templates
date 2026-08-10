@@ -1,50 +1,59 @@
-version: '3'
 services:
-  mariadb:
-    container_name: ${COMPOSE_PROJECT_NAME}-mariadb
-    image: ${MARIADB_IMAGE}:${MARIADB_TAG}
-    restart: always
-    volumes:
-       - phorge_db:/var/lib/mysql
+  mysql:
+    image: ${MYSQL_IMAGE:-registry.gruposolutema.com/phorge/docker-phorge-mysql}:${MYSQL_TAG:-8.4}
+    restart: unless-stopped
     environment:
-      ROOT_PASS: ${ROOT_PASS}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
+    volumes:
+      - phorge_db:/var/lib/mysql
+    networks:
+      - database
+    healthcheck:
+      test: ["CMD-SHELL", "MYSQL_PWD=$$MYSQL_ROOT_PASSWORD mysqladmin ping --silent --host=127.0.0.1 --user=root"]
+      interval: 10s
+      timeout: 5s
+      start_period: 30s
+      retries: 10
 
   phorge:
-    container_name: ${COMPOSE_PROJECT_NAME}-app
-    image: ${PHORGE_IMAGE}:${PHORGE_TAG}
-    restart: always
-    volumes:
-      - phorge_web:/var/www/html
-      - phorge_ssh:/etc/ssh
-      - phorge_repo:/var/repo
-    depends_on:
-      - mariadb
-    links:
-      - mariadb
+    image: ${PHORGE_IMAGE:-registry.gruposolutema.com/phorge/docker-phorge}:${PHORGE_TAG:-2026.27}
+    restart: unless-stopped
     environment:
-      UPGRADE_ON_RESTART: true
-      MARIADB_HOST: ${COMPOSE_PROJECT_NAME}-mariadb
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
-      SMTP_PROTOCOL: ${SMTP_PROTOCOL}
-      MARIADB_ROOT_PASSWORD: ${ROOT_PASS}
-      PHABRICATOR_TITLE: ${PHABRICATOR_TITLE}
-      PHABRICATOR_DOMAIN: https://${URL_DOMAIN}
-      PHABRICATOR_URL: https://${URL_DOMAIN}
-      PH_BASE_URI: https://${URL_DOMAIN}
-      PHABRICATOR_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN}
-      VIRTUAL_HOST: ${URL_DOMAIN},www.${URL_DOMAIN},cdn.${URL_DOMAIN},www.cdn.${URL_DOMAIN}
-      LETSENCRYPT_HOST: ${URL_DOMAIN},www.${URL_DOMAIN},cdn.${URL_DOMAIN},www.cdn.${URL_DOMAIN}
+      MYSQL_HOST: mysql
+      MYSQL_PORT: 3306
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
+      PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
+      PHORGE_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN:?Public domain is required}/
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_PROTOCOL: ${SMTP_PROTOCOL:-tls}
+      TRUST_PROXY_HEADERS: "1"
+      UPGRADE_ON_RESTART: "true"
+      VIRTUAL_HOST: ${URL_DOMAIN},cdn.${URL_DOMAIN}
+      LETSENCRYPT_HOST: ${URL_DOMAIN},cdn.${URL_DOMAIN}
+    volumes:
+      - phorge_conf:/opt/phabricator/conf/local
+      - phorge_repo:/var/repo
+      - phorge_ssh:/home/app/.ssh
+    networks:
+      - database
+      - proxy
+    depends_on:
+      mysql:
+        condition: service_healthy
 
 volumes:
-  phorge_web:
-  phorge_ssh:
-  phorge_repo:
+  phorge_conf:
   phorge_db:
+  phorge_repo:
+  phorge_ssh:
 
 networks:
-  default:
-    name: ${NETWORK}
+  database:
+    internal: true
+  proxy:
     external: true
+    name: ${NETWORK:-proxy}
