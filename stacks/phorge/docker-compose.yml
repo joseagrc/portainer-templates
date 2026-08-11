@@ -26,6 +26,7 @@ services:
       PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
       PHORGE_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN:?Public domain is required}/
       PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-es_ES}
+      PHORGE_DEFAULT_LOCALE: ${PHORGE_DEFAULT_LOCALE:-es_ES}
       PHORGE_UI_LOGO_JSON: '${PHORGE_UI_LOGO_JSON:-{"wordmark":"Phorge"}}'
       PHORGE_UI_HEADER_COLOR: ${PHORGE_UI_HEADER_COLOR:-}
       PHORGE_UI_FAVICONS_JSON: '${PHORGE_UI_FAVICONS_JSON:-}'

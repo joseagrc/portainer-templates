@@ -1356,6 +1356,11 @@
           "name": "PHORGE_COMMAND_LOCALE"
         },
         {
+          "default": "es_ES",
+          "label": "Default web interface language (locale code)",
+          "name": "PHORGE_DEFAULT_LOCALE"
+        },
+        {
           "default": "{\"wordmark\":\"Phorge\"}",
           "label": "Header logo configuration (JSON)",
           "name": "PHORGE_UI_LOGO_JSON"
