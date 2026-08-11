@@ -24,9 +24,16 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
       PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
-      PHORGE_ALT_FILE_DOMAIN: ${PHORGE_ALT_FILE_DOMAIN:-}
+      PHORGE_ALT_FILE_DOMAIN: https://${FILE_DOMAIN:?Alternate file domain is required}/
       PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-en_US}
       PHORGE_DEFAULT_LOCALE: ${PHORGE_DEFAULT_LOCALE:-en_US}
+      PHORGE_ENABLE_PASSWORD_LOGIN: ${PHORGE_ENABLE_PASSWORD_LOGIN:-true}
+      PHORGE_LOCK_LOGIN_CONFIG: ${PHORGE_LOCK_LOGIN_CONFIG:-true}
+      PHORGE_FILE_STORAGE_PATH: /var/lib/phorge/files
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-64M}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-64M}
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-512M}
+      OPCACHE_VALIDATE_TIMESTAMPS: "0"
       PHORGE_UI_LOGO_JSON: '${PHORGE_UI_LOGO_JSON:-{"wordmarkText":"Code"}}'
       PHORGE_UI_HEADER_COLOR: ${PHORGE_UI_HEADER_COLOR:-}
       PHORGE_UI_FAVICONS_JSON: '${PHORGE_UI_FAVICONS_JSON:-}'
@@ -50,9 +57,14 @@ services:
       traefik.http.routers.code.rule: Host(`${URL_DOMAIN:?Public domain is required}`)
       traefik.http.routers.code.tls: "true"
       traefik.http.routers.code.tls.certresolver: letsencrypt
+      traefik.http.routers.code-files.entrypoints: websecure
+      traefik.http.routers.code-files.rule: Host(`${FILE_DOMAIN:?Alternate file domain is required}`)
+      traefik.http.routers.code-files.tls: "true"
+      traefik.http.routers.code-files.tls.certresolver: letsencrypt
       traefik.http.services.code.loadbalancer.server.port: "80"
     volumes:
       - phorge_conf:/opt/phabricator/conf/local
+      - phorge_files:/var/lib/phorge/files
       - phorge_repo:/var/repo
       - phorge_ssh:/home/app/.ssh
     networks:
@@ -65,6 +77,7 @@ services:
 volumes:
   phorge_conf:
   phorge_db:
+  phorge_files:
   phorge_repo:
   phorge_ssh:
 

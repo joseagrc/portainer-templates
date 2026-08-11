@@ -1361,9 +1361,34 @@
           "name": "PHORGE_DEFAULT_LOCALE"
         },
         {
-          "default": "",
-          "label": "Alternate file domain (optional, requires DNS and proxy routing)",
-          "name": "PHORGE_ALT_FILE_DOMAIN"
+          "default": "cdn.code.joseagrc.com",
+          "label": "Alternate file domain (DNS must point to Traefik)",
+          "name": "FILE_DOMAIN"
+        },
+        {
+          "default": "true",
+          "label": "Create username/password authentication provider",
+          "name": "PHORGE_ENABLE_PASSWORD_LOGIN"
+        },
+        {
+          "default": "true",
+          "label": "Lock authentication configuration after bootstrap",
+          "name": "PHORGE_LOCK_LOGIN_CONFIG"
+        },
+        {
+          "default": "64M",
+          "label": "PHP maximum POST size",
+          "name": "PHP_POST_MAX_SIZE"
+        },
+        {
+          "default": "64M",
+          "label": "PHP maximum uploaded file size",
+          "name": "PHP_UPLOAD_MAX_FILESIZE"
+        },
+        {
+          "default": "512M",
+          "label": "PHP memory limit",
+          "name": "PHP_MEMORY_LIMIT"
         },
         {
           "default": "{\"wordmarkText\":\"Code\"}",
