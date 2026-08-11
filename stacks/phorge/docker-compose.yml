@@ -25,9 +25,9 @@ services:
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
       PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
       PHORGE_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN:?Public domain is required}/
-      PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-es_ES}
-      PHORGE_DEFAULT_LOCALE: ${PHORGE_DEFAULT_LOCALE:-es_ES}
-      PHORGE_UI_LOGO_JSON: '${PHORGE_UI_LOGO_JSON:-{"wordmark":"Phorge"}}'
+      PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-en_US}
+      PHORGE_DEFAULT_LOCALE: ${PHORGE_DEFAULT_LOCALE:-en_US}
+      PHORGE_UI_LOGO_JSON: '${PHORGE_UI_LOGO_JSON:-{"wordmarkText":"Code"}}'
       PHORGE_UI_HEADER_COLOR: ${PHORGE_UI_HEADER_COLOR:-}
       PHORGE_UI_FAVICONS_JSON: '${PHORGE_UI_FAVICONS_JSON:-}'
       PHORGE_UI_FOOTER_ITEMS_JSON: '${PHORGE_UI_FOOTER_ITEMS_JSON:-}'
@@ -39,8 +39,18 @@ services:
       SMTP_PROTOCOL: ${SMTP_PROTOCOL:-tls}
       TRUST_PROXY_HEADERS: "1"
       UPGRADE_ON_RESTART: "true"
-      VIRTUAL_HOST: ${URL_DOMAIN},cdn.${URL_DOMAIN}
-      LETSENCRYPT_HOST: ${URL_DOMAIN},cdn.${URL_DOMAIN}
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: ${NETWORK:-proxy}
+      traefik.http.middlewares.code-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.code-http.entrypoints: web
+      traefik.http.routers.code-http.middlewares: code-https-redirect
+      traefik.http.routers.code-http.rule: Host(`${URL_DOMAIN:?Public domain is required}`)
+      traefik.http.routers.code.entrypoints: websecure
+      traefik.http.routers.code.rule: Host(`${URL_DOMAIN:?Public domain is required}`)
+      traefik.http.routers.code.tls: "true"
+      traefik.http.routers.code.tls.certresolver: letsencrypt
+      traefik.http.services.code.loadbalancer.server.port: "80"
     volumes:
       - phorge_conf:/opt/phabricator/conf/local
       - phorge_repo:/var/repo

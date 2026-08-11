@@ -1315,8 +1315,8 @@
       {
       "id": 18,
       "type": 3,
-      "title": "Phorge",
-      "description": "Phorge 2026.27 with PHP 8.4, MySQL 8.4 LTS and multilingual translations.",
+      "title": "Code",
+      "description": "Code, powered by Phorge 2026.27 with PHP 8.4, MySQL 8.4 LTS and multilingual translations.",
       "note": "Production-oriented Phorge stack using the joseagrc Gitea packages. Includes Spanish localization, configurable branding, persistent repositories, health checks, an isolated database network and reverse-proxy support.",
       "categories": ["continuous-integration"],
       "platform": "linux",
@@ -1351,17 +1351,17 @@
           "name": "PHORGE_TAG"
         },
         {
-          "default": "es_ES",
+          "default": "en_US",
           "label": "Command and daemon locale",
           "name": "PHORGE_COMMAND_LOCALE"
         },
         {
-          "default": "es_ES",
+          "default": "en_US",
           "label": "Default web interface language (locale code)",
           "name": "PHORGE_DEFAULT_LOCALE"
         },
         {
-          "default": "{\"wordmark\":\"Phorge\"}",
+          "default": "{\"wordmarkText\":\"Code\"}",
           "label": "Header logo configuration (JSON)",
           "name": "PHORGE_UI_LOGO_JSON"
         },
@@ -1408,7 +1408,7 @@
           "name": "SMTP_PROTOCOL"
         },
         {
-          "default": "devops.example.com",
+          "default": "code.joseagrc.com",
           "label": "URL domain",
           "name": "URL_DOMAIN"
         },
