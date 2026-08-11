@@ -24,7 +24,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
       PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
-      PHORGE_ALT_FILE_DOMAIN: https://${FILE_DOMAIN:?Alternate file domain is required}/
+      PHORGE_ALT_FILE_DOMAIN: https://${FILE_DOMAIN:-cdn.code.joseagrc.com}/
       PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-en_US}
       PHORGE_DEFAULT_LOCALE: ${PHORGE_DEFAULT_LOCALE:-en_US}
       PHORGE_ENABLE_PASSWORD_LOGIN: ${PHORGE_ENABLE_PASSWORD_LOGIN:-true}
@@ -58,7 +58,7 @@ services:
       traefik.http.routers.code.tls: "true"
       traefik.http.routers.code.tls.certresolver: letsencrypt
       traefik.http.routers.code-files.entrypoints: websecure
-      traefik.http.routers.code-files.rule: Host(`${FILE_DOMAIN:?Alternate file domain is required}`)
+      traefik.http.routers.code-files.rule: Host(`${FILE_DOMAIN:-cdn.code.joseagrc.com}`)
       traefik.http.routers.code-files.tls: "true"
       traefik.http.routers.code-files.tls.certresolver: letsencrypt
       traefik.http.services.code.loadbalancer.server.port: "80"
