@@ -24,7 +24,7 @@ services:
       MYSQL_USER: root
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
       PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
-      PHORGE_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN:?Public domain is required}/
+      PHORGE_ALT_FILE_DOMAIN: ${PHORGE_ALT_FILE_DOMAIN:-}
       PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-en_US}
       PHORGE_DEFAULT_LOCALE: ${PHORGE_DEFAULT_LOCALE:-en_US}
       PHORGE_UI_LOGO_JSON: '${PHORGE_UI_LOGO_JSON:-{"wordmarkText":"Code"}}'

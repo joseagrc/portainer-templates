@@ -1361,6 +1361,11 @@
           "name": "PHORGE_DEFAULT_LOCALE"
         },
         {
+          "default": "",
+          "label": "Alternate file domain (optional, requires DNS and proxy routing)",
+          "name": "PHORGE_ALT_FILE_DOMAIN"
+        },
+        {
           "default": "{\"wordmarkText\":\"Code\"}",
           "label": "Header logo configuration (JSON)",
           "name": "PHORGE_UI_LOGO_JSON"
