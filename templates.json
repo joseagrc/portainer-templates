@@ -1316,8 +1316,8 @@
       "id": 18,
       "type": 3,
       "title": "Phorge",
-      "description": "Phorge 2026.27 with PHP 8.4 and MySQL 8.4 LTS.",
-      "note": "Production-oriented Phorge stack with persistent repositories, health checks, an isolated database network and reverse-proxy support.",
+      "description": "Phorge 2026.27 with PHP 8.4, MySQL 8.4 LTS and multilingual translations.",
+      "note": "Production-oriented Phorge stack using the joseagrc Gitea packages. Includes Spanish localization, configurable branding, persistent repositories, health checks, an isolated database network and reverse-proxy support.",
       "categories": ["continuous-integration"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/phorge/logo/logo.png",
@@ -1327,7 +1327,7 @@
       },
       "env": [
         {
-          "default": "registry.gruposolutema.com/phorge/docker-phorge-mysql",
+          "default": "gitea.joseagrc.com/joseagrc/phorge-mysql",
           "label": "MySQL image",
           "name": "MYSQL_IMAGE"
         },
@@ -1341,7 +1341,7 @@
           "name": "MYSQL_ROOT_PASSWORD"
         },
         {
-          "default": "registry.gruposolutema.com/phorge/docker-phorge",
+          "default": "gitea.joseagrc.com/joseagrc/phorge",
           "label": "Phorge image",
           "name": "PHORGE_IMAGE"
         },
@@ -1349,6 +1349,36 @@
           "default": "2026.27",
           "label": "Phorge tag",
           "name": "PHORGE_TAG"
+        },
+        {
+          "default": "es_ES",
+          "label": "Command and daemon locale",
+          "name": "PHORGE_COMMAND_LOCALE"
+        },
+        {
+          "default": "{\"wordmark\":\"Phorge\"}",
+          "label": "Header logo configuration (JSON)",
+          "name": "PHORGE_UI_LOGO_JSON"
+        },
+        {
+          "default": "",
+          "label": "Header color",
+          "name": "PHORGE_UI_HEADER_COLOR"
+        },
+        {
+          "default": "",
+          "label": "Favicon configuration (JSON, optional)",
+          "name": "PHORGE_UI_FAVICONS_JSON"
+        },
+        {
+          "default": "",
+          "label": "Footer items (JSON, optional)",
+          "name": "PHORGE_UI_FOOTER_ITEMS_JSON"
+        },
+        {
+          "default": "",
+          "label": "Translation overrides (JSON, optional)",
+          "name": "PHORGE_TRANSLATION_OVERRIDE_JSON"
         },
         {
           "label": "SMTP host",

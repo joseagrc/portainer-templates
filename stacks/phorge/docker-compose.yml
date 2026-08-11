@@ -1,6 +1,6 @@
 services:
   mysql:
-    image: ${MYSQL_IMAGE:-registry.gruposolutema.com/phorge/docker-phorge-mysql}:${MYSQL_TAG:-8.4}
+    image: ${MYSQL_IMAGE:-gitea.joseagrc.com/joseagrc/phorge-mysql}:${MYSQL_TAG:-8.4}
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
@@ -16,7 +16,7 @@ services:
       retries: 10
 
   phorge:
-    image: ${PHORGE_IMAGE:-registry.gruposolutema.com/phorge/docker-phorge}:${PHORGE_TAG:-2026.27}
+    image: ${PHORGE_IMAGE:-gitea.joseagrc.com/joseagrc/phorge}:${PHORGE_TAG:-2026.27}
     restart: unless-stopped
     environment:
       MYSQL_HOST: mysql
@@ -25,6 +25,12 @@ services:
       MYSQL_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Database root password is required}
       PHORGE_BASE_URI: https://${URL_DOMAIN:?Public domain is required}/
       PHORGE_ALT_FILE_DOMAIN: https://cdn.${URL_DOMAIN:?Public domain is required}/
+      PHORGE_COMMAND_LOCALE: ${PHORGE_COMMAND_LOCALE:-es_ES}
+      PHORGE_UI_LOGO_JSON: '${PHORGE_UI_LOGO_JSON:-{"wordmark":"Phorge"}}'
+      PHORGE_UI_HEADER_COLOR: ${PHORGE_UI_HEADER_COLOR:-}
+      PHORGE_UI_FAVICONS_JSON: '${PHORGE_UI_FAVICONS_JSON:-}'
+      PHORGE_UI_FOOTER_ITEMS_JSON: '${PHORGE_UI_FOOTER_ITEMS_JSON:-}'
+      PHORGE_TRANSLATION_OVERRIDE_JSON: '${PHORGE_TRANSLATION_OVERRIDE_JSON:-}'
       SMTP_HOST: ${SMTP_HOST:-}
       SMTP_PORT: ${SMTP_PORT:-587}
       SMTP_USER: ${SMTP_USER:-}
