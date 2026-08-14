@@ -3,6 +3,9 @@ services:
     image: ${GITEA_ACT_RUNNER_IMAGE}:${GITEA_ACT_RUNNER_TAG}
     restart: unless-stopped
     working_dir: /data
+    dns:
+      - 1.1.1.1
+      - 8.8.8.8
     entrypoint:
       - /bin/sh
       - -ec
@@ -11,6 +14,7 @@ services:
         cd /data
         act_runner generate-config > /data/config.yaml
         sed -i 's|network: ""|network: "${NETWORK}"|' /data/config.yaml
+        sed -i 's|^  options:.*|  options: --dns=1.1.1.1 --dns=8.8.8.8|' /data/config.yaml
         if [ ! -f .runner ]; then
           act_runner register --no-interactive \
             --instance "$${GITEA_INSTANCE_URL}" \
