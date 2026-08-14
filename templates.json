@@ -875,6 +875,16 @@
           "name": "GRAVITEE_ES_JAVA_OPTS"
         },
         {
+          "default": "1g",
+          "label": "Management API Minimum Heap",
+          "name": "GRAVITEE_MANAGEMENT_API_MIN_HEAP"
+        },
+        {
+          "default": "1g",
+          "label": "Management API Maximum Heap",
+          "name": "GRAVITEE_MANAGEMENT_API_MAX_HEAP"
+        },
+        {
           "default": "false",
           "label": "Enable Federation",
           "name": "GRAVITEE_FEDERATION_ENABLED"

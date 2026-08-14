@@ -104,6 +104,8 @@ services:
       elasticsearch:
         condition: service_healthy
     environment:
+      GIO_MIN_MEM: ${GRAVITEE_MANAGEMENT_API_MIN_HEAP:-1g}
+      GIO_MAX_MEM: ${GRAVITEE_MANAGEMENT_API_MAX_HEAP:-1g}
       gravitee_management_mongodb_uri: mongodb://mongodb:27017/gravitee?serverSelectionTimeoutMS=30000&connectTimeoutMS=30000&timeoutMS=60000
       gravitee_analytics_elasticsearch_endpoints_0: http://elasticsearch:9200
       gravitee_installation_standalone_portal_url: ${GRAVITEE_PORTAL_URL:-https://${GRAVITEE_PORTAL_DOMAIN}}
