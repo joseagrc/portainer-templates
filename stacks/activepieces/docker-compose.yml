@@ -1,0 +1,137 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
+x-activepieces: &activepieces
+  image: ${ACTIVEPIECES_IMAGE:-ghcr.io/activepieces/activepieces}:${ACTIVEPIECES_TAG:-0.88.1}
+  pull_policy: always
+  restart: unless-stopped
+  init: true
+  logging: *default-logging
+  environment: &activepieces-environment
+    AP_DB_TYPE: POSTGRES
+    AP_EDITION: ce
+    AP_ENVIRONMENT: prod
+    AP_FRONTEND_URL: https://${ACTIVEPIECES_DOMAIN:-activepieces.joseagrc.com}
+    AP_POSTGRES_DATABASE: ${POSTGRES_DB:-activepieces}
+    AP_POSTGRES_HOST: postgres
+    AP_POSTGRES_PORT: 5432
+    AP_POSTGRES_USERNAME: ${POSTGRES_USER:-activepieces}
+    AP_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    AP_REDIS_HOST: redis
+    AP_REDIS_PORT: 6379
+    AP_ENCRYPTION_KEY: ${AP_ENCRYPTION_KEY}
+    AP_JWT_SECRET: ${AP_JWT_SECRET}
+    AP_API_KEY: ${AP_API_KEY}
+    AP_EXECUTION_MODE: ${AP_EXECUTION_MODE:-UNSANDBOXED}
+    AP_WORKER_CONCURRENCY: ${AP_WORKER_CONCURRENCY:-1}
+    AP_FLOW_TIMEOUT_SECONDS: ${AP_FLOW_TIMEOUT_SECONDS:-600}
+    AP_WEBHOOK_TIMEOUT_SECONDS: ${AP_WEBHOOK_TIMEOUT_SECONDS:-30}
+    AP_TRIGGER_DEFAULT_POLL_INTERVAL: ${AP_TRIGGER_DEFAULT_POLL_INTERVAL:-5}
+    AP_TELEMETRY_ENABLED: ${AP_TELEMETRY_ENABLED:-false}
+    AP_TEMPLATES_SOURCE_URL: https://cloud.activepieces.com/api/v1/flow-templates
+    TZ: ${TIMEZONE:-America/Santo_Domingo}
+  networks:
+    - internal
+  volumes:
+    - cache:/usr/src/app/cache
+
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:-pgvector/pgvector}:${POSTGRES_TAG:-0.8.0-pg14}
+    pull_policy: always
+    restart: unless-stopped
+    init: true
+    logging: *default-logging
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-activepieces}
+      POSTGRES_USER: ${POSTGRES_USER:-activepieces}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TIMEZONE:-America/Santo_Domingo}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-7.0.7}
+    pull_policy: always
+    restart: unless-stopped
+    init: true
+    logging: *default-logging
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    <<: *activepieces
+    container_name: ${COMPOSE_PROJECT_NAME:-activepieces}-app
+    environment:
+      <<: *activepieces-environment
+      AP_CONTAINER_TYPE: APP
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - internal
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "node -e \"fetch('http://127.0.0.1:80/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))\""]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}-http.rule=Host(`${ACTIVEPIECES_DOMAIN:-activepieces.joseagrc.com}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}-http.entrypoints=web
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}-http.middlewares=${COMPOSE_PROJECT_NAME:-activepieces}-https-redirect
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-activepieces}-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}.rule=Host(`${ACTIVEPIECES_DOMAIN:-activepieces.joseagrc.com}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-activepieces}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-activepieces}.loadbalancer.server.port=80
+
+  worker:
+    <<: *activepieces
+    environment:
+      <<: *activepieces-environment
+      AP_CONTAINER_TYPE: WORKER
+    depends_on:
+      app:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+    name: ${COMPOSE_PROJECT_NAME:-activepieces}_postgres_data
+  redis_data:
+    name: ${COMPOSE_PROJECT_NAME:-activepieces}_redis_data
+  cache:
+    name: ${COMPOSE_PROJECT_NAME:-activepieces}_cache
+
+networks:
+  internal:
+    internal: true
+  proxy:
+    name: ${NETWORK:-proxy}
+    external: true

@@ -6401,6 +6401,46 @@
         {"container": "/var/lib/postgresql"},
         {"container": "/app/DataProtection-Keys"}
       ]
+    },
+    {
+      "id": 58,
+      "type": 3,
+      "title": "Activepieces",
+      "description": "Production workflow automation with PostgreSQL, Redis and a dedicated worker.",
+      "note": "Back up PostgreSQL together with AP_ENCRYPTION_KEY and AP_JWT_SECRET. Losing the encryption key makes stored connections unreadable.",
+      "categories": ["Automation", "Workflow", "AI"],
+      "platform": "linux",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/activepieces/docker-compose.yml"
+      },
+      "env": [
+        {"default": "activepieces", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
+        {"default": "activepieces.joseagrc.com", "label": "Public Domain", "name": "ACTIVEPIECES_DOMAIN"},
+        {"default": "ghcr.io/activepieces/activepieces", "label": "Activepieces Image", "name": "ACTIVEPIECES_IMAGE"},
+        {"default": "0.88.1", "label": "Activepieces Tag", "name": "ACTIVEPIECES_TAG"},
+        {"default": "pgvector/pgvector", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
+        {"default": "0.8.0-pg14", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
+        {"default": "activepieces", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
+        {"default": "activepieces", "label": "PostgreSQL Username", "name": "POSTGRES_USER"},
+        {"label": "PostgreSQL Password", "name": "POSTGRES_PASSWORD"},
+        {"label": "Activepieces Encryption Key", "name": "AP_ENCRYPTION_KEY"},
+        {"label": "Activepieces JWT Secret", "name": "AP_JWT_SECRET"},
+        {"label": "Activepieces API Key", "name": "AP_API_KEY"},
+        {"default": "redis", "label": "Redis Image", "name": "REDIS_IMAGE"},
+        {"default": "7.0.7", "label": "Redis Tag", "name": "REDIS_TAG"},
+        {"default": "UNSANDBOXED", "label": "Execution Mode", "name": "AP_EXECUTION_MODE"},
+        {"default": "1", "label": "Worker Concurrency", "name": "AP_WORKER_CONCURRENCY"},
+        {"default": "false", "label": "Telemetry Enabled", "name": "AP_TELEMETRY_ENABLED", "select": [{"text": "No", "value": "false", "default": true}, {"text": "Yes", "value": "true"}]},
+        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TIMEZONE"},
+        {"default": "proxy", "label": "Traefik Network", "name": "NETWORK"},
+        {"default": "letsencrypt", "label": "Traefik Certificate Resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+      ],
+      "volumes": [
+        {"container": "/var/lib/postgresql/data"},
+        {"container": "/data"},
+        {"container": "/usr/src/app/cache"}
+      ]
     }
   ]
 }
