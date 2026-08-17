@@ -6231,7 +6231,7 @@
           "name": "COMPOSE_PROJECT_NAME"
         },
         {
-          "default": "documentation.unpaismejor.org.do",
+          "default": "docs.tryton.org.do",
           "label": "Documentation Domain",
           "name": "SITE_URL"
         },
