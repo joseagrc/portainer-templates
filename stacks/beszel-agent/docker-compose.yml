@@ -3,6 +3,12 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-beszel-agent}
     image: ${BESZEL_AGENT_IMAGE:-henrygd/beszel-agent}:${BESZEL_AGENT_TAG:-latest}
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "/agent", "health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     network_mode: host
     volumes:
       - beszel_agent_data:/var/lib/beszel-agent

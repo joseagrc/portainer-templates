@@ -26,7 +26,7 @@ services:
       - critical-css:/critical-css:ro
     depends_on:
       memcached:
-        condition: service_started
+        condition: service_healthy
     restart: unless-stopped
     logging: *default-logging
     networks: [proxy, internal]
@@ -54,6 +54,12 @@ services:
     restart: unless-stopped
     logging: *default-logging
     networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "printf 'version\\r\\n' | nc -w 2 127.0.0.1 11211 | grep -q VERSION"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   critical-css:
     container_name: ${COMPOSE_PROJECT_NAME}-critical-css

@@ -30,6 +30,12 @@ services:
   phpmyadmin:
     container_name: ${COMPOSE_PROJECT_NAME}-phpmyadmin
     image: ${PHPMYADMIN_IMAGE}:${PHPMYADMIN_TAG}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/ >/dev/null"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
     restart: unless-stopped
     logging: *default-logging
     networks: [proxy, internal]
@@ -55,6 +61,12 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     hostname: ${COMPOSE_PROJECT_NAME}-app
     image: ${WORDPRESS_IMAGE}:${WORDPRESS_TAG}
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/wp-login.php >/dev/null"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
     restart: unless-stopped
     logging: *default-logging
     networks: [proxy, internal]
