@@ -6277,6 +6277,45 @@
       ]
     },
     {
+      "id": 57,
+      "type": 3,
+      "title": "n8n Automation",
+      "description": "Production n8n automation platform with PostgreSQL, Redis queue and worker.",
+      "note": "Uses a persistent encryption key and PostgreSQL database. Back up both the database and N8N_ENCRYPTION_KEY; losing the encryption key makes stored credentials unreadable.",
+      "categories": ["Automation", "Workflow", "AI"],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/n8n/docker-compose.yml"
+      },
+      "env": [
+        {"default": "n8n", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
+        {"default": "n8n.joseagrc.com", "label": "Public Domain", "name": "N8N_DOMAIN"},
+        {"default": "docker.n8n.io/n8nio/n8n", "label": "n8n Image", "name": "N8N_IMAGE"},
+        {"default": "latest", "label": "n8n Tag", "name": "N8N_TAG"},
+        {"default": "postgres", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
+        {"default": "18-alpine", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
+        {"default": "n8n", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
+        {"default": "n8n", "label": "PostgreSQL Username", "name": "POSTGRES_USER"},
+        {"label": "PostgreSQL Password", "name": "POSTGRES_PASSWORD"},
+        {"label": "n8n Encryption Key", "name": "N8N_ENCRYPTION_KEY"},
+        {"default": "redis", "label": "Redis Image", "name": "REDIS_IMAGE"},
+        {"default": "8-alpine", "label": "Redis Tag", "name": "REDIS_TAG"},
+        {"default": "5", "label": "Worker Concurrency", "name": "N8N_WORKER_CONCURRENCY"},
+        {"default": "336", "label": "Execution Retention Hours", "name": "EXECUTIONS_DATA_MAX_AGE"},
+        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TIMEZONE"},
+        {"default": "proxy", "label": "Traefik Network", "name": "NETWORK"},
+        {"default": "letsencrypt", "label": "Traefik Certificate Resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+      ],
+      "volumes": [
+        {"container": "/var/lib/postgresql"},
+        {"container": "/data"},
+        {"container": "/home/node/.n8n"},
+        {"container": "/files"}
+      ]
+    },
+    {
       "id": 56,
       "type": 3,
       "title": "Mail Archive",

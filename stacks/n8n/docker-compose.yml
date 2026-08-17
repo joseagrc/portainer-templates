@@ -1,0 +1,149 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
+x-n8n: &n8n
+  image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n}:${N8N_TAG:-latest}
+  pull_policy: always
+  restart: unless-stopped
+  init: true
+  logging: *default-logging
+  environment: &n8n-environment
+    DB_TYPE: postgresdb
+    DB_POSTGRESDB_HOST: postgres
+    DB_POSTGRESDB_PORT: 5432
+    DB_POSTGRESDB_DATABASE: ${POSTGRES_DB:-n8n}
+    DB_POSTGRESDB_USER: ${POSTGRES_USER:-n8n}
+    DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
+    EXECUTIONS_MODE: queue
+    QUEUE_BULL_REDIS_HOST: redis
+    QUEUE_BULL_REDIS_PORT: 6379
+    QUEUE_HEALTH_CHECK_ACTIVE: "true"
+    N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
+    N8N_HOST: ${N8N_DOMAIN:-n8n.joseagrc.com}
+    N8N_PORT: 5678
+    N8N_PROTOCOL: https
+    N8N_EDITOR_BASE_URL: https://${N8N_DOMAIN:-n8n.joseagrc.com}
+    WEBHOOK_URL: https://${N8N_DOMAIN:-n8n.joseagrc.com}/
+    N8N_PROXY_HOPS: 1
+    N8N_SECURE_COOKIE: "true"
+    N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: "true"
+    N8N_RUNNERS_ENABLED: "true"
+    OFFLOAD_MANUAL_EXECUTIONS_TO_WORKERS: "true"
+    EXECUTIONS_DATA_PRUNE: "true"
+    EXECUTIONS_DATA_MAX_AGE: ${EXECUTIONS_DATA_MAX_AGE:-336}
+    GENERIC_TIMEZONE: ${TIMEZONE:-America/Santo_Domingo}
+    TZ: ${TIMEZONE:-America/Santo_Domingo}
+  networks:
+    - internal
+
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-18-alpine}
+    pull_policy: always
+    restart: unless-stopped
+    init: true
+    logging: *default-logging
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-n8n}
+      POSTGRES_USER: ${POSTGRES_USER:-n8n}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TIMEZONE:-America/Santo_Domingo}
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  redis:
+    image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8-alpine}
+    pull_policy: always
+    restart: unless-stopped
+    init: true
+    logging: *default-logging
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redis_data:/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  n8n:
+    <<: *n8n
+    container_name: ${COMPOSE_PROJECT_NAME:-n8n}-app
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - n8n_files:/files
+    networks:
+      - internal
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:5678/healthz || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}-http.rule=Host(`${N8N_DOMAIN:-n8n.joseagrc.com}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}-http.entrypoints=web
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}-http.middlewares=${COMPOSE_PROJECT_NAME:-n8n}-https-redirect
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-n8n}-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}.rule=Host(`${N8N_DOMAIN:-n8n.joseagrc.com}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-n8n}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-n8n}.loadbalancer.server.port=5678
+
+  worker:
+    <<: *n8n
+    command: worker --concurrency=${N8N_WORKER_CONCURRENCY:-5} --health-check-port=5678
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - n8n_files:/files
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1:5678/healthz/readiness || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+
+volumes:
+  postgres_data:
+    name: ${COMPOSE_PROJECT_NAME:-n8n}_postgres_data
+  redis_data:
+    name: ${COMPOSE_PROJECT_NAME:-n8n}_redis_data
+  n8n_data:
+    name: ${COMPOSE_PROJECT_NAME:-n8n}_data
+  n8n_files:
+    name: ${COMPOSE_PROJECT_NAME:-n8n}_files
+
+networks:
+  internal:
+    internal: true
+  proxy:
+    name: ${NETWORK:-proxy}
+    external: true
