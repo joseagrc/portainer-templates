@@ -6359,7 +6359,7 @@
         }
       ],
       "volumes": [
-        {"container": "/var/lib/postgresql/data"},
+        {"container": "/var/lib/postgresql"},
         {"container": "/app/DataProtection-Keys"}
       ]
     }

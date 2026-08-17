@@ -17,7 +17,9 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       TZ: ${TIMEZONE:-America/Santo_Domingo}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      # Mount the PostgreSQL parent directory. This works with PostgreSQL 17
+      # and with the versioned data layout introduced by PostgreSQL 18.
+      - postgres_data:/var/lib/postgresql
     networks:
       - internal
     healthcheck:
