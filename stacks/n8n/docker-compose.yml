@@ -6,7 +6,7 @@ x-logging: &default-logging
     compress: "true"
 
 x-n8n: &n8n
-  image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n}:${N8N_TAG:-latest}
+  image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n}:${N8N_TAG:-2.34.6}
   pull_policy: always
   restart: unless-stopped
   init: true

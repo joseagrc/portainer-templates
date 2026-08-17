@@ -6293,7 +6293,7 @@
         {"default": "n8n", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
         {"default": "n8n.joseagrc.com", "label": "Public Domain", "name": "N8N_DOMAIN"},
         {"default": "docker.n8n.io/n8nio/n8n", "label": "n8n Image", "name": "N8N_IMAGE"},
-        {"default": "latest", "label": "n8n Tag", "name": "N8N_TAG"},
+        {"default": "2.34.6", "label": "n8n Tag", "name": "N8N_TAG"},
         {"default": "postgres", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
         {"default": "18-alpine", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
         {"default": "n8n", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
