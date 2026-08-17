@@ -6210,6 +6210,71 @@
           "container": "/var/lib/mysql"
         }
       ]
+    },
+    {
+      "id": 55,
+      "type": 3,
+      "title": "Tryton Documentation",
+      "description": "Bilingual, versioned Tryton documentation built with Docusaurus.",
+      "note": "Builds the documentation image directly from the public tryton-do/docker-docusaurus-tryton repository and publishes it securely through Traefik. The persistent webpage volume preserves the generated site. Enable scaffold overwrite only when you intentionally want a new image to refresh generated documentation files.",
+      "categories": ["Documentation", "Tryton", "Web"],
+      "platform": "linux",
+      "logo": "https://code.unpaismejor.org.do/tryton-do/docker-docusaurus-tryton/raw/branch/main/templates/static/img/tryton-black.svg",
+      "repository": {
+        "url": "https://code.unpaismejor.org.do/tryton-do/docker-docusaurus-tryton",
+        "stackfile": "docker-compose.portainer.yml"
+      },
+      "env": [
+        {
+          "default": "tryton-documentation",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "documentation.unpaismejor.org.do",
+          "label": "Documentation Domain",
+          "name": "SITE_URL"
+        },
+        {
+          "default": "unpaismejor/docusaurus-tryton",
+          "label": "Local Image Name",
+          "name": "DOCUSAURUS_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "Image Tag",
+          "name": "DOCUSAURUS_TAG"
+        },
+        {
+          "default": "false",
+          "label": "Overwrite Generated Documentation",
+          "name": "DOCUSAURUS_SCAFFOLD_OVERWRITE",
+          "select": [
+            {"text": "No", "value": "false", "default": true},
+            {"text": "Yes", "value": "true"}
+          ]
+        },
+        {
+          "default": "--max-old-space-size=2048",
+          "label": "Node.js Memory Options",
+          "name": "NODE_OPTIONS"
+        },
+        {
+          "default": "proxy",
+          "label": "Traefik Network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/webdir/public"
+        }
+      ]
     }
   ]
 }
