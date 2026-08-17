@@ -6275,6 +6275,93 @@
           "container": "/webdir/public"
         }
       ]
+    },
+    {
+      "id": 56,
+      "type": 3,
+      "title": "Mail Archive",
+      "description": "MailArchiver with PostgreSQL, persistent keys and private database networking.",
+      "note": "PostgreSQL and ASP.NET Data Protection keys use persistent named volumes. For an existing mailarchive deployment, keep COMPOSE_PROJECT_NAME=mailarchive to reuse mailarchive_postgres_data and mailarchive_data_protection_keys. Back up PostgreSQL before replacing an existing stack.",
+      "categories": ["Email", "Archive"],
+      "platform": "linux",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/mailarchive/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "mailarchive",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "s1t5/mailarchiver",
+          "label": "MailArchiver Image",
+          "name": "MAILARCHIVER_IMAGE"
+        },
+        {
+          "default": "latest",
+          "label": "MailArchiver Tag",
+          "name": "MAILARCHIVER_TAG"
+        },
+        {
+          "default": "postgres",
+          "label": "PostgreSQL Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "17-alpine",
+          "label": "PostgreSQL Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "mailarchive",
+          "label": "PostgreSQL Database",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "mailarchive",
+          "label": "PostgreSQL Username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "PostgreSQL Password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "admin",
+          "label": "Application Administrator",
+          "name": "ADMIN_USERNAME"
+        },
+        {
+          "label": "Application Administrator Password",
+          "name": "ADMIN_PASSWORD"
+        },
+        {
+          "default": "mailarchive.joseagrc.com",
+          "label": "Public Domain",
+          "name": "URL_DOMAIN"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "proxy",
+          "label": "Traefik Network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
+      ],
+      "volumes": [
+        {"container": "/var/lib/postgresql/data"},
+        {"container": "/app/DataProtection-Keys"}
+      ]
     }
   ]
 }

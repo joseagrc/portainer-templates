@@ -1,0 +1,81 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
+services:
+  postgres:
+    container_name: ${COMPOSE_PROJECT_NAME:-mailarchive}-postgres
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-17-alpine}
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TIMEZONE:-America/Santo_Domingo}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+  mailarchive:
+    container_name: ${COMPOSE_PROJECT_NAME:-mailarchive}-app
+    image: ${MAILARCHIVER_IMAGE:-s1t5/mailarchiver}:${MAILARCHIVER_TAG:-latest}
+    restart: unless-stopped
+    init: true
+    logging: *default-logging
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__DefaultConnection: >-
+        Host=${COMPOSE_PROJECT_NAME:-mailarchive}-postgres;
+        Database=${POSTGRES_DB};Username=${POSTGRES_USER};
+        Password=${POSTGRES_PASSWORD};
+      Authentication__Username: ${ADMIN_USERNAME}
+      Authentication__Password: ${ADMIN_PASSWORD}
+      TimeZone__DisplayTimeZoneId: ${TIMEZONE:-America/Santo_Domingo}
+      ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+      TZ: ${TIMEZONE:-America/Santo_Domingo}
+    volumes:
+      - data_protection_keys:/app/DataProtection-Keys
+    networks:
+      - internal
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c '</dev/tcp/127.0.0.1/5000'"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-mailarchive}.rule=Host(`${URL_DOMAIN}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-mailarchive}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-mailarchive}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-mailarchive}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-mailarchive}.loadbalancer.server.port=5000
+
+volumes:
+  postgres_data:
+    name: ${COMPOSE_PROJECT_NAME:-mailarchive}_postgres_data
+  data_protection_keys:
+    name: ${COMPOSE_PROJECT_NAME:-mailarchive}_data_protection_keys
+
+networks:
+  internal:
+    name: ${COMPOSE_PROJECT_NAME:-mailarchive}_mailarchive_internal
+    internal: true
+  proxy:
+    name: ${NETWORK:-proxy}
+    external: true
