@@ -6255,7 +6255,7 @@
           ]
         },
         {
-          "default": "--max-old-space-size=2048",
+          "default": "--max-old-space-size=3072",
           "label": "Node.js Memory Options",
           "name": "NODE_OPTIONS"
         },
