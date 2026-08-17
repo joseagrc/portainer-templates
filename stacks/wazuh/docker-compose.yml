@@ -119,6 +119,12 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-wazuh}-indexer
     hostname: wazuh.indexer
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -kfsS -u admin:SecretPassword https://127.0.0.1:9200/_cluster/health >/dev/null"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     depends_on:
       wazuh-certs-generator:
         condition: service_completed_successfully
@@ -154,9 +160,15 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-wazuh}-manager
     hostname: wazuh.manager
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -ec '</dev/tcp/127.0.0.1/55000'"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
     depends_on:
       wazuh-indexer:
-        condition: service_started
+        condition: service_healthy
     ports:
       - "${WAZUH_AGENT_TCP_PORT:-1514}:1514"
       - "${WAZUH_AGENT_ENROLLMENT_PORT:-1515}:1515"
@@ -212,11 +224,17 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-wazuh}-dashboard
     hostname: wazuh.dashboard
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -kfsS https://127.0.0.1:5601/api/status >/dev/null"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 180s
     depends_on:
       wazuh-indexer:
-        condition: service_started
+        condition: service_healthy
       wazuh-manager:
-        condition: service_started
+        condition: service_healthy
     environment:
       INDEXER_USERNAME: admin
       INDEXER_PASSWORD: SecretPassword
