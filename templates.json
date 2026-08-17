@@ -6221,8 +6221,8 @@
       "platform": "linux",
       "logo": "https://code.unpaismejor.org.do/tryton-do/docker-docusaurus-tryton/raw/branch/main/templates/static/img/tryton-black.svg",
       "repository": {
-        "url": "https://code.unpaismejor.org.do/tryton-do/docker-docusaurus-tryton",
-        "stackfile": "docker-compose.portainer.yml"
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/tryton-documentation/docker-compose.yml"
       },
       "env": [
         {
