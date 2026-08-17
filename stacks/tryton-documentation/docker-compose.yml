@@ -9,7 +9,9 @@ services:
   documentation:
     container_name: ${COMPOSE_PROJECT_NAME:-tryton-documentation}-app
     image: ${DOCUSAURUS_IMAGE:-unpaismejor/docusaurus-tryton}:${DOCUSAURUS_TAG:-latest}
-    pull_policy: always
+    # The image is built and retained on server1 by the documentation project.
+    # Do not attempt Docker Hub because this image is intentionally local.
+    pull_policy: never
     restart: unless-stopped
     init: true
     logging: *default-logging
