@@ -1,3 +1,10 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
 services:
   freessl-db:
     container_name: ${COMPOSE_PROJECT_NAME}-db
@@ -12,16 +19,25 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
     restart: unless-stopped
+    logging: *default-logging
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "mariadb-admin ping -h localhost -u root -p$${ROOT_PASS} --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
 
   freessl-app:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     hostname: ${COMPOSE_PROJECT_NAME}-app
     image: ${FREESSL_IMAGE}:${FREESSL_TAG}
     restart: unless-stopped
+    logging: *default-logging
+    networks: [proxy, internal]
     depends_on:
-      - freessl-db
-    links:
-      - freessl-db:freessl-db
+      freessl-db:
+        condition: service_healthy
     volumes:
       - freessl-config:/www/html/config
       - freessl-storage:/www/html/storage
@@ -62,6 +78,9 @@ volumes:
   freessl-logs:
 
 networks:
-  default:
+  proxy:
     name: ${NETWORK}
     external: true
+  internal:
+    name: ${COMPOSE_PROJECT_NAME}_internal
+    internal: true

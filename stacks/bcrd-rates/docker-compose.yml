@@ -1,8 +1,17 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
 services:
   postgres:
     container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     restart: unless-stopped
+    logging: *default-logging
+    networks: [internal]
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}      
@@ -19,6 +28,8 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${BCRD_IMAGE}:${BCRD_TAG}
     restart: unless-stopped
+    logging: *default-logging
+    networks: [proxy, internal]
     environment:
       APP_NAME: ${APP_NAME}
       APP_VERSION: ${BCRD_TAG}
@@ -56,6 +67,9 @@ volumes:
 
 
 networks:
-  default:
+  proxy:
     name: ${NETWORK}
     external: true
+  internal:
+    name: ${COMPOSE_PROJECT_NAME}_internal
+    internal: true

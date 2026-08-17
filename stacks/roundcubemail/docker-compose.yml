@@ -1,8 +1,18 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
 services:
   mariadb:
     container_name: ${COMPOSE_PROJECT_NAME}-mariadb
     image: ${MARIADB_IMAGE}:${MARIADB_TAG}
     restart: unless-stopped
+    logging: *default-logging
+    networks:
+      - internal
     volumes:
       - mariadb:/var/lib/mysql
     environment:
@@ -23,11 +33,13 @@ services:
     hostname: ${SITE_URL}
     image: ${ROUNDCUBEMAIL_IMAGE}:${ROUNDCUBEMAIL_TAG}
     restart: unless-stopped
+    logging: *default-logging
+    networks:
+      - proxy
+      - internal
     depends_on:
       mariadb:
         condition: service_healthy
-    links:
-      - mariadb:mariadb
     volumes:
       - data:/var/www/html
       - config:/var/roundcube/config
@@ -71,6 +83,9 @@ volumes:
   config:
 
 networks:
-  default:
+  proxy:
     name: ${NETWORK}
     external: true
+  internal:
+    name: ${COMPOSE_PROJECT_NAME}_internal
+    internal: true

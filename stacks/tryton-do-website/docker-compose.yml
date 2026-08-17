@@ -1,3 +1,10 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
 services:
   website:
     container_name: ${COMPOSE_PROJECT_NAME}-app
@@ -21,6 +28,8 @@ services:
       memcached:
         condition: service_started
     restart: unless-stopped
+    logging: *default-logging
+    networks: [proxy, internal]
     healthcheck:
       test: ["CMD", "/app/check-running"]
       interval: 30s
@@ -43,6 +52,8 @@ services:
     image: ${MEMCACHED_IMAGE}:${MEMCACHED_TAG}
     command: ["memcached", "-m", "64", "-o", "modern"]
     restart: unless-stopped
+    logging: *default-logging
+    networks: [internal]
 
   critical-css:
     container_name: ${COMPOSE_PROJECT_NAME}-critical-css
@@ -58,11 +69,16 @@ services:
     profiles:
       - critical-css
     restart: unless-stopped
+    logging: *default-logging
+    networks: [internal]
 
 volumes:
   critical-css:
 
 networks:
-  default:
+  proxy:
     name: ${NETWORK}
     external: true
+  internal:
+    name: ${COMPOSE_PROJECT_NAME}_internal
+    internal: true
