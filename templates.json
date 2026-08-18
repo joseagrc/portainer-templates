@@ -1,6 +1,69 @@
 {
   "version": "3",
   "templates": [
+    {
+      "id": 55,
+      "type": 3,
+      "title": "Honrapp (Restore)",
+      "description": "Restores the Honrapp .NET application and SQL Server database behind Traefik.",
+      "note": "Requires the application files and honrapp.bak under HONRAPP_DATA_DIR before deployment. The database restore is idempotent and will not overwrite an existing honrapp database. SQL Server is not exposed publicly.",
+      "categories": ["Business", "Backup"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/microsoft-sql-server.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/honrapp/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "honrapp",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "/home/honrapp/.docker/honrapp",
+          "label": "Restored Data Directory",
+          "name": "HONRAPP_DATA_DIR"
+        },
+        {
+          "default": "honrapp.com",
+          "label": "Primary Domain",
+          "name": "URL_DOMAIN"
+        },
+        {
+          "default": "www.honrapp.com",
+          "label": "WWW Domain",
+          "name": "WWW_DOMAIN"
+        },
+        {
+          "default": "proxy",
+          "label": "Traefik Network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        },
+        {
+          "label": "SQL Server SA Password",
+          "name": "MSSQL_SA_PASSWORD"
+        },
+        {
+          "default": "2048",
+          "label": "SQL Server Memory Limit (MB)",
+          "name": "MSSQL_MEMORY_LIMIT_MB"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/opt/mssql"
+        },
+        {
+          "container": "/app"
+        }
+      ]
+    },
       {
       "id": 1,
       "type": 3,

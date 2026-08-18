@@ -1,0 +1,93 @@
+services:
+  db:
+    image: ${MSSQL_IMAGE:-mcr.microsoft.com/mssql/server}:${MSSQL_TAG:-2022-latest}
+    restart: unless-stopped
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?SQL Server SA password is required}
+      MSSQL_MEMORY_LIMIT_MB: ${MSSQL_MEMORY_LIMIT_MB:-2048}
+    volumes:
+      - honrapp_sqlserver_data:/var/opt/mssql
+      - ${HONRAPP_DATA_DIR:-/home/honrapp/.docker/honrapp}/mssql:/var/opt/mssql/backup:ro
+    networks:
+      - database
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P \"$$MSSQL_SA_PASSWORD\" -C -Q \"SELECT 1\" >/dev/null || exit 1"]
+      interval: 60s
+      timeout: 10s
+      start_period: 60s
+      retries: 10
+
+  restore:
+    image: ${MSSQL_IMAGE:-mcr.microsoft.com/mssql/server}:${MSSQL_TAG:-2022-latest}
+    restart: "no"
+    entrypoint: ["/bin/bash", "-ec"]
+    environment:
+      MSSQL_SA_PASSWORD: ${MSSQL_SA_PASSWORD:?SQL Server SA password is required}
+    volumes:
+      - ${HONRAPP_DATA_DIR:-/home/honrapp/.docker/honrapp}/mssql:/backup:ro
+    networks:
+      - database
+    depends_on:
+      db:
+        condition: service_healthy
+    command:
+      - |
+        SQLCMD=/opt/mssql-tools18/bin/sqlcmd
+        if "$$SQLCMD" -S db -U sa -P "$$MSSQL_SA_PASSWORD" -C -h -1 -W -Q "SET NOCOUNT ON; SELECT DB_ID(N'honrapp')" | grep -Eq '^[[:space:]]*[0-9]+'; then
+          echo "La base de datos honrapp ya existe; no se sobrescribira."
+          exit 0
+        fi
+        test -r /backup/honrapp.bak
+        "$$SQLCMD" -S db -U sa -P "$$MSSQL_SA_PASSWORD" -C -b -Q "RESTORE DATABASE [honrapp] FROM DISK=N'/backup/honrapp.bak' WITH MOVE N'Condolence2Fase' TO N'/var/opt/mssql/data/honrapp.mdf', MOVE N'Condolence2Fase_log' TO N'/var/opt/mssql/data/honrapp_log.ldf', RECOVERY, CHECKSUM, STATS=10"
+        "$$SQLCMD" -S db -U sa -P "$$MSSQL_SA_PASSWORD" -C -b -Q "DBCC CHECKDB(N'honrapp') WITH NO_INFOMSGS"
+
+  web:
+    image: ${HONRAPP_IMAGE:-mcr.microsoft.com/dotnet/aspnet}:${HONRAPP_TAG:-8.0}
+    restart: unless-stopped
+    working_dir: /app
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ASPNETCORE_URLS: http://+:8080
+      DOTNET_SYSTEM_DRAWING_ENABLE_WINDOWS_COMPATIBILITY: "1"
+      ConnectionStrings__DefaultConnection: Server=db,1433;Database=honrapp;User Id=sa;Password=${MSSQL_SA_PASSWORD:?SQL Server SA password is required};TrustServerCertificate=True;MultipleActiveResultSets=true
+      ConnectionStrings__DefaultConnectionIdentity: Server=db,1433;Database=honrapp;User Id=sa;Password=${MSSQL_SA_PASSWORD:?SQL Server SA password is required};TrustServerCertificate=True;MultipleActiveResultSets=true
+    command:
+      - /bin/sh
+      - -ec
+      - |
+        runtimeconfig="$$(find /app -maxdepth 1 -type f -name '*.runtimeconfig.json' | head -n 1)"
+        test -n "$$runtimeconfig"
+        app_name="$$(basename "$$runtimeconfig" .runtimeconfig.json)"
+        test -f "/app/$${app_name}.dll"
+        exec dotnet "/app/$${app_name}.dll"
+    volumes:
+      - ${HONRAPP_DATA_DIR:-/home/honrapp/.docker/honrapp}/webapp/publish:/app:ro
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: ${NETWORK:-proxy}
+      traefik.http.middlewares.honrapp-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.honrapp-http.entrypoints: web
+      traefik.http.routers.honrapp-http.middlewares: honrapp-https-redirect
+      traefik.http.routers.honrapp-http.rule: Host(`${URL_DOMAIN:-honrapp.com}`) || Host(`${WWW_DOMAIN:-www.honrapp.com}`)
+      traefik.http.routers.honrapp.entrypoints: websecure
+      traefik.http.routers.honrapp.rule: Host(`${URL_DOMAIN:-honrapp.com}`) || Host(`${WWW_DOMAIN:-www.honrapp.com}`)
+      traefik.http.routers.honrapp.tls: "true"
+      traefik.http.routers.honrapp.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      traefik.http.services.honrapp.loadbalancer.server.port: "8080"
+    networks:
+      - database
+      - proxy
+    depends_on:
+      restore:
+        condition: service_completed_successfully
+
+volumes:
+  honrapp_sqlserver_data:
+
+networks:
+  database:
+    internal: true
+  proxy:
+    external: true
+    name: ${NETWORK:-proxy}
