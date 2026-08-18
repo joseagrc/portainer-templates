@@ -39,7 +39,7 @@ services:
           exit 0
         fi
         test -r /backup/honrapp.bak
-        "$$SQLCMD" -S db -U sa -P "$$MSSQL_SA_PASSWORD" -C -b -Q "RESTORE DATABASE [honrapp] FROM DISK=N'/backup/honrapp.bak' WITH MOVE N'Condolence2Fase' TO N'/var/opt/mssql/data/honrapp.mdf', MOVE N'Condolence2Fase_log' TO N'/var/opt/mssql/data/honrapp_log.ldf', RECOVERY, CHECKSUM, STATS=10"
+        "$$SQLCMD" -S db -U sa -P "$$MSSQL_SA_PASSWORD" -C -b -Q "RESTORE DATABASE [honrapp] FROM DISK=N'/var/opt/mssql/backup/honrapp.bak' WITH MOVE N'Condolence2Fase' TO N'/var/opt/mssql/data/honrapp.mdf', MOVE N'Condolence2Fase_log' TO N'/var/opt/mssql/data/honrapp_log.ldf', RECOVERY, CHECKSUM, STATS=10"
         "$$SQLCMD" -S db -U sa -P "$$MSSQL_SA_PASSWORD" -C -b -Q "DBCC CHECKDB(N'honrapp') WITH NO_INFOMSGS"
 
   web:
