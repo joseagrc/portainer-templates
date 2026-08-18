@@ -26,14 +26,9 @@
           "name": "HONRAPP_DATA_DIR"
         },
         {
-          "default": "honrapp.com",
+          "default": "honrapp.joseagrc.com",
           "label": "Primary Domain",
           "name": "URL_DOMAIN"
-        },
-        {
-          "default": "www.honrapp.com",
-          "label": "WWW Domain",
-          "name": "WWW_DOMAIN"
         },
         {
           "default": "proxy",

@@ -69,9 +69,9 @@ services:
       traefik.http.middlewares.honrapp-https-redirect.redirectscheme.scheme: https
       traefik.http.routers.honrapp-http.entrypoints: web
       traefik.http.routers.honrapp-http.middlewares: honrapp-https-redirect
-      traefik.http.routers.honrapp-http.rule: Host(`${URL_DOMAIN:-honrapp.com}`) || Host(`${WWW_DOMAIN:-www.honrapp.com}`)
+      traefik.http.routers.honrapp-http.rule: Host(`${URL_DOMAIN:-honrapp.joseagrc.com}`)
       traefik.http.routers.honrapp.entrypoints: websecure
-      traefik.http.routers.honrapp.rule: Host(`${URL_DOMAIN:-honrapp.com}`) || Host(`${WWW_DOMAIN:-www.honrapp.com}`)
+      traefik.http.routers.honrapp.rule: Host(`${URL_DOMAIN:-honrapp.joseagrc.com}`)
       traefik.http.routers.honrapp.tls: "true"
       traefik.http.routers.honrapp.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
       traefik.http.services.honrapp.loadbalancer.server.port: "8080"
