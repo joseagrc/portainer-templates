@@ -2187,7 +2187,7 @@
       "type": 3,
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
-      "note": "Deploys an Weblate instance.",
+      "note": "Deploys Weblate with pinned numeric image versions, PostgreSQL Alpine, Redis Alpine, persistent volumes and Traefik HTTPS.",
       "categories": ["Computer-assisted translation"],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/weblate/logo/logo.png",
@@ -2197,12 +2197,12 @@
       },
       "env": [
         {
-          "default": "registry.gruposolutema.com/docker-base-images/docker-postgres",
+          "default": "postgres",
           "label": "PostgreSQL Image",
           "name": "POSTGRES_IMAGE"
         },
         {
-          "default": "16",
+          "default": "17.11-alpine",
           "label": "PostgreSQL Tag",
           "name": "POSTGRES_TAG"
         },
@@ -2215,22 +2215,23 @@
           "name": "POSTGRES_PASSWORD"
         },
         {
-          "default": "root",
-          "label": "PostgreSQL root USER",
-          "name": "SUPERUSER_USER"
-        },
-        {
-          "label": "PostgreSQL root password",
-          "name": "SUPERUSER_PASS"
-        },
-        {
           "label": "PostgreSQL database",
           "name": "POSTGRES_DB"
         },
         {
-          "default": "unaccent",
-          "label": "Database Extension",
-          "name": "DB_EXTENSION"
+          "default": "weblate-postgres-data",
+          "label": "PostgreSQL data volume",
+          "name": "POSTGRES_DATA_VOLUME"
+        },
+        {
+          "default": "redis",
+          "label": "Redis Image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "7.4.11-alpine",
+          "label": "Redis Tag",
+          "name": "REDIS_TAG"
         },
         {
           "default": "weblate/weblate",
@@ -2238,7 +2239,7 @@
           "name": "WEBLATE_IMAGE"
         },
         {
-          "default": "5.4.3.2",
+          "default": "2026.8.1.0",
           "label": "Weblate Tag",
           "name": "WEBLATE_TAG"
         },
@@ -2292,7 +2293,7 @@
           "name": "WEBLATE_ALLOWED_HOSTS"
         },
         {
-          "default": "1",
+          "default": "0",
           "label": "Weblate registration open",
           "name": "WEBLATE_REGISTRATION_OPEN"
         },
@@ -2307,7 +2308,7 @@
           "name": "WEBLATE_OFFLOAD_INDEXING"
         },
         {
-          "default": "1",
+          "default": "0",
           "label": "Weblate enable https",
           "name": "WEBLATE_ENABLE_HTTPS"
         },
@@ -2322,16 +2323,18 @@
           "name": "WEBLATE_REQUIRE_LOGIN"
         },
         {
-          "label": "Redis host",
-          "name": "REDIS_HOST"
-        },
-        {
-          "label": "Redis port",
-          "name": "REDIS_PORT"
-        },
-        {
           "label": "Redis password",
           "name": "REDIS_PASSWORD"
+        },
+        {
+          "default": "weblate-redis-data",
+          "label": "Redis data volume",
+          "name": "REDIS_DATA_VOLUME"
+        },
+        {
+          "default": "weblate-data",
+          "label": "Weblate data volume",
+          "name": "WEBLATE_DATA_VOLUME"
         },
         {
           "label": "Weblate email host",

@@ -1,66 +1,108 @@
-version: '3'
 services:
   database:
-    container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
-    restart: always
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
       - postgres-data:/var/lib/postgresql/data
-    environment:
-      DB_PASS: ${POSTGRES_PASSWORD}
-      DB_USER: ${POSTGRES_USER}
-      DB_NAME: ${POSTGRES_DB}
-      SUPERUSER_USER: ${SUPERUSER_USER}
-      SUPERUSER_PASS: ${SUPERUSER_PASS}
-      DB_EXTENSION: ${DB_EXTENSION}
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    security_opt:
+      - no-new-privileges:true
 
-  webplate:
-    container_name: ${COMPOSE_PROJECT_NAME}-app
+  cache:
+    image: ${REDIS_IMAGE}:${REDIS_TAG}
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--requirepass", "${REDIS_PASSWORD}"]
+    volumes:
+      - redis-data:/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    security_opt:
+      - no-new-privileges:true
+
+  weblate:
     image: ${WEBLATE_IMAGE}:${WEBLATE_TAG}
-    restart: always
+    restart: unless-stopped
     depends_on:
-      - database
-    tmpfs:
-      - /run
-      - /tmp
-    read_only: true
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
     environment:
-      POSTGRES_HOST: ${COMPOSE_PROJECT_NAME}-postgres
-      POSTGRES_PORT: 5432
+      POSTGRES_HOST: database
+      POSTGRES_PORT: "5432"
       POSTGRES_DATABASE: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      REDIS_HOST: cache
+      REDIS_PORT: "6379"
+      REDIS_DB: "1"
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
       WEBLATE_DEBUG: ${WEBLATE_DEBUG}
       WEBLATE_LOGLEVEL: ${WEBLATE_LOGLEVEL}
       WEBLATE_SITE_TITLE: ${WEBLATE_SITE_TITLE}
+      WEBLATE_SITE_DOMAIN: ${WEBLATE_SITE_DOMAIN}
+      WEBLATE_ALLOWED_HOSTS: ${WEBLATE_ALLOWED_HOSTS}
       WEBLATE_ADMIN_NAME: ${WEBLATE_ADMIN_NAME}
       WEBLATE_ADMIN_EMAIL: ${WEBLATE_ADMIN_EMAIL}
       WEBLATE_ADMIN_PASSWORD: ${WEBLATE_ADMIN_PASSWORD}
       WEBLATE_SERVER_EMAIL: ${WEBLATE_SERVER_EMAIL}
       WEBLATE_DEFAULT_FROM_EMAIL: ${WEBLATE_DEFAULT_FROM_EMAIL}
-      WEBLATE_ALLOWED_HOSTS: ${WEBLATE_ALLOWED_HOSTS}
       WEBLATE_REGISTRATION_OPEN: ${WEBLATE_REGISTRATION_OPEN}
+      WEBLATE_REQUIRE_LOGIN: ${WEBLATE_REQUIRE_LOGIN}
       WEBLATE_TIME_ZONE: ${WEBLATE_TIME_ZONE}
       WEBLATE_OFFLOAD_INDEXING: ${WEBLATE_OFFLOAD_INDEXING}
-      WEBLATE_ENABLE_HTTPS: ${WEBLATE_ENABLE_HTTPS}
-      WEBLATE_IP_PROXY_HEADER: ${WEBLATE_IP_PROXY_HEADER}
-      WEBLATE_REQUIRE_LOGIN: ${WEBLATE_REQUIRE_LOGIN}
-      REDIS_HOST: ${REDIS_HOST}
-      REDIS_PORT: ${REDIS_PORT}
-      REDIS_PASSWORD: ${REDIS_PASSWORD}
-      WEBLATE_EMAIL_HOST: ${WEBLATE_EMAIL_HOST}
-      WEBLATE_EMAIL_HOST_USER: ${WEBLATE_EMAIL_HOST_USER}
-      WEBLATE_EMAIL_HOST_PASSWORD: ${WEBLATE_EMAIL_HOST_PASSWORD}
+      WEBLATE_ENABLE_HTTPS: "0"
+      WEBLATE_IP_PROXY_HEADER: HTTP_X_FORWARDED_FOR
       CLIENT_MAX_BODY_SIZE: ${CLIENT_MAX_BODY_SIZE}
-      WEBLATE_SITE_DOMAIN: ${WEBLATE_SITE_DOMAIN}
-      VIRTUAL_HOST: ${WEBLATE_SITE_DOMAIN},www.${WEBLATE_SITE_DOMAIN}
-      LETSENCRYPT_HOST: ${WEBLATE_SITE_DOMAIN},www.${WEBLATE_SITE_DOMAIN}
+    volumes:
+      - weblate-data:/app/data
+    networks:
+      - backend
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "curl --silent --fail --max-time 10 http://localhost:8080/healthz/ >/dev/null"]
+      interval: 30s
+      timeout: 12s
+      retries: 20
+      start_period: 120s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tryton-do-weblate.rule=Host(`${WEBLATE_SITE_DOMAIN}`)"
+      - "traefik.http.routers.tryton-do-weblate.entrypoints=websecure"
+      - "traefik.http.routers.tryton-do-weblate.tls.certresolver=letsencrypt"
+      - "traefik.http.services.tryton-do-weblate.loadbalancer.server.port=8080"
+      - "traefik.docker.network=${NETWORK}"
+    security_opt:
+      - no-new-privileges:true
 
 volumes:
-  postgres-data:
   weblate-data:
+    name: ${WEBLATE_DATA_VOLUME}
+  postgres-data:
+    name: ${POSTGRES_DATA_VOLUME}
+  redis-data:
+    name: ${REDIS_DATA_VOLUME}
 
 networks:
-  default:
-    name: ${NETWORK}
+  backend:
+    name: ${COMPOSE_PROJECT_NAME}-backend
+    internal: true
+  proxy:
     external: true
+    name: ${NETWORK}
