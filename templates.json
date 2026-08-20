@@ -2190,9 +2190,9 @@
       "note": "Deploys Weblate with pinned numeric image versions, PostgreSQL Alpine, Redis Alpine, persistent volumes and Traefik HTTPS.",
       "categories": ["Computer-assisted translation"],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/weblate/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/weblate/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/weblate/docker-compose.yml"
       },
       "env": [
@@ -2207,6 +2207,7 @@
           "name": "POSTGRES_TAG"
         },
         {
+          "default": "weblate",
           "label": "PostgreSQL user",
           "name": "POSTGRES_USER"
         },
@@ -2215,11 +2216,12 @@
           "name": "POSTGRES_PASSWORD"
         },
         {
+          "default": "weblate",
           "label": "PostgreSQL database",
           "name": "POSTGRES_DB"
         },
         {
-          "default": "weblate-postgres-data",
+          "default": "tryton-do-weblate-postgres-data",
           "label": "PostgreSQL data volume",
           "name": "POSTGRES_DATA_VOLUME"
         },
@@ -2254,22 +2256,22 @@
           "name": "WEBLATE_LOGLEVEL"
         },
         {
-          "default": "Weblate",
+          "default": "Tryton República Dominicana",
           "label": "Weblate site title",
           "name": "WEBLATE_SITE_TITLE"
         },
         {
-          "default": "translate.example.com",
+          "default": "translate.tryton.org.do",
           "label": "Weblate site domain",
           "name": "WEBLATE_SITE_DOMAIN"
         },
         {
-          "default": "Weblate Admin",
+          "default": "Administrador",
           "label": "Weblate admin name",
           "name": "WEBLATE_ADMIN_NAME"
         },
         {
-          "default": "weblate@example.com",
+          "default": "admin@tryton.org.do",
           "label": "Weblate admin email",
           "name": "WEBLATE_ADMIN_EMAIL"
         },
@@ -2278,17 +2280,17 @@
           "name": "WEBLATE_ADMIN_PASSWORD"
         },
         {
-          "default": "weblate@example.com",
+          "default": "admin@tryton.org.do",
           "label": "Weblate server email",
           "name": "WEBLATE_SERVER_EMAIL"
         },
         {
-          "default": "weblate@example.com",
+          "default": "admin@tryton.org.do",
           "label": "Weblate default from email",
           "name": "WEBLATE_DEFAULT_FROM_EMAIL"
         },
         {
-          "default": "*",
+          "default": "translate.tryton.org.do",
           "label": "Weblate allowed hosts",
           "name": "WEBLATE_ALLOWED_HOSTS"
         },
@@ -2308,14 +2310,9 @@
           "name": "WEBLATE_OFFLOAD_INDEXING"
         },
         {
-          "default": "0",
-          "label": "Weblate enable https",
-          "name": "WEBLATE_ENABLE_HTTPS"
-        },
-        {
-          "default": "HTTP_X_FORWARDED_FOR",
-          "label": "Weblate ip proxy header",
-          "name": "WEBLATE_IP_PROXY_HEADER"
+          "default": "2",
+          "label": "Weblate worker processes",
+          "name": "WEBLATE_WORKERS"
         },
         {
           "default": "1",
@@ -2327,41 +2324,17 @@
           "name": "REDIS_PASSWORD"
         },
         {
-          "default": "weblate-redis-data",
+          "default": "tryton-do-weblate-redis-data",
           "label": "Redis data volume",
           "name": "REDIS_DATA_VOLUME"
         },
         {
-          "default": "weblate-data",
+          "default": "tryton-do-weblate-data",
           "label": "Weblate data volume",
           "name": "WEBLATE_DATA_VOLUME"
         },
         {
-          "label": "Weblate email host",
-          "name": "WEBLATE_EMAIL_HOST"
-        },
-        {
-          "label": "Weblate email host user",
-          "name": "WEBLATE_EMAIL_HOST_USER"
-        },
-        {
-          "label": "Weblate email host password",
-          "name": "WEBLATE_EMAIL_HOST_PASSWORD"
-        },
-        {
-          "label": "Weblate gitlab username",
-          "name": "WEBLATE_GITLAB_USERNAME"
-        },
-        {
-          "label": "Weblate gitlab host",
-          "name": "WEBLATE_GITLAB_HOST"
-        },
-        {
-          "label": "Weblate gitlab token",
-          "name": "WEBLATE_GITLAB_TOKEN"
-        },
-        {
-          "default": "2000M",
+          "default": "200M",
           "label": "Client max body size",
           "name": "CLIENT_MAX_BODY_SIZE"
         },
