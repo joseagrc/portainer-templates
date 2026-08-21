@@ -6475,6 +6475,43 @@
         {"container": "/data"},
         {"container": "/usr/src/app/cache"}
       ]
+    },
+    {
+      "id": 60,
+      "type": 3,
+      "title": "Tryton Series 8.0",
+      "description": "Tryton 8.0 LTS for the Dominican Republic with PostgreSQL, cron, worker and Traefik.",
+      "note": "Use tag 8.0 for LibreOffice report conversion or 8.0-slim when ODT/FODT to PDF conversion is not required. Back up both persistent volumes.",
+      "categories": ["ERP", "Business", "Tryton"],
+      "platform": "linux",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/tryton80/docker-compose.yml"
+      },
+      "env": [
+        {"default": "tryton", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
+        {"default": "code.unpaismejor.org.do/tryton-do/tryton", "label": "Tryton Image", "name": "TRYTON_IMAGE"},
+        {"default": "8.0", "label": "Tryton Tag", "name": "TRYTON_TAG", "select": [{"text": "8.0 with LibreOffice", "value": "8.0", "default": true}, {"text": "8.0-slim without LibreOffice", "value": "8.0-slim"}]},
+        {"default": "postgres", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
+        {"default": "17.11-alpine", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
+        {"default": "tryton", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
+        {"default": "tryton", "label": "PostgreSQL Username", "name": "POSTGRES_USER"},
+        {"label": "PostgreSQL Password", "name": "POSTGRES_PASSWORD"},
+        {"default": "admin@example.com", "label": "Tryton Administrator Email", "name": "TRYTOND_ADMIN_EMAIL"},
+        {"label": "Tryton Administrator Password", "name": "TRYTOND_ADMIN_PASSWORD"},
+        {"default": "es_419", "label": "Tryton Language", "name": "TRYTOND_LANGUAGE"},
+        {"default": "tryton.example.com", "label": "Public Domain", "name": "URL_DOMAIN"},
+        {"default": "admin@example.com", "label": "Email From", "name": "EMAIL_FROM"},
+        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TIMEZONE"},
+        {"default": "tryton80-postgres-data", "label": "PostgreSQL Volume", "name": "POSTGRES_VOLUME"},
+        {"default": "tryton80-data", "label": "Tryton Data Volume", "name": "TRYTON_VOLUME"},
+        {"default": "proxy", "label": "Traefik Network", "name": "NETWORK"},
+        {"default": "letsencrypt", "label": "Traefik Certificate Resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+      ],
+      "volumes": [
+        {"container": "/var/lib/postgresql/data"},
+        {"container": "/var/lib/trytond/db"}
+      ]
     }
   ]
 }

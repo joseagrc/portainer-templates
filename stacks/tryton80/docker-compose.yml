@@ -1,0 +1,116 @@
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-17.11-alpine}
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-tryton}
+      POSTGRES_USER: ${POSTGRES_USER:-tryton}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?PostgreSQL password is required}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - backend
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+
+  migrate:
+    image: ${TRYTON_IMAGE:-code.unpaismejor.org.do/tryton-do/tryton}:${TRYTON_TAG:-8.0}
+    restart: "no"
+    environment: &tryton-environment
+      DB_HOSTNAME: postgres
+      DB_PORT: "5432"
+      DB_USER: ${POSTGRES_USER:-tryton}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?PostgreSQL password is required}
+      TRYTOND_ADMIN_EMAIL: ${TRYTOND_ADMIN_EMAIL:?Administrator email is required}
+      TRYTOND_ADMIN_PASSWORD: ${TRYTOND_ADMIN_PASSWORD:?Administrator password is required}
+      TRYTOND_LANGUAGE: ${TRYTOND_LANGUAGE:-es_419}
+      TRYTOND_WEB__CORS: https://${URL_DOMAIN:?Public domain is required}
+      TRYTOND_EMAIL__FROM: ${EMAIL_FROM:-${TRYTOND_ADMIN_EMAIL}}
+      TZ: ${TIMEZONE:-America/Santo_Domingo}
+    entrypoint: ["/bin/bash", "-ec"]
+    command:
+      - |
+        until python3 -c "import socket; socket.create_connection(('postgres', 5432), 5).close()"; do sleep 2; done
+        password_file=$$(mktemp)
+        trap 'rm -f "$$password_file"' EXIT
+        printf '%s\n' "$$TRYTOND_ADMIN_PASSWORD" > "$$password_file"
+        export TRYTONPASSFILE="$$password_file"
+        trytond-admin -d "${POSTGRES_DB:-tryton}" --all --activate-dependencies \
+          --language "$$TRYTOND_LANGUAGE" --email "$$TRYTOND_ADMIN_EMAIL"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - tryton-data:/var/lib/trytond/db
+    networks:
+      - backend
+
+  server:
+    image: ${TRYTON_IMAGE:-code.unpaismejor.org.do/tryton-do/tryton}:${TRYTON_TAG:-8.0}
+    restart: unless-stopped
+    environment: *tryton-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - tryton-data:/var/lib/trytond/db
+    networks:
+      - backend
+      - proxy
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=5)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}.rule=Host(`${URL_DOMAIN:?Public domain is required}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-tryton}.loadbalancer.server.port=8000
+
+  cron:
+    image: ${TRYTON_IMAGE:-code.unpaismejor.org.do/tryton-do/tryton}:${TRYTON_TAG:-8.0}
+    command: ["trytond-cron", "-d", "${POSTGRES_DB:-tryton}"]
+    restart: unless-stopped
+    environment: *tryton-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - tryton-data:/var/lib/trytond/db
+    networks:
+      - backend
+
+  worker:
+    image: ${TRYTON_IMAGE:-code.unpaismejor.org.do/tryton-do/tryton}:${TRYTON_TAG:-8.0}
+    command: ["trytond-worker", "--coroutine", "-d", "${POSTGRES_DB:-tryton}"]
+    restart: unless-stopped
+    environment: *tryton-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    volumes:
+      - tryton-data:/var/lib/trytond/db
+    networks:
+      - backend
+
+volumes:
+  postgres-data:
+    name: ${POSTGRES_VOLUME:-tryton80-postgres-data}
+  tryton-data:
+    name: ${TRYTON_VOLUME:-tryton80-data}
+
+networks:
+  backend:
+    internal: true
+  proxy:
+    external: true
+    name: ${NETWORK:-proxy}
