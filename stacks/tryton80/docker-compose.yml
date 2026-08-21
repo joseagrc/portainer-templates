@@ -31,7 +31,8 @@ services:
       TRYTOND_WEB__CORS: https://${URL_DOMAIN:?Public domain is required}
       TRYTOND_EMAIL__FROM: ${EMAIL_FROM:-${TRYTOND_ADMIN_EMAIL}}
       TZ: ${TIMEZONE:-America/Santo_Domingo}
-    entrypoint: ["/bin/bash", "-ec"]
+    # Keep the image entrypoint so it builds the PostgreSQL URI safely.
+    entrypoint: ["/entrypoint.sh", "/bin/bash", "-ec"]
     command:
       - |
         until python3 -c "import socket; socket.create_connection(('postgres', 5432), 5).close()"; do sleep 2; done
