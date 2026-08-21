@@ -6525,7 +6525,7 @@
         {"default": "", "label": "Web Avatar Base URL", "name": "TRYTOND_WEB__AVATAR_BASE"},
         {"default": "604800", "label": "Web Avatar Cache Timeout", "name": "TRYTOND_WEB__AVATAR_TIMEOUT"},
         {"default": "/var/lib/trytond/db", "label": "Database Filestore Path", "name": "TRYTOND_DATABASE__PATH"},
-        {"default": "False", "label": "Allow Database Listing", "name": "TRYTOND_DATABASE__LIST", "select": [{"text": "No", "value": "False", "default": true}, {"text": "Yes", "value": "True"}]},
+        {"default": "True", "label": "Allow Database Listing", "name": "TRYTOND_DATABASE__LIST", "select": [{"text": "Yes", "value": "True", "default": true}, {"text": "No", "value": "False"}]},
         {"default": "5", "label": "Database Retry Count", "name": "TRYTOND_DATABASE__RETRY"},
         {"default": "1000", "label": "Database Subquery Threshold", "name": "TRYTOND_DATABASE__SUBQUERY_THRESHOLD"},
         {"default": "es_419", "label": "Database Main Language", "name": "TRYTOND_DATABASE__LANGUAGE"},
