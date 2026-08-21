@@ -29,6 +29,7 @@ services:
       TRYTOND_ADMIN_PASSWORD: ${TRYTOND_ADMIN_PASSWORD:?Administrator password is required}
       TRYTOND_LANGUAGE: ${TRYTOND_LANGUAGE:-es_419}
       TRYTOND_WEB__CORS: https://${URL_DOMAIN:?Public domain is required}
+      TRYTOND_QUEUE__WORKER: "true"
       TRYTOND_EMAIL__FROM: ${EMAIL_FROM:-${TRYTOND_ADMIN_EMAIL}}
       TZ: ${TIMEZONE:-America/Santo_Domingo}
     # Keep the image entrypoint so it builds the PostgreSQL URI safely.
