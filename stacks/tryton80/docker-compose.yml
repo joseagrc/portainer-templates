@@ -1,35 +1,37 @@
 x-tryton-image: &tryton-image
-  image: ${TRYTON_IMAGE:-code.unpaismejor.org.do/tryton-do/tryton}:${TRYTON_TAG:-8.0}
+  image: ${TRYTON_IMAGE:-code.unpaismejor.org.do/tryton-do/tryton:8.0}
+  platform: ${TRYTON_PLATFORM:-linux/amd64}
   pull_policy: always
 
 x-tryton-environment: &tryton-environment
-  DB_HOSTNAME: postgres
+  DB_HOSTNAME: tryton-postgres
   DB_PORT: "5432"
-  DB_NAME: ${POSTGRES_DB:-tryton}
-  DB_USER: ${POSTGRES_USER:-tryton}
-  DB_PASSWORD: ${POSTGRES_PASSWORD:?PostgreSQL password is required}
-  DB_LANGUAGE: ${TRYTOND_DATABASE__LANGUAGE:-es_419}
-  TZ: ${TIMEZONE:-America/Santo_Domingo}
+  DB_NAME: ${DB_NAME:?Defina explícitamente el nombre de la base de datos}
+  DB_USER: ${DB_USER:?Defina explícitamente el usuario de la base de datos}
+  DB_PASSWORD: ${DB_PASSWORD:?Defina una contraseña segura para PostgreSQL}
+  DB_LANGUAGE: ${DB_LANGUAGE:-es_419}
   TRYTOND_WEB__LISTEN: ${TRYTOND_WEB__LISTEN:-0.0.0.0:8000}
-  TRYTOND_WEB__HOSTNAME: ${TRYTOND_WEB__HOSTNAME:-tryton.example.com}
+  TRYTOND_WEB__HOSTNAME: ${TRYTOND_WEB__HOSTNAME:-https://${TRYTON_HOST:?Defina el dominio público de Tryton}/}
   TRYTOND_WEB__ROOT_PATH: ${TRYTOND_WEB__ROOT_PATH:-/}
   TRYTOND_WEB__ROOT: ${TRYTOND_WEB__ROOT:-/var/lib/trytond/www}
-  TRYTOND_WEB__NUM_PROXIES: ${TRYTOND_WEB__NUM_PROXIES:-1}
+  TRYTOND_WEB__NUM_PROXIES: ${TRYTOND_WEB__NUM_PROXIES:-${TRYTON_NUM_PROXIES:-1}}
   TRYTOND_WEB__CACHE_TIMEOUT: ${TRYTOND_WEB__CACHE_TIMEOUT:-43200}
-  TRYTOND_WEB__CORS: ${TRYTOND_WEB__CORS:-https://tryton.example.com}
+  TRYTOND_WEB__CORS: ${TRYTOND_WEB__CORS:-https://${TRYTON_HOST:?Defina el dominio público de Tryton}}
   TRYTOND_WEB__AVATAR_BASE: ${TRYTOND_WEB__AVATAR_BASE:-}
   TRYTOND_WEB__AVATAR_TIMEOUT: ${TRYTOND_WEB__AVATAR_TIMEOUT:-604800}
   TRYTOND_DATABASE__PATH: ${TRYTOND_DATABASE__PATH:-/var/lib/trytond/db}
-  TRYTOND_DATABASE__LIST: ${TRYTOND_DATABASE__LIST:-True}
+  TRYTOND_DATABASE__LIST: ${TRYTOND_DATABASE__LIST:-False}
   TRYTOND_DATABASE__RETRY: ${TRYTOND_DATABASE__RETRY:-5}
   TRYTOND_DATABASE__SUBQUERY_THRESHOLD: ${TRYTOND_DATABASE__SUBQUERY_THRESHOLD:-1000}
-  TRYTOND_DATABASE__LANGUAGE: ${TRYTOND_DATABASE__LANGUAGE:-es_419}
+  TRYTOND_DATABASE__LANGUAGE: ${TRYTOND_DATABASE__LANGUAGE:-${DB_LANGUAGE:-es_419}}
   TRYTOND_DATABASE__AVATAR_FILESTORE: ${TRYTOND_DATABASE__AVATAR_FILESTORE:-False}
   TRYTOND_DATABASE__AVATAR_PREFIX: ${TRYTOND_DATABASE__AVATAR_PREFIX:-}
   TRYTOND_DATABASE__DEFAULT_NAME: ${TRYTOND_DATABASE__DEFAULT_NAME:-template1}
   TRYTOND_DATABASE__TIMEOUT: ${TRYTOND_DATABASE__TIMEOUT:-1800}
-  TRYTOND_DATABASE__MINCONN: ${TRYTOND_DATABASE__MINCONN:-1}
-  TRYTOND_DATABASE__MAXCONN: ${TRYTOND_DATABASE__MAXCONN:-64}
+  TRYTOND_DATABASE__MINCONN: ${TRYTOND_DATABASE__MINCONN:-${TRYTON_DATABASE_MINCONN:-1}}
+  TRYTOND_DATABASE__MAXCONN: ${TRYTOND_DATABASE__MAXCONN:-${TRYTON_DATABASE_MAXCONN:-16}}
+  TRYTOND_DATABASE__DATABASE_MIXINS: ${TRYTOND_DATABASE__DATABASE_MIXINS:-}
+  TRYTOND_DATABASE__TABLE_HANDLER_MIXINS: ${TRYTOND_DATABASE__TABLE_HANDLER_MIXINS:-}
   TRYTOND_DATABASE__UNACCENT_FUNCTION: ${TRYTOND_DATABASE__UNACCENT_FUNCTION:-unaccent}
   TRYTOND_DATABASE__SIMILARITY_FUNCTION: ${TRYTOND_DATABASE__SIMILARITY_FUNCTION:-similarity}
   TRYTOND_REQUEST__MAX_SIZE: ${TRYTOND_REQUEST__MAX_SIZE:-2097152}
@@ -41,8 +43,6 @@ x-tryton-environment: &tryton-environment
   TRYTOND_CACHE__RECORD: ${TRYTOND_CACHE__RECORD:-2000}
   TRYTOND_CACHE__FIELD: ${TRYTOND_CACHE__FIELD:-100}
   TRYTOND_CACHE__DEFAULT: ${TRYTOND_CACHE__DEFAULT:-1024}
-  TRYTOND_CACHE__IR_MESSAGE: ${TRYTOND_CACHE__IR_MESSAGE:-10240}
-  TRYTOND_CACHE__IR_TRANSLATION: ${TRYTOND_CACHE__IR_TRANSLATION:-10240}
   TRYTOND_CACHE__CLEAN_TIMEOUT: ${TRYTOND_CACHE__CLEAN_TIMEOUT:-300}
   TRYTOND_CACHE__SELECT_TIMEOUT: ${TRYTOND_CACHE__SELECT_TIMEOUT:-60}
   TRYTOND_CACHE__COUNT_TIMEOUT: ${TRYTOND_CACHE__COUNT_TIMEOUT:-86400}
@@ -53,9 +53,9 @@ x-tryton-environment: &tryton-environment
   TRYTOND_QUEUE__BATCH_SIZE: ${TRYTOND_QUEUE__BATCH_SIZE:-20}
   TRYTOND_ERROR__CLEAN_DAYS: ${TRYTOND_ERROR__CLEAN_DAYS:-90}
   TRYTOND_SSL__PRIVATEKEY: ${TRYTOND_SSL__PRIVATEKEY:-}
-  TRYTOND_SSL__CERTIFICATE: ${TRYTOND_SSL__CERTIFICATE:-true}
+  TRYTOND_SSL__CERTIFICATE: ${TRYTOND_SSL__CERTIFICATE:-}
   TRYTOND_EMAIL__URI: ${TRYTOND_EMAIL__URI:-smtp://localhost:25}
-  TRYTOND_EMAIL__FROM: ${TRYTOND_EMAIL__FROM:-admin@example.com}
+  TRYTOND_EMAIL__FROM: ${TRYTOND_EMAIL__FROM:-trytond}
   TRYTOND_EMAIL__RETRY: ${TRYTOND_EMAIL__RETRY:-5}
   TRYTOND_SESSION__AUTHENTICATIONS: ${TRYTOND_SESSION__AUTHENTICATIONS:-password}
   TRYTOND_SESSION__AUTHENTICATION_IP_NETWORK: ${TRYTOND_SESSION__AUTHENTICATION_IP_NETWORK:-}
@@ -73,7 +73,7 @@ x-tryton-environment: &tryton-environment
   TRYTOND_ATTACHMENT__STORE_PREFIX: ${TRYTOND_ATTACHMENT__STORE_PREFIX:-}
   TRYTOND_ATTACHMENT__RETENTION_DAYS: ${TRYTOND_ATTACHMENT__RETENTION_DAYS:-90}
   TRYTOND_BUS__ALLOW_SUBSCRIBE: ${TRYTOND_BUS__ALLOW_SUBSCRIBE:-True}
-  TRYTOND_BUS__URL_HOST: ${TRYTOND_BUS__URL_HOST:-https://tryton.example.com/}
+  TRYTOND_BUS__URL_HOST: ${TRYTOND_BUS__URL_HOST:-https://${TRYTON_HOST:?Defina el dominio público de Tryton}/}
   TRYTOND_BUS__LONG_POLLING_TIMEOUT: ${TRYTOND_BUS__LONG_POLLING_TIMEOUT:-300}
   TRYTOND_BUS__CACHE_TIMEOUT: ${TRYTOND_BUS__CACHE_TIMEOUT:-300}
   TRYTOND_BUS__SELECT_TIMEOUT: ${TRYTOND_BUS__SELECT_TIMEOUT:-5}
@@ -81,52 +81,100 @@ x-tryton-environment: &tryton-environment
   TRYTOND_HTML__SRC: ${TRYTOND_HTML__SRC:-/tinymce/tinymce.js}
   TRYTOND_HTML__LICENSE_KEY: ${TRYTOND_HTML__LICENSE_KEY:-gpl}
   TRYTOND_HTML__PLUGINS: ${TRYTOND_HTML__PLUGINS:-}
-  TRYTOND_HTML__CSS: ${TRYTOND_HTML__CSS:-[]}
+  TRYTOND_HTML__CSS: ${TRYTOND_HTML__CSS:-}
   TRYTOND_HTML__CLASS: ${TRYTOND_HTML__CLASS:-}
 
 x-tryton-service: &tryton-service
   <<: *tryton-image
   environment: *tryton-environment
   volumes:
-    - tryton-data:/var/lib/trytond/db
+    - tryton-filestore:/var/lib/trytond/db
   networks:
     - backend
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  init: true
   restart: unless-stopped
 
 services:
   postgres:
-    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-17.11-alpine}
-    restart: unless-stopped
+    image: ${POSTGRES_IMAGE:-postgres:18.6-alpine}
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-tryton}
-      POSTGRES_USER: ${POSTGRES_USER:-tryton}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?PostgreSQL password is required}
+      POSTGRES_DB: ${DB_NAME:?Defina explícitamente el nombre de la base de datos}
+      POSTGRES_USER: ${DB_USER:?Defina explícitamente el usuario de la base de datos}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Defina una contraseña segura para PostgreSQL}
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data:/var/lib/postgresql
     networks:
-      - backend
+      backend:
+        aliases:
+          - tryton-postgres
+    security_opt:
+      - no-new-privileges:true
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      test:
+        - CMD-SHELL
+        - pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"
       interval: 5s
       timeout: 5s
       retries: 20
       start_period: 10s
+    stop_grace_period: 1m
+    restart: unless-stopped
 
   tryton-migrate:
     <<: *tryton-image
-    restart: "no"
-    command: ["migrate"]
     environment:
       <<: *tryton-environment
-      ADMIN_EMAIL: ${TRYTOND_ADMIN_EMAIL:?Administrator email is required}
-      ADMIN_PASSWORD: ${TRYTOND_ADMIN_PASSWORD:?Administrator password is required}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Defina el correo del administrador}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Defina una contraseña segura para el administrador}
+    command: ["migrate"]
+    volumes:
+      - tryton-filestore:/var/lib/trytond/db
+    networks:
+      - backend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
     depends_on:
       postgres:
         condition: service_healthy
+    restart: "no"
+
+  tryton-bootstrap:
+    <<: *tryton-image
+    environment:
+      <<: *tryton-environment
+      TRYTON_MODULES: ${TRYTON_MODULES:-company country currency party party_do currency_do}
+      IMPORT_COUNTRIES: ${IMPORT_COUNTRIES:-true}
+      IMPORT_CURRENCIES: ${IMPORT_CURRENCIES:-true}
+      COMPANY_NAME: ${COMPANY_NAME:-}
+      COMPANY_TAX_IDENTIFIER: ${COMPANY_TAX_IDENTIFIER:-}
+      COMPANY_TAX_IDENTIFIER_TYPE: ${COMPANY_TAX_IDENTIFIER_TYPE:-do_vat}
+      COMPANY_COUNTRY_CODE: ${COMPANY_COUNTRY_CODE:-DO}
+      COMPANY_CURRENCY_CODE: ${COMPANY_CURRENCY_CODE:-DOP}
+      COMPANY_TIMEZONE: ${COMPANY_TIMEZONE:-America/Santo_Domingo}
+      COMPANY_STREET: ${COMPANY_STREET:-}
+      COMPANY_CITY: ${COMPANY_CITY:-}
+      COMPANY_POSTAL_CODE: ${COMPANY_POSTAL_CODE:-}
+    command: ["bootstrap"]
     volumes:
-      - tryton-data:/var/lib/trytond/db
+      - tryton-filestore:/var/lib/trytond/db
     networks:
       - backend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
+    depends_on:
+      tryton-migrate:
+        condition: service_completed_successfully
+    restart: "no"
 
   tryton-web:
     <<: *tryton-service
@@ -135,34 +183,43 @@ services:
       <<: *tryton-environment
       WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
       GUNICORN_THREADS: ${GUNICORN_THREADS:-2}
-      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT:-120}
-    depends_on:
-      tryton-migrate:
-        condition: service_completed_successfully
     networks:
       - backend
       - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.rule=Host(`${TRYTON_HOST:?Defina el dominio público de Tryton}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.tls.certresolver=${TRAEFIK_CERTRESOLVER:?Defina el resolutor de certificados de Traefik}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.priority=10
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.service=${COMPOSE_PROJECT_NAME:-tryton80}-web
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-web.middlewares=${COMPOSE_PROJECT_NAME:-tryton80}-security
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-tryton80}-web.loadbalancer.server.port=8000
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-tryton80}-security.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-tryton80}-security.headers.referrerPolicy=strict-origin-when-cross-origin
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-tryton80}-security.headers.stsSeconds=31536000
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-tryton80}-security.headers.stsIncludeSubdomains=true
+    depends_on:
+      tryton-bootstrap:
+        condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=5)"]
+      test:
+        - CMD
+        - python3
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=5)
       interval: 15s
       timeout: 6s
       retries: 10
       start_period: 30s
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=${NETWORK:-proxy}
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-web.rule=Host(`${URL_DOMAIN:?Public domain is required}`)
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-web.entrypoints=websecure
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-web.tls=true
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-web.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-web.service=${COMPOSE_PROJECT_NAME:-tryton}-web
-      - traefik.http.services.${COMPOSE_PROJECT_NAME:-tryton}-web.loadbalancer.server.port=8000
 
   tryton-worker:
     <<: *tryton-service
     command: ["worker", "-n", "${WORKER_PROCESSES:-2}"]
     depends_on:
-      tryton-migrate:
+      tryton-bootstrap:
         condition: service_completed_successfully
     stop_grace_period: 2m
 
@@ -170,7 +227,7 @@ services:
     <<: *tryton-service
     command: ["cron"]
     depends_on:
-      tryton-migrate:
+      tryton-bootstrap:
         condition: service_completed_successfully
     stop_grace_period: 2m
 
@@ -182,57 +239,90 @@ services:
       BUS_CONCURRENCY: ${BUS_CONCURRENCY:-1}
       GUNICORN_TIMEOUT: ${BUS_TIMEOUT:-360}
       GUNICORN_GRACEFUL_TIMEOUT: ${BUS_GRACEFUL_TIMEOUT:-30}
-    depends_on:
-      tryton-migrate:
-        condition: service_completed_successfully
     networks:
       - backend
       - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.rule=Host(`${TRYTON_HOST:?Defina el dominio público de Tryton}`) && PathRegexp(`^/[^/]+/bus`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.tls.certresolver=${TRAEFIK_CERTRESOLVER:?Defina el resolutor de certificados de Traefik}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.priority=100
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.service=${COMPOSE_PROJECT_NAME:-tryton80}-bus
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton80}-bus.middlewares=${COMPOSE_PROJECT_NAME:-tryton80}-security
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-tryton80}-bus.loadbalancer.server.port=8000
+    depends_on:
+      tryton-bootstrap:
+        condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=5)"]
+      test:
+        - CMD
+        - python3
+        - -c
+        - import urllib.request; urllib.request.urlopen('http://localhost:8000/', timeout=5)
       interval: 15s
       timeout: 6s
       retries: 10
       start_period: 30s
-    labels:
-      - traefik.enable=true
-      - traefik.docker.network=${NETWORK:-proxy}
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-bus.rule=Host(`${URL_DOMAIN:?Public domain is required}`) && Path(`/${POSTGRES_DB:-tryton}/bus`)
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-bus.priority=100
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-bus.entrypoints=websecure
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-bus.tls=true
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-bus.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-tryton}-bus.service=${COMPOSE_PROJECT_NAME:-tryton}-bus
-      - traefik.http.services.${COMPOSE_PROJECT_NAME:-tryton}-bus.loadbalancer.server.port=8000
 
   tryton-backup:
     <<: *tryton-image
-    command: ["backup", "daemon"]
+    image: ${POSTGRES_IMAGE:-postgres:18.6-alpine}
     environment:
       <<: *tryton-environment
       BACKUP_INTERVAL: ${BACKUP_INTERVAL:-86400}
       BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-14}
-    depends_on:
-      tryton-migrate:
-        condition: service_completed_successfully
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        create_backup() {
+          timestamp="$$(date -u +'%Y%m%dT%H%M%SZ')"
+          temporary="/var/lib/trytond/backups/.$${DB_NAME}-$${timestamp}.tmp"
+          final="/var/lib/trytond/backups/$${DB_NAME}-$${timestamp}"
+          mkdir -p "$${temporary}"
+          PGPASSWORD="$${DB_PASSWORD}" pg_dump \
+            --host "$${DB_HOSTNAME}" --port "$${DB_PORT}" \
+            --username "$${DB_USER}" --dbname "$${DB_NAME}" \
+            --format=custom --file "$${temporary}/database.dump"
+          tar -czf "$${temporary}/filestore.tar.gz" \
+            -C /var/lib/trytond/db .
+          (cd "$${temporary}" && \
+            sha256sum database.dump filestore.tar.gz > SHA256SUMS)
+          mv "$${temporary}" "$${final}"
+          find /var/lib/trytond/backups -mindepth 1 -maxdepth 1 \
+            -type d -name "$${DB_NAME}-*" \
+            -mtime "+$${BACKUP_RETENTION_DAYS}" -exec rm -rf -- {} +
+          echo "Backup created: $${final}"
+        }
+        while true; do
+          create_backup
+          sleep "$${BACKUP_INTERVAL}"
+        done
     volumes:
-      - tryton-data:/var/lib/trytond/db:ro
+      - tryton-filestore:/var/lib/trytond/db:ro
       - tryton-backups:/var/lib/trytond/backups
     networks:
       - backend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    init: true
+    depends_on:
+      tryton-bootstrap:
+        condition: service_completed_successfully
     restart: unless-stopped
 
 volumes:
   postgres-data:
-    name: ${POSTGRES_VOLUME:-tryton80-postgres-data}
-  tryton-data:
-    name: ${TRYTON_VOLUME:-tryton80-data}
+  tryton-filestore:
   tryton-backups:
-    name: ${TRYTON_BACKUP_VOLUME:-tryton80-backups}
 
 networks:
   backend:
     internal: true
   proxy:
+    name: ${PROXY_NETWORK:-proxy}
     external: true
-    name: ${NETWORK:-proxy}

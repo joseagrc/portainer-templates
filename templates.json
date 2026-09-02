@@ -7,7 +7,10 @@
       "title": "Honrapp (Restore)",
       "description": "Restores the Honrapp .NET application and SQL Server database behind Traefik.",
       "note": "Requires the application files and honrapp.bak under HONRAPP_DATA_DIR before deployment. The database restore is idempotent and will not overwrite an existing honrapp database. SQL Server is not exposed publicly.",
-      "categories": ["Business", "Backup"],
+      "categories": [
+        "Business",
+        "Backup"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/microsoft-sql-server.svg",
       "repository": {
@@ -59,13 +62,15 @@
         }
       ]
     },
-      {
+    {
       "id": 1,
       "type": 3,
       "title": "Android",
       "description": "Android",
       "note": "Deploys a android instance.",
-      "categories": ["OS"],
+      "categories": [
+        "OS"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/android/logo/logo.png",
       "repository": {
@@ -99,14 +104,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 2,
       "type": 3,
       "title": "Drone",
       "description": "Drone",
       "note": "Deploys a drone server instance.",
-      "categories": ["CI/CD"],
+      "categories": [
+        "CI/CD"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/drone/logo/logo.png",
       "repository": {
@@ -162,14 +169,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 3,
       "type": 3,
       "title": "Freescout",
       "description": "Freescout setup with a database MySQL.",
       "note": "Deploys a Freescout instance connected to a database MySQL.",
-      "categories": ["Help Desk"],
+      "categories": [
+        "Help Desk"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/freescout/logo/logo.png",
       "repository": {
@@ -281,14 +290,18 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 4,
       "type": 3,
       "title": "Gitea",
       "description": "Gitea setup with a database MySQL.",
       "note": "Deploys a Gitea instance connected to a database MySQL.",
-      "categories": ["Development", "Source control", "Git"],
+      "categories": [
+        "Development",
+        "Source control",
+        "Git"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea/logo/logo.png",
       "repository": {
@@ -460,14 +473,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 5,
       "type": 3,
       "title": "Gitea act runner",
       "description": "Gitea runner setup",
       "note": "Deploys a Gitea act runner.",
-      "categories": ["CI/CD"],
+      "categories": [
+        "CI/CD"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea-act-runner/logo/logo.png",
       "repository": {
@@ -502,7 +517,7 @@
           "label": "Network name",
           "name": "NETWORK"
         }
-       ]
+      ]
     },
     {
       "id": 6,
@@ -510,7 +525,11 @@
       "title": "GitLab CE",
       "description": "GitLab, is an Open-source end-to-end software development platform",
       "note": "Deploys a GitLab instance.",
-      "categories": ["Development", "Source control", "Git"],
+      "categories": [
+        "Development",
+        "Source control",
+        "Git"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce/logo/logo.png",
       "repository": {
@@ -601,7 +620,9 @@
       "title": "GitLab CE Runner",
       "description": "Gitlab Runner is an application that works with GitLab CI/CD to run the job in a pipeline.",
       "note": "Deploys a GitLab Runner instance.",
-      "categories": ["CI/CD"],
+      "categories": [
+        "CI/CD"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
@@ -637,7 +658,9 @@
       "title": "GitLab CE Runner Register",
       "description": "Gitlab Runner register is an application that works with GitLab CI/CD to register the runner.",
       "note": "Deploys a GitLab Runner instance to register a runner.",
-      "categories": ["CI/CD"],
+      "categories": [
+        "CI/CD"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
@@ -687,7 +710,9 @@
       "title": "GNU Health",
       "description": "GNU Health is a free/libre health and hospital information system.",
       "note": "Deploys a GNU Health instance connected to a PostgreSQL database.",
-      "categories": ["HIS (Hospital Information System)"],
+      "categories": [
+        "HIS (Hospital Information System)"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gnuhealth/logo/logo.png",
       "repository": {
@@ -782,13 +807,15 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 10,
       "type": 3,
       "title": "Grav",
       "description": "Modern, Crazy Fast, Ridiculously Easy and Amazingly Powerful Flat-File CMS powered by PHP, Markdown, Twig, and Symfony.",
-      "categories": ["CMS"],
+      "categories": [
+        "CMS"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/grav/logo/logo.png",
       "repository": {
@@ -846,20 +873,23 @@
           "label": "Network Name",
           "name": "NETWORK"
         }
-     ],
+      ],
       "volumes": [
         {
           "container": "/var/www/html"
         }
-        ]
-      },
-      {
+      ]
+    },
+    {
       "id": 11,
       "type": 3,
       "title": "Gravitee APIM",
       "description": "Gravitee API Management deploys an API Gateway, Management API, Console UI and Developer Portal with MongoDB and Elasticsearch.",
       "note": "Deploys Gravitee APIM Community Edition with MongoDB, Elasticsearch, Gateway, Management API, Console UI and Developer Portal. Requires vm.max_map_count=262144 on the Docker host for Elasticsearch. First boot can take several minutes while MongoDB, Elasticsearch and APIM initialize; MongoDB URI timeouts are extended to avoid first-boot write timeouts. Default login for Console and Portal is admin / admin; change it immediately. GRAVITEE_API_ENCRYPTION_SECRET and GRAVITEE_JWT_SECRET must be changed before production and kept stable after deployment. Traefik exposes four domains: gateway, API, console and portal. Enterprise license files and custom plugins require extending the stack with bind mounts or Docker configs.",
-      "categories": ["API Management", "Gateway"],
+      "categories": [
+        "API Management",
+        "Gateway"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gravitee/logo/logo.png",
       "repository": {
@@ -972,7 +1002,7 @@
           "label": "Console UI Public URL (optional)",
           "name": "GRAVITEE_CONSOLE_URL"
         }
-     ],
+      ],
       "volumes": [
         {
           "container": "/data/db"
@@ -995,14 +1025,16 @@
         {
           "container": "/var/log/nginx"
         }
-        ]
+      ]
     },
     {
       "id": 12,
       "type": 3,
       "title": "HAProxy",
       "description": "HAProxy is a free, open source high availability solution, providing load balancing and proxying for TCP and HTTP-based applications by spreading requests across multiple servers.",
-      "categories": ["proxy"],
+      "categories": [
+        "proxy"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/haproxy/logo/logo.png",
       "repository": {
@@ -1045,7 +1077,7 @@
           "label": "Odoo tag",
           "name": "ODOO_TAG"
         },
-          {
+        {
           "default": "odoo.example.com",
           "label": "URL",
           "name": "URL"
@@ -1071,7 +1103,9 @@
       "title": "Leantime",
       "description": "Leantime setup with a MySQL database",
       "note": "Deploys a Leantime instance connected to a MySQL database.",
-      "categories": ["Project Management"],
+      "categories": [
+        "Project Management"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/leantime/logo/logo.png",
       "repository": {
@@ -1136,7 +1170,10 @@
       "title": "Nextcloud",
       "description": "Nextcloud is a suite of client-server software for creating and using file hosting services.",
       "note": "Deploys an nextcloud instance.",
-      "categories": ["cloud Storage", "Online Collaboration"],
+      "categories": [
+        "cloud Storage",
+        "Online Collaboration"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/nextcloud/logo/logo.png",
       "repository": {
@@ -1172,7 +1209,10 @@
       "title": "Nextcloud AIO",
       "description": "Nextcloud AIO is a suite of client-server software for creating and using file hosting services.",
       "note": "Deploys an nextcloud instance.",
-      "categories": ["cloud Storage", "Online Collaboration"],
+      "categories": [
+        "cloud Storage",
+        "Online Collaboration"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/nextcloudaio/logo/logo.png",
       "repository": {
@@ -1207,7 +1247,9 @@
       "type": 3,
       "title": "Odoo",
       "description": "Open-source business apps.",
-      "categories": ["Project-Management"],
+      "categories": [
+        "Project-Management"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/odoo/logo/logo.png",
       "repository": {
@@ -1245,7 +1287,6 @@
           "label": "Odoo Image",
           "name": "ODOO_IMAGE"
         },
-    
         {
           "default": "16.0",
           "label": "Odoo Tag",
@@ -1285,7 +1326,9 @@
       "title": "OpenLDAP",
       "description": "OpenLDAP Software is an open source implementation of the Lightweight Directory Access Protocol",
       "note": "Deploys an OpenLDAP Server.",
-      "categories": ["Directory Services"],
+      "categories": [
+        "Directory Services"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/openldap/logo/logo.png",
       "repository": {
@@ -1379,14 +1422,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 18,
       "type": 3,
       "title": "Code",
       "description": "Code, powered by Phorge 2026.27 with PHP 8.4, MySQL 8.4 LTS and multilingual translations.",
       "note": "Production-oriented Phorge stack using the joseagrc Gitea packages. Includes Spanish localization, configurable branding, persistent repositories, health checks, an isolated database network and reverse-proxy support.",
-      "categories": ["continuous-integration"],
+      "categories": [
+        "continuous-integration"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/phorge/logo/logo.png",
       "repository": {
@@ -1516,14 +1561,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 19,
       "type": 3,
       "title": "Pi-hole",
       "description": "Pi-hole is a Linux network-level advertisement and Internet tracker blocking application which acts as a DNS sinkhole and optionally a DHCP server, intended for use on a private network.",
       "note": "Pi-hole is a DNS sinkhole that protects your devices from unwanted content without installing any client-side software.",
-      "categories": ["Network-wide Ad Blocking"],
+      "categories": [
+        "Network-wide Ad Blocking"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/pi-hole/logo/logo.png",
       "repository": {
@@ -1572,14 +1619,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 20,
       "type": 3,
       "title": "Redis",
       "description": "Open-source in-memory data structure store",
       "note": "Deploys a Redis server instance as an application cache or quick-response database.",
-      "categories": ["database"],
+      "categories": [
+        "database"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/redis/logo/logo.png",
       "repository": {
@@ -1657,14 +1706,16 @@
           "name": "NETWORK"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 21,
       "type": 3,
       "title": "Speedtest Tracker",
       "description": "A Docker image to check your internet speed using Ookla's Speedtest service. Build using Laravel and the Speedtest CLI.",
       "note": "Deploys an image to check your internet speed using Ookla's Speedtest service.",
-      "categories": ["Tools"],
+      "categories": [
+        "Tools"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/speedtest-tracker/logo/logo.png",
       "repository": {
@@ -1817,14 +1868,16 @@
           "container": "/config"
         }
       ]
-      },
-      {
+    },
+    {
       "id": 22,
       "type": 3,
       "title": "Tryton Series 6.0",
       "description": "Tryton 6.0 setup with a PostgreSQL database",
       "note": "Deploys a Tryton 6.0 instance connected to a PostgreSQL database.",
-      "categories": ["ERP (Enterprise Resource Planning)"],
+      "categories": [
+        "ERP (Enterprise Resource Planning)"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton60/logo/logo.png",
       "repository": {
@@ -1906,7 +1959,9 @@
       "title": "Tryton Series 7.0",
       "description": "Tryton 7.0 setup with a PostgreSQL database",
       "note": "Deploys a Tryton 7.0 instance connected to a PostgreSQL database.",
-      "categories": ["ERP (Enterprise Resource Planning)"],
+      "categories": [
+        "ERP (Enterprise Resource Planning)"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton70/logo/logo.png",
       "repository": {
@@ -1981,7 +2036,9 @@
       "title": "Tryton Series 7.2",
       "description": "Tryton 7.2 setup with a PostgreSQL database",
       "note": "Deploys a Tryton 7.2 instance connected to a PostgreSQL database.",
-      "categories": ["ERP (Enterprise Resource Planning)"],
+      "categories": [
+        "ERP (Enterprise Resource Planning)"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton72/logo/logo.png",
       "repository": {
@@ -2056,7 +2113,9 @@
       "title": "Vaultwarden",
       "description": "Vaultwarden setup",
       "note": "Deploys a Vaultwarden instance.",
-      "categories": ["Password Manager"],
+      "categories": [
+        "Password Manager"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/vaultwarden/logo/logo.png",
       "repository": {
@@ -2188,7 +2247,9 @@
       "title": "Weblate",
       "description": "Weblate is a Web based localization tool with tight version control integration",
       "note": "Deploys Weblate with pinned numeric image versions, PostgreSQL Alpine, Redis Alpine, persistent volumes and Traefik HTTPS.",
-      "categories": ["Computer-assisted translation"],
+      "categories": [
+        "Computer-assisted translation"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/weblate/logo/logo.png",
       "repository": {
@@ -2351,7 +2412,9 @@
       "title": "Windows",
       "description": "Windows inside a Docker container.",
       "note": "Deploys an windows os instance.",
-      "categories": ["KVM"],
+      "categories": [
+        "KVM"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/windows/logo/logo.png",
       "repository": {
@@ -2452,7 +2515,9 @@
       "title": "WireGuard",
       "description": "WireGuard is a communication protocol and free and open-source software that implements encrypted virtual private networks, and was designed with the goals of ease of use, high speed performance, and low attack surface.",
       "note": "Deploys a iireguard instance.",
-      "categories": ["Network"],
+      "categories": [
+        "Network"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/wireguard/logo/logo.png",
       "repository": {
@@ -2548,7 +2613,9 @@
       "title": "WordPress",
       "description": "WordPress setup with a Mariadb database",
       "note": "Deploys a WordPress instance connected to a Mariadb database.",
-      "categories": ["CMS"],
+      "categories": [
+        "CMS"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/wordpress/logo/logo.png",
       "repository": {
@@ -2638,7 +2705,9 @@
       "title": "Zabbix Server",
       "description": "Zabbix Server setup with postgres database.",
       "note": "Deploys a Zabbix Server to monitor IT infrastructure such as networks, servers, virtual machines, and cloud services.",
-      "categories": ["Monitor Tool"],
+      "categories": [
+        "Monitor Tool"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/zabbix/logo/logo.png",
       "repository": {
@@ -2714,7 +2783,9 @@
       "title": "macOS",
       "description": "MacOS inside a Docker container.",
       "note": "Deploys a MacOS inside a Docker container.",
-      "categories": ["Monitor Tool"],
+      "categories": [
+        "Monitor Tool"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/macos/logo/logo.png",
       "repository": {
@@ -2774,7 +2845,9 @@
       "type": 3,
       "title": "DGII RNC API from CSV",
       "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del RNC y Cédula.",
-      "categories": ["API"],
+      "categories": [
+        "API"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/rnc-api/logo/logo.png",
       "repository": {
@@ -2860,7 +2933,9 @@
       "title": "Keycloak",
       "description": "Keycloak setup with a database PostgreSQL.",
       "note": "Deploys a Keycloak instance connected to a database PostgreSQL.",
-      "categories": ["Autentication Server"],
+      "categories": [
+        "Autentication Server"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/keycloak/logo/logo.png",
       "repository": {
@@ -2928,7 +3003,9 @@
       "title": "e-CF MSeller",
       "description": "e-CF MSeller setup.",
       "note": "Deploys a e-CF MSeller instance.",
-      "categories": ["Front-End"],
+      "categories": [
+        "Front-End"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/ecf-mseller/logo/logo.png",
       "repository": {
@@ -2994,7 +3071,9 @@
       "title": "DGII RNC API + CSV + Web scraping",
       "description": "Esta es una API diseñada con FastAPI para facilitar el acceso y la integración de los datos del Registro Nacional de Contribuyentes (RNC) y Cédula de Identidad de la Dirección General de Impuestos Internos (DGII) de la República Dominicana en aplicaciones de terceros.",
       "note": "Template preparado para producción detrás de Traefik o Gravitee. PostgreSQL queda en una red interna privada. Cambia POSTGRES_PASSWORD antes de desplegar. DATABASE_URL es opcional; si se deja vacío la aplicación usa POSTGRES_HOST/POSTGRES_PORT/POSTGRES_USER/POSTGRES_PASSWORD/POSTGRES_DB. Para exponer sin Gravitee usa API_KEY_VALIDATION_MODE=static, define API_KEY y deja RNC_API_TRAEFIK_ENABLE=true. Para usar Gravitee como gateway usa API_KEY_VALIDATION_MODE=gateway, deja que Gravitee valide las API keys de suscripción y considera RNC_API_TRAEFIK_ENABLE=false para evitar bypass público directo. Si el frontend debe consultar a través de Gravitee sin pedir API key al usuario, define FRONTEND_API_BASE_URL con la URL del gateway y FRONTEND_API_KEY con una key emitida por Gravitee. El scheduler viene activo para sincronización automática. SCHEDULER_FULL_SYNC_CRON y HTML_ENRICHMENT_CRON deben usar formato cron de 5 campos, por ejemplo 0 2 * * *.",
-      "categories": ["API"],
+      "categories": [
+        "API"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-rnc-api/logo/logo.png",
       "repository": {
@@ -3268,7 +3347,11 @@
       "title": "Heptapod",
       "description": "Heptapod, is an Open-source end-to-end software development platform",
       "note": "Deploys a Heptapod instance.",
-      "categories": ["Development", "Source control", "Git"],
+      "categories": [
+        "Development",
+        "Source control",
+        "Git"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce/logo/logo.svg",
       "repository": {
@@ -3359,7 +3442,9 @@
       "title": "Heptapod CE Runner",
       "description": "Heptapod Runner is an application that works with Heptapod CI/CD to run the job in a pipeline.",
       "note": "Deploys a Heptapod Runner instance.",
-      "categories": ["CI/CD"],
+      "categories": [
+        "CI/CD"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
       "repository": {
@@ -3395,7 +3480,9 @@
       "title": "Heptapod CE Runner Register",
       "description": "Heptapod Runner register is an application that works with Heptapod CI/CD to register the runner.",
       "note": "Deploys a Heptapod Runner instance to register a runner.",
-      "categories": ["CI/CD"],
+      "categories": [
+        "CI/CD"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
       "repository": {
@@ -3407,7 +3494,7 @@
           "default": "heptapod/heptapod-runner",
           "label": "Heptapod CE Runner Image",
           "name": "HEPTAPOD_CE_RUNNER_IMAGE"
-        },        
+        },
         {
           "default": "18.0.0",
           "label": "Heptapod CE Runner Tag",
@@ -3450,7 +3537,9 @@
       "title": "DGII e-CF Stack",
       "description": "DGII e-CF stack is an application that works electronic invoicing for Dominican Republic.",
       "note": "Deploys a DGII e-CF stack instance to electronic invoicing.",
-      "categories": ["API"],
+      "categories": [
+        "API"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/dgii-ecf-stack/logo/logo.png",
       "repository": {
@@ -3467,7 +3556,7 @@
           "default": "postgres",
           "label": "Postgres Image",
           "name": "POSTGRES_IMAGE"
-        },        
+        },
         {
           "default": "16-alpine",
           "label": "Postgres Tag",
@@ -3542,7 +3631,7 @@
           "default": "gitea.joseagrc.com/joseagrc/dgii-ecf-engine",
           "label": "DGII e-CF Engine Image",
           "name": "DGII_ECF_ENGINE_IMAGE"
-        },        
+        },
         {
           "default": "1.1.59",
           "label": "DGII e-CF Engine Tag",
@@ -3612,7 +3701,7 @@
           "default": "true",
           "label": "Database Enabled",
           "name": "DATABASE_ENABLED"
-        },        
+        },
         {
           "default": "false",
           "label": "Database Log Queries",
@@ -3652,7 +3741,7 @@
           "default": "https://app.example.com",
           "label": "CORS Allowed Origins",
           "name": "CORS_ALLOWED_ORIGINS"
-        },        
+        },
         {
           "default": "true",
           "label": "XML XSD Validation Enabled",
@@ -3707,7 +3796,7 @@
           "default": "gitea.joseagrc.com/joseagrc/dgii-ecf-portal",
           "label": "DGII e-CF Portal Image",
           "name": "DGII_ECF_PORTAL_IMAGE"
-        },        
+        },
         {
           "default": "1.1.59",
           "label": "DGII e-CF Portal Tag",
@@ -3717,7 +3806,7 @@
           "default": "ecf.example.com",
           "label": "Public Engine URL",
           "name": "PUBLIC_ENGINE_URL"
-        },        
+        },
         {
           "default": "3000",
           "label": "DGII ECF Portal Port",
@@ -3841,7 +3930,7 @@
           "default": "smtp.example.com",
           "label": "SMTP Host",
           "name": "SMTP_HOST"
-        },        
+        },
         {
           "default": "587",
           "label": "SMTP Port",
@@ -3856,47 +3945,47 @@
           "default": "noreply@example.com",
           "label": "SMTP User",
           "name": "SMTP_USER"
-        }, 
+        },
         {
           "default": "",
           "label": "SMTP Password",
           "name": "SMTP_PASSWORD"
         },
         {
-          "default": "noreply@example.com",          
+          "default": "noreply@example.com",
           "label": "SMTP From Email",
           "name": "SMTP_FROM_EMAIL"
         },
         {
-          "default": "DGII e-CF Portal",          
+          "default": "DGII e-CF Portal",
           "label": "SMTP From Name",
           "name": "SMTP_FROM_NAME"
         },
         {
-          "default": "https://app.example.com",          
+          "default": "https://app.example.com",
           "label": "Portal Public URL",
           "name": "PORTAL_PUBLIC_URL"
         },
         {
-          "default": "noreply@example.com",          
+          "default": "noreply@example.com",
           "label": "Admin Notification Emails",
           "name": "ADMIN_NOTIFICATION_EMAILS"
         },
         {
-          "default": ".example.com",          
+          "default": ".example.com",
           "label": "Session Cookie Domain",
           "name": "SESSION_COOKIE_DOMAIN"
-        },        
+        },
         {
-          "default": "lax",          
+          "default": "lax",
           "label": "Session Cookie Same Site",
           "name": "SESSION_COOKIE_SAME_SITE"
-        }, 
+        },
         {
-          "default": "true",          
+          "default": "true",
           "label": "Session Cookie Secure",
           "name": "SESSION_COOKIE_SECURE"
-        },  
+        },
         {
           "default": "/",
           "label": "Session Cookie Path",
@@ -3969,9 +4058,9 @@
       "type": 3,
       "title": "DGII e-CF Swarm",
       "description": "DGII e-CF Swarm is an application that works electronic invoicing for Dominican Republic.",
-      "note": "Deploys a DGII e-CF Swarm instance to electronic invoicing. Instance backup/restore from the portal is enabled by default and mounts /var/run/docker.sock in the engine container; restrict portal superadmin access.",
+      "note": "Requiere el 'POSTGRES_PASSWORD'. Las migraciones Prisma se ejecutan mediante el job dgii-ecf-engine-migrate; el engine arranca con migraciones desactivadas y usa PORTAL_PUBLIC_URL como origen CORS.",
       "categories": [
-          "API"
+        "API"
       ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/swarm/dgii-ecf/logo/logo.png",
@@ -3989,7 +4078,7 @@
           "name": "POSTGRES_IMAGE",
           "label": "Postgres Image",
           "default": "postgres"
-        },        
+        },
         {
           "name": "POSTGRES_TAG",
           "label": "Postgres Tag",
@@ -4680,8 +4769,7 @@
           "label": "Traefik Certificate Resolver",
           "default": "letsencrypt"
         }
-      ],
-      "note": "Requiere el 'POSTGRES_PASSWORD'. Las migraciones Prisma se ejecutan mediante el job dgii-ecf-engine-migrate; el engine arranca con migraciones desactivadas y usa PORTAL_PUBLIC_URL como origen CORS."
+      ]
     },
     {
       "id": 41,
@@ -4689,7 +4777,9 @@
       "title": "Tryton Website",
       "description": "Tryton Website for Dominican Republic.",
       "note": "Deploys a Tryton website.",
-      "categories": ["Web"],
+      "categories": [
+        "Web"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/tryton-do-website/logo/logo.png",
       "repository": {
@@ -4701,7 +4791,7 @@
           "default": "registry.joseagrc.com/tryton/website",
           "label": "Website Image",
           "name": "TRYTON_WEBSITE_IMAGE"
-        },        
+        },
         {
           "default": "latest",
           "label": "Website Tag",
@@ -4711,7 +4801,7 @@
           "default": "3600",
           "label": "Flask Cache Default Timeout",
           "name": "FLASK_CACHE_DEFAULT_TIMEOUT"
-        }, 
+        },
         {
           "default": "false",
           "label": "Flask CDN Debug",
@@ -4736,22 +4826,22 @@
           "default": "2",
           "label": "Gunicorn Workers",
           "name": "GUNICORN_WORKERS"
-        }, 
+        },
         {
           "default": "4",
           "label": "Gunicorn Threads",
           "name": "GUNICORN_THREADS"
-        }, 
+        },
         {
           "default": "60",
           "label": "Gunicorn Timeout",
           "name": "GUNICORN_TIMEOUT"
-        }, 
+        },
         {
           "default": "memcached",
           "label": "Memcached Image",
           "name": "MEMCACHED_IMAGE"
-        },        
+        },
         {
           "default": "1.6-alpine",
           "label": "Memcached Tag",
@@ -4761,7 +4851,7 @@
           "default": "registry.joseagrc.com/tryton/critical-css",
           "label": "Critical CSS Image",
           "name": "CRITICAL_CSS_IMAGE"
-        },        
+        },
         {
           "default": "latest",
           "label": "Critical CSS Tag",
@@ -4785,7 +4875,9 @@
       "title": "Banco Central Rates",
       "description": "Banco Central Rates for Dominican Republic.",
       "note": "Deploys a Banco Central Rates API.",
-      "categories": ["API"],
+      "categories": [
+        "API"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/bcrd-rates/logo/logo.png",
       "repository": {
@@ -4807,12 +4899,12 @@
           "default": "bcrd",
           "label": "Postgres User",
           "name": "POSTGRES_USER"
-        },      
+        },
         {
           "default": "bcrd_password",
           "label": "Postgres Password",
           "name": "POSTGRES_PASSWORD"
-        },  
+        },
         {
           "default": "bcrd_rates",
           "label": "Postgres Database",
@@ -4857,12 +4949,12 @@
           "default": "30",
           "label": "Request Timeout Seconds",
           "name": "REQUEST_TIMEOUT_SECONDS"
-        },  
+        },
         {
           "default": "INFO",
           "label": "Log Level",
           "name": "LOG_LEVEL"
-        },        
+        },
         {
           "default": "replace_api_key",
           "label": "API Key",
@@ -4891,7 +4983,11 @@
       "title": "Forgejo",
       "description": "Forgejo setup with a database MySQL.",
       "note": "Deploys a Forgejo instance connected to a database MySQL.",
-      "categories": ["Development", "Source control", "Git"],
+      "categories": [
+        "Development",
+        "Source control",
+        "Git"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/forgejo/logo/logo.svg",
       "repository": {
@@ -5077,7 +5173,6 @@
           "label": "Forgejo URL",
           "name": "FORGEJO_URL"
         },
-
         {
           "default": "proxy",
           "label": "Network name",
@@ -5091,7 +5186,9 @@
       "title": "Roundcube Webmail",
       "description": "Roundcube Webmail setup with a database MySQL.",
       "note": "Deploys a Roundcube Webmail instance connected to a database MySQL.",
-      "categories": ["webmail"],
+      "categories": [
+        "webmail"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/roundcubemail/logo/logo.png",
       "repository": {
@@ -5210,7 +5307,9 @@
       "title": "Custom WordPress",
       "description": "Custom WordPress setup with a Mariadb database",
       "note": "Deploys a Custom WordPress instance connected to a Mariadb database.",
-      "categories": ["CMS"],
+      "categories": [
+        "CMS"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/custom-wordpress/logo/logo.png",
       "repository": {
@@ -5380,7 +5479,9 @@
       "title": "Netdata",
       "description": "Real-time performance and health monitoring for systems and applications",
       "note": "Deploys a Netdata monitoring instance with full host and Docker container metrics. PGID must match the docker group ID on the host (run: stat -c '%g' /var/run/docker.sock).",
-      "categories": ["monitoring"],
+      "categories": [
+        "monitoring"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/netdata/logo/logo.png",
       "repository": {
@@ -5441,7 +5542,9 @@
       "title": "WSO2 API Manager",
       "description": "WSO2 API Manager for publishing, securing, managing and monetizing APIs behind Traefik.",
       "note": "Deploys a single-node WSO2 API Manager instance with an external database container. For production, use strong passwords, DNS records for every domain, regular database backups, and configure WSO2 plans, throttling, monetization and billing provider after first login.",
-      "categories": ["API Management"],
+      "categories": [
+        "API Management"
+      ],
       "platform": "linux",
       "logo": "https://wso2.cachefly.net/wso2/sites/all/image_resources/wso2-logo.svg",
       "repository": {
@@ -5567,7 +5670,9 @@
       "title": "Wazuh",
       "description": "Wazuh is an open source SIEM and XDR platform with manager, indexer and dashboard services.",
       "note": "Deploys a single-node Wazuh stack using official Docker images. Requires at least 4 CPU cores, 8 GB RAM and 50 GB storage. Set vm.max_map_count=262144 on the Docker host before deploying. Dashboard is exposed through Traefik; manager agent ports are published directly.",
-      "categories": ["Security"],
+      "categories": [
+        "Security"
+      ],
       "platform": "linux",
       "logo": "https://wazuh.com/uploads/2022/05/wazuh-logo.svg",
       "repository": {
@@ -5669,7 +5774,9 @@
       "title": "Beszel Hub",
       "description": "Beszel is a lightweight server monitoring hub with Docker stats, historical data and alerts.",
       "note": "Deploys the Beszel hub behind Traefik on port 8090. After first login, create the admin user and generate a token/public key for each Beszel Agent from the Add System flow or /settings/tokens.",
-      "categories": ["Monitoring"],
+      "categories": [
+        "Monitoring"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel.svg",
       "repository": {
@@ -5725,7 +5832,9 @@
       "title": "Beszel Agent",
       "description": "Beszel Agent collects host and Docker metrics for a Beszel hub.",
       "note": "Deploy this on each Docker host you want to monitor. BESZEL_AGENT_TOKEN must be a token created in the Beszel Hub at /settings/tokens; an empty, random or unknown token causes WebSocket 401. BESZEL_AGENT_KEY is the public key shown by the hub when adding a system. The agent uses host networking and reads the Docker socket.",
-      "categories": ["Monitoring"],
+      "categories": [
+        "Monitoring"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/beszel.svg",
       "repository": {
@@ -5779,7 +5888,10 @@
       "title": "Postiz",
       "description": "Postiz is an open-source social media scheduling and automation platform.",
       "note": "Postiz stack: app + PostgreSQL + Redis + Temporal.\\nPrimer arranque: Temporal PostgreSQL, Elasticsearch y Temporal pueden tardar varios minutos creando datos internos; espera a que todos queden healthy.\\nPOSTIZ_JWT_SECRET: obligatorio; genera uno con: openssl rand -hex 64\\nPOSTIZ_DB_PASSWORD: obligatorio; usa una contraseña fuerte para PostgreSQL.\\nX_API_KEY: opcional; API Key de X/Twitter Developer Portal para activar X.\\nX_API_SECRET: opcional; API Secret de X/Twitter Developer Portal para activar X.\\nLINKEDIN_CLIENT_ID: opcional; Client ID de tu app en LinkedIn Developers.\\nLINKEDIN_CLIENT_SECRET: opcional; Client Secret de tu app en LinkedIn Developers.\\nFACEBOOK_APP_ID: opcional; App ID de Meta for Developers para Facebook/Instagram.\\nFACEBOOK_APP_SECRET: opcional; App Secret de Meta for Developers para Facebook/Instagram.\\nYOUTUBE_CLIENT_ID: opcional; OAuth Client ID de Google Cloud con YouTube APIs habilitadas.\\nYOUTUBE_CLIENT_SECRET: opcional; OAuth Client Secret de Google Cloud con YouTube APIs habilitadas.\\nPOSTIZ_TEMPORAL_UI_TRAEFIK_ENABLED: mantener false; usar true solo para depurar Temporal.\\nPOSTIZ_TEMPORAL_UI_DOMAIN: solo se usa si expones Temporal UI; ejemplo: postiz-temporal.example.com.\\nLas credenciales sociales pueden dejarse vacías hasta crear cada app OAuth y configurar sus callback URLs en Postiz.",
-      "categories": ["Social Media", "Productivity"],
+      "categories": [
+        "Social Media",
+        "Productivity"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postiz.svg",
       "repository": {
@@ -5922,7 +6034,10 @@
       "title": "Einstore",
       "description": "Einstore is an open-source private app distribution platform for iOS and Android.",
       "note": "Deploys Einstore API, Admin, and PostgreSQL behind Traefik. This template builds the API and Admin images from the official Einstore GitHub repository because current upstream compose files build from source. Use separate DNS records for Admin and API, both pointing to Traefik. Configure S3-compatible storage CORS for the Admin and API domains before using browser uploads.",
-      "categories": ["App Store", "Development"],
+      "categories": [
+        "App Store",
+        "Development"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/einstore/logo/logo.svg",
       "repository": {
@@ -6045,7 +6160,10 @@
       "title": "Mixpost Lite",
       "description": "Mixpost Lite is the free self-hosted social media management application.",
       "note": "Deploys Mixpost Lite with MySQL and Redis behind Traefik. For Application Key, generate a valid key at https://mixpost.app/tools/encryption-key-generator and paste the full value including the base64: prefix. MySQL first boot can take a few minutes while the data directory is initialized. The template avoids a full application chown during startup and only adjusts Laravel writable paths. Default login after first boot is admin@example.com / changeme; change it immediately.",
-      "categories": ["Social Media", "Productivity"],
+      "categories": [
+        "Social Media",
+        "Productivity"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/mixpost.svg",
       "repository": {
@@ -6153,7 +6271,10 @@
       "title": "FreeSSL",
       "description": "FreeSSL.tech Auto with MariaDB.",
       "note": "Deploys FreeSSL.tech Auto behind Traefik using the joseagrc nginx-php-fpm based image. Complete the browser installer at /install.php and use the prefilled database host, or ${COMPOSE_PROJECT_NAME}-db if entering it manually.",
-      "categories": ["Security", "Certificates"],
+      "categories": [
+        "Security",
+        "Certificates"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/freessl/logo/logo.svg",
       "repository": {
@@ -6251,7 +6372,11 @@
       "title": "Tryton Documentation",
       "description": "Bilingual, versioned Tryton documentation built with Docusaurus.",
       "note": "Builds the documentation image directly from the public tryton-do/docker-docusaurus-tryton repository and publishes it securely through Traefik. The persistent webpage volume preserves the generated site. Enable scaffold overwrite only when you intentionally want a new image to refresh generated documentation files.",
-      "categories": ["Documentation", "Tryton", "Web"],
+      "categories": [
+        "Documentation",
+        "Tryton",
+        "Web"
+      ],
       "platform": "linux",
       "logo": "https://code.unpaismejor.org.do/tryton-do/docker-docusaurus-tryton/raw/branch/main/templates/static/img/tryton-black.svg",
       "repository": {
@@ -6284,8 +6409,15 @@
           "label": "Overwrite Generated Documentation",
           "name": "DOCUSAURUS_SCAFFOLD_OVERWRITE",
           "select": [
-            {"text": "No", "value": "false", "default": true},
-            {"text": "Yes", "value": "true"}
+            {
+              "text": "No",
+              "value": "false",
+              "default": true
+            },
+            {
+              "text": "Yes",
+              "value": "true"
+            }
           ]
         },
         {
@@ -6316,7 +6448,11 @@
       "title": "n8n Automation",
       "description": "Production n8n automation platform with PostgreSQL, Redis queue and worker.",
       "note": "Uses a persistent encryption key and PostgreSQL database. Back up both the database and N8N_ENCRYPTION_KEY; losing the encryption key makes stored credentials unreadable.",
-      "categories": ["Automation", "Workflow", "AI"],
+      "categories": [
+        "Automation",
+        "Workflow",
+        "AI"
+      ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/n8n-io/n8n/master/assets/n8n-logo.png",
       "repository": {
@@ -6324,29 +6460,103 @@
         "stackfile": "stacks/n8n/docker-compose.yml"
       },
       "env": [
-        {"default": "n8n", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
-        {"default": "n8n.joseagrc.com", "label": "Public Domain", "name": "N8N_DOMAIN"},
-        {"default": "docker.n8n.io/n8nio/n8n", "label": "n8n Image", "name": "N8N_IMAGE"},
-        {"default": "2.34.6", "label": "n8n Tag", "name": "N8N_TAG"},
-        {"default": "postgres", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
-        {"default": "18-alpine", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
-        {"default": "n8n", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
-        {"default": "n8n", "label": "PostgreSQL Username", "name": "POSTGRES_USER"},
-        {"label": "PostgreSQL Password", "name": "POSTGRES_PASSWORD"},
-        {"label": "n8n Encryption Key", "name": "N8N_ENCRYPTION_KEY"},
-        {"default": "redis", "label": "Redis Image", "name": "REDIS_IMAGE"},
-        {"default": "8-alpine", "label": "Redis Tag", "name": "REDIS_TAG"},
-        {"default": "5", "label": "Worker Concurrency", "name": "N8N_WORKER_CONCURRENCY"},
-        {"default": "336", "label": "Execution Retention Hours", "name": "EXECUTIONS_DATA_MAX_AGE"},
-        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TIMEZONE"},
-        {"default": "proxy", "label": "Traefik Network", "name": "NETWORK"},
-        {"default": "letsencrypt", "label": "Traefik Certificate Resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+        {
+          "default": "n8n",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "n8n.joseagrc.com",
+          "label": "Public Domain",
+          "name": "N8N_DOMAIN"
+        },
+        {
+          "default": "docker.n8n.io/n8nio/n8n",
+          "label": "n8n Image",
+          "name": "N8N_IMAGE"
+        },
+        {
+          "default": "2.34.6",
+          "label": "n8n Tag",
+          "name": "N8N_TAG"
+        },
+        {
+          "default": "postgres",
+          "label": "PostgreSQL Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "18-alpine",
+          "label": "PostgreSQL Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "n8n",
+          "label": "PostgreSQL Database",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "n8n",
+          "label": "PostgreSQL Username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "PostgreSQL Password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "n8n Encryption Key",
+          "name": "N8N_ENCRYPTION_KEY"
+        },
+        {
+          "default": "redis",
+          "label": "Redis Image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "8-alpine",
+          "label": "Redis Tag",
+          "name": "REDIS_TAG"
+        },
+        {
+          "default": "5",
+          "label": "Worker Concurrency",
+          "name": "N8N_WORKER_CONCURRENCY"
+        },
+        {
+          "default": "336",
+          "label": "Execution Retention Hours",
+          "name": "EXECUTIONS_DATA_MAX_AGE"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "proxy",
+          "label": "Traefik Network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
       ],
       "volumes": [
-        {"container": "/var/lib/postgresql"},
-        {"container": "/data"},
-        {"container": "/home/node/.n8n"},
-        {"container": "/files"}
+        {
+          "container": "/var/lib/postgresql"
+        },
+        {
+          "container": "/data"
+        },
+        {
+          "container": "/home/node/.n8n"
+        },
+        {
+          "container": "/files"
+        }
       ]
     },
     {
@@ -6355,7 +6565,10 @@
       "title": "Mail Archive",
       "description": "MailArchiver with PostgreSQL, persistent keys and private database networking.",
       "note": "PostgreSQL and ASP.NET Data Protection keys use persistent named volumes. For an existing mailarchive deployment, keep COMPOSE_PROJECT_NAME=mailarchive to reuse mailarchive_postgres_data and mailarchive_data_protection_keys. Back up PostgreSQL before replacing an existing stack.",
-      "categories": ["Email", "Archive"],
+      "categories": [
+        "Email",
+        "Archive"
+      ],
       "platform": "linux",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
@@ -6432,8 +6645,12 @@
         }
       ],
       "volumes": [
-        {"container": "/var/lib/postgresql"},
-        {"container": "/app/DataProtection-Keys"}
+        {
+          "container": "/var/lib/postgresql"
+        },
+        {
+          "container": "/app/DataProtection-Keys"
+        }
       ]
     },
     {
@@ -6442,157 +6659,698 @@
       "title": "Activepieces",
       "description": "Production workflow automation with PostgreSQL, Redis and a dedicated worker.",
       "note": "Back up PostgreSQL together with AP_ENCRYPTION_KEY and AP_JWT_SECRET. Losing the encryption key makes stored connections unreadable.",
-      "categories": ["Automation", "Workflow", "AI"],
+      "categories": [
+        "Automation",
+        "Workflow",
+        "AI"
+      ],
       "platform": "linux",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/activepieces/docker-compose.yml"
       },
       "env": [
-        {"default": "activepieces", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
-        {"default": "activepieces.joseagrc.com", "label": "Public Domain", "name": "ACTIVEPIECES_DOMAIN"},
-        {"default": "ghcr.io/activepieces/activepieces", "label": "Activepieces Image", "name": "ACTIVEPIECES_IMAGE"},
-        {"default": "0.88.1", "label": "Activepieces Tag", "name": "ACTIVEPIECES_TAG"},
-        {"default": "pgvector/pgvector", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
-        {"default": "0.8.0-pg14", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
-        {"default": "activepieces", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
-        {"default": "activepieces", "label": "PostgreSQL Username", "name": "POSTGRES_USER"},
-        {"label": "PostgreSQL Password", "name": "POSTGRES_PASSWORD"},
-        {"label": "Activepieces Encryption Key", "name": "AP_ENCRYPTION_KEY"},
-        {"label": "Activepieces JWT Secret", "name": "AP_JWT_SECRET"},
-        {"label": "Activepieces API Key", "name": "AP_API_KEY"},
-        {"default": "redis", "label": "Redis Image", "name": "REDIS_IMAGE"},
-        {"default": "7.0.7", "label": "Redis Tag", "name": "REDIS_TAG"},
-        {"default": "UNSANDBOXED", "label": "Execution Mode", "name": "AP_EXECUTION_MODE"},
-        {"default": "1", "label": "Worker Concurrency", "name": "AP_WORKER_CONCURRENCY"},
-        {"default": "false", "label": "Telemetry Enabled", "name": "AP_TELEMETRY_ENABLED", "select": [{"text": "No", "value": "false", "default": true}, {"text": "Yes", "value": "true"}]},
-        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TIMEZONE"},
-        {"default": "proxy", "label": "Traefik Network", "name": "NETWORK"},
-        {"default": "letsencrypt", "label": "Traefik Certificate Resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+        {
+          "default": "activepieces",
+          "label": "Compose Project Name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "activepieces.joseagrc.com",
+          "label": "Public Domain",
+          "name": "ACTIVEPIECES_DOMAIN"
+        },
+        {
+          "default": "ghcr.io/activepieces/activepieces",
+          "label": "Activepieces Image",
+          "name": "ACTIVEPIECES_IMAGE"
+        },
+        {
+          "default": "0.88.1",
+          "label": "Activepieces Tag",
+          "name": "ACTIVEPIECES_TAG"
+        },
+        {
+          "default": "pgvector/pgvector",
+          "label": "PostgreSQL Image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "0.8.0-pg14",
+          "label": "PostgreSQL Tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "activepieces",
+          "label": "PostgreSQL Database",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "activepieces",
+          "label": "PostgreSQL Username",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "label": "PostgreSQL Password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "label": "Activepieces Encryption Key",
+          "name": "AP_ENCRYPTION_KEY"
+        },
+        {
+          "label": "Activepieces JWT Secret",
+          "name": "AP_JWT_SECRET"
+        },
+        {
+          "label": "Activepieces API Key",
+          "name": "AP_API_KEY"
+        },
+        {
+          "default": "redis",
+          "label": "Redis Image",
+          "name": "REDIS_IMAGE"
+        },
+        {
+          "default": "7.0.7",
+          "label": "Redis Tag",
+          "name": "REDIS_TAG"
+        },
+        {
+          "default": "UNSANDBOXED",
+          "label": "Execution Mode",
+          "name": "AP_EXECUTION_MODE"
+        },
+        {
+          "default": "1",
+          "label": "Worker Concurrency",
+          "name": "AP_WORKER_CONCURRENCY"
+        },
+        {
+          "default": "false",
+          "label": "Telemetry Enabled",
+          "name": "AP_TELEMETRY_ENABLED",
+          "select": [
+            {
+              "text": "No",
+              "value": "false",
+              "default": true
+            },
+            {
+              "text": "Yes",
+              "value": "true"
+            }
+          ]
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TIMEZONE"
+        },
+        {
+          "default": "proxy",
+          "label": "Traefik Network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
       ],
       "volumes": [
-        {"container": "/var/lib/postgresql/data"},
-        {"container": "/data"},
-        {"container": "/usr/src/app/cache"}
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/data"
+        },
+        {
+          "container": "/usr/src/app/cache"
+        }
       ]
     },
     {
       "id": 60,
       "type": 3,
-      "title": "Tryton Series 8.0",
-      "description": "Tryton 8.0 LTS production stack with PostgreSQL, migration, web, worker, cron, bus, backups and Traefik.",
-      "note": "All fixed Tryton 8.0 configuration options are exposed with documented defaults. Match Web Hostname, CORS and Bus URL to Public Domain. Use tag 8.0 for LibreOffice reports or 8.0-slim otherwise. Table mappings, materialized queries and WSGI middleware are dynamic sections and can be added as custom TRYTOND_* variables.",
-      "categories": ["ERP", "Business", "Tryton"],
+      "title": "Tryton 8.0 LTS (República Dominicana)",
+      "description": "Tryton 8.0 LTS con SAO, módulos oficiales y dominicanos, PostgreSQL aislado, tareas, cron y copias de seguridad automáticas. Integrado con Traefik mediante la red externa proxy y routers HTTPS separados para web y bus.",
+      "categories": [
+        "ERP",
+        "Business"
+      ],
       "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/tryton70/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton80/docker-compose.yml"
       },
       "env": [
-        {"default": "tryton", "label": "Compose Project Name", "name": "COMPOSE_PROJECT_NAME"},
-        {"default": "code.unpaismejor.org.do/tryton-do/tryton", "label": "Tryton Image", "name": "TRYTON_IMAGE"},
-        {"default": "8.0", "label": "Tryton Tag", "name": "TRYTON_TAG", "select": [{"text": "8.0 with LibreOffice", "value": "8.0", "default": true}, {"text": "8.0-slim without LibreOffice", "value": "8.0-slim"}]},
-        {"default": "postgres", "label": "PostgreSQL Image", "name": "POSTGRES_IMAGE"},
-        {"default": "17.11-alpine", "label": "PostgreSQL Tag", "name": "POSTGRES_TAG"},
-        {"default": "tryton", "label": "PostgreSQL Database", "name": "POSTGRES_DB"},
-        {"default": "tryton", "label": "PostgreSQL Username", "name": "POSTGRES_USER"},
-        {"label": "PostgreSQL Password", "name": "POSTGRES_PASSWORD"},
-        {"default": "admin@example.com", "label": "Tryton Administrator Email", "name": "TRYTOND_ADMIN_EMAIL"},
-        {"label": "Tryton Administrator Password", "name": "TRYTOND_ADMIN_PASSWORD"},
-        {"default": "tryton.example.com", "label": "Public Domain", "name": "URL_DOMAIN"},
-        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TIMEZONE"},
-        {"default": "tryton80-postgres-data", "label": "PostgreSQL Volume", "name": "POSTGRES_VOLUME"},
-        {"default": "tryton80-data", "label": "Tryton Data Volume", "name": "TRYTON_VOLUME"},
-        {"default": "tryton80-backups", "label": "Tryton Backup Volume", "name": "TRYTON_BACKUP_VOLUME"},
-        {"default": "proxy", "label": "Traefik Network", "name": "NETWORK"},
-        {"default": "letsencrypt", "label": "Traefik Certificate Resolver", "name": "TRAEFIK_CERT_RESOLVER"},
-        {"default": "2", "label": "Web Processes", "name": "WEB_CONCURRENCY"},
-        {"default": "2", "label": "Web Threads", "name": "GUNICORN_THREADS"},
-        {"default": "120", "label": "Web Timeout Seconds", "name": "GUNICORN_TIMEOUT"},
-        {"default": "2", "label": "Worker Processes", "name": "WORKER_PROCESSES"},
-        {"default": "1", "label": "Bus Processes", "name": "BUS_CONCURRENCY"},
-        {"default": "360", "label": "Bus Timeout Seconds", "name": "BUS_TIMEOUT"},
-        {"default": "30", "label": "Bus Graceful Timeout Seconds", "name": "BUS_GRACEFUL_TIMEOUT"},
-        {"default": "86400", "label": "Backup Interval Seconds", "name": "BACKUP_INTERVAL"},
-        {"default": "14", "label": "Backup Retention Days", "name": "BACKUP_RETENTION_DAYS"},
-        {"default": "0.0.0.0:8000", "label": "Web Listen", "name": "TRYTOND_WEB__LISTEN"},
-        {"default": "tryton.example.com", "label": "Web Hostname", "name": "TRYTOND_WEB__HOSTNAME"},
-        {"default": "/", "label": "Web Root Path", "name": "TRYTOND_WEB__ROOT_PATH"},
-        {"default": "/var/lib/trytond/www", "label": "Web Static Root", "name": "TRYTOND_WEB__ROOT"},
-        {"default": "1", "label": "Web Proxy Count", "name": "TRYTOND_WEB__NUM_PROXIES"},
-        {"default": "43200", "label": "Web Cache Timeout", "name": "TRYTOND_WEB__CACHE_TIMEOUT"},
-        {"default": "https://tryton.example.com", "label": "Web CORS Origins", "name": "TRYTOND_WEB__CORS"},
-        {"default": "", "label": "Web Avatar Base URL", "name": "TRYTOND_WEB__AVATAR_BASE"},
-        {"default": "604800", "label": "Web Avatar Cache Timeout", "name": "TRYTOND_WEB__AVATAR_TIMEOUT"},
-        {"default": "/var/lib/trytond/db", "label": "Database Filestore Path", "name": "TRYTOND_DATABASE__PATH"},
-        {"default": "True", "label": "Allow Database Listing", "name": "TRYTOND_DATABASE__LIST", "select": [{"text": "Yes", "value": "True", "default": true}, {"text": "No", "value": "False"}]},
-        {"default": "5", "label": "Database Retry Count", "name": "TRYTOND_DATABASE__RETRY"},
-        {"default": "1000", "label": "Database Subquery Threshold", "name": "TRYTOND_DATABASE__SUBQUERY_THRESHOLD"},
-        {"default": "es_419", "label": "Database Main Language", "name": "TRYTOND_DATABASE__LANGUAGE"},
-        {"default": "False", "label": "Store Avatars in Filestore", "name": "TRYTOND_DATABASE__AVATAR_FILESTORE", "select": [{"text": "No", "value": "False", "default": true}, {"text": "Yes", "value": "True"}]},
-        {"default": "", "label": "Database Avatar Prefix", "name": "TRYTOND_DATABASE__AVATAR_PREFIX"},
-        {"default": "template1", "label": "Database Default Name", "name": "TRYTOND_DATABASE__DEFAULT_NAME"},
-        {"default": "1800", "label": "Database Idle Timeout", "name": "TRYTOND_DATABASE__TIMEOUT"},
-        {"default": "1", "label": "Database Minimum Connections Per Process", "name": "TRYTOND_DATABASE__MINCONN"},
-        {"default": "64", "label": "Database Maximum Connections Per Process", "name": "TRYTOND_DATABASE__MAXCONN"},
-        {"default": "unaccent", "label": "Database Unaccent Function", "name": "TRYTOND_DATABASE__UNACCENT_FUNCTION"},
-        {"default": "similarity", "label": "Database Similarity Function", "name": "TRYTOND_DATABASE__SIMILARITY_FUNCTION"},
-        {"default": "2097152", "label": "Anonymous Request Maximum Bytes", "name": "TRYTOND_REQUEST__MAX_SIZE"},
-        {"default": "2147483648", "label": "Authenticated Request Maximum Bytes", "name": "TRYTOND_REQUEST__MAX_SIZE_AUTHENTICATED"},
-        {"default": "60", "label": "Request Timeout Seconds", "name": "TRYTOND_REQUEST__TIMEOUT"},
-        {"default": "0", "label": "Request Records Limit (0 Means Unlimited)", "name": "TRYTOND_REQUEST__RECORDS_LIMIT"},
-        {"default": "10", "label": "Transaction Cache Count", "name": "TRYTOND_CACHE__TRANSACTION"},
-        {"default": "200", "label": "Model Cache Size", "name": "TRYTOND_CACHE__MODEL"},
-        {"default": "2000", "label": "Record Cache Size", "name": "TRYTOND_CACHE__RECORD"},
-        {"default": "100", "label": "Field Cache Size", "name": "TRYTOND_CACHE__FIELD"},
-        {"default": "1024", "label": "Default Cache Size", "name": "TRYTOND_CACHE__DEFAULT"},
-        {"default": "10240", "label": "Message Cache Size", "name": "TRYTOND_CACHE__IR_MESSAGE"},
-        {"default": "10240", "label": "Translation Cache Size", "name": "TRYTOND_CACHE__IR_TRANSLATION"},
-        {"default": "300", "label": "Cache Clean Timeout", "name": "TRYTOND_CACHE__CLEAN_TIMEOUT"},
-        {"default": "60", "label": "Cache Select Timeout", "name": "TRYTOND_CACHE__SELECT_TIMEOUT"},
-        {"default": "86400", "label": "Cache Count Timeout", "name": "TRYTOND_CACHE__COUNT_TIMEOUT"},
-        {"default": "1000", "label": "Cache Count Clear Operations", "name": "TRYTOND_CACHE__COUNT_CLEAR"},
-        {"default": "100", "label": "Cron Log Entries", "name": "TRYTOND_CRON__LOG_SIZE"},
-        {"default": "True", "label": "Asynchronous Queue Worker", "name": "TRYTOND_QUEUE__WORKER", "select": [{"text": "Yes", "value": "True", "default": true}, {"text": "No", "value": "False"}]},
-        {"default": "30", "label": "Processed Queue Retention Days", "name": "TRYTOND_QUEUE__CLEAN_DAYS"},
-        {"default": "20", "label": "Queue Batch Size", "name": "TRYTOND_QUEUE__BATCH_SIZE"},
-        {"default": "90", "label": "Reported Error Retention Days", "name": "TRYTOND_ERROR__CLEAN_DAYS"},
-        {"default": "", "label": "Tryton SSL Private Key", "name": "TRYTOND_SSL__PRIVATEKEY"},
-        {"default": "true", "label": "HTTPS Delegated to Traefik", "name": "TRYTOND_SSL__CERTIFICATE", "select": [{"text": "Yes", "value": "true", "default": true}, {"text": "No", "value": ""}]},
-        {"default": "smtp://localhost:25", "label": "SMTP URI", "name": "TRYTOND_EMAIL__URI"},
-        {"default": "admin@example.com", "label": "Default Email From", "name": "TRYTOND_EMAIL__FROM"},
-        {"default": "5", "label": "SMTP Retry Count", "name": "TRYTOND_EMAIL__RETRY"},
-        {"default": "password", "label": "Session Authentications", "name": "TRYTOND_SESSION__AUTHENTICATIONS"},
-        {"default": "", "label": "Authentication Trusted IP Networks", "name": "TRYTOND_SESSION__AUTHENTICATION_IP_NETWORK"},
-        {"default": "", "label": "Session Cookie Domain", "name": "TRYTOND_SESSION__COOKIE_DOMAIN"},
-        {"default": "2592000", "label": "Session Maximum Age", "name": "TRYTOND_SESSION__MAX_AGE"},
-        {"default": "300", "label": "Fresh Session Timeout", "name": "TRYTOND_SESSION__TIMEOUT"},
-        {"default": "5", "label": "Maximum Authentication Attempts", "name": "TRYTOND_SESSION__MAX_ATTEMPT"},
-        {"default": "300", "label": "Maximum Network Authentication Attempts", "name": "TRYTOND_SESSION__MAX_ATTEMPT_IP_NETWORK"},
-        {"default": "32", "label": "IPv4 Authentication Prefix", "name": "TRYTOND_SESSION__IP_NETWORK_4"},
-        {"default": "56", "label": "IPv6 Authentication Prefix", "name": "TRYTOND_SESSION__IP_NETWORK_6"},
-        {"default": "8", "label": "Minimum Password Length", "name": "TRYTOND_PASSWORD__LENGTH"},
-        {"default": "", "label": "Forbidden Password File", "name": "TRYTOND_PASSWORD__FORBIDDEN"},
-        {"default": "86400", "label": "Password Reset Timeout", "name": "TRYTOND_PASSWORD__RESET_TIMEOUT"},
-        {"default": "True", "label": "Store Attachments in Filestore", "name": "TRYTOND_ATTACHMENT__FILESTORE", "select": [{"text": "Yes", "value": "True", "default": true}, {"text": "No", "value": "False"}]},
-        {"default": "", "label": "Attachment Filestore Prefix", "name": "TRYTOND_ATTACHMENT__STORE_PREFIX"},
-        {"default": "90", "label": "Unused Attachment Retention Days", "name": "TRYTOND_ATTACHMENT__RETENTION_DAYS"},
-        {"default": "True", "label": "Allow Bus Subscriptions", "name": "TRYTOND_BUS__ALLOW_SUBSCRIBE", "select": [{"text": "Yes", "value": "True", "default": true}, {"text": "No", "value": "False"}]},
-        {"default": "https://tryton.example.com/", "label": "Bus Public URL", "name": "TRYTOND_BUS__URL_HOST"},
-        {"default": "300", "label": "Bus Long Polling Timeout", "name": "TRYTOND_BUS__LONG_POLLING_TIMEOUT"},
-        {"default": "300", "label": "Bus Message Cache Timeout", "name": "TRYTOND_BUS__CACHE_TIMEOUT"},
-        {"default": "5", "label": "Bus Select Timeout", "name": "TRYTOND_BUS__SELECT_TIMEOUT"},
-        {"default": "soffice --headless --nolockcheck --nodefault --norestore --convert-to \"%(output_extension)s\" --outdir \"%(directory)s\" \"%(input_path)s\"", "label": "Report Conversion Command", "name": "TRYTOND_REPORT__CONVERT_COMMAND"},
-        {"default": "/tinymce/tinymce.js", "label": "TinyMCE Source", "name": "TRYTOND_HTML__SRC"},
-        {"default": "gpl", "label": "TinyMCE License Key", "name": "TRYTOND_HTML__LICENSE_KEY"},
-        {"default": "", "label": "TinyMCE Plugins", "name": "TRYTOND_HTML__PLUGINS"},
-        {"default": "[]", "label": "TinyMCE CSS JSON List", "name": "TRYTOND_HTML__CSS"},
-        {"default": "", "label": "TinyMCE Body Class", "name": "TRYTOND_HTML__CLASS"}
+        {
+          "name": "TRYTON_IMAGE",
+          "label": "Imagen de Tryton",
+          "default": "code.unpaismejor.org.do/tryton-do/tryton:8.0"
+        },
+        {
+          "name": "TRYTON_PLATFORM",
+          "label": "Plataforma de la imagen",
+          "default": "linux/amd64"
+        },
+        {
+          "name": "POSTGRES_IMAGE",
+          "label": "Imagen de PostgreSQL",
+          "default": "postgres:18.6-alpine"
+        },
+        {
+          "name": "DB_NAME",
+          "label": "Nombre exacto de la base de datos (obligatorio; no es el nombre del stack)"
+        },
+        {
+          "name": "DB_USER",
+          "label": "Usuario de la base de datos",
+          "default": "tryton"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "label": "Contraseña segura de PostgreSQL"
+        },
+        {
+          "name": "DB_LANGUAGE",
+          "label": "Idioma inicial de Tryton",
+          "default": "es_419"
+        },
+        {
+          "name": "ADMIN_EMAIL",
+          "label": "Correo del administrador"
+        },
+        {
+          "name": "ADMIN_PASSWORD",
+          "label": "Contraseña segura del administrador"
+        },
+        {
+          "name": "TRYTON_MODULES",
+          "label": "Módulos a activar (separados por espacios)",
+          "default": "company country currency party party_do currency_do"
+        },
+        {
+          "name": "IMPORT_COUNTRIES",
+          "label": "Importar países y subdivisiones ISO",
+          "default": "true"
+        },
+        {
+          "name": "IMPORT_CURRENCIES",
+          "label": "Importar monedas ISO",
+          "default": "true"
+        },
+        {
+          "name": "COMPANY_NAME",
+          "label": "Nombre de la empresa"
+        },
+        {
+          "name": "COMPANY_TAX_IDENTIFIER",
+          "label": "RNC de la empresa (sin guiones)"
+        },
+        {
+          "name": "COMPANY_COUNTRY_CODE",
+          "label": "Código ISO del país de la empresa",
+          "default": "DO"
+        },
+        {
+          "name": "COMPANY_CURRENCY_CODE",
+          "label": "Código ISO de la moneda de la empresa",
+          "default": "DOP"
+        },
+        {
+          "name": "COMPANY_TIMEZONE",
+          "label": "Zona horaria de la empresa",
+          "default": "America/Santo_Domingo"
+        },
+        {
+          "name": "COMPANY_STREET",
+          "label": "Dirección de la empresa (opcional)"
+        },
+        {
+          "name": "COMPANY_CITY",
+          "label": "Ciudad de la empresa (opcional)"
+        },
+        {
+          "name": "COMPANY_POSTAL_CODE",
+          "label": "Código postal de la empresa (opcional)"
+        },
+        {
+          "name": "TRYTON_HOST",
+          "label": "Dominio público (sin https:// ni / final)",
+          "default": "tryton.example.com"
+        },
+        {
+          "name": "PROXY_NETWORK",
+          "label": "Red Docker externa de Traefik",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_ENTRYPOINT",
+          "label": "Entrypoint HTTPS de Traefik",
+          "default": "websecure"
+        },
+        {
+          "name": "TRAEFIK_CERTRESOLVER",
+          "label": "Certificate resolver de Traefik",
+          "default": "letsencrypt"
+        },
+        {
+          "name": "TRYTON_NUM_PROXIES",
+          "label": "Número de proxies de confianza",
+          "default": "1"
+        },
+        {
+          "name": "TRYTON_DATABASE_MAXCONN",
+          "label": "Máximo de conexiones por proceso",
+          "default": "16"
+        },
+        {
+          "name": "TRYTON_DATABASE_MINCONN",
+          "label": "Mínimo de conexiones por proceso",
+          "default": "1"
+        },
+        {
+          "name": "TRYTOND_WEB__HOSTNAME",
+          "label": "Tryton web: URL pública (vacío usa TRYTON_HOST)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_WEB__CORS",
+          "label": "Tryton web: orígenes CORS (vacío usa TRYTON_HOST)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_WEB__NUM_PROXIES",
+          "label": "Tryton web: proxies (vacío usa TRYTON_NUM_PROXIES)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_DATABASE__LANGUAGE",
+          "label": "Tryton database: idioma (vacío usa DB_LANGUAGE)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_DATABASE__MINCONN",
+          "label": "Tryton database: conexiones mínimas (vacío usa compatibilidad)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_DATABASE__MAXCONN",
+          "label": "Tryton database: conexiones máximas (vacío usa compatibilidad)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_BUS__URL_HOST",
+          "label": "Tryton bus: URL pública (vacío usa TRYTON_HOST)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_WEB__LISTEN",
+          "label": "Tryton web: dirección interna de escucha",
+          "default": "0.0.0.0:8000"
+        },
+        {
+          "name": "TRYTOND_WEB__ROOT_PATH",
+          "label": "Tryton web: prefijo de montaje",
+          "default": "/"
+        },
+        {
+          "name": "TRYTOND_WEB__ROOT",
+          "label": "Tryton web: directorio de contenido",
+          "default": "/var/lib/trytond/www"
+        },
+        {
+          "name": "TRYTOND_WEB__CACHE_TIMEOUT",
+          "label": "Tryton web: caché HTTP (segundos)",
+          "default": "43200"
+        },
+        {
+          "name": "TRYTOND_WEB__AVATAR_BASE",
+          "label": "Tryton web: URL base de avatares (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_WEB__AVATAR_TIMEOUT",
+          "label": "Tryton web: caché de avatares (segundos)",
+          "default": "604800"
+        },
+        {
+          "name": "TRYTOND_DATABASE__PATH",
+          "label": "Tryton database: ruta del filestore",
+          "default": "/var/lib/trytond/db"
+        },
+        {
+          "name": "TRYTOND_DATABASE__LIST",
+          "label": "Tryton database: permitir listar bases (False recomendado)",
+          "default": "False"
+        },
+        {
+          "name": "TRYTOND_DATABASE__RETRY",
+          "label": "Tryton database: reintentos",
+          "default": "5"
+        },
+        {
+          "name": "TRYTOND_DATABASE__SUBQUERY_THRESHOLD",
+          "label": "Tryton database: umbral de subconsultas",
+          "default": "1000"
+        },
+        {
+          "name": "TRYTOND_DATABASE__AVATAR_FILESTORE",
+          "label": "Tryton database: avatares en filestore",
+          "default": "False"
+        },
+        {
+          "name": "TRYTOND_DATABASE__AVATAR_PREFIX",
+          "label": "Tryton database: prefijo de avatares (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_DATABASE__DEFAULT_NAME",
+          "label": "Tryton database: base predeterminada sin contexto",
+          "default": "template1"
+        },
+        {
+          "name": "TRYTOND_DATABASE__TIMEOUT",
+          "label": "Tryton database: cierre de conexiones inactivas (segundos)",
+          "default": "1800"
+        },
+        {
+          "name": "TRYTOND_DATABASE__DATABASE_MIXINS",
+          "label": "Tryton database: mixins de Database (uno por línea)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_DATABASE__TABLE_HANDLER_MIXINS",
+          "label": "Tryton database: mixins de TableHandler (uno por línea)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_DATABASE__UNACCENT_FUNCTION",
+          "label": "Tryton database: función unaccent",
+          "default": "unaccent"
+        },
+        {
+          "name": "TRYTOND_DATABASE__SIMILARITY_FUNCTION",
+          "label": "Tryton database: función similarity",
+          "default": "similarity"
+        },
+        {
+          "name": "TRYTOND_REQUEST__MAX_SIZE",
+          "label": "Tryton request: máximo no autenticado (bytes)",
+          "default": "2097152"
+        },
+        {
+          "name": "TRYTOND_REQUEST__MAX_SIZE_AUTHENTICATED",
+          "label": "Tryton request: máximo autenticado (bytes)",
+          "default": "2147483648"
+        },
+        {
+          "name": "TRYTOND_REQUEST__TIMEOUT",
+          "label": "Tryton request: timeout (segundos)",
+          "default": "60"
+        },
+        {
+          "name": "TRYTOND_REQUEST__RECORDS_LIMIT",
+          "label": "Tryton request: límite de registros (0 sin límite)",
+          "default": "0"
+        },
+        {
+          "name": "TRYTOND_CACHE__TRANSACTION",
+          "label": "Tryton cache: contextos por transacción",
+          "default": "10"
+        },
+        {
+          "name": "TRYTOND_CACHE__MODEL",
+          "label": "Tryton cache: modelos por transacción",
+          "default": "200"
+        },
+        {
+          "name": "TRYTOND_CACHE__RECORD",
+          "label": "Tryton cache: registros",
+          "default": "2000"
+        },
+        {
+          "name": "TRYTOND_CACHE__FIELD",
+          "label": "Tryton cache: campos eager",
+          "default": "100"
+        },
+        {
+          "name": "TRYTOND_CACHE__DEFAULT",
+          "label": "Tryton cache: tamaño predeterminado",
+          "default": "1024"
+        },
+        {
+          "name": "TRYTOND_CACHE__CLEAN_TIMEOUT",
+          "label": "Tryton cache: intervalo de limpieza (segundos)",
+          "default": "300"
+        },
+        {
+          "name": "TRYTOND_CACHE__SELECT_TIMEOUT",
+          "label": "Tryton cache: timeout de canales (segundos)",
+          "default": "60"
+        },
+        {
+          "name": "TRYTOND_CACHE__COUNT_TIMEOUT",
+          "label": "Tryton cache: duración de estimaciones (segundos)",
+          "default": "86400"
+        },
+        {
+          "name": "TRYTOND_CACHE__COUNT_CLEAR",
+          "label": "Tryton cache: operaciones antes de limpiar conteo",
+          "default": "1000"
+        },
+        {
+          "name": "TRYTOND_CRON__LOG_SIZE",
+          "label": "Tryton cron: entradas de log por tarea",
+          "default": "100"
+        },
+        {
+          "name": "TRYTOND_QUEUE__WORKER",
+          "label": "Tryton queue: procesamiento asíncrono",
+          "default": "True"
+        },
+        {
+          "name": "TRYTOND_QUEUE__CLEAN_DAYS",
+          "label": "Tryton queue: retención de tareas procesadas (días)",
+          "default": "30"
+        },
+        {
+          "name": "TRYTOND_QUEUE__BATCH_SIZE",
+          "label": "Tryton queue: tamaño de lote",
+          "default": "20"
+        },
+        {
+          "name": "TRYTOND_ERROR__CLEAN_DAYS",
+          "label": "Tryton error: retención de errores (días)",
+          "default": "90"
+        },
+        {
+          "name": "TRYTOND_SSL__PRIVATEKEY",
+          "label": "Tryton SSL: clave privada o true si delega SSL",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_SSL__CERTIFICATE",
+          "label": "Tryton SSL: certificado o true si delega SSL",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_EMAIL__URI",
+          "label": "Tryton email: URI SMTP",
+          "default": "smtp://localhost:25"
+        },
+        {
+          "name": "TRYTOND_EMAIL__FROM",
+          "label": "Tryton email: remitente predeterminado",
+          "default": "trytond"
+        },
+        {
+          "name": "TRYTOND_EMAIL__RETRY",
+          "label": "Tryton email: reintentos SMTP",
+          "default": "5"
+        },
+        {
+          "name": "TRYTOND_SESSION__AUTHENTICATIONS",
+          "label": "Tryton session: métodos de autenticación",
+          "default": "password"
+        },
+        {
+          "name": "TRYTOND_SESSION__AUTHENTICATION_IP_NETWORK",
+          "label": "Tryton session: redes conocidas (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_SESSION__COOKIE_DOMAIN",
+          "label": "Tryton session: dominio de cookie (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_SESSION__MAX_AGE",
+          "label": "Tryton session: vigencia máxima (segundos)",
+          "default": "2592000"
+        },
+        {
+          "name": "TRYTOND_SESSION__TIMEOUT",
+          "label": "Tryton session: frescura sin actividad (segundos)",
+          "default": "300"
+        },
+        {
+          "name": "TRYTOND_SESSION__MAX_ATTEMPT",
+          "label": "Tryton session: intentos máximos por usuario",
+          "default": "5"
+        },
+        {
+          "name": "TRYTOND_SESSION__MAX_ATTEMPT_IP_NETWORK",
+          "label": "Tryton session: intentos máximos por red",
+          "default": "300"
+        },
+        {
+          "name": "TRYTOND_SESSION__IP_NETWORK_4",
+          "label": "Tryton session: prefijo de red IPv4",
+          "default": "32"
+        },
+        {
+          "name": "TRYTOND_SESSION__IP_NETWORK_6",
+          "label": "Tryton session: prefijo de red IPv6",
+          "default": "56"
+        },
+        {
+          "name": "TRYTOND_PASSWORD__LENGTH",
+          "label": "Tryton password: longitud mínima",
+          "default": "8"
+        },
+        {
+          "name": "TRYTOND_PASSWORD__FORBIDDEN",
+          "label": "Tryton password: archivo de claves prohibidas (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_PASSWORD__RESET_TIMEOUT",
+          "label": "Tryton password: expiración del restablecimiento (segundos)",
+          "default": "86400"
+        },
+        {
+          "name": "TRYTOND_ATTACHMENT__FILESTORE",
+          "label": "Tryton attachment: almacenar en filestore",
+          "default": "True"
+        },
+        {
+          "name": "TRYTOND_ATTACHMENT__STORE_PREFIX",
+          "label": "Tryton attachment: prefijo del filestore (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_ATTACHMENT__RETENTION_DAYS",
+          "label": "Tryton attachment: retención de archivos sin uso (días)",
+          "default": "90"
+        },
+        {
+          "name": "TRYTOND_BUS__ALLOW_SUBSCRIBE",
+          "label": "Tryton bus: permitir suscripciones",
+          "default": "True"
+        },
+        {
+          "name": "TRYTOND_BUS__LONG_POLLING_TIMEOUT",
+          "label": "Tryton bus: long polling (segundos)",
+          "default": "300"
+        },
+        {
+          "name": "TRYTOND_BUS__CACHE_TIMEOUT",
+          "label": "Tryton bus: retención de mensajes (segundos)",
+          "default": "300"
+        },
+        {
+          "name": "TRYTOND_BUS__SELECT_TIMEOUT",
+          "label": "Tryton bus: timeout de escucha (segundos)",
+          "default": "5"
+        },
+        {
+          "name": "TRYTOND_REPORT__CONVERT_COMMAND",
+          "label": "Tryton report: comando de conversión",
+          "default": "soffice --headless --nolockcheck --nodefault --norestore --convert-to \"%(output_extension)s\" --outdir \"%(directory)s\" \"%(input_path)s\""
+        },
+        {
+          "name": "TRYTOND_HTML__SRC",
+          "label": "Tryton HTML: fuente de TinyMCE",
+          "default": "/tinymce/tinymce.js"
+        },
+        {
+          "name": "TRYTOND_HTML__LICENSE_KEY",
+          "label": "Tryton HTML: licencia de TinyMCE",
+          "default": "gpl"
+        },
+        {
+          "name": "TRYTOND_HTML__PLUGINS",
+          "label": "Tryton HTML: plugins de TinyMCE (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_HTML__CSS",
+          "label": "Tryton HTML: CSS adicional (opcional)",
+          "default": ""
+        },
+        {
+          "name": "TRYTOND_HTML__CLASS",
+          "label": "Tryton HTML: clase CSS (opcional)",
+          "default": ""
+        },
+        {
+          "name": "BUS_CONCURRENCY",
+          "label": "Procesos del servicio bus",
+          "default": "1"
+        },
+        {
+          "name": "BUS_TIMEOUT",
+          "label": "Timeout del servicio bus (segundos)",
+          "default": "360"
+        },
+        {
+          "name": "BUS_GRACEFUL_TIMEOUT",
+          "label": "Cierre gradual del servicio bus (segundos)",
+          "default": "30"
+        },
+        {
+          "name": "WEB_CONCURRENCY",
+          "label": "Procesos web",
+          "default": "2"
+        },
+        {
+          "name": "GUNICORN_THREADS",
+          "label": "Hilos por proceso web",
+          "default": "2"
+        },
+        {
+          "name": "WORKER_PROCESSES",
+          "label": "Procesos de tareas",
+          "default": "2"
+        },
+        {
+          "name": "BACKUP_INTERVAL",
+          "label": "Intervalo entre respaldos (segundos)",
+          "default": "86400"
+        },
+        {
+          "name": "BACKUP_RETENTION_DAYS",
+          "label": "Retención de respaldos (días)",
+          "default": "14"
+        }
+      ],
+      "ports": [
+        "8000/tcp"
       ],
       "volumes": [
-        {"container": "/var/lib/postgresql/data"},
-        {"container": "/var/lib/trytond/db"},
-        {"container": "/var/lib/trytond/backups"}
+        {
+          "container": "/var/lib/postgresql"
+        },
+        {
+          "container": "/var/lib/trytond/db"
+        },
+        {
+          "container": "/var/lib/trytond/backups"
+        }
       ]
     }
   ]
