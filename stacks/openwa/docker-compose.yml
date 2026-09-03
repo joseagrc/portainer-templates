@@ -1,0 +1,155 @@
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-16.15-alpine}
+    restart: unless-stopped
+    stop_grace_period: 60s
+    environment:
+      POSTGRES_DB: ${DATABASE_NAME:-openwa}
+      POSTGRES_USER: ${DATABASE_USERNAME:-openwa}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD is required}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS:---data-checksums}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U \"$${POSTGRES_USER}\" -d \"$${POSTGRES_DB}\""]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRES_CPU_LIMIT:-1.0}
+          memory: ${POSTGRES_MEMORY_LIMIT:-1G}
+    logging: &logging
+      driver: json-file
+      options:
+        max-size: ${LOG_MAX_SIZE:-10m}
+        max-file: ${LOG_MAX_FILE:-3}
+
+  redis:
+    image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-7.4-alpine}
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    volumes:
+      - redis_data:/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          cpus: ${REDIS_CPU_LIMIT:-0.5}
+          memory: ${REDIS_MEMORY_LIMIT:-512M}
+    logging: *logging
+
+  openwa:
+    image: ${OPENWA_IMAGE:-ghcr.io/rmyndharis/openwa}:${OPENWA_TAG:-0.23.3}
+    restart: unless-stopped
+    init: true
+    stop_grace_period: 60s
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 2785
+      BASE_URL: https://${URL}
+      DASHBOARD_URL: https://${URL}
+      SERVE_DASHBOARD: ${SERVE_DASHBOARD:-true}
+      ENABLE_SWAGGER: ${ENABLE_SWAGGER:-true}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      LOG_FORMAT: ${LOG_FORMAT:-json}
+      DATABASE_TYPE: postgres
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: ${DATABASE_NAME:-openwa}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-openwa}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:?DATABASE_PASSWORD is required}
+      POSTGRES_SCHEMA: ${POSTGRES_SCHEMA:-public}
+      DATABASE_SYNCHRONIZE: "false"
+      REDIS_ENABLED: "true"
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CACHE_ENABLED: ${CACHE_ENABLED:-true}
+      API_MASTER_KEY: ${API_MASTER_KEY:?API_MASTER_KEY is required}
+      API_KEY_PEPPER: ${API_KEY_PEPPER:?API_KEY_PEPPER is required}
+      ENGINE_TYPE: ${ENGINE_TYPE:-whatsapp-web.js}
+      AUTO_START_SESSIONS: ${AUTO_START_SESSIONS:-true}
+      SESSION_DATA_PATH: /app/data/sessions
+      PUPPETEER_HEADLESS: ${PUPPETEER_HEADLESS:-true}
+      PUPPETEER_ARGS: ${PUPPETEER_ARGS:---no-sandbox,--disable-setuid-sandbox,--disable-dev-shm-usage,--disable-gpu}
+      WWEBJS_WEB_VERSION: ${WWEBJS_WEB_VERSION:-auto}
+      WWEBJS_AUTH_TIMEOUT_MS: ${WWEBJS_AUTH_TIMEOUT_MS:-120000}
+      SEND_PACING_ENABLED: ${SEND_PACING_ENABLED:-true}
+      SEND_PACING_WARMUP_SCHEDULE: ${SEND_PACING_WARMUP_SCHEDULE:-20,40,80,160,320,640,1000}
+      SEND_PACING_COLD_DAILY_CAP: ${SEND_PACING_COLD_DAILY_CAP:-5,10,20,40,60,80,100}
+      SEND_PACING_BREAKER_THRESHOLD: ${SEND_PACING_BREAKER_THRESHOLD:-5}
+      SEND_PACING_BREAKER_COOLDOWN_MS: ${SEND_PACING_BREAKER_COOLDOWN_MS:-900000}
+      RATE_LIMIT_SHORT_TTL: ${RATE_LIMIT_SHORT_TTL:-1000}
+      RATE_LIMIT_SHORT_LIMIT: ${RATE_LIMIT_SHORT_LIMIT:-10}
+      RATE_LIMIT_MEDIUM_TTL: ${RATE_LIMIT_MEDIUM_TTL:-10000}
+      RATE_LIMIT_MEDIUM_LIMIT: ${RATE_LIMIT_MEDIUM_LIMIT:-50}
+      RATE_LIMIT_LONG_TTL: ${RATE_LIMIT_LONG_TTL:-60000}
+      RATE_LIMIT_LONG_LIMIT: ${RATE_LIMIT_LONG_LIMIT:-200}
+      BODY_SIZE_LIMIT: ${BODY_SIZE_LIMIT:-25mb}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://${URL}}
+      TRUSTED_PROXIES: ${TRUSTED_PROXIES:-172.18.0.0/16}
+      MCP_ENABLED: ${MCP_ENABLED:-false}
+      MCP_READONLY: ${MCP_READONLY:-true}
+      METRICS_TOKEN: ${METRICS_TOKEN:-}
+      VALIDATION_ERROR_DETAIL: ${VALIDATION_ERROR_DETAIL:-false}
+      SHUTDOWN_DELAY_MS: ${SHUTDOWN_DELAY_MS:-5000}
+      NODE_ID: ${NODE_ID:-openwa-primary}
+    volumes:
+      - openwa_data:/app/data
+    tmpfs:
+      - /tmp:size=1G,mode=1777
+    networks: [internal, proxy]
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:2785/api/health/ready',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 90s
+    security_opt: ["no-new-privileges:true"]
+    deploy:
+      resources:
+        limits:
+          cpus: ${OPENWA_CPU_LIMIT:-2.0}
+          memory: ${OPENWA_MEM_LIMIT:-3G}
+          pids: ${OPENWA_PIDS_LIMIT:-2048}
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}-http.rule=Host(`${URL}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}-http.entrypoints=web
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}-http.middlewares=${COMPOSE_PROJECT_NAME:-openwa}-https-redirect
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-openwa}-https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-openwa}-https-redirect.redirectscheme.permanent=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}.rule=Host(`${URL}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-openwa}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-openwa}.loadbalancer.server.port=2785
+    logging: *logging
+
+volumes:
+  openwa_data:
+  postgres_data:
+  redis_data:
+
+networks:
+  proxy:
+    name: ${NETWORK:-proxy}
+    external: true
+  internal:
+    internal: true

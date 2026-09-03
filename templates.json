@@ -2,6 +2,56 @@
   "version": "3",
   "templates": [
     {
+      "id": 62,
+      "type": 3,
+      "title": "OpenWA",
+      "description": "Gateway API de WhatsApp no oficial, multi-sesión y autohospedado, con dashboard, PostgreSQL y Redis.",
+      "note": "OpenWA utiliza clientes no oficiales de WhatsApp y existe riesgo de restricción o bloqueo del número. Use solamente un número dedicado y con usuarios que hayan dado consentimiento. Esta plantilla no expone el socket Docker, mantiene PostgreSQL y Redis privados y habilita límites antiabuso. Reemplace todas las claves antes de desplegar.",
+      "categories": ["Messaging", "API"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/whatsapp.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/openwa/docker-compose.yml"
+      },
+      "env": [
+        {"default": "openwa", "label": "Stack name", "name": "COMPOSE_PROJECT_NAME"},
+        {"default": "openwa.example.com", "label": "Public domain", "name": "URL"},
+        {"default": "ghcr.io/rmyndharis/openwa", "label": "OpenWA image", "name": "OPENWA_IMAGE"},
+        {"default": "0.23.3", "label": "OpenWA version", "name": "OPENWA_TAG"},
+        {"default": "replace-with-a-long-random-password", "label": "PostgreSQL password", "name": "DATABASE_PASSWORD"},
+        {"default": "openwa", "label": "Database name", "name": "DATABASE_NAME"},
+        {"default": "openwa", "label": "Database user", "name": "DATABASE_USERNAME"},
+        {"default": "replace-with-at-least-32-random-characters", "label": "OpenWA master API key", "name": "API_MASTER_KEY"},
+        {"default": "replace-with-64-hexadecimal-characters", "label": "API key hashing pepper", "name": "API_KEY_PEPPER"},
+        {"default": "whatsapp-web.js", "label": "Engine: whatsapp-web.js or baileys", "name": "ENGINE_TYPE"},
+        {"default": "true", "label": "Automatically start paired sessions", "name": "AUTO_START_SESSIONS"},
+        {"default": "true", "label": "Enable dashboard", "name": "SERVE_DASHBOARD"},
+        {"default": "true", "label": "Enable Swagger documentation", "name": "ENABLE_SWAGGER"},
+        {"default": "true", "label": "Enable send pacing", "name": "SEND_PACING_ENABLED"},
+        {"default": "20,40,80,160,320,640,1000", "label": "Daily warm-up send limits", "name": "SEND_PACING_WARMUP_SCHEDULE"},
+        {"default": "5,10,20,40,60,80,100", "label": "Daily cold-contact limits", "name": "SEND_PACING_COLD_DAILY_CAP"},
+        {"default": "false", "label": "Enable MCP endpoint", "name": "MCP_ENABLED"},
+        {"default": "true", "label": "Keep MCP read-only", "name": "MCP_READONLY"},
+        {"default": "2.0", "label": "OpenWA CPU limit", "name": "OPENWA_CPU_LIMIT"},
+        {"default": "3G", "label": "OpenWA memory limit", "name": "OPENWA_MEM_LIMIT"},
+        {"default": "2048", "label": "OpenWA PID limit", "name": "OPENWA_PIDS_LIMIT"},
+        {"default": "1.0", "label": "PostgreSQL CPU limit", "name": "POSTGRES_CPU_LIMIT"},
+        {"default": "1G", "label": "PostgreSQL memory limit", "name": "POSTGRES_MEMORY_LIMIT"},
+        {"default": "0.5", "label": "Redis CPU limit", "name": "REDIS_CPU_LIMIT"},
+        {"default": "512M", "label": "Redis memory limit", "name": "REDIS_MEMORY_LIMIT"},
+        {"default": "10m", "label": "Maximum log size", "name": "LOG_MAX_SIZE"},
+        {"default": "3", "label": "Retained log files", "name": "LOG_MAX_FILE"},
+        {"default": "proxy", "label": "External Traefik network", "name": "NETWORK"},
+        {"default": "letsencrypt", "label": "Traefik certificate resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+      ],
+      "volumes": [
+        {"container": "/app/data"},
+        {"container": "/var/lib/postgresql/data"},
+        {"container": "/data"}
+      ]
+    },
+    {
       "id": 61,
       "type": 3,
       "title": "DGII e-CF Directory",
