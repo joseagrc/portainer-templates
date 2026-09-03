@@ -42,7 +42,7 @@ services:
     environment:
       NODE_ENV: production
       PORT: 4080
-      DATABASE_URL: postgresql://${POSTGRES_USER:-dgii}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-dgii_directory}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-dgii}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-dgii_directory}}
       API_KEY: ${API_KEY:?API_KEY is required}
       DGII_SOURCE: ${DGII_SOURCE:-txt}
       SYNC_CRON: "${SYNC_CRON:-0 */12 * * *}"
