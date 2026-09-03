@@ -2,6 +2,58 @@
   "version": "3",
   "templates": [
     {
+      "id": 61,
+      "type": 3,
+      "title": "DGII e-CF Directory",
+      "description": "API pública y frontend responsive para consultar el padrón tributario y el Directorio Electrónico e-CF de la DGII.",
+      "note": "Despliega la imagen oficial del proyecto con PostgreSQL privado, sincronización del padrón cada 12 horas y HTTPS mediante Traefik. Antes de desplegar reemplace POSTGRES_PASSWORD, API_KEY y DGII_CREDENTIALS_MASTER_KEY por valores aleatorios. La clave maestra debe conservarse para poder descifrar posteriormente el certificado DGII configurado desde /admin.",
+      "categories": ["API", "Business"],
+      "platform": "linux",
+      "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postgresql.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/dgii-ecf-directory/docker-compose.yml"
+      },
+      "env": [
+        {"default": "dgii-ecf-directory", "label": "Stack name", "name": "COMPOSE_PROJECT_NAME"},
+        {"default": "directory.example.com", "label": "Public domain", "name": "URL"},
+        {"default": "code.unpaismejor.org.do/unpaismejor/dgii-ecf-directory", "label": "Directory image", "name": "DIRECTORY_IMAGE"},
+        {"default": "1.6.1", "label": "Directory image tag", "name": "DIRECTORY_TAG"},
+        {"default": "postgres", "label": "PostgreSQL image", "name": "POSTGRES_IMAGE"},
+        {"default": "16.15-alpine", "label": "PostgreSQL tag", "name": "POSTGRES_TAG"},
+        {"default": "dgii_directory", "label": "Database name", "name": "POSTGRES_DB"},
+        {"default": "dgii", "label": "Database user", "name": "POSTGRES_USER"},
+        {"default": "replace-with-a-long-random-password", "label": "Database password", "name": "POSTGRES_PASSWORD"},
+        {"default": "--data-checksums", "label": "PostgreSQL init arguments", "name": "POSTGRES_INITDB_ARGS"},
+        {"default": "replace-with-at-least-32-random-characters", "label": "Administrative API key", "name": "API_KEY"},
+        {"default": "replace-with-64-hexadecimal-characters", "label": "DGII credentials master key (64 hexadecimal characters)", "name": "DGII_CREDENTIALS_MASTER_KEY"},
+        {"default": "txt", "label": "DGII source format: txt or csv", "name": "DGII_SOURCE"},
+        {"default": "0 */12 * * *", "label": "Registry synchronization cron", "name": "SYNC_CRON"},
+        {"default": "true", "label": "Synchronize registry at startup", "name": "SYNC_ON_STARTUP"},
+        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TZ"},
+        {"default": "true", "label": "Enable electronic directory lookups", "name": "DGII_ELECTRONIC_DIRECTORY_ENABLED"},
+        {"default": "43200", "label": "Directory cache TTL in seconds", "name": "DIRECTORY_CACHE_TTL_SECONDS"},
+        {"default": "10000", "label": "DGII request timeout in milliseconds", "name": "DIRECTORY_TIMEOUT_MS"},
+        {"default": "", "label": "Allowed CORS origins, comma separated", "name": "CORS_ORIGINS"},
+        {"default": "1", "label": "Trusted proxy hops", "name": "TRUST_PROXY"},
+        {"default": "25", "label": "Maximum registry age for readiness, hours", "name": "MAX_IMPORT_AGE_HOURS"},
+        {"default": "2097152", "label": "Maximum DGII certificate size", "name": "DGII_CERTIFICATE_MAX_BYTES"},
+        {"default": "104857600", "label": "Maximum source download size", "name": "MAX_DOWNLOAD_BYTES"},
+        {"default": "314572800", "label": "Maximum uncompressed source size", "name": "MAX_UNCOMPRESSED_BYTES"},
+        {"default": "1.0", "label": "API CPU limit", "name": "API_CPU_LIMIT"},
+        {"default": "1G", "label": "API memory limit", "name": "API_MEMORY_LIMIT"},
+        {"default": "1.0", "label": "PostgreSQL CPU limit", "name": "POSTGRES_CPU_LIMIT"},
+        {"default": "1G", "label": "PostgreSQL memory limit", "name": "POSTGRES_MEMORY_LIMIT"},
+        {"default": "10m", "label": "Maximum log file size", "name": "LOG_MAX_SIZE"},
+        {"default": "3", "label": "Retained log files", "name": "LOG_MAX_FILE"},
+        {"default": "proxy", "label": "External Traefik network", "name": "NETWORK"},
+        {"default": "letsencrypt", "label": "Traefik certificate resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+      ],
+      "volumes": [
+        {"container": "/var/lib/postgresql/data"}
+      ]
+    },
+    {
       "id": 59,
       "type": 3,
       "title": "Honrapp (Restore)",
