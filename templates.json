@@ -70,7 +70,7 @@
         {"default": "dgii-ecf-directory", "label": "Stack name", "name": "COMPOSE_PROJECT_NAME"},
         {"default": "directory.example.com", "label": "Public domain", "name": "URL"},
         {"default": "code.unpaismejor.org.do/unpaismejor/dgii-ecf-directory", "label": "Directory image", "name": "DIRECTORY_IMAGE"},
-        {"default": "1.6.1", "label": "Directory image tag", "name": "DIRECTORY_TAG"},
+        {"default": "1.6.2", "label": "Directory image tag", "name": "DIRECTORY_TAG"},
         {"default": "postgres", "label": "PostgreSQL image", "name": "POSTGRES_IMAGE"},
         {"default": "16.15-alpine", "label": "PostgreSQL tag", "name": "POSTGRES_TAG"},
         {"default": "dgii_directory", "label": "Database name", "name": "POSTGRES_DB"},
