@@ -7457,6 +7457,94 @@
           "container": "/var/lib/trytond/backups"
         }
       ]
+    },
+    {
+      "id": 63,
+      "type": 3,
+      "title": "GNU Health Website",
+      "description": "GNU Health website, published by GNU Health Dominican Republic.",
+      "note": "Deploys GNU Health Website version 0.0.3 behind an existing Traefik proxy.",
+      "categories": [
+        "Web"
+      ],
+      "platform": "linux",
+      "logo": "https://gitea.joseagrc.com/gnuhealth-do/website/raw/branch/0.0.3/static/images/logo.webp",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/gnuhealth-website/docker-compose.yml"
+      },
+      "env": [
+        {
+          "default": "gitea.joseagrc.com/gnuhealth-do/website",
+          "label": "Website Image",
+          "name": "GNUHEALTH_WEBSITE_IMAGE"
+        },
+        {
+          "default": "0.0.3",
+          "label": "Website Tag",
+          "name": "GNUHEALTH_WEBSITE_TAG"
+        },
+        {
+          "default": "3600",
+          "label": "Flask Cache Default Timeout",
+          "name": "FLASK_CACHE_DEFAULT_TIMEOUT"
+        },
+        {
+          "default": "false",
+          "label": "Flask CDN Debug",
+          "name": "FLASK_CDN_DEBUG"
+        },
+        {
+          "default": "Dominican Republic",
+          "label": "Flask Brand Region Text in English",
+          "name": "FLASK_BRAND_REGION_TEXT_EN"
+        },
+        {
+          "default": "República Dominicana",
+          "label": "Flask Brand Region Text in Spanish",
+          "name": "FLASK_BRAND_REGION_TEXT_ES"
+        },
+        {
+          "default": "2",
+          "label": "Gunicorn Workers",
+          "name": "GUNICORN_WORKERS"
+        },
+        {
+          "default": "4",
+          "label": "Gunicorn Threads",
+          "name": "GUNICORN_THREADS"
+        },
+        {
+          "default": "60",
+          "label": "Gunicorn Timeout",
+          "name": "GUNICORN_TIMEOUT"
+        },
+        {
+          "default": "memcached",
+          "label": "Memcached Image",
+          "name": "MEMCACHED_IMAGE"
+        },
+        {
+          "default": "1.6-alpine",
+          "label": "Memcached Tag",
+          "name": "MEMCACHED_TAG"
+        },
+        {
+          "default": "gnuhealth.example.org",
+          "label": "URL Domain",
+          "name": "URL_HOST"
+        },
+        {
+          "default": "proxy",
+          "label": "Network Name",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik Certificate Resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
+      ]
     }
   ]
 }

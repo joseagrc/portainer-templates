@@ -1,0 +1,61 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
+services:
+  website:
+    image: ${GNUHEALTH_WEBSITE_IMAGE}:${GNUHEALTH_WEBSITE_TAG}
+    environment:
+      FLASK_MEMCACHED: memcached:11211
+      FLASK_CACHE_DEFAULT_TIMEOUT: ${FLASK_CACHE_DEFAULT_TIMEOUT}
+      FLASK_CDN_DEBUG: ${FLASK_CDN_DEBUG}
+      FLASK_SERVER_NAME: ${URL_HOST}
+      FLASK_BRAND_REGION_TEXT_EN: ${FLASK_BRAND_REGION_TEXT_EN}
+      FLASK_BRAND_REGION_TEXT_ES: ${FLASK_BRAND_REGION_TEXT_ES}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS}
+      GUNICORN_THREADS: ${GUNICORN_THREADS}
+      GUNICORN_TIMEOUT: ${GUNICORN_TIMEOUT}
+    depends_on:
+      memcached:
+        condition: service_healthy
+    restart: unless-stopped
+    logging: *default-logging
+    networks: [proxy, internal]
+    healthcheck:
+      test: ["CMD", "/app/check-running"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL_HOST}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=5000"
+
+  memcached:
+    image: ${MEMCACHED_IMAGE}:${MEMCACHED_TAG}
+    command: ["memcached", "-m", "64", "-o", "modern"]
+    restart: unless-stopped
+    logging: *default-logging
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "printf 'version\\r\\n' | nc -w 2 127.0.0.1 11211 | grep -q VERSION"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  proxy:
+    name: ${NETWORK}
+    external: true
+  internal:
+    name: ${COMPOSE_PROJECT_NAME}_internal
+    internal: true
