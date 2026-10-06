@@ -2,7 +2,7 @@ version: '3'
 
 services:
   nextcloud-aio-mastercontainer:
-    container_name: nextcloud-aio-mastercontainer
+    container_name: ${COMPOSE_PROJECT_NAME:-nextcloudaio}-mastercontainer
     image: ${NEXTCLOUD_IMAGE}:${NEXTCLOUD_TAG}
     hostname: ${NEXTCLOUD_URL}
     init: true 
@@ -39,7 +39,7 @@ services:
 
 volumes:
   nextcloud_aio_mastercontainer:
-    name: nextcloud_aio_mastercontainer
+    name: ${COMPOSE_PROJECT_NAME:-nextcloudaio}_aio_mastercontainer
 
 networks:
   default:

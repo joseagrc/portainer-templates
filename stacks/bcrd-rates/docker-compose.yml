@@ -42,8 +42,6 @@ services:
       SCHEDULER_INTERVAL_DAYS: ${SCHEDULER_INTERVAL_DAYS}
       REQUEST_TIMEOUT_SECONDS: ${REQUEST_TIMEOUT_SECONDS}
       LOG_LEVEL: ${LOG_LEVEL}
-    ports:
-      - "8000:8000"
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:8000/health >/dev/null || curl -fsS http://127.0.0.1:8000/docs >/dev/null"]
       interval: 60s
@@ -54,6 +52,7 @@ services:
       start_period: 15m
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"

@@ -12,6 +12,7 @@ services:
     labels:
       # Habilita Traefik para TCP (no HTTP)
       - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
       # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
       - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-pg.rule=HostSNI(`pg.${URL}`) || HostSNI(`www.pg.${URL}`)"  # Ej: pg-instancia1.tudominio.com
       - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-pg.entrypoints=postgres"  # Entrypoint TCP definido en Traefik
@@ -32,6 +33,7 @@ services:
       DGII_RNC_ZIP_URL: ${DGII_RNC_ZIP_URL}
     labels:
       - "traefik.enable=${RNC_API_TRAEFIK_ENABLE:-true}"
+      - "traefik.docker.network=${NETWORK}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"

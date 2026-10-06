@@ -15,6 +15,7 @@ services:
       AWS_API_GATEWAY_URL: ${AWS_API_GATEWAY_URL}
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"

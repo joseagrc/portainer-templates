@@ -89,8 +89,8 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.entrypoints=web"
       
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.middlewares=redirect-to-https@docker"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress.middlewares=${COMPOSE_PROJECT_NAME}-redirect-to-https@docker"
       
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.rule=Host(`${SITE_URL}`) || Host(`www.${SITE_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-wordpress-https.entrypoints=websecure"

@@ -84,10 +84,11 @@ services:
       start_period: 120s
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tryton-do-weblate.rule=Host(`${WEBLATE_SITE_DOMAIN}`)"
-      - "traefik.http.routers.tryton-do-weblate.entrypoints=websecure"
-      - "traefik.http.routers.tryton-do-weblate.tls.certresolver=letsencrypt"
-      - "traefik.http.services.tryton-do-weblate.loadbalancer.server.port=8080"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-weblate}.rule=Host(`${WEBLATE_SITE_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-weblate}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-weblate}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME:-weblate}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME:-weblate}.loadbalancer.server.port=8080"
       - "traefik.docker.network=${NETWORK}"
     security_opt:
       - no-new-privileges:true

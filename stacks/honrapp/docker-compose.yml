@@ -66,15 +66,15 @@ services:
     labels:
       traefik.enable: "true"
       traefik.docker.network: ${NETWORK:-proxy}
-      traefik.http.middlewares.honrapp-https-redirect.redirectscheme.scheme: https
-      traefik.http.routers.honrapp-http.entrypoints: web
-      traefik.http.routers.honrapp-http.middlewares: honrapp-https-redirect
-      traefik.http.routers.honrapp-http.rule: Host(`${URL_DOMAIN:-honrapp.joseagrc.com}`)
-      traefik.http.routers.honrapp.entrypoints: websecure
-      traefik.http.routers.honrapp.rule: Host(`${URL_DOMAIN:-honrapp.joseagrc.com}`)
-      traefik.http.routers.honrapp.tls: "true"
-      traefik.http.routers.honrapp.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
-      traefik.http.services.honrapp.loadbalancer.server.port: "8080"
+      traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-honrapp}-https-redirect.redirectscheme.scheme: https
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}-http.entrypoints: web
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}-http.middlewares: ${COMPOSE_PROJECT_NAME:-honrapp}-https-redirect
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}-http.rule: Host(`${URL_DOMAIN:-honrapp.joseagrc.com}`)
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}.entrypoints: websecure
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}.rule: Host(`${URL_DOMAIN:-honrapp.joseagrc.com}`)
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}.tls: "true"
+      traefik.http.routers.${COMPOSE_PROJECT_NAME:-honrapp}.tls.certresolver: ${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      traefik.http.services.${COMPOSE_PROJECT_NAME:-honrapp}.loadbalancer.server.port: "8080"
     networks:
       - database
       - proxy

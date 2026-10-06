@@ -2,7 +2,7 @@ version: '3'
 
 services:
   postgres:
-    container_name: ${POSTGRES_CONTAINER_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-postgres
     hostname: 0.0.0.0
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     restart: unless-stopped
@@ -17,7 +17,7 @@ services:
       PG_PORT: ${POSTGRES_PORT}
       
   tryton:
-    container_name: ${TRYTON_CONTAINER_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-app
     image: ${TRYTON_IMAGE}:${TRYTON_TAG}
     restart: unless-stopped
     depends_on:
@@ -36,7 +36,7 @@ services:
       LETSENCRYPT_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
 
   tryton-cron:
-    container_name: ${TRYTON_CONTAINER_NAME}-cron
+    container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-cron
     image: ${TRYTON_IMAGE}:${TRYTON_TAG}
     command: trytond-cron -d ${POSTGRES_DB}
     volumes:
@@ -46,7 +46,7 @@ services:
     restart: always
 
   tryton-update:
-    container_name: ${TRYTON_CONTAINER_NAME}-update
+    container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-update
     image: ${TRYTON_IMAGE}:${TRYTON_TAG}
     command: sh -c "trytond-admin -d ${POSTGRES_DB} --all ---activate-dependencies -v && tail -f /dev/null"
     volumes:
@@ -56,7 +56,7 @@ services:
     restart: "no"
 
   mailhog:
-    container_name: ${TRYTON_CONTAINER_NAME}-mailhog
+    container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-mailhog
     image: mailhog/mailhog:latest
     restart: always
     ports:

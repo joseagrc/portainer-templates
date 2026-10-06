@@ -40,6 +40,7 @@ services:
         hard: 65536
     labels:
       - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${ODOO_URL}`) || Host(`www.${ODOO_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
