@@ -45,6 +45,10 @@ services:
       - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.tls=true
       - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
       - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.service=api@internal
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.middlewares=${COMPOSE_PROJECT_NAME:-traefik}-dashboard-auth
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-traefik}-dashboard-auth.basicauth.users=${TRAEFIK_DASHBOARD_BASIC_AUTH_USERS:?TRAEFIK_DASHBOARD_BASIC_AUTH_USERS is required}
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-traefik}-dashboard-auth.basicauth.realm=${TRAEFIK_DASHBOARD_BASIC_AUTH_REALM:-Traefik}
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-traefik}-dashboard-auth.basicauth.removeheader=true
 
 volumes:
   traefik-letsencrypt:

@@ -68,6 +68,16 @@
           "default": "true"
         },
         {
+          "name": "TRAEFIK_DASHBOARD_BASIC_AUTH_USERS",
+          "label": "Dashboard Basic Auth users (htpasswd format, escape $ as $$)",
+          "description": "Required. Example: admin:$$2y$$05$$... Generate with: docker run --rm httpd:2.4-alpine htpasswd -nbB admin 'your-password' | sed -e 's/\\$/$$/g'"
+        },
+        {
+          "name": "TRAEFIK_DASHBOARD_BASIC_AUTH_REALM",
+          "label": "Dashboard Basic Auth realm",
+          "default": "Traefik"
+        },
+        {
           "name": "TRAEFIK_LOG_LEVEL",
           "label": "Log level",
           "default": "INFO"
