@@ -7983,13 +7983,14 @@
     {
       "id": 64,
       "type": 3,
-      "title": "eCF Gateway Production",
-      "description": "Production-ready e-CF gateway with PostgreSQL, Redis Streams, RustFS/S3, OpenBao Transit, workers and Traefik routing.",
-      "note": "Uses OpenBao Transit, AppRole and TLS. Create/provide OpenBao TLS files and initialize/unseal OpenBao operationally before production traffic. No host ports are published; ingress is through Traefik on the external proxy network.",
+      "title": "eCF Gateway Production - Traefik",
+      "description": "Production-ready e-CF gateway enabled for Traefik: PostgreSQL, Redis Streams, RustFS/S3, OpenBao Transit, workers and HTTPS routing through an external Traefik network.",
+      "note": "Traefik-enabled template. Example: set URL=ecf.example.com, NETWORK=proxy and TRAEFIK_CERT_RESOLVER=letsencrypt; the stack publishes no host ports and Traefik routes to the internal API port 8000. Uses OpenBao Transit, AppRole and TLS. Create/provide OpenBao TLS files and initialize/unseal OpenBao operationally before production traffic.",
       "categories": [
         "API",
         "Finance",
-        "DGII"
+        "DGII",
+        "Traefik"
       ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf/logo/logo.png",
@@ -8005,17 +8006,17 @@
         },
         {
           "name": "URL",
-          "label": "Public domain",
+          "label": "Traefik public domain, example: ecf.example.com",
           "default": "ecf.example.com"
         },
         {
           "name": "NETWORK",
-          "label": "External Traefik network",
+          "label": "External Traefik Docker network, example: proxy",
           "default": "proxy"
         },
         {
           "name": "TRAEFIK_CERT_RESOLVER",
-          "label": "Traefik certificate resolver",
+          "label": "Traefik TLS certificate resolver, example: letsencrypt",
           "default": "letsencrypt"
         },
         {
@@ -8179,14 +8180,15 @@
     {
       "id": 65,
       "type": 3,
-      "title": "eCF Gateway Development",
-      "description": "Development/demo e-CF gateway stack with PostgreSQL, Redis, RustFS and OpenBao dev mode. Providers default to record-only.",
-      "note": "For development only. OpenBao runs in dev mode and must not be used for testecf, certecf or ecf production environments.",
+      "title": "eCF Gateway Development - Traefik",
+      "description": "Development/demo e-CF gateway enabled for Traefik with PostgreSQL, Redis, RustFS and OpenBao dev mode. Providers default to record-only.",
+      "note": "Traefik-enabled development template. Example: set URL=ecf-dev.example.com, NETWORK=proxy and TRAEFIK_CERT_RESOLVER=letsencrypt; the stack publishes no host ports and Traefik routes to the internal API port 8000. OpenBao runs in dev mode and must not be used for testecf, certecf or ecf production environments.",
       "categories": [
         "API",
         "Finance",
         "DGII",
-        "Development"
+        "Development",
+        "Traefik"
       ],
       "platform": "linux",
       "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf/logo/logo.png",
@@ -8202,17 +8204,17 @@
         },
         {
           "name": "URL",
-          "label": "Public domain",
+          "label": "Traefik public domain, example: ecf-dev.example.com",
           "default": "ecf-dev.example.com"
         },
         {
           "name": "NETWORK",
-          "label": "External Traefik network",
+          "label": "External Traefik Docker network, example: proxy",
           "default": "proxy"
         },
         {
           "name": "TRAEFIK_CERT_RESOLVER",
-          "label": "Traefik certificate resolver",
+          "label": "Traefik TLS certificate resolver, example: letsencrypt",
           "default": "letsencrypt"
         },
         {

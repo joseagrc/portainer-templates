@@ -53,6 +53,8 @@ This repository includes two eCF Gateway stack templates:
 - **eCF Gateway Development**: demo/local-ready stack with PostgreSQL, Redis, RustFS, OpenBao dev mode, API, worker, migrations, and Traefik labels. Use it for labs, demos, and development environments.
 - **eCF Gateway Production**: production-oriented stack with PostgreSQL, Redis, RustFS, OpenBao server mode, migrations, API, worker, Traefik labels, hardened containers, internal networking, and no public host ports. Before deploying it, provide real secrets, TLS material for OpenBao, and initialize/unseal OpenBao operationally.
 
+Both templates are Traefik-enabled. Example values: `URL=ecf.example.com`, `NETWORK=proxy`, and `TRAEFIK_CERT_RESOLVER=letsencrypt`. The API is routed by Traefik to the internal container port `8000`; the stack does not need public host ports.
+
 <details>
 <summary>Show me...</summary>
 
