@@ -579,6 +579,11 @@
           "default": "proxy",
           "label": "Network Name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -644,6 +649,11 @@
           "default": "proxy",
           "label": "Network Name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -915,7 +925,7 @@
           "name": "CRON_UPDATE_CHECKER_SCHEDULE"
         },
         {
-          "default": "true",
+          "default": "false",
           "label": "Mailer Enable",
           "name": "GITEA__MAILER__ENABLED"
         },
@@ -948,6 +958,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -1088,6 +1103,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -1282,6 +1302,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -2036,6 +2061,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -2427,6 +2457,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -2504,6 +2539,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -2581,6 +2621,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -2880,6 +2925,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -2983,6 +3033,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -4018,10 +4073,10 @@
         "API"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf-stack/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
-        "stackfile": "stacks/dgii-ecf-stack/docker-compose.yml"
+        "stackfile": "stacks/dgii-ecf/docker-compose.yml"
       },
       "env": [
         {
@@ -5654,6 +5709,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -6010,6 +6070,11 @@
           "default": "proxy",
           "label": "Network name",
           "name": "NETWORK"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
         }
       ]
     },
@@ -7912,6 +7977,214 @@
           "default": "letsencrypt",
           "label": "Traefik Certificate Resolver",
           "name": "TRAEFIK_CERT_RESOLVER"
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "type": 3,
+      "title": "eCF Gateway",
+      "description": "API gateway para facturacion electronica dominicana e-CF con PostgreSQL, Redis Streams, RustFS/S3, workers y publicacion por Traefik.",
+      "note": "Despliega una instancia autocontenida sin publicar puertos de host. Requiere una red externa de Traefik, por defecto proxy. La version por defecto de la imagen es 1.0.3. Para produccion real use secretos fuertes, KMS/Vault y no deje dev-fernet.",
+      "categories": [
+        "API",
+        "Finance",
+        "DGII"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/ecf-gateway/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Stack/container name",
+          "default": "ecf-gateway"
+        },
+        {
+          "name": "URL",
+          "label": "Public domain",
+          "default": "ecf.example.com"
+        },
+        {
+          "name": "NETWORK",
+          "label": "External Traefik network",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
+        },
+        {
+          "name": "ECF_GATEWAY_IMAGE",
+          "label": "eCF Gateway image",
+          "default": "gitea.joseagrc.com/joseagrc/ecf-gateway"
+        },
+        {
+          "name": "ECF_GATEWAY_TAG",
+          "label": "eCF Gateway version",
+          "default": "1.0.3"
+        },
+        {
+          "name": "ECF_GATEWAY_ENVIRONMENT",
+          "label": "Runtime environment",
+          "default": "development"
+        },
+        {
+          "name": "ECF_GATEWAY_SECRETS_PROFILE",
+          "label": "Secrets profile",
+          "default": "dev"
+        },
+        {
+          "name": "ECF_GATEWAY_SECRETS_ALLOW_DEFAULT_VALUES",
+          "label": "Allow default secret values",
+          "default": "true"
+        },
+        {
+          "name": "ECF_GATEWAY_AUTH_JWT_SECRET",
+          "label": "JWT secret",
+          "default": "replace-with-at-least-32-random-characters"
+        },
+        {
+          "name": "ECF_GATEWAY_MASTER_KEY",
+          "label": "Dev Fernet master key (change it)",
+          "default": "nP7nU9LQaVWL7LMGCB6I-xiOhRz57EuKAzyouImEv_E="
+        },
+        {
+          "name": "ECF_GATEWAY_KEY_PROVIDER",
+          "label": "Key provider: dev-fernet or kms",
+          "default": "dev-fernet"
+        },
+        {
+          "name": "ECF_GATEWAY_KMS_KEY_ID",
+          "label": "KMS key id for production",
+          "default": ""
+        },
+        {
+          "name": "ECF_GATEWAY_KMS_ENDPOINT_URL",
+          "label": "KMS endpoint URL",
+          "default": ""
+        },
+        {
+          "name": "ECF_GATEWAY_KMS_ENCRYPTION_CONTEXT_JSON",
+          "label": "KMS encryption context JSON",
+          "default": "{}"
+        },
+        {
+          "name": "ECF_GATEWAY_AUTH_API_KEY_PROVIDER",
+          "label": "API key provider",
+          "default": "local-api-keys"
+        },
+        {
+          "name": "ECF_GATEWAY_API_KEYS",
+          "label": "Bootstrap API keys JSON",
+          "default": "[]"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "label": "PostgreSQL database",
+          "default": "ecf_gateway"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "label": "PostgreSQL user",
+          "default": "ecf_gateway"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "label": "PostgreSQL password",
+          "default": "replace-with-a-long-random-password"
+        },
+        {
+          "name": "POSTGRES_MAX_CONNECTIONS",
+          "label": "PostgreSQL max connections",
+          "default": "400"
+        },
+        {
+          "name": "RUSTFS_ACCESS_KEY",
+          "label": "RustFS access key",
+          "default": "replace-with-rustfs-access-key"
+        },
+        {
+          "name": "RUSTFS_SECRET_KEY",
+          "label": "RustFS secret key",
+          "default": "replace-with-rustfs-secret-key"
+        },
+        {
+          "name": "ECF_GATEWAY_S3_BUCKET",
+          "label": "S3/RustFS bucket",
+          "default": "ecf-gateway"
+        },
+        {
+          "name": "ECF_GATEWAY_S3_REGION",
+          "label": "S3 region",
+          "default": "us-east-1"
+        },
+        {
+          "name": "WEB_CONCURRENCY",
+          "label": "API worker processes",
+          "default": "2"
+        },
+        {
+          "name": "UVICORN_LIMIT_CONCURRENCY",
+          "label": "API concurrency limit",
+          "default": "1000"
+        },
+        {
+          "name": "ECF_GATEWAY_WORKER_REPLICAS",
+          "label": "Background worker replicas",
+          "default": "2"
+        },
+        {
+          "name": "ECF_GATEWAY_WORKER_BATCH_SIZE",
+          "label": "Worker batch size",
+          "default": "10"
+        },
+        {
+          "name": "ECF_GATEWAY_RATE_LIMIT_PER_MINUTE",
+          "label": "Tenant rate limit per minute",
+          "default": "600"
+        },
+        {
+          "name": "ECF_GATEWAY_API_KEY_RATE_LIMIT_PER_MINUTE",
+          "label": "API key rate limit per minute",
+          "default": "600"
+        },
+        {
+          "name": "ECF_GATEWAY_RFCE_AMOUNT_THRESHOLD",
+          "label": "RFCE threshold amount",
+          "default": "250000"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_SEND_PROVIDER",
+          "label": "eCF send provider",
+          "default": "dgii"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_STATUS_PROVIDER",
+          "label": "eCF status provider",
+          "default": "dgii"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_DELIVERY_PROVIDER",
+          "label": "eCF delivery provider",
+          "default": "http"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_WEBHOOK_PROVIDER",
+          "label": "eCF webhook provider",
+          "default": "http"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/data"
         }
       ]
     }

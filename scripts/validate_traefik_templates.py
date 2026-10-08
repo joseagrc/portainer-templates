@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -10,6 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 STACKS = ROOT / "stacks"
+TEMPLATES_JSON = ROOT / "templates.json"
 
 TRAEFIK_OBJECT_RE = re.compile(
     r"traefik\.http\.(?:routers|services|middlewares)\.([^.=:\s]+)"
@@ -25,6 +27,7 @@ ALLOW_STATIC_OBJECTS = {
 
 ALLOW_HOST_PORT_TEMPLATES = {
     # Non-HTTP or special-purpose templates where host ports are expected.
+    "traefik",
     "wireguard",
     "pi-hole",
     "gitlab-ce",
@@ -39,6 +42,8 @@ ALLOW_HOST_PORT_TEMPLATES = {
     "haproxy",
     "nextcloudaio",
 }
+
+PORTS_SECTION_RE = re.compile(r"(?m)^[ \t]+ports:\s*$")
 
 
 def iter_compose_files() -> list[Path]:
@@ -69,7 +74,7 @@ def validate_file(path: Path) -> list[str]:
                     "must include ${COMPOSE_PROJECT_NAME...} to support multiple instances."
                 )
 
-        if "ports:" in text and template_name not in ALLOW_HOST_PORT_TEMPLATES:
+        if PORTS_SECTION_RE.search(text) and template_name not in ALLOW_HOST_PORT_TEMPLATES:
             errors.append(
                 f"{rel}: Traefik-enabled HTTP templates should not publish host ports; "
                 "use Traefik labels instead or add a justified exception."
@@ -85,8 +90,32 @@ def validate_file(path: Path) -> list[str]:
     return errors
 
 
+def validate_templates_index() -> list[str]:
+    errors: list[str] = []
+    data = json.loads(TEMPLATES_JSON.read_text(encoding="utf-8"))
+    seen_ids: dict[int, str] = {}
+
+    for template in data.get("templates", []):
+        template_id = template.get("id")
+        title = template.get("title", "<untitled>")
+
+        if template_id in seen_ids:
+            errors.append(
+                f"templates.json: duplicate template id {template_id} used by "
+                f"'{seen_ids[template_id]}' and '{title}'."
+            )
+        seen_ids[template_id] = title
+
+        stackfile = (template.get("repository") or {}).get("stackfile")
+        if stackfile and not (ROOT / stackfile).is_file():
+            errors.append(f"templates.json: template '{title}' references missing stackfile '{stackfile}'.")
+
+    return errors
+
+
 def main() -> int:
     errors: list[str] = []
+    errors.extend(validate_templates_index())
     for compose_file in iter_compose_files():
         errors.extend(validate_file(compose_file))
 
