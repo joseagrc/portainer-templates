@@ -48,6 +48,12 @@
           "default": "proxy"
         },
         {
+          "name": "TRAEFIK_DYNAMIC_CONFIG_DIR",
+          "label": "Dynamic configuration directory",
+          "default": "/opt/docker/traefik/dynamic",
+          "description": "Host directory mounted read-only into Traefik for file-provider routers/services, useful for external or legacy containers."
+        },
+        {
           "name": "TRAEFIK_CERT_RESOLVER",
           "label": "Certificate resolver name",
           "default": "letsencrypt"
