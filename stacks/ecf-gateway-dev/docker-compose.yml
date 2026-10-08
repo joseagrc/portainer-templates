@@ -1,0 +1,212 @@
+x-app-hardening: &app-hardening
+  security_opt:
+    - no-new-privileges:true
+  cap_drop:
+    - ALL
+  read_only: true
+  tmpfs:
+    - /tmp:rw,noexec,nosuid,size=64m
+
+x-ecf-env: &ecf-env
+  ECF_GATEWAY_ENVIRONMENT: development
+  ECF_GATEWAY_SECRETS_PROFILE: dev
+  ECF_GATEWAY_SECRETS_ALLOW_DEFAULT_VALUES: "true"
+  ECF_GATEWAY_CERTIFICATE_STORAGE: postgres
+  ECF_GATEWAY_POSTGRES_DSN: postgresql://ecf_gateway:${POSTGRES_PASSWORD:-ecf_gateway}@postgres:5432/ecf_gateway
+  ECF_GATEWAY_AUTH_REQUIRED: "true"
+  ECF_GATEWAY_AUTH_JWT_SECRET: ${ECF_GATEWAY_AUTH_JWT_SECRET:-dev-change-me}
+  ECF_GATEWAY_OBJECT_STORAGE: s3
+  ECF_GATEWAY_S3_BUCKET: ecf-gateway
+  ECF_GATEWAY_S3_ENDPOINT_URL: http://rustfs:9000
+  ECF_GATEWAY_S3_REGION: us-east-1
+  ECF_GATEWAY_S3_ACCESS_KEY_ID: rustfsadmin
+  ECF_GATEWAY_S3_SECRET_ACCESS_KEY: rustfsadmin
+  ECF_GATEWAY_KEY_PROVIDER: openbao-transit
+  ECF_GATEWAY_OPENBAO_ADDR: http://openbao:8200
+  ECF_GATEWAY_OPENBAO_TOKEN: ${ECF_GATEWAY_OPENBAO_TOKEN:-ecf-gateway-openbao-dev-token}
+  ECF_GATEWAY_OPENBAO_TRANSIT_KEY: ecf-gateway-certificates
+  ECF_GATEWAY_OPENBAO_MOUNT: transit
+  ECF_GATEWAY_ECF_SEND_PROVIDER: ${ECF_GATEWAY_ECF_SEND_PROVIDER:-record-only}
+  ECF_GATEWAY_ECF_STATUS_PROVIDER: ${ECF_GATEWAY_ECF_STATUS_PROVIDER:-record-only}
+  ECF_GATEWAY_ECF_DELIVERY_PROVIDER: ${ECF_GATEWAY_ECF_DELIVERY_PROVIDER:-record-only}
+  ECF_GATEWAY_ECF_WEBHOOK_PROVIDER: ${ECF_GATEWAY_ECF_WEBHOOK_PROVIDER:-record-only}
+  ECF_GATEWAY_ECF_JOB_QUEUE: redis-streams
+  ECF_GATEWAY_REDIS_URL: redis://redis:6379/0
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ecf_gateway
+      POSTGRES_USER: ecf_gateway
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ecf_gateway}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ecf_gateway -d ecf_gateway"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    networks:
+      - internal
+
+  redis:
+    image: redis:8-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - internal
+
+  openbao:
+    image: openbao/openbao:latest
+    command: ["server", "-dev", "-dev-listen-address=0.0.0.0:8200", "-dev-root-token-id=${ECF_GATEWAY_OPENBAO_TOKEN:-ecf-gateway-openbao-dev-token}"]
+    cap_add:
+      - IPC_LOCK
+    environment:
+      BAO_ADDR: http://127.0.0.1:8200
+    healthcheck:
+      test: ["CMD", "bao", "status", "-address=http://127.0.0.1:8200"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    networks:
+      - internal
+
+  openbao-init:
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    depends_on:
+      openbao:
+        condition: service_healthy
+    environment:
+      ECF_GATEWAY_OPENBAO_ADDR: http://openbao:8200
+      ECF_GATEWAY_OPENBAO_TOKEN: ${ECF_GATEWAY_OPENBAO_TOKEN:-ecf-gateway-openbao-dev-token}
+    entrypoint: ["python", "-c"]
+    command:
+      - |
+        import json, os, sys, time, urllib.error, urllib.request
+        addr = os.environ["ECF_GATEWAY_OPENBAO_ADDR"].rstrip("/")
+        token = os.environ["ECF_GATEWAY_OPENBAO_TOKEN"]
+        def post(path, payload):
+            req = urllib.request.Request(f"{addr}{path}", data=json.dumps(payload).encode(), method="POST", headers={"Content-Type":"application/json","X-Vault-Token":token})
+            with urllib.request.urlopen(req, timeout=5) as response:
+                return response.read()
+        for _ in range(30):
+            try:
+                try:
+                    post("/v1/sys/mounts/transit", {"type": "transit"})
+                except urllib.error.HTTPError as exc:
+                    if exc.code not in {400, 204}: raise
+                try:
+                    post("/v1/transit/keys/ecf-gateway-certificates", {"type": "aes256-gcm96"})
+                except urllib.error.HTTPError as exc:
+                    if exc.code not in {400, 204}: raise
+                sys.exit(0)
+            except Exception:
+                time.sleep(1)
+        sys.exit("openbao-init failed")
+    restart: "no"
+    networks:
+      - internal
+
+  rustfs:
+    image: rustfs/rustfs:latest
+    environment:
+      RUSTFS_VOLUMES: /data/rustfs{0...3}
+      RUSTFS_ADDRESS: 0.0.0.0:9000
+      RUSTFS_ACCESS_KEY: rustfsadmin
+      RUSTFS_SECRET_KEY: rustfsadmin
+      RUSTFS_UNSAFE_BYPASS_DISK_CHECK: "true"
+    volumes:
+      - rustfs_data_0:/data/rustfs0
+      - rustfs_data_1:/data/rustfs1
+      - rustfs_data_2:/data/rustfs2
+      - rustfs_data_3:/data/rustfs3
+    restart: unless-stopped
+    networks:
+      - internal
+
+  migrate:
+    <<: *app-hardening
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    command: ["alembic", "upgrade", "head"]
+    environment:
+      <<: *ecf-env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    networks:
+      - internal
+
+  api:
+    <<: *app-hardening
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    environment:
+      <<: *ecf-env
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      openbao-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway-dev}.rule=Host(`${URL}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway-dev}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway-dev}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway-dev}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-ecf-gateway-dev}.loadbalancer.server.port=8000
+    networks:
+      - internal
+      - proxy
+
+  worker:
+    <<: *app-hardening
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    command: ["python", "-m", "ecf_gateway.worker"]
+    environment:
+      <<: *ecf-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      openbao-init:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    networks:
+      - internal
+
+volumes:
+  postgres_data:
+  redis_data:
+  rustfs_data_0:
+  rustfs_data_1:
+  rustfs_data_2:
+  rustfs_data_3:
+
+networks:
+  internal:
+    internal: true
+  proxy:
+    name: ${NETWORK:-proxy}
+    external: true

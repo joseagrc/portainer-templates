@@ -7983,9 +7983,9 @@
     {
       "id": 64,
       "type": 3,
-      "title": "eCF Gateway",
-      "description": "API gateway para facturacion electronica dominicana e-CF con PostgreSQL, Redis Streams, RustFS/S3, workers y publicacion por Traefik.",
-      "note": "Despliega una instancia autocontenida sin publicar puertos de host. Requiere una red externa de Traefik, por defecto proxy. La version por defecto de la imagen es 1.0.3. Para produccion real use secretos fuertes, KMS/Vault y no deje dev-fernet.",
+      "title": "eCF Gateway Production",
+      "description": "Production-ready e-CF gateway with PostgreSQL, Redis Streams, RustFS/S3, OpenBao Transit, workers and Traefik routing.",
+      "note": "Uses OpenBao Transit, AppRole and TLS. Create/provide OpenBao TLS files and initialize/unseal OpenBao operationally before production traffic. No host ports are published; ingress is through Traefik on the external proxy network.",
       "categories": [
         "API",
         "Finance",
@@ -8026,52 +8026,12 @@
         {
           "name": "ECF_GATEWAY_TAG",
           "label": "eCF Gateway version",
-          "default": "1.0.3"
-        },
-        {
-          "name": "ECF_GATEWAY_ENVIRONMENT",
-          "label": "Runtime environment",
-          "default": "development"
-        },
-        {
-          "name": "ECF_GATEWAY_SECRETS_PROFILE",
-          "label": "Secrets profile",
-          "default": "dev"
-        },
-        {
-          "name": "ECF_GATEWAY_SECRETS_ALLOW_DEFAULT_VALUES",
-          "label": "Allow default secret values",
-          "default": "true"
+          "default": "1.0.4"
         },
         {
           "name": "ECF_GATEWAY_AUTH_JWT_SECRET",
           "label": "JWT secret",
           "default": "replace-with-at-least-32-random-characters"
-        },
-        {
-          "name": "ECF_GATEWAY_MASTER_KEY",
-          "label": "Dev Fernet master key (change it)",
-          "default": "nP7nU9LQaVWL7LMGCB6I-xiOhRz57EuKAzyouImEv_E="
-        },
-        {
-          "name": "ECF_GATEWAY_KEY_PROVIDER",
-          "label": "Key provider: dev-fernet or kms",
-          "default": "dev-fernet"
-        },
-        {
-          "name": "ECF_GATEWAY_KMS_KEY_ID",
-          "label": "KMS key id for production",
-          "default": ""
-        },
-        {
-          "name": "ECF_GATEWAY_KMS_ENDPOINT_URL",
-          "label": "KMS endpoint URL",
-          "default": ""
-        },
-        {
-          "name": "ECF_GATEWAY_KMS_ENCRYPTION_CONTEXT_JSON",
-          "label": "KMS encryption context JSON",
-          "default": "{}"
         },
         {
           "name": "ECF_GATEWAY_AUTH_API_KEY_PROVIDER",
@@ -8080,7 +8040,7 @@
         },
         {
           "name": "ECF_GATEWAY_API_KEYS",
-          "label": "Bootstrap API keys JSON",
+          "label": "Optional bootstrap API keys JSON",
           "default": "[]"
         },
         {
@@ -8114,6 +8074,11 @@
           "default": "replace-with-rustfs-secret-key"
         },
         {
+          "name": "RUSTFS_UNSAFE_BYPASS_DISK_CHECK",
+          "label": "RustFS unsafe disk bypass",
+          "default": "false"
+        },
+        {
           "name": "ECF_GATEWAY_S3_BUCKET",
           "label": "S3/RustFS bucket",
           "default": "ecf-gateway"
@@ -8124,9 +8089,29 @@
           "default": "us-east-1"
         },
         {
+          "name": "OPENBAO_TLS_DIR",
+          "label": "Host directory with OpenBao ca.crt, tls.crt, tls.key",
+          "default": "/opt/docker/ecf-gateway/openbao/tls"
+        },
+        {
+          "name": "ECF_GATEWAY_OPENBAO_APPROLE_ROLE_ID",
+          "label": "OpenBao AppRole role_id",
+          "default": "replace-with-openbao-role-id"
+        },
+        {
+          "name": "ECF_GATEWAY_OPENBAO_APPROLE_SECRET_ID",
+          "label": "OpenBao AppRole secret_id",
+          "default": "replace-with-openbao-secret-id"
+        },
+        {
+          "name": "ECF_GATEWAY_OPENBAO_TRANSIT_KEY",
+          "label": "OpenBao Transit key",
+          "default": "ecf-gateway-certificates-ecf"
+        },
+        {
           "name": "WEB_CONCURRENCY",
           "label": "API worker processes",
-          "default": "2"
+          "default": "4"
         },
         {
           "name": "UVICORN_LIMIT_CONCURRENCY",
@@ -8151,7 +8136,7 @@
         {
           "name": "ECF_GATEWAY_API_KEY_RATE_LIMIT_PER_MINUTE",
           "label": "API key rate limit per minute",
-          "default": "600"
+          "default": "1200"
         },
         {
           "name": "ECF_GATEWAY_RFCE_AMOUNT_THRESHOLD",
@@ -8184,7 +8169,109 @@
           "container": "/var/lib/postgresql/data"
         },
         {
-          "container": "/data"
+          "container": "/data/rustfs0"
+        },
+        {
+          "container": "/openbao/data"
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "type": 3,
+      "title": "eCF Gateway Development",
+      "description": "Development/demo e-CF gateway stack with PostgreSQL, Redis, RustFS and OpenBao dev mode. Providers default to record-only.",
+      "note": "For development only. OpenBao runs in dev mode and must not be used for testecf, certecf or ecf production environments.",
+      "categories": [
+        "API",
+        "Finance",
+        "DGII",
+        "Development"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/ecf-gateway-dev/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Stack/container name",
+          "default": "ecf-gateway-dev"
+        },
+        {
+          "name": "URL",
+          "label": "Public domain",
+          "default": "ecf-dev.example.com"
+        },
+        {
+          "name": "NETWORK",
+          "label": "External Traefik network",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
+        },
+        {
+          "name": "ECF_GATEWAY_IMAGE",
+          "label": "eCF Gateway image",
+          "default": "gitea.joseagrc.com/joseagrc/ecf-gateway"
+        },
+        {
+          "name": "ECF_GATEWAY_TAG",
+          "label": "eCF Gateway version",
+          "default": "1.0.4"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "label": "PostgreSQL password",
+          "default": "ecf_gateway"
+        },
+        {
+          "name": "ECF_GATEWAY_AUTH_JWT_SECRET",
+          "label": "JWT secret",
+          "default": "dev-change-me"
+        },
+        {
+          "name": "ECF_GATEWAY_OPENBAO_TOKEN",
+          "label": "OpenBao dev token",
+          "default": "ecf-gateway-openbao-dev-token"
+        },
+        {
+          "name": "WEB_CONCURRENCY",
+          "label": "API worker processes",
+          "default": "2"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_SEND_PROVIDER",
+          "label": "Safe send provider",
+          "default": "record-only"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_STATUS_PROVIDER",
+          "label": "Safe status provider",
+          "default": "record-only"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_DELIVERY_PROVIDER",
+          "label": "Safe delivery provider",
+          "default": "record-only"
+        },
+        {
+          "name": "ECF_GATEWAY_ECF_WEBHOOK_PROVIDER",
+          "label": "Safe webhook provider",
+          "default": "record-only"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/data/rustfs0"
         }
       ]
     }

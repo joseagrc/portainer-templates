@@ -46,6 +46,13 @@ You can browse all supported apps and stacks and see stats, config options and s
     - `https://raw.githubusercontent.com/solutema/templates/main/templates.json`
 3. Now under <ins>Home</ins> --> <ins>App Templates</ins>, you should see all apps. Click one to deploy.
 
+### eCF Gateway Templates
+
+This repository includes two eCF Gateway stack templates:
+
+- **eCF Gateway Development**: demo/local-ready stack with PostgreSQL, Redis, RustFS, OpenBao dev mode, API, worker, migrations, and Traefik labels. Use it for labs, demos, and development environments.
+- **eCF Gateway Production**: production-oriented stack with PostgreSQL, Redis, RustFS, OpenBao server mode, migrations, API, worker, Traefik labels, hardened containers, internal networking, and no public host ports. Before deploying it, provide real secrets, TLS material for OpenBao, and initialize/unseal OpenBao operationally.
+
 <details>
 <summary>Show me...</summary>
 
@@ -1010,4 +1017,3 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
               |     /          |     /     ~-.     ~- _
               |_____|          |_____|         ~ - . _ _~_-_
 -->
-

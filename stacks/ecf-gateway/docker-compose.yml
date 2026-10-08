@@ -7,19 +7,20 @@ x-app-hardening: &app-hardening
   tmpfs:
     - /tmp:rw,noexec,nosuid,size=64m
 
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
 x-ecf-env: &ecf-env
-  ECF_GATEWAY_ENVIRONMENT: ${ECF_GATEWAY_ENVIRONMENT:-development}
-  ECF_GATEWAY_SECRETS_PROFILE: ${ECF_GATEWAY_SECRETS_PROFILE:-dev}
-  ECF_GATEWAY_SECRETS_ROTATION_DAYS: ${ECF_GATEWAY_SECRETS_ROTATION_DAYS:-90}
-  ECF_GATEWAY_SECRETS_ALLOW_DEFAULT_VALUES: ${ECF_GATEWAY_SECRETS_ALLOW_DEFAULT_VALUES:-true}
+  ECF_GATEWAY_ENVIRONMENT: production
+  ECF_GATEWAY_SECRETS_PROFILE: ${ECF_GATEWAY_SECRETS_PROFILE:-ecf}
+  ECF_GATEWAY_SECRETS_ALLOW_DEFAULT_VALUES: "false"
   ECF_GATEWAY_CERTIFICATE_STORAGE: postgres
   ECF_GATEWAY_POSTGRES_DSN: postgresql://${POSTGRES_USER:-ecf_gateway}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-ecf_gateway}
-  ECF_GATEWAY_POSTGRES_POOL_MIN_SIZE: ${ECF_GATEWAY_POSTGRES_POOL_MIN_SIZE:-1}
-  ECF_GATEWAY_POSTGRES_POOL_MAX_SIZE: ${ECF_GATEWAY_POSTGRES_POOL_MAX_SIZE:-40}
-  ECF_GATEWAY_POSTGRES_POOL_TIMEOUT_SECONDS: ${ECF_GATEWAY_POSTGRES_POOL_TIMEOUT_SECONDS:-10}
-  ECF_GATEWAY_API_JOB_CREATE_CONCURRENCY_LIMIT: ${ECF_GATEWAY_API_JOB_CREATE_CONCURRENCY_LIMIT:-128}
-  ECF_GATEWAY_API_JOB_BULK_MAX_ITEMS: ${ECF_GATEWAY_API_JOB_BULK_MAX_ITEMS:-500}
-  ECF_GATEWAY_AUTH_REQUIRED: ${ECF_GATEWAY_AUTH_REQUIRED:-true}
+  ECF_GATEWAY_AUTH_REQUIRED: "true"
   ECF_GATEWAY_AUTH_JWT_SECRET: ${ECF_GATEWAY_AUTH_JWT_SECRET}
   ECF_GATEWAY_AUTH_API_KEY_PROVIDER: ${ECF_GATEWAY_AUTH_API_KEY_PROVIDER:-local-api-keys}
   ECF_GATEWAY_API_KEYS: ${ECF_GATEWAY_API_KEYS:-[]}
@@ -33,30 +34,36 @@ x-ecf-env: &ecf-env
   ECF_GATEWAY_S3_REGION: ${ECF_GATEWAY_S3_REGION:-us-east-1}
   ECF_GATEWAY_S3_ACCESS_KEY_ID: ${RUSTFS_ACCESS_KEY}
   ECF_GATEWAY_S3_SECRET_ACCESS_KEY: ${RUSTFS_SECRET_KEY}
-  ECF_GATEWAY_KEY_PROVIDER: ${ECF_GATEWAY_KEY_PROVIDER:-dev-fernet}
-  ECF_GATEWAY_MASTER_KEY: ${ECF_GATEWAY_MASTER_KEY}
-  ECF_GATEWAY_KMS_KEY_ID: ${ECF_GATEWAY_KMS_KEY_ID:-}
-  ECF_GATEWAY_KMS_ENDPOINT_URL: ${ECF_GATEWAY_KMS_ENDPOINT_URL:-}
-  ECF_GATEWAY_KMS_ENCRYPTION_CONTEXT_JSON: ${ECF_GATEWAY_KMS_ENCRYPTION_CONTEXT_JSON:-{}}
+  ECF_GATEWAY_KEY_PROVIDER: openbao-transit
+  ECF_GATEWAY_OPENBAO_ADDR: https://openbao:8200
+  ECF_GATEWAY_OPENBAO_AUTH_METHOD: approle
+  ECF_GATEWAY_OPENBAO_APPROLE_ROLE_ID: ${ECF_GATEWAY_OPENBAO_APPROLE_ROLE_ID}
+  ECF_GATEWAY_OPENBAO_APPROLE_SECRET_ID: ${ECF_GATEWAY_OPENBAO_APPROLE_SECRET_ID}
+  ECF_GATEWAY_OPENBAO_APPROLE_MOUNT: ${ECF_GATEWAY_OPENBAO_APPROLE_MOUNT:-approle}
+  ECF_GATEWAY_OPENBAO_CA_CERT_PATH: /openbao/tls/ca.crt
+  ECF_GATEWAY_OPENBAO_TOKEN_MIN_TTL_SECONDS: ${ECF_GATEWAY_OPENBAO_TOKEN_MIN_TTL_SECONDS:-300}
+  ECF_GATEWAY_OPENBAO_TRANSIT_KEY: ${ECF_GATEWAY_OPENBAO_TRANSIT_KEY:-ecf-gateway-certificates-ecf}
+  ECF_GATEWAY_OPENBAO_MOUNT: ${ECF_GATEWAY_OPENBAO_MOUNT:-transit}
   ECF_GATEWAY_ECF_SEND_PROVIDER: ${ECF_GATEWAY_ECF_SEND_PROVIDER:-dgii}
   ECF_GATEWAY_ECF_COMMERCIAL_APPROVAL_PROVIDER: ${ECF_GATEWAY_ECF_COMMERCIAL_APPROVAL_PROVIDER:-dgii}
   ECF_GATEWAY_ECF_STATUS_PROVIDER: ${ECF_GATEWAY_ECF_STATUS_PROVIDER:-dgii}
   ECF_GATEWAY_ECF_DELIVERY_PROVIDER: ${ECF_GATEWAY_ECF_DELIVERY_PROVIDER:-http}
   ECF_GATEWAY_ECF_WEBHOOK_PROVIDER: ${ECF_GATEWAY_ECF_WEBHOOK_PROVIDER:-http}
-  ECF_GATEWAY_ECF_JOB_QUEUE: ${ECF_GATEWAY_ECF_JOB_QUEUE:-redis-streams}
+  ECF_GATEWAY_ECF_JOB_QUEUE: redis-streams
   ECF_GATEWAY_REDIS_URL: redis://redis:6379/0
   ECF_GATEWAY_REDIS_STREAM_PREFIX: ${ECF_GATEWAY_REDIS_STREAM_PREFIX:-ecf-gateway:jobs}
   ECF_GATEWAY_REDIS_CONSUMER_GROUP: ${ECF_GATEWAY_REDIS_CONSUMER_GROUP:-ecf-gateway-workers}
+  ECF_GATEWAY_RATE_LIMIT_PER_MINUTE: ${ECF_GATEWAY_RATE_LIMIT_PER_MINUTE:-600}
+  ECF_GATEWAY_API_KEY_RATE_LIMIT_PER_MINUTE: ${ECF_GATEWAY_API_KEY_RATE_LIMIT_PER_MINUTE:-1200}
   ECF_GATEWAY_RFCE_AMOUNT_THRESHOLD: ${ECF_GATEWAY_RFCE_AMOUNT_THRESHOLD:-250000}
   ECF_GATEWAY_CERTIFICATION_NOTE_SETTLE_SECONDS: ${ECF_GATEWAY_CERTIFICATION_NOTE_SETTLE_SECONDS:-15}
-  ECF_GATEWAY_RATE_LIMIT_PER_MINUTE: ${ECF_GATEWAY_RATE_LIMIT_PER_MINUTE:-600}
-  ECF_GATEWAY_API_KEY_RATE_LIMIT_PER_MINUTE: ${ECF_GATEWAY_API_KEY_RATE_LIMIT_PER_MINUTE:-600}
 
 services:
   postgres:
-    container_name: ${COMPOSE_PROJECT_NAME}-postgres
     image: ${POSTGRES_IMAGE:-postgres}:${POSTGRES_TAG:-17-alpine}
     command: ["postgres", "-c", "max_connections=${POSTGRES_MAX_CONNECTIONS:-400}"]
+    restart: unless-stopped
+    logging: *default-logging
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-ecf_gateway}
       POSTGRES_USER: ${POSTGRES_USER:-ecf_gateway}
@@ -64,72 +71,51 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ecf_gateway} -d ${POSTGRES_DB:-ecf_gateway}"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 12
       start_period: 60s
-    restart: unless-stopped
     networks:
       - internal
 
   redis:
-    container_name: ${COMPOSE_PROJECT_NAME}-redis
     image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8-alpine}
-    command: ["redis-server", "--appendonly", "yes"]
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    restart: unless-stopped
+    logging: *default-logging
     volumes:
       - redis_data:/data
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 5
-    restart: unless-stopped
-    networks:
-      - internal
-
-  rustfs-permissions:
-    container_name: ${COMPOSE_PROJECT_NAME}-rustfs-permissions
-    image: alpine:3.21
-    command: >
-      sh -c "chown -R 10001:10001 /data0 /data1 /data2 /data3 /logs"
-    volumes:
-      - rustfs_data_0:/data0
-      - rustfs_data_1:/data1
-      - rustfs_data_2:/data2
-      - rustfs_data_3:/data3
-      - rustfs_logs:/logs
-    restart: "no"
+      retries: 10
     networks:
       - internal
 
   rustfs:
-    container_name: ${COMPOSE_PROJECT_NAME}-rustfs
     image: ${RUSTFS_IMAGE:-rustfs/rustfs}:${RUSTFS_TAG:-latest}
-    depends_on:
-      rustfs-permissions:
-        condition: service_completed_successfully
+    restart: unless-stopped
+    logging: *default-logging
     environment:
       RUSTFS_VOLUMES: /data/rustfs{0...3}
       RUSTFS_ADDRESS: 0.0.0.0:9000
-      RUSTFS_CONSOLE_ADDRESS: 0.0.0.0:9001
-      RUSTFS_CONSOLE_ENABLE: "true"
+      RUSTFS_CONSOLE_ENABLE: "false"
       RUSTFS_ACCESS_KEY: ${RUSTFS_ACCESS_KEY}
       RUSTFS_SECRET_KEY: ${RUSTFS_SECRET_KEY}
-      RUSTFS_UNSAFE_BYPASS_DISK_CHECK: "true"
+      RUSTFS_UNSAFE_BYPASS_DISK_CHECK: ${RUSTFS_UNSAFE_BYPASS_DISK_CHECK:-false}
     volumes:
       - rustfs_data_0:/data/rustfs0
       - rustfs_data_1:/data/rustfs1
       - rustfs_data_2:/data/rustfs2
       - rustfs_data_3:/data/rustfs3
       - rustfs_logs:/app/logs
-    restart: unless-stopped
     networks:
       - internal
 
   rustfs-init:
-    container_name: ${COMPOSE_PROJECT_NAME}-rustfs-init
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.3}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
     depends_on:
       rustfs:
         condition: service_started
@@ -142,40 +128,56 @@ services:
     entrypoint: ["python", "-c"]
     command:
       - |
-        import os
-        import sys
-        import time
-
+        import os, sys, time
         import boto3
         from botocore.exceptions import ClientError, EndpointConnectionError
-
-        endpoint_url = os.environ["ECF_GATEWAY_S3_ENDPOINT_URL"]
+        client = boto3.client("s3", endpoint_url=os.environ["ECF_GATEWAY_S3_ENDPOINT_URL"])
         bucket = os.environ["ECF_GATEWAY_S3_BUCKET"]
-        client = boto3.client("s3", endpoint_url=endpoint_url)
-
         for _ in range(30):
             try:
                 client.head_bucket(Bucket=bucket)
                 sys.exit(0)
             except ClientError as exc:
-                status = exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
-                if status in {403, 404}:
+                if exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode") in {403, 404}:
                     client.create_bucket(Bucket=bucket)
                     sys.exit(0)
             except EndpointConnectionError:
                 pass
             time.sleep(2)
-
-        print("rustfs-init: RustFS did not become reachable in time", file=sys.stderr)
-        sys.exit(1)
+        sys.exit("rustfs-init: RustFS did not become reachable in time")
     restart: "no"
+    networks:
+      - internal
+
+  openbao:
+    image: ${OPENBAO_IMAGE:-openbao/openbao}:${OPENBAO_TAG:-latest}
+    command: ["server", "-config=/openbao/config/openbao.hcl"]
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      BAO_ADDR: https://127.0.0.1:8200
+      BAO_CACERT: /openbao/tls/ca.crt
+    configs:
+      - source: openbao_config
+        target: /openbao/config/openbao.hcl
+    volumes:
+      - ${OPENBAO_TLS_DIR}:/openbao/tls:ro
+      - openbao_data:/openbao/data
+      - openbao_audit:/openbao/audit
+    healthcheck:
+      test: ["CMD", "bao", "status", "-address=https://127.0.0.1:8200", "-ca-cert=/openbao/tls/ca.crt"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
     networks:
       - internal
 
   migrate:
     <<: *app-hardening
-    container_name: ${COMPOSE_PROJECT_NAME}-migrate
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.3}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
     command: ["alembic", "upgrade", "head"]
     environment:
       <<: *ecf-env
@@ -188,11 +190,12 @@ services:
 
   api:
     <<: *app-hardening
-    container_name: ${COMPOSE_PROJECT_NAME}-api
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.3}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    restart: unless-stopped
+    logging: *default-logging
     environment:
       <<: *ecf-env
-      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-2}
+      WEB_CONCURRENCY: ${WEB_CONCURRENCY:-4}
       UVICORN_BACKLOG: ${UVICORN_BACKLOG:-2048}
       UVICORN_LIMIT_CONCURRENCY: ${UVICORN_LIMIT_CONCURRENCY:-1000}
       UVICORN_KEEP_ALIVE: ${UVICORN_KEEP_ALIVE:-5}
@@ -203,41 +206,38 @@ services:
         condition: service_healthy
       rustfs-init:
         condition: service_completed_successfully
+      openbao:
+        condition: service_healthy
     healthcheck:
-      test:
-        [
-          "CMD",
-          "python",
-          "-c",
-          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2).read()",
-        ]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3).read()"]
       interval: 30s
-      timeout: 3s
-      retries: 3
-      start_period: 20s
-    restart: unless-stopped
+      timeout: 5s
+      retries: 5
+      start_period: 60s
     labels:
-      - "traefik.enable=true"
-      - "traefik.docker.network=${NETWORK}"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-gzip.compress=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL}`) || Host(`www.${URL}`)"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.middlewares=${COMPOSE_PROJECT_NAME}-gzip"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
-      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
+      - traefik.enable=true
+      - traefik.docker.network=${NETWORK:-proxy}
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-ecf-gateway}-https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.${COMPOSE_PROJECT_NAME:-ecf-gateway}-gzip.compress=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}-http.rule=Host(`${URL}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}-http.entrypoints=web
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}-http.middlewares=${COMPOSE_PROJECT_NAME:-ecf-gateway}-https-redirect
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}.rule=Host(`${URL}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}.middlewares=${COMPOSE_PROJECT_NAME:-ecf-gateway}-gzip
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-ecf-gateway}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.services.${COMPOSE_PROJECT_NAME:-ecf-gateway}.loadbalancer.server.port=8000
     networks:
       - internal
       - proxy
 
   worker:
     <<: *app-hardening
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.3}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
     command: ["python", "-m", "ecf_gateway.worker"]
+    restart: unless-stopped
+    logging: *default-logging
     environment:
       <<: *ecf-env
       ECF_GATEWAY_WORKER_BATCH_SIZE: ${ECF_GATEWAY_WORKER_BATCH_SIZE:-10}
@@ -251,17 +251,38 @@ services:
         condition: service_healthy
       rustfs-init:
         condition: service_completed_successfully
+      openbao:
+        condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "tr '\\0' ' ' < /proc/1/cmdline | grep -q 'ecf_gateway.worker'"]
       interval: 30s
       timeout: 3s
       retries: 3
       start_period: 10s
-    restart: unless-stopped
     deploy:
       replicas: ${ECF_GATEWAY_WORKER_REPLICAS:-2}
     networks:
       - internal
+
+configs:
+  openbao_config:
+    content: |
+      ui = true
+      disable_mlock = false
+      api_addr = "https://openbao:8200"
+      cluster_addr = "https://openbao:8201"
+      storage "raft" {
+        path = "/openbao/data"
+        node_id = "ecf-gateway-openbao-1"
+      }
+      listener "tcp" {
+        address = "0.0.0.0:8200"
+        cluster_address = "0.0.0.0:8201"
+        tls_cert_file = "/openbao/tls/tls.crt"
+        tls_key_file = "/openbao/tls/tls.key"
+        tls_client_ca_file = "/openbao/tls/ca.crt"
+        tls_auto_reload = true
+      }
 
 volumes:
   postgres_data:
@@ -271,10 +292,12 @@ volumes:
   rustfs_data_2:
   rustfs_data_3:
   rustfs_logs:
+  openbao_data:
+  openbao_audit:
 
 networks:
   internal:
-    name: ${COMPOSE_PROJECT_NAME}-internal
+    internal: true
   proxy:
-    name: ${NETWORK}
+    name: ${NETWORK:-proxy}
     external: true
