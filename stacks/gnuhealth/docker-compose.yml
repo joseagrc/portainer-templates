@@ -11,17 +11,6 @@ services:
       SUPERUSER_PASS: ${SUPERUSER_PASS}
     volumes:
       - db:/var/lib/postgresql/data
-    labels:
-      # Habilita Traefik para TCP (no HTTP)
-      - "traefik.enable=true"
-      # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.rule=HostSNI(`postgres.${GH_URL}`) || HostSNI(`www.postgres.${GH_URL}`)"
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.entrypoints=postgres"  # Entrypoint TCP definido en Traefik
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.tls=true"  # Opcional: TLS para seguridad
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-postgres.tls.certresolver=letsencrypt"
-      # Backend (puerto de MySQL)
-      - "traefik.tcp.services.${COMPOSE_PROJECT_NAME}-postgres.loadbalancer.server.port=5432"
-
   gnuhealth:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${GNUHEALTH_IMAGE}:${GNUHEALTH_TAG}
@@ -44,7 +33,7 @@ services:
       - postgres
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=${NETWORK}"
+      - "traefik.docker.network=${NETWORK:-proxy}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${GH_URL}`) || Host(`www.${GH_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
@@ -54,7 +43,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${GH_URL}`) || Host(`www.${GH_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
       # Servicio backend Gitea
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
 
@@ -82,9 +71,6 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME}-mailhog
     image: ${MAILHOG_IMAGE}:${MAILHOG_TAG}
     restart: always
-    ports:
-      - ${MAILHOG_SMTP_PORT}:1025
-      - ${MAILHOG_HTTP_PORT}:8025
 
 volumes:
   db:

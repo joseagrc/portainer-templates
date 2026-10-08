@@ -6,8 +6,6 @@ services:
     hostname: 0.0.0.0
     image: ${POSTGRES_IMAGE}:${POSTGRES_TAG}
     restart: unless-stopped
-    ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     volumes:
       - tryton_db:/var/lib/postgresql/data
     environment:
@@ -32,8 +30,18 @@ services:
       TRYTOND_EMAIL__URI: smtp://mailhog:1025
       TRYTOND_DATABASE__URI: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:${POSTGRES_PORT}/${POSTGRES_DB}
       TRYTOND_ADMIN_PASSWORD: ${TRYTOND_ADMIN_PASSWORD}
-      VIRTUAL_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
-      LETSENCRYPT_HOST: ${SUBDOMAIN}.${DOMAIN},www.${SUBDOMAIN}.${DOMAIN}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${SUBDOMAIN}.${DOMAIN}`) || Host(`www.${SUBDOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${SUBDOMAIN}.${DOMAIN}`) || Host(`www.${SUBDOMAIN}.${DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8000"
 
   tryton-cron:
     container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-cron
@@ -59,10 +67,6 @@ services:
     container_name: ${COMPOSE_PROJECT_NAME:-tryton60}-mailhog
     image: mailhog/mailhog:latest
     restart: always
-    ports:
-      - 1025:1025
-      - 8025:8025
-
 volumes:
   tryton_db:
   tryton_data:

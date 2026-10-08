@@ -9,10 +9,6 @@ services:
       - /dev/kvm
     cap_add:
       - NET_ADMIN
-    ports:
-      - ${NOVNC_PORT}:8006
-      - ${RDP_PORT}:3389/tcp
-      - ${MS_TERMINAL_PORT}:3389/udp
     stop_grace_period: 2m
     environment:
       MANUAL: ${MANUAL_INSTALLATION}
@@ -25,9 +21,18 @@ services:
       LANGUAGE: ${LANGUAGE}
       REGION: ${REGION}
       KEYBOARD: ${KEYBOARD}
-      VIRTUAL_PORT: ${NOVNC_PORT}
-      VIRTUAL_HOST: ${URL},www.${URL}
-      LETSENCRYPT_HOST: ${URL},www.${URL}
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=${NETWORK:-proxy}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${URL}`) || Host(`www.${URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${URL}`) || Host(`www.${URL}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=8006"
     volumes:
       - win_data:/storage
 

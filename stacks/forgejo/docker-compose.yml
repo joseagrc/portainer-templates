@@ -42,8 +42,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "${FORGEJO_SSH_PORT}:22"
     volumes:
       - data:/data
       - custom:/data/forgejo/custom
@@ -115,7 +113,7 @@ services:
       
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network=${NETWORK}"
+      - "traefik.docker.network=${NETWORK:-proxy}"
       # Redirecciona HTTP -> HTTPS
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${FORGEJO_URL}`) || Host(`www.${FORGEJO_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
@@ -125,7 +123,7 @@ services:
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${FORGEJO_URL}`) || Host(`www.${FORGEJO_URL}`)"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
       - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
-      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}"
       # Servicio backend Forgejo
       - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000"
 

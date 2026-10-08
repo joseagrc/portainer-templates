@@ -16,8 +16,6 @@ services:
       ADMIN_FULLNAME: ${ADMIN_FULLNAME}
       ADMIN_TITLE: ${ADMIN_TITLE}
       TIMEZONE: ${TIMEZONE}
-      VIRTUAL_HOST: ${DOMAIN},www.${DOMAIN}
-      LETSENCRYPT_HOST: ${DOMAIN},www.${DOMAIN}
 
 volumes:
   grav_data:

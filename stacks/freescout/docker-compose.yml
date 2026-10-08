@@ -12,17 +12,6 @@ services:
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
     restart: unless-stopped
-    labels:
-      # Habilita Traefik para TCP (no HTTP)
-      - "traefik.enable=true"
-      # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-db.rule=HostSNI(`mysql.${SITE_URL}`) || HostSNI(`www.mysql.${SITE_URL}`)"
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-db.entrypoints=mysql"
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-db.tls=true"
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-db.tls.certresolver=letsencrypt"
-      # Backend (puerto de MySQL)
-      - "traefik.tcp.services.${COMPOSE_PROJECT_NAME}-db.loadbalancer.server.port=3306"
-
   freescout-app:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     hostname: ${COMPOSE_PROJECT_NAME}-app

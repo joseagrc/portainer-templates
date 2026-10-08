@@ -2,12 +2,97 @@
   "version": "3",
   "templates": [
     {
+      "id": 100,
+      "type": 3,
+      "title": "Traefik Reverse Proxy",
+      "description": "Standalone Traefik reverse proxy for Portainer stacks. Publishes only 80/443 and routes applications by Docker labels on the external proxy network.",
+      "note": "Deploy this once. Application templates only need their domain and join the same external proxy network; they do not publish host ports.",
+      "categories": [
+        "Networking",
+        "Reverse Proxy"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/traefik/traefik/master/docs/content/assets/img/traefik.logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/traefik/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Stack/container name",
+          "default": "traefik"
+        },
+        {
+          "name": "TRAEFIK_IMAGE",
+          "label": "Traefik image",
+          "default": "traefik"
+        },
+        {
+          "name": "TRAEFIK_TAG",
+          "label": "Traefik tag",
+          "default": "v3.7"
+        },
+        {
+          "name": "TRAEFIK_DOMAIN",
+          "label": "Traefik dashboard domain",
+          "default": "traefik.example.com"
+        },
+        {
+          "name": "ACME_EMAIL",
+          "label": "Let's Encrypt email"
+        },
+        {
+          "name": "PROXY_NETWORK",
+          "label": "External Docker network for public apps",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Certificate resolver name",
+          "default": "letsencrypt"
+        },
+        {
+          "name": "TRAEFIK_HTTP_BIND",
+          "label": "HTTP bind address",
+          "default": "0.0.0.0:80"
+        },
+        {
+          "name": "TRAEFIK_HTTPS_BIND",
+          "label": "HTTPS bind address",
+          "default": "0.0.0.0:443"
+        },
+        {
+          "name": "TRAEFIK_DASHBOARD",
+          "label": "Enable dashboard API",
+          "default": "true"
+        },
+        {
+          "name": "TRAEFIK_LOG_LEVEL",
+          "label": "Log level",
+          "default": "INFO"
+        }
+      ],
+      "ports": [
+        "80/tcp",
+        "443/tcp"
+      ],
+      "volumes": [
+        {
+          "container": "/letsencrypt"
+        }
+      ]
+    },
+    {
       "id": 62,
       "type": 3,
       "title": "OpenWA",
       "description": "Gateway API de WhatsApp no oficial, multi-sesión y autohospedado, con dashboard, PostgreSQL y Redis.",
       "note": "OpenWA utiliza clientes no oficiales de WhatsApp y existe riesgo de restricción o bloqueo del número. Use solamente un número dedicado y con usuarios que hayan dado consentimiento. Esta plantilla no expone el socket Docker, mantiene PostgreSQL y Redis privados y habilita límites antiabuso. Reemplace todas las claves antes de desplegar.",
-      "categories": ["Messaging", "API"],
+      "categories": [
+        "Messaging",
+        "API"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/whatsapp.svg",
       "repository": {
@@ -15,42 +100,172 @@
         "stackfile": "stacks/openwa/docker-compose.yml"
       },
       "env": [
-        {"default": "openwa", "label": "Stack name", "name": "COMPOSE_PROJECT_NAME"},
-        {"default": "openwa.example.com", "label": "Public domain", "name": "URL"},
-        {"default": "ghcr.io/rmyndharis/openwa", "label": "OpenWA image", "name": "OPENWA_IMAGE"},
-        {"default": "0.23.3", "label": "OpenWA version", "name": "OPENWA_TAG"},
-        {"default": "replace-with-a-long-random-password", "label": "PostgreSQL password", "name": "DATABASE_PASSWORD"},
-        {"default": "openwa", "label": "Database name", "name": "DATABASE_NAME"},
-        {"default": "openwa", "label": "Database user", "name": "DATABASE_USERNAME"},
-        {"default": "replace-with-at-least-32-random-characters", "label": "OpenWA master API key", "name": "API_MASTER_KEY"},
-        {"default": "replace-with-64-hexadecimal-characters", "label": "API key hashing pepper", "name": "API_KEY_PEPPER"},
-        {"default": "whatsapp-web.js", "label": "Engine: whatsapp-web.js or baileys", "name": "ENGINE_TYPE"},
-        {"default": "true", "label": "Automatically start paired sessions", "name": "AUTO_START_SESSIONS"},
-        {"default": "true", "label": "Enable dashboard", "name": "SERVE_DASHBOARD"},
-        {"default": "true", "label": "Enable Swagger documentation", "name": "ENABLE_SWAGGER"},
-        {"default": "true", "label": "Enable send pacing", "name": "SEND_PACING_ENABLED"},
-        {"default": "20,40,80,160,320,640,1000", "label": "Daily warm-up send limits", "name": "SEND_PACING_WARMUP_SCHEDULE"},
-        {"default": "5,10,20,40,60,80,100", "label": "Daily cold-contact limits", "name": "SEND_PACING_COLD_DAILY_CAP"},
-        {"default": "false", "label": "Enable MCP endpoint", "name": "MCP_ENABLED"},
-        {"default": "true", "label": "Keep MCP read-only", "name": "MCP_READONLY"},
-        {"default": "10000", "label": "Webhook request timeout (ms)", "name": "WEBHOOK_TIMEOUT"},
-        {"default": "15000", "label": "Webhook shutdown drain time (ms)", "name": "WEBHOOK_SHUTDOWN_DRAIN_MS"},
-        {"default": "2.0", "label": "OpenWA CPU limit", "name": "OPENWA_CPU_LIMIT"},
-        {"default": "3G", "label": "OpenWA memory limit", "name": "OPENWA_MEM_LIMIT"},
-        {"default": "2048", "label": "OpenWA PID limit", "name": "OPENWA_PIDS_LIMIT"},
-        {"default": "1.0", "label": "PostgreSQL CPU limit", "name": "POSTGRES_CPU_LIMIT"},
-        {"default": "1G", "label": "PostgreSQL memory limit", "name": "POSTGRES_MEMORY_LIMIT"},
-        {"default": "0.5", "label": "Redis CPU limit", "name": "REDIS_CPU_LIMIT"},
-        {"default": "512M", "label": "Redis memory limit", "name": "REDIS_MEMORY_LIMIT"},
-        {"default": "10m", "label": "Maximum log size", "name": "LOG_MAX_SIZE"},
-        {"default": "3", "label": "Retained log files", "name": "LOG_MAX_FILE"},
-        {"default": "proxy", "label": "External Traefik network", "name": "NETWORK"},
-        {"default": "letsencrypt", "label": "Traefik certificate resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+        {
+          "default": "openwa",
+          "label": "Stack name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "openwa.example.com",
+          "label": "Public domain",
+          "name": "URL"
+        },
+        {
+          "default": "ghcr.io/rmyndharis/openwa",
+          "label": "OpenWA image",
+          "name": "OPENWA_IMAGE"
+        },
+        {
+          "default": "0.23.3",
+          "label": "OpenWA version",
+          "name": "OPENWA_TAG"
+        },
+        {
+          "default": "replace-with-a-long-random-password",
+          "label": "PostgreSQL password",
+          "name": "DATABASE_PASSWORD"
+        },
+        {
+          "default": "openwa",
+          "label": "Database name",
+          "name": "DATABASE_NAME"
+        },
+        {
+          "default": "openwa",
+          "label": "Database user",
+          "name": "DATABASE_USERNAME"
+        },
+        {
+          "default": "replace-with-at-least-32-random-characters",
+          "label": "OpenWA master API key",
+          "name": "API_MASTER_KEY"
+        },
+        {
+          "default": "replace-with-64-hexadecimal-characters",
+          "label": "API key hashing pepper",
+          "name": "API_KEY_PEPPER"
+        },
+        {
+          "default": "whatsapp-web.js",
+          "label": "Engine: whatsapp-web.js or baileys",
+          "name": "ENGINE_TYPE"
+        },
+        {
+          "default": "true",
+          "label": "Automatically start paired sessions",
+          "name": "AUTO_START_SESSIONS"
+        },
+        {
+          "default": "true",
+          "label": "Enable dashboard",
+          "name": "SERVE_DASHBOARD"
+        },
+        {
+          "default": "true",
+          "label": "Enable Swagger documentation",
+          "name": "ENABLE_SWAGGER"
+        },
+        {
+          "default": "true",
+          "label": "Enable send pacing",
+          "name": "SEND_PACING_ENABLED"
+        },
+        {
+          "default": "20,40,80,160,320,640,1000",
+          "label": "Daily warm-up send limits",
+          "name": "SEND_PACING_WARMUP_SCHEDULE"
+        },
+        {
+          "default": "5,10,20,40,60,80,100",
+          "label": "Daily cold-contact limits",
+          "name": "SEND_PACING_COLD_DAILY_CAP"
+        },
+        {
+          "default": "false",
+          "label": "Enable MCP endpoint",
+          "name": "MCP_ENABLED"
+        },
+        {
+          "default": "true",
+          "label": "Keep MCP read-only",
+          "name": "MCP_READONLY"
+        },
+        {
+          "default": "10000",
+          "label": "Webhook request timeout (ms)",
+          "name": "WEBHOOK_TIMEOUT"
+        },
+        {
+          "default": "15000",
+          "label": "Webhook shutdown drain time (ms)",
+          "name": "WEBHOOK_SHUTDOWN_DRAIN_MS"
+        },
+        {
+          "default": "2.0",
+          "label": "OpenWA CPU limit",
+          "name": "OPENWA_CPU_LIMIT"
+        },
+        {
+          "default": "3G",
+          "label": "OpenWA memory limit",
+          "name": "OPENWA_MEM_LIMIT"
+        },
+        {
+          "default": "2048",
+          "label": "OpenWA PID limit",
+          "name": "OPENWA_PIDS_LIMIT"
+        },
+        {
+          "default": "1.0",
+          "label": "PostgreSQL CPU limit",
+          "name": "POSTGRES_CPU_LIMIT"
+        },
+        {
+          "default": "1G",
+          "label": "PostgreSQL memory limit",
+          "name": "POSTGRES_MEMORY_LIMIT"
+        },
+        {
+          "default": "0.5",
+          "label": "Redis CPU limit",
+          "name": "REDIS_CPU_LIMIT"
+        },
+        {
+          "default": "512M",
+          "label": "Redis memory limit",
+          "name": "REDIS_MEMORY_LIMIT"
+        },
+        {
+          "default": "10m",
+          "label": "Maximum log size",
+          "name": "LOG_MAX_SIZE"
+        },
+        {
+          "default": "3",
+          "label": "Retained log files",
+          "name": "LOG_MAX_FILE"
+        },
+        {
+          "default": "proxy",
+          "label": "External Traefik network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik certificate resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
       ],
       "volumes": [
-        {"container": "/app/data"},
-        {"container": "/var/lib/postgresql/data"},
-        {"container": "/data"}
+        {
+          "container": "/app/data"
+        },
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/data"
+        }
       ]
     },
     {
@@ -59,7 +274,10 @@
       "title": "DGII e-CF Directory",
       "description": "API pública y frontend responsive para consultar el padrón tributario y el Directorio Electrónico e-CF de la DGII.",
       "note": "Despliega la imagen oficial del proyecto con PostgreSQL privado, sincronización del padrón cada 12 horas y HTTPS mediante Traefik. Antes de desplegar reemplace POSTGRES_PASSWORD, API_KEY y DGII_CREDENTIALS_MASTER_KEY por valores aleatorios. La clave maestra debe conservarse para poder descifrar posteriormente el certificado DGII configurado desde /admin.",
-      "categories": ["API", "Business"],
+      "categories": [
+        "API",
+        "Business"
+      ],
       "platform": "linux",
       "logo": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/postgresql.svg",
       "repository": {
@@ -67,43 +285,181 @@
         "stackfile": "stacks/dgii-ecf-directory/docker-compose.yml"
       },
       "env": [
-        {"default": "dgii-ecf-directory", "label": "Stack name", "name": "COMPOSE_PROJECT_NAME"},
-        {"default": "directory.example.com", "label": "Public domain", "name": "URL"},
-        {"default": "code.unpaismejor.org.do/unpaismejor/dgii-ecf-directory", "label": "Directory image", "name": "DIRECTORY_IMAGE"},
-        {"default": "1.6.2", "label": "Directory image tag", "name": "DIRECTORY_TAG"},
-        {"default": "postgres", "label": "PostgreSQL image", "name": "POSTGRES_IMAGE"},
-        {"default": "16.15-alpine", "label": "PostgreSQL tag", "name": "POSTGRES_TAG"},
-        {"default": "dgii_directory", "label": "Database name", "name": "POSTGRES_DB"},
-        {"default": "dgii", "label": "Database user", "name": "POSTGRES_USER"},
-        {"default": "replace-with-a-long-random-password", "label": "Database password", "name": "POSTGRES_PASSWORD"},
-        {"default": "", "label": "Optional PostgreSQL URL override (URL-encode special password characters)", "name": "DATABASE_URL"},
-        {"default": "--data-checksums", "label": "PostgreSQL init arguments", "name": "POSTGRES_INITDB_ARGS"},
-        {"default": "replace-with-at-least-32-random-characters", "label": "Administrative API key", "name": "API_KEY"},
-        {"default": "replace-with-64-hexadecimal-characters", "label": "DGII credentials master key (64 hexadecimal characters)", "name": "DGII_CREDENTIALS_MASTER_KEY"},
-        {"default": "txt", "label": "DGII source format: txt or csv", "name": "DGII_SOURCE"},
-        {"default": "0 */12 * * *", "label": "Registry synchronization cron", "name": "SYNC_CRON"},
-        {"default": "true", "label": "Synchronize registry at startup", "name": "SYNC_ON_STARTUP"},
-        {"default": "America/Santo_Domingo", "label": "Timezone", "name": "TZ"},
-        {"default": "true", "label": "Enable electronic directory lookups", "name": "DGII_ELECTRONIC_DIRECTORY_ENABLED"},
-        {"default": "43200", "label": "Directory cache TTL in seconds", "name": "DIRECTORY_CACHE_TTL_SECONDS"},
-        {"default": "10000", "label": "DGII request timeout in milliseconds", "name": "DIRECTORY_TIMEOUT_MS"},
-        {"default": "", "label": "Allowed CORS origins, comma separated", "name": "CORS_ORIGINS"},
-        {"default": "1", "label": "Trusted proxy hops", "name": "TRUST_PROXY"},
-        {"default": "25", "label": "Maximum registry age for readiness, hours", "name": "MAX_IMPORT_AGE_HOURS"},
-        {"default": "2097152", "label": "Maximum DGII certificate size", "name": "DGII_CERTIFICATE_MAX_BYTES"},
-        {"default": "104857600", "label": "Maximum source download size", "name": "MAX_DOWNLOAD_BYTES"},
-        {"default": "314572800", "label": "Maximum uncompressed source size", "name": "MAX_UNCOMPRESSED_BYTES"},
-        {"default": "1.0", "label": "API CPU limit", "name": "API_CPU_LIMIT"},
-        {"default": "1G", "label": "API memory limit", "name": "API_MEMORY_LIMIT"},
-        {"default": "1.0", "label": "PostgreSQL CPU limit", "name": "POSTGRES_CPU_LIMIT"},
-        {"default": "1G", "label": "PostgreSQL memory limit", "name": "POSTGRES_MEMORY_LIMIT"},
-        {"default": "10m", "label": "Maximum log file size", "name": "LOG_MAX_SIZE"},
-        {"default": "3", "label": "Retained log files", "name": "LOG_MAX_FILE"},
-        {"default": "proxy", "label": "External Traefik network", "name": "NETWORK"},
-        {"default": "letsencrypt", "label": "Traefik certificate resolver", "name": "TRAEFIK_CERT_RESOLVER"}
+        {
+          "default": "dgii-ecf-directory",
+          "label": "Stack name",
+          "name": "COMPOSE_PROJECT_NAME"
+        },
+        {
+          "default": "directory.example.com",
+          "label": "Public domain",
+          "name": "URL"
+        },
+        {
+          "default": "code.unpaismejor.org.do/unpaismejor/dgii-ecf-directory",
+          "label": "Directory image",
+          "name": "DIRECTORY_IMAGE"
+        },
+        {
+          "default": "1.6.2",
+          "label": "Directory image tag",
+          "name": "DIRECTORY_TAG"
+        },
+        {
+          "default": "postgres",
+          "label": "PostgreSQL image",
+          "name": "POSTGRES_IMAGE"
+        },
+        {
+          "default": "16.15-alpine",
+          "label": "PostgreSQL tag",
+          "name": "POSTGRES_TAG"
+        },
+        {
+          "default": "dgii_directory",
+          "label": "Database name",
+          "name": "POSTGRES_DB"
+        },
+        {
+          "default": "dgii",
+          "label": "Database user",
+          "name": "POSTGRES_USER"
+        },
+        {
+          "default": "replace-with-a-long-random-password",
+          "label": "Database password",
+          "name": "POSTGRES_PASSWORD"
+        },
+        {
+          "default": "",
+          "label": "Optional PostgreSQL URL override (URL-encode special password characters)",
+          "name": "DATABASE_URL"
+        },
+        {
+          "default": "--data-checksums",
+          "label": "PostgreSQL init arguments",
+          "name": "POSTGRES_INITDB_ARGS"
+        },
+        {
+          "default": "replace-with-at-least-32-random-characters",
+          "label": "Administrative API key",
+          "name": "API_KEY"
+        },
+        {
+          "default": "replace-with-64-hexadecimal-characters",
+          "label": "DGII credentials master key (64 hexadecimal characters)",
+          "name": "DGII_CREDENTIALS_MASTER_KEY"
+        },
+        {
+          "default": "txt",
+          "label": "DGII source format: txt or csv",
+          "name": "DGII_SOURCE"
+        },
+        {
+          "default": "0 */12 * * *",
+          "label": "Registry synchronization cron",
+          "name": "SYNC_CRON"
+        },
+        {
+          "default": "true",
+          "label": "Synchronize registry at startup",
+          "name": "SYNC_ON_STARTUP"
+        },
+        {
+          "default": "America/Santo_Domingo",
+          "label": "Timezone",
+          "name": "TZ"
+        },
+        {
+          "default": "true",
+          "label": "Enable electronic directory lookups",
+          "name": "DGII_ELECTRONIC_DIRECTORY_ENABLED"
+        },
+        {
+          "default": "43200",
+          "label": "Directory cache TTL in seconds",
+          "name": "DIRECTORY_CACHE_TTL_SECONDS"
+        },
+        {
+          "default": "10000",
+          "label": "DGII request timeout in milliseconds",
+          "name": "DIRECTORY_TIMEOUT_MS"
+        },
+        {
+          "default": "",
+          "label": "Allowed CORS origins, comma separated",
+          "name": "CORS_ORIGINS"
+        },
+        {
+          "default": "1",
+          "label": "Trusted proxy hops",
+          "name": "TRUST_PROXY"
+        },
+        {
+          "default": "25",
+          "label": "Maximum registry age for readiness, hours",
+          "name": "MAX_IMPORT_AGE_HOURS"
+        },
+        {
+          "default": "2097152",
+          "label": "Maximum DGII certificate size",
+          "name": "DGII_CERTIFICATE_MAX_BYTES"
+        },
+        {
+          "default": "104857600",
+          "label": "Maximum source download size",
+          "name": "MAX_DOWNLOAD_BYTES"
+        },
+        {
+          "default": "314572800",
+          "label": "Maximum uncompressed source size",
+          "name": "MAX_UNCOMPRESSED_BYTES"
+        },
+        {
+          "default": "1.0",
+          "label": "API CPU limit",
+          "name": "API_CPU_LIMIT"
+        },
+        {
+          "default": "1G",
+          "label": "API memory limit",
+          "name": "API_MEMORY_LIMIT"
+        },
+        {
+          "default": "1.0",
+          "label": "PostgreSQL CPU limit",
+          "name": "POSTGRES_CPU_LIMIT"
+        },
+        {
+          "default": "1G",
+          "label": "PostgreSQL memory limit",
+          "name": "POSTGRES_MEMORY_LIMIT"
+        },
+        {
+          "default": "10m",
+          "label": "Maximum log file size",
+          "name": "LOG_MAX_SIZE"
+        },
+        {
+          "default": "3",
+          "label": "Retained log files",
+          "name": "LOG_MAX_FILE"
+        },
+        {
+          "default": "proxy",
+          "label": "External Traefik network",
+          "name": "NETWORK"
+        },
+        {
+          "default": "letsencrypt",
+          "label": "Traefik certificate resolver",
+          "name": "TRAEFIK_CERT_RESOLVER"
+        }
       ],
       "volumes": [
-        {"container": "/var/lib/postgresql/data"}
+        {
+          "container": "/var/lib/postgresql/data"
+        }
       ]
     },
     {
@@ -177,9 +533,9 @@
         "OS"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/android/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/android/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/android/docker-compose.yml"
       },
       "env": [
@@ -220,9 +576,9 @@
         "CI/CD"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/drone/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/drone/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/drone/docker-compose.yml"
       },
       "env": [
@@ -285,7 +641,7 @@
         "Help Desk"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/freescout/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/freescout/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/freescout/docker-compose.yml"
@@ -408,7 +764,7 @@
         "Git"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gitea/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitea/docker-compose.yml"
@@ -589,7 +945,7 @@
         "CI/CD"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitea-act-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gitea-act-runner/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitea-act-runner/docker-compose.yml"
@@ -636,7 +992,7 @@
         "Git"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gitlab-ce/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce/docker-compose.yml"
@@ -729,7 +1085,7 @@
         "CI/CD"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce-runner/docker-compose.yml"
@@ -767,7 +1123,7 @@
         "CI/CD"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gitlab-ce-runner/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gitlab-ce-runner/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gitlab-ce-runner-register/docker-compose.yml"
@@ -819,7 +1175,7 @@
         "HIS (Hospital Information System)"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gnuhealth/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gnuhealth/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gnuhealth/docker-compose.yml"
@@ -922,9 +1278,9 @@
         "CMS"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/grav/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/grav/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/grav/docker-compose.yml"
       },
       "env": [
@@ -996,7 +1352,7 @@
         "Gateway"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/gravitee/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/gravitee/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/gravitee/docker-compose.yml"
@@ -1141,7 +1497,7 @@
         "proxy"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/haproxy/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/haproxy/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/haproxy/docker-compose.yml"
@@ -1212,7 +1568,7 @@
         "Project Management"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/leantime/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/leantime/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/leantime/docker-compose.yml"
@@ -1280,7 +1636,7 @@
         "Online Collaboration"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/nextcloud/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/nextcloud/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/nextcloud/docker-compose.yml"
@@ -1319,7 +1675,7 @@
         "Online Collaboration"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/nextcloudaio/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/nextcloudaio/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/nextcloudaio/docker-compose.yml"
@@ -1435,9 +1791,9 @@
         "Directory Services"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/openldap/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/openldap/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/openldap/docker-compose.yml"
       },
       "env": [
@@ -1677,7 +2033,7 @@
         "Network-wide Ad Blocking"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/pi-hole/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/pi-hole/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/pi-hole/docker-compose.yml"
@@ -1735,7 +2091,7 @@
         "database"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/redis/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/redis/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/redis/docker-compose.yml"
@@ -1822,7 +2178,7 @@
         "Tools"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/speedtest-tracker/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/speedtest-tracker/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/speedtest-tracker/docker-compose.yml"
@@ -1984,9 +2340,9 @@
         "ERP (Enterprise Resource Planning)"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton60/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/tryton60/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton60/docker-compose.yml"
       },
       "env": [
@@ -2068,9 +2424,9 @@
         "ERP (Enterprise Resource Planning)"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton70/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/tryton70/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton70/docker-compose.yml"
       },
       "env": [
@@ -2145,9 +2501,9 @@
         "ERP (Enterprise Resource Planning)"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/tryton72/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/tryton72/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton72/docker-compose.yml"
       },
       "env": [
@@ -2222,7 +2578,7 @@
         "Password Manager"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/vaultwarden/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/vaultwarden/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/vaultwarden/docker-compose.yml"
@@ -2521,9 +2877,9 @@
         "KVM"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/windows/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/windows/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/windows/docker-compose.yml"
       },
       "env": [
@@ -2624,7 +2980,7 @@
         "Network"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/stacks/wireguard/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/wireguard/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/wireguard/docker-compose.yml"
@@ -2814,9 +3170,9 @@
         "Monitor Tool"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/solutema/portainer-templates/main/stacks/zabbix/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/zabbix/logo/logo.png",
       "repository": {
-        "url": "https://github.com/solutema/portainer-templates",
+        "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/zabbix/docker-compose.yml"
       },
       "env": [
@@ -3042,7 +3398,7 @@
         "Autentication Server"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/keycloak/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/keycloak/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/keycloak/docker-compose.yml"
@@ -3112,7 +3468,7 @@
         "Front-End"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/ecf-mseller/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/ecf-mseller/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/ecf-mseller/docker-compose.yml"
@@ -3458,7 +3814,7 @@
         "Git"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce/logo/logo.svg",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/heptapod-ce/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/heptapod-ce/docker-compose.yml"
@@ -3551,7 +3907,7 @@
         "CI/CD"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/heptapod-ce-runner/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/heptapod-ce-runner/docker-compose.yml"
@@ -3589,7 +3945,7 @@
         "CI/CD"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/heptapod-ce-runner/logo/logo.svg",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/heptapod-ce-runner/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/heptapod-ce-runner-register/docker-compose.yml"
@@ -3646,7 +4002,7 @@
         "API"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/dgii-ecf-stack/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf-stack/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/dgii-ecf-stack/docker-compose.yml"
@@ -4168,7 +4524,7 @@
         "API"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/swarm/dgii-ecf/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/swarm/dgii-ecf/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "swarm/dgii-ecf/docker-compose.yml"
@@ -4886,7 +5242,7 @@
         "Web"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/tryton-do-website/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/tryton-do-website/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/tryton-do-website/docker-compose.yml"
@@ -4984,7 +5340,7 @@
         "API"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/bcrd-rates/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/bcrd-rates/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/bcrd-rates/docker-compose.yml"
@@ -5094,7 +5450,7 @@
         "Git"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/forgejo/logo/logo.svg",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/forgejo/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/forgejo/docker-compose.yml"
@@ -5295,7 +5651,7 @@
         "webmail"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/roundcubemail/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/roundcubemail/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/roundcubemail/docker-compose.yml"
@@ -5588,7 +5944,7 @@
         "monitoring"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/netdata/logo/logo.png",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/netdata/logo/logo.png",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/netdata/docker-compose.yml"
@@ -6144,7 +6500,7 @@
         "Development"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/einstore/logo/logo.svg",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/einstore/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/einstore/docker-compose.yml"
@@ -6381,7 +6737,7 @@
         "Certificates"
       ],
       "platform": "linux",
-      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/refs/heads/main/stacks/freessl/logo/logo.svg",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/freessl/logo/logo.svg",
       "repository": {
         "url": "https://github.com/joseagrc/portainer-templates",
         "stackfile": "stacks/freessl/docker-compose.yml"
@@ -7442,9 +7798,6 @@
           "label": "Retención de respaldos (días)",
           "default": "14"
         }
-      ],
-      "ports": [
-        "8000/tcp"
       ],
       "volumes": [
         {

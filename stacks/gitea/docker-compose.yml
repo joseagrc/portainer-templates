@@ -25,17 +25,6 @@ services:
       timeout: 5s
       retries: 10
       start_period: 60s
-    labels:
-      # Habilita Traefik para TCP (no HTTP)
-      - "traefik.enable=true"
-      # Regla de enrutamiento TCP (HostSNI para distinguir instancias)
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-mysql.rule=HostSNI(`mysql.${GITEA_URL}`) || HostSNI(`www.mysql.${GITEA_URL}`)"  # Ej: mysql-instancia1.tudominio.com
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-mysql.entrypoints=mysql"  # Entrypoint TCP definido en Traefik
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-mysql.tls=true"  # Opcional: TLS para seguridad
-      - "traefik.tcp.routers.${COMPOSE_PROJECT_NAME}-mysql.tls.certresolver=letsencrypt"
-      # Backend (puerto de MySQL)
-      - "traefik.tcp.services.${COMPOSE_PROJECT_NAME}-mysql.loadbalancer.server.port=3306"
-
   gitea:
     container_name: ${COMPOSE_PROJECT_NAME}-app
     image: ${GITEA_IMAGE}:${GITEA_TAG}
@@ -51,8 +40,6 @@ services:
       timeout: 10s
       retries: 5
       start_period: 90s
-    ports:
-      - "${GITEA_SSH_PORT}:22"
     volumes:
       - data:/var/lib/gitea
       - config:/etc/gitea

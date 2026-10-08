@@ -1,0 +1,55 @@
+services:
+  traefik:
+    image: ${TRAEFIK_IMAGE:-traefik}:${TRAEFIK_TAG:-v3.7}
+    container_name: ${COMPOSE_PROJECT_NAME:-traefik}
+    restart: unless-stopped
+    command:
+      - --api.dashboard=${TRAEFIK_DASHBOARD:-true}
+      - --api.insecure=false
+      - --ping=true
+      - --ping.entrypoint=web
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=${PROXY_NETWORK:-proxy}
+      - --entrypoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.websecure.address=:443
+      - --entrypoints.websecure.http.tls=true
+      - --certificatesresolvers.${TRAEFIK_CERT_RESOLVER:-letsencrypt}.acme.email=${ACME_EMAIL:?ACME_EMAIL is required}
+      - --certificatesresolvers.${TRAEFIK_CERT_RESOLVER:-letsencrypt}.acme.storage=/letsencrypt/acme.json
+      - --certificatesresolvers.${TRAEFIK_CERT_RESOLVER:-letsencrypt}.acme.httpchallenge=true
+      - --certificatesresolvers.${TRAEFIK_CERT_RESOLVER:-letsencrypt}.acme.httpchallenge.entrypoint=web
+      - --accesslog=true
+      - --accesslog.format=json
+      - --log.level=${TRAEFIK_LOG_LEVEL:-INFO}
+    ports:
+      - ${TRAEFIK_HTTP_BIND:-0.0.0.0:80}:80
+      - ${TRAEFIK_HTTPS_BIND:-0.0.0.0:443}:443
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-letsencrypt:/letsencrypt
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck", "--ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${PROXY_NETWORK:-proxy}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.rule=Host(`${TRAEFIK_DOMAIN:?TRAEFIK_DOMAIN is required}`)
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.entrypoints=websecure
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.tls=true
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.tls.certresolver=${TRAEFIK_CERT_RESOLVER:-letsencrypt}
+      - traefik.http.routers.${COMPOSE_PROJECT_NAME:-traefik}.service=api@internal
+
+volumes:
+  traefik-letsencrypt:
+
+networks:
+  proxy:
+    name: ${PROXY_NETWORK:-proxy}
+    external: true
