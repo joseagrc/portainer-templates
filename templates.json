@@ -7985,7 +7985,7 @@
       "type": 3,
       "title": "eCF Gateway Production - Traefik",
       "description": "Production-ready e-CF gateway enabled for Traefik: PostgreSQL, Redis Streams, RustFS/S3, OpenBao Transit, workers and HTTPS routing through an external Traefik network.",
-      "note": "Traefik-enabled template. Example: set URL=ecf.example.com, NETWORK=proxy and TRAEFIK_CERT_RESOLVER=letsencrypt; the stack publishes no host ports and Traefik routes to the internal API port 8000. Uses OpenBao Transit, AppRole and TLS. Create/provide OpenBao TLS files and initialize/unseal OpenBao operationally before production traffic.",
+      "note": "Traefik-enabled template. Example: set URL=ecf.example.com, NETWORK=proxy and TRAEFIK_CERT_RESOLVER=letsencrypt; the stack publishes no host ports and Traefik routes to the internal API port 8000. Uses OpenBao Transit, AppRole and TLS. The AppRole role_id and secret_id must be pre-created in OpenBao after init/unseal; do not invent them in Portainer. For a first production install, deploy/init/unseal OpenBao, create the Transit key and AppRole, then redeploy/update this stack with those generated values.",
       "categories": [
         "API",
         "Finance",
@@ -8096,12 +8096,12 @@
         },
         {
           "name": "ECF_GATEWAY_OPENBAO_APPROLE_ROLE_ID",
-          "label": "OpenBao AppRole role_id",
+          "label": "OpenBao pre-created AppRole role_id",
           "default": "replace-with-openbao-role-id"
         },
         {
           "name": "ECF_GATEWAY_OPENBAO_APPROLE_SECRET_ID",
-          "label": "OpenBao AppRole secret_id",
+          "label": "OpenBao pre-created AppRole secret_id",
           "default": "replace-with-openbao-secret-id"
         },
         {
