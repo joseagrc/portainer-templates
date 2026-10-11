@@ -115,7 +115,7 @@ services:
       - internal
 
   rustfs-init:
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.5}
     depends_on:
       rustfs:
         condition: service_started
@@ -177,7 +177,7 @@ services:
 
   migrate:
     <<: *app-hardening
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.5}
     command: ["alembic", "upgrade", "head"]
     environment:
       <<: *ecf-env
@@ -190,7 +190,7 @@ services:
 
   api:
     <<: *app-hardening
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.5}
     restart: unless-stopped
     logging: *default-logging
     environment:
@@ -234,7 +234,7 @@ services:
 
   worker:
     <<: *app-hardening
-    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.4}
+    image: ${ECF_GATEWAY_IMAGE:-gitea.joseagrc.com/joseagrc/ecf-gateway}:${ECF_GATEWAY_TAG:-1.0.5}
     command: ["python", "-m", "ecf_gateway.worker"]
     restart: unless-stopped
     logging: *default-logging

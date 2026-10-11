@@ -8027,7 +8027,7 @@
         {
           "name": "ECF_GATEWAY_TAG",
           "label": "eCF Gateway version",
-          "default": "1.0.4"
+          "default": "1.0.5"
         },
         {
           "name": "ECF_GATEWAY_AUTH_JWT_SECRET",
@@ -8225,7 +8225,7 @@
         {
           "name": "ECF_GATEWAY_TAG",
           "label": "eCF Gateway version",
-          "default": "1.0.4"
+          "default": "1.0.5"
         },
         {
           "name": "POSTGRES_PASSWORD",
@@ -8274,6 +8274,62 @@
         },
         {
           "container": "/data/rustfs0"
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "type": 3,
+      "title": "eCF Gateway Frontend - Traefik",
+      "description": "Web frontend for eCF Gateway enabled for Traefik. Deploy it separately from the API and point it to the public API base URL.",
+      "note": "Traefik-enabled frontend template. Example: set URL=app.example.com, NETWORK=proxy, TRAEFIK_CERT_RESOLVER=letsencrypt and NEXT_PUBLIC_ECF_GATEWAY_API_BASE_URL=https://ecf.example.com. The stack publishes no host ports and Traefik routes to the internal Next.js port 3000. The API base URL is normally baked into the image at build time for browser code; rebuild the frontend image when changing it for a fully consistent client bundle.",
+      "categories": [
+        "Web",
+        "Finance",
+        "DGII",
+        "Traefik"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/joseagrc/portainer-templates/main/stacks/dgii-ecf/logo/logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/ecf-gateway-frontend/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Stack/container name",
+          "default": "ecf-gateway-frontend"
+        },
+        {
+          "name": "URL",
+          "label": "Traefik public domain, example: app.example.com",
+          "default": "app.example.com"
+        },
+        {
+          "name": "NETWORK",
+          "label": "External Traefik Docker network, example: proxy",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik TLS certificate resolver, example: letsencrypt",
+          "default": "letsencrypt"
+        },
+        {
+          "name": "ECF_GATEWAY_FRONTEND_IMAGE",
+          "label": "eCF Gateway frontend image",
+          "default": "gitea.joseagrc.com/joseagrc/ecf-gateway-frontend"
+        },
+        {
+          "name": "ECF_GATEWAY_FRONTEND_TAG",
+          "label": "eCF Gateway frontend version",
+          "default": "latest"
+        },
+        {
+          "name": "NEXT_PUBLIC_ECF_GATEWAY_API_BASE_URL",
+          "label": "Public eCF Gateway API base URL",
+          "default": "https://ecf.example.com"
         }
       ]
     }
