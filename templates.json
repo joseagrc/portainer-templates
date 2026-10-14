@@ -6988,7 +6988,7 @@
       "id": 57,
       "type": 3,
       "title": "n8n Automation",
-      "description": "Production n8n automation platform with PostgreSQL, Redis queue and worker.",
+      "description": "Production n8n automation platform with PostgreSQL, Valkey queue and worker.",
       "note": "Uses a persistent encryption key and PostgreSQL database. Back up both the database and N8N_ENCRYPTION_KEY; losing the encryption key makes stored credentials unreadable.",
       "categories": [
         "Automation",
@@ -7018,7 +7018,7 @@
           "name": "N8N_IMAGE"
         },
         {
-          "default": "2.34.6",
+          "default": "2.43.5",
           "label": "n8n Tag",
           "name": "N8N_TAG"
         },
@@ -7051,14 +7051,14 @@
           "name": "N8N_ENCRYPTION_KEY"
         },
         {
-          "default": "redis",
-          "label": "Redis Image",
-          "name": "REDIS_IMAGE"
+          "default": "valkey/valkey",
+          "label": "Valkey Image",
+          "name": "VALKEY_IMAGE"
         },
         {
-          "default": "8-alpine",
-          "label": "Redis Tag",
-          "name": "REDIS_TAG"
+          "default": "9.1.2-alpine",
+          "label": "Valkey Tag",
+          "name": "VALKEY_TAG"
         },
         {
           "default": "5",

@@ -6,7 +6,7 @@ x-logging: &default-logging
     compress: "true"
 
 x-n8n: &n8n
-  image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n}:${N8N_TAG:-2.34.6}
+  image: ${N8N_IMAGE:-docker.n8n.io/n8nio/n8n}:${N8N_TAG:-2.43.5}
   pull_policy: always
   restart: unless-stopped
   init: true
@@ -19,7 +19,7 @@ x-n8n: &n8n
     DB_POSTGRESDB_USER: ${POSTGRES_USER:-n8n}
     DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
     EXECUTIONS_MODE: queue
-    QUEUE_BULL_REDIS_HOST: redis
+    QUEUE_BULL_REDIS_HOST: valkey
     QUEUE_BULL_REDIS_PORT: 6379
     QUEUE_HEALTH_CHECK_ACTIVE: "true"
     N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY}
@@ -63,19 +63,19 @@ services:
       retries: 10
       start_period: 30s
 
-  redis:
-    image: ${REDIS_IMAGE:-redis}:${REDIS_TAG:-8-alpine}
+  valkey:
+    image: ${VALKEY_IMAGE:-valkey/valkey}:${VALKEY_TAG:-9.1.2-alpine}
     pull_policy: always
     restart: unless-stopped
     init: true
     logging: *default-logging
-    command: ["redis-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
+    command: ["valkey-server", "--appendonly", "yes", "--maxmemory-policy", "noeviction"]
     volumes:
-      - redis_data:/data
+      - valkey_data:/data
     networks:
       - internal
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ["CMD", "valkey-cli", "ping"]
       interval: 10s
       timeout: 5s
       retries: 10
@@ -86,7 +86,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
     volumes:
       - n8n_data:/home/node/.n8n
@@ -119,7 +119,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      redis:
+      valkey:
         condition: service_healthy
     volumes:
       - n8n_data:/home/node/.n8n
@@ -134,8 +134,8 @@ services:
 volumes:
   postgres_data:
     name: ${COMPOSE_PROJECT_NAME:-n8n}_postgres_data
-  redis_data:
-    name: ${COMPOSE_PROJECT_NAME:-n8n}_redis_data
+  valkey_data:
+    name: ${COMPOSE_PROJECT_NAME:-n8n}_valkey_data
   n8n_data:
     name: ${COMPOSE_PROJECT_NAME:-n8n}_data
   n8n_files:
