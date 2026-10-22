@@ -2,6 +2,65 @@
   "version": "3",
   "templates": [
     {
+      "id": 101,
+      "type": 3,
+      "title": "Uptime Kuma",
+      "description": "Self-hosted uptime monitoring tool for HTTP, TCP, DNS, ping and other services.",
+      "note": "Set DOMAIN to the hostname you will use in DNS and make sure the external proxy network exists. The default data path is on the homelab SSD; change UPTIME_KUMA_DATA_DIR if needed.",
+      "categories": [
+        "Monitoring",
+        "Status Page"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/louislam/uptime-kuma/master/public/icon.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/uptime-kuma/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Stack/container name",
+          "default": "uptime-kuma"
+        },
+        {
+          "name": "DOMAIN",
+          "label": "Public domain",
+          "default": "uptime.example.com"
+        },
+        {
+          "name": "UPTIME_KUMA_IMAGE",
+          "label": "Uptime Kuma image",
+          "default": "louislam/uptime-kuma"
+        },
+        {
+          "name": "UPTIME_KUMA_TAG",
+          "label": "Uptime Kuma tag",
+          "default": "2"
+        },
+        {
+          "name": "UPTIME_KUMA_DATA_DIR",
+          "label": "Host data directory",
+          "default": "/srv/docker/uptime-kuma/data"
+        },
+        {
+          "name": "NETWORK",
+          "label": "External Traefik network",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/app/data"
+        }
+      ]
+    },
+    {
       "id": 100,
       "type": 3,
       "title": "Traefik Reverse Proxy",
