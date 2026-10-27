@@ -8391,6 +8391,73 @@
           "default": "https://ecf.example.com"
         }
       ]
+    },
+    {
+      "id": 67,
+      "type": 3,
+      "title": "MailFlow",
+      "description": "MailFlow: cliente webmail unificado autoalojado para Gmail, Outlook, iCloud y cuentas IMAP/SMTP.",
+      "note": "Requiere SESSION_SECRET, DB_PASSWORD y ENCRYPTION_KEY. Se publica mediante Traefik en HTTPS. El backend tiene salida de red para conectarse a servidores IMAP/SMTP externos.",
+      "categories": [
+        "Email",
+        "Webmail",
+        "Traefik"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/maathimself/mailflow/main/media/mailflow-logo.png",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/mailflow/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Stack/container name",
+          "default": "mailflow"
+        },
+        {
+          "name": "MAILFLOW_VERSION",
+          "label": "MailFlow version",
+          "default": "latest"
+        },
+        {
+          "name": "APP_HOSTNAME",
+          "label": "Public domain",
+          "default": "mailflow.joseagrc.com"
+        },
+        {
+          "name": "APP_URL",
+          "label": "Application URL",
+          "default": "https://mailflow.joseagrc.com"
+        },
+        {
+          "name": "SESSION_SECRET",
+          "label": "Session secret"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "label": "Database password"
+        },
+        {
+          "name": "ENCRYPTION_KEY",
+          "label": "Encryption key"
+        },
+        {
+          "name": "NETWORK",
+          "label": "Traefik network",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
+        },
+        {
+          "name": "TRUST_PROXY_HOPS",
+          "label": "Trusted proxy hops",
+          "default": "1"
+        }
+      ]
     }
   ]
 }
