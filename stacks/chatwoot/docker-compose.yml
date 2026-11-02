@@ -6,7 +6,7 @@ x-logging: &default-logging
     compress: "true"
 
 x-base: &base
-  image: :
+  image: "${CHATWOOT_IMAGE}:${CHATWOOT_TAG}"
   env_file: .env
   volumes:
     - chatwoot-storage:/app/storage
@@ -18,21 +18,19 @@ x-base: &base
     RAILS_ENV: production
     INSTALLATION_ENV: docker
     POSTGRES_HOST: postgres
-    POSTGRES_DATABASE: 
-    POSTGRES_USERNAME: 
-    POSTGRES_PASSWORD: 
-    REDIS_URL: redis://:@redis:6379
+    POSTGRES_DATABASE: "${POSTGRES_DB}"
+    POSTGRES_USERNAME: "${POSTGRES_USER}"
+    POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    REDIS_URL: "redis://:${REDIS_PASSWORD}@redis:6379"
 
 services:
   rails:
     <<: *base
-    container_name: -rails
+    container_name: ${COMPOSE_PROJECT_NAME}-rails
     networks: [internal, proxy]
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
     entrypoint: docker/entrypoints/rails.sh
     command: ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
     healthcheck:
@@ -43,39 +41,36 @@ services:
       start_period: 120s
     labels:
       - "traefik.enable=true"
-      - "traefik.docker.network="
-      - "traefik.http.routers.-http.rule=Host()"
-      - "traefik.http.routers.-http.entrypoints=web"
-      - "traefik.http.routers.-http.middlewares=-https-redirect"
-      - "traefik.http.middlewares.-https-redirect.redirectscheme.scheme=https"
-      - "traefik.http.routers..rule=Host()"
-      - "traefik.http.routers..entrypoints=websecure"
-      - "traefik.http.routers..tls=true"
-      - "traefik.http.routers..tls.certresolver="
-      - "traefik.http.services..loadbalancer.server.port=3000"
+      - "traefik.docker.network=${NETWORK}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=Host(`${CHATWOOT_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.middlewares=${COMPOSE_PROJECT_NAME}-https-redirect"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${CHATWOOT_DOMAIN}`)"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls=true"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=${TRAEFIK_CERT_RESOLVER}"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000"
 
   sidekiq:
     <<: *base
-    container_name: -sidekiq
+    container_name: ${COMPOSE_PROJECT_NAME}-sidekiq
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
+      postgres: {condition: service_healthy}
+      redis: {condition: service_healthy}
     command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
 
   postgres:
-    image: :
-    container_name: -postgres
+    image: "${POSTGRES_IMAGE}:${POSTGRES_TAG}"
+    container_name: ${COMPOSE_PROJECT_NAME}-postgres
     environment:
-      POSTGRES_DB: 
-      POSTGRES_USER: 
-      POSTGRES_PASSWORD: 
-    volumes:
-      - chatwoot-postgres:/var/lib/postgresql/data
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes: [chatwoot-postgres:/var/lib/postgresql/data]
     networks: [internal]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U  -d "]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 20
@@ -83,16 +78,15 @@ services:
     logging: *default-logging
 
   redis:
-    image: :
-    container_name: -redis
-    command: ["sh", "-c", "redis-server --appendonly yes --requirepass "23943{REDIS_PASSWORD}""]
+    image: "${REDIS_IMAGE}:${REDIS_TAG}"
+    container_name: ${COMPOSE_PROJECT_NAME}-redis
+    command: ["sh", "-c", "redis-server --appendonly yes --requirepass \"$${REDIS_PASSWORD}\""]
     environment:
-      REDIS_PASSWORD: 
-    volumes:
-      - chatwoot-redis:/data
+      REDIS_PASSWORD: "${REDIS_PASSWORD}"
+    volumes: [chatwoot-redis:/data]
     networks: [internal]
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -a "23943{REDIS_PASSWORD}" ping | grep -q PONG"]
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping | grep -q PONG"]
       interval: 10s
       timeout: 5s
       retries: 20
@@ -100,17 +94,14 @@ services:
     logging: *default-logging
 
 volumes:
-  chatwoot-storage:
-    name: -storage
-  chatwoot-postgres:
-    name: -postgres
-  chatwoot-redis:
-    name: -redis
+  chatwoot-storage: {name: ${COMPOSE_PROJECT_NAME}-storage}
+  chatwoot-postgres: {name: ${COMPOSE_PROJECT_NAME}-postgres}
+  chatwoot-redis: {name: ${COMPOSE_PROJECT_NAME}-redis}
 
 networks:
   internal:
-    name: _internal
+    name: ${COMPOSE_PROJECT_NAME}_internal
     internal: true
   proxy:
-    name: 
+    name: ${NETWORK}
     external: true
