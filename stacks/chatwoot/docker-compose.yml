@@ -1,0 +1,116 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "20m"
+    max-file: "5"
+    compress: "true"
+
+x-base: &base
+  image: :
+  env_file: .env
+  volumes:
+    - chatwoot-storage:/app/storage
+  networks: [internal]
+  restart: unless-stopped
+  logging: *default-logging
+  environment:
+    NODE_ENV: production
+    RAILS_ENV: production
+    INSTALLATION_ENV: docker
+    POSTGRES_HOST: postgres
+    POSTGRES_DATABASE: 
+    POSTGRES_USERNAME: 
+    POSTGRES_PASSWORD: 
+    REDIS_URL: redis://:@redis:6379
+
+services:
+  rails:
+    <<: *base
+    container_name: -rails
+    networks: [internal, proxy]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    entrypoint: docker/entrypoints/rails.sh
+    command: ["bundle", "exec", "rails", "s", "-p", "3000", "-b", "0.0.0.0"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 120s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network="
+      - "traefik.http.routers.-http.rule=Host()"
+      - "traefik.http.routers.-http.entrypoints=web"
+      - "traefik.http.routers.-http.middlewares=-https-redirect"
+      - "traefik.http.middlewares.-https-redirect.redirectscheme.scheme=https"
+      - "traefik.http.routers..rule=Host()"
+      - "traefik.http.routers..entrypoints=websecure"
+      - "traefik.http.routers..tls=true"
+      - "traefik.http.routers..tls.certresolver="
+      - "traefik.http.services..loadbalancer.server.port=3000"
+
+  sidekiq:
+    <<: *base
+    container_name: -sidekiq
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
+
+  postgres:
+    image: :
+    container_name: -postgres
+    environment:
+      POSTGRES_DB: 
+      POSTGRES_USER: 
+      POSTGRES_PASSWORD: 
+    volumes:
+      - chatwoot-postgres:/var/lib/postgresql/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U  -d "]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    logging: *default-logging
+
+  redis:
+    image: :
+    container_name: -redis
+    command: ["sh", "-c", "redis-server --appendonly yes --requirepass "23943{REDIS_PASSWORD}""]
+    environment:
+      REDIS_PASSWORD: 
+    volumes:
+      - chatwoot-redis:/data
+    networks: [internal]
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a "23943{REDIS_PASSWORD}" ping | grep -q PONG"]
+      interval: 10s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    logging: *default-logging
+
+volumes:
+  chatwoot-storage:
+    name: -storage
+  chatwoot-postgres:
+    name: -postgres
+  chatwoot-redis:
+    name: -redis
+
+networks:
+  internal:
+    name: _internal
+    internal: true
+  proxy:
+    name: 
+    external: true

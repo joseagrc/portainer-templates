@@ -8458,6 +8458,115 @@
           "default": "1"
         }
       ]
+    },
+    {
+      "id": 102,
+      "type": 3,
+      "title": "Chatwoot",
+      "description": "Production Chatwoot customer support platform behind Traefik with PostgreSQL, Redis and Sidekiq.",
+      "note": "Create the DNS record before deployment. Keep SECRET_KEY_BASE, POSTGRES_PASSWORD and REDIS_PASSWORD backed up; changing SECRET_KEY_BASE makes existing encrypted credentials unreadable. Uses the external Traefik network and does not publish host ports.",
+      "categories": [
+        "Support",
+        "CRM",
+        "Communication"
+      ],
+      "platform": "linux",
+      "logo": "https://raw.githubusercontent.com/chatwoot/chatwoot/develop/app/javascript/dashboard/assets/images/chatwoot_logo.svg",
+      "repository": {
+        "url": "https://github.com/joseagrc/portainer-templates",
+        "stackfile": "stacks/chatwoot/docker-compose.yml"
+      },
+      "env": [
+        {
+          "name": "COMPOSE_PROJECT_NAME",
+          "label": "Compose Project Name",
+          "default": "chatwoot"
+        },
+        {
+          "name": "CHATWOOT_DOMAIN",
+          "label": "Public domain",
+          "default": "chatwoot.example.com"
+        },
+        {
+          "name": "CHATWOOT_IMAGE",
+          "label": "Chatwoot image",
+          "default": "chatwoot/chatwoot"
+        },
+        {
+          "name": "CHATWOOT_TAG",
+          "label": "Chatwoot tag",
+          "default": "latest"
+        },
+        {
+          "name": "SECRET_KEY_BASE",
+          "label": "Secret key base",
+          "description": "Generate a long random value and keep it backed up."
+        },
+        {
+          "name": "POSTGRES_IMAGE",
+          "label": "PostgreSQL image",
+          "default": "pgvector/pgvector"
+        },
+        {
+          "name": "POSTGRES_TAG",
+          "label": "PostgreSQL tag",
+          "default": "pg16"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "label": "PostgreSQL database",
+          "default": "chatwoot_production"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "label": "PostgreSQL user",
+          "default": "postgres"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "label": "PostgreSQL password"
+        },
+        {
+          "name": "REDIS_IMAGE",
+          "label": "Redis image",
+          "default": "redis"
+        },
+        {
+          "name": "REDIS_TAG",
+          "label": "Redis tag",
+          "default": "7-alpine"
+        },
+        {
+          "name": "REDIS_PASSWORD",
+          "label": "Redis password"
+        },
+        {
+          "name": "TIMEZONE",
+          "label": "Timezone",
+          "default": "America/Santo_Domingo"
+        },
+        {
+          "name": "NETWORK",
+          "label": "Traefik network",
+          "default": "proxy"
+        },
+        {
+          "name": "TRAEFIK_CERT_RESOLVER",
+          "label": "Traefik certificate resolver",
+          "default": "letsencrypt"
+        }
+      ],
+      "volumes": [
+        {
+          "container": "/app/storage"
+        },
+        {
+          "container": "/var/lib/postgresql/data"
+        },
+        {
+          "container": "/data"
+        }
+      ]
     }
   ]
 }
